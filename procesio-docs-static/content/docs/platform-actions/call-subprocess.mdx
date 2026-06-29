@@ -60,7 +60,7 @@ We have created 2 flows for our example.
 
 ![](/images/docs/-DicfFz1QOryoYED-JhGA_screenshot-2022-06-02-at-164905.png)
 
-To configure &#x61;**&#x20;Send email** action you may check [Send email action](https://docs.procesio.com/how-to/send-email) article.
+To configure &#x61;**&#x20;Send email** action you may check [Send email action](/docs/platform-actions/call-api/send-email) article.
 
 The child process uses a process variable named **inputdata**. Inputdata is a data model with 4 attributes: to, subject, bodyDetails1, bodyDetails2.
 
@@ -78,13 +78,13 @@ These attributes used in the configuration of the Send Email action will receive
 
 
 
-To configure the **Get File Data** action you may check the [Get File Data](https://docs.procesio.com/how-to/get-file-data) article. 
+To configure the **Get File Data** action you may check the [Get File Data](/docs/platform-actions/call-api/get-file-data) article. 
 
 Two process variables were created:
 
 ![](/images/docs/KwR-Rl75pVdWAMxDQFtNj_screenshot-2022-06-02-at-170048.png)
 
-- **getProducts&#x20;**(type **list** of `orderedProducts`); data model that matches the structure of the excel file that will capture the data from the file at runtime.
+- **<span style={{color:'#1679e1'}}>getProducts</span>&#x20;**(type **list** of `orderedProducts`); data model that matches the structure of the excel file that will capture the data from the file at runtime.
 - **productsList&#x20;**(type file; set as Input) that will fetch the file details at runtime.
 
 In **Get File Data**, configure the **Configuration panel** as follows:
@@ -93,10 +93,10 @@ In **Get File Data**, configure the **Configuration panel** as follows:
 
 ![](/images/docs/T8BZrOy3XsD0M9HvUzBNW_screenshot-2022-06-02-at-170757.png)
 
-Next, in order to ensure that a separate email is sent to every entry in the file, a ForEach action is needed. Check [For Each](https://docs.procesio.com/how-to/for-each) article for configuration details.
+Next, in order to ensure that a separate email is sent to every entry in the file, a ForEach action is needed. Check [For Each](/docs/platform-actions/call-api/for-each) article for configuration details.
 
-1. Select the list to iterate through, i.e. getProducts``
-2. Set the iterator name (you can name it iterator etc)
+1. Select the list to iterate through, i.e. <span style={{color:'#1679e1'}}>getProducts</span>``
+2. Set the <span style={{color:'#2166ae'}}>iterator</span> name (you can name it <span style={{color:'#2166ae'}}>iterator</span> etc)
 
 ![](/images/docs/aZ_SS0KCQ97mhlgrQP5Q6_screenshot-2022-06-02-at-172034.png)
 
@@ -119,7 +119,7 @@ Mapping the subprocess input variables to variables coming from the process is i
 The elements that are used in the Send email configuration in the child process (To, Subject, bodyDetails1, bodyDetails2) will receive data from the file (customeremail, orderid, productordered, totalAmountInvoice|)
 
 <Callout type="info">
-As our action is inside a foreach border, use the iterator's attributes when mapping the data, not the attributes of the data model that captures the data from the file.
+As our action is inside a foreach border, use the <span style={{color:'#2166ae'}}>iterator</span>'s attributes when mapping the data, not the attributes of the data model that captures the data from the file.
 </Callout>
 
 ![](/images/docs/bPUrDjJIY3JloeAp2072t_screenshot-2022-06-02-at-171908.png)

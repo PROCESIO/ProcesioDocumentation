@@ -61,7 +61,7 @@ An exact match needs to be validated (=).
 
 ## Fuzzy
 
-This utilizes the algorithms available in `Similarity Search` action to compare one string against the other. Read more details [here](https://docs.procesio.com/how-to/similarity-search).
+This utilizes the algorithms available in `Similarity Search` action to compare one string against the other. Read more details [here](/docs/platform-actions/call-api/similarity-search).
 
 ## Contains
 
@@ -84,7 +84,7 @@ This checks if the first N words in a string are the same as the first N words i
 ## FuzzyAlgorithm & FuzzyThreshold
 
 - Only used when `MatchType` = `Fuzzy`. If `MatchType` is something else, those properties will be ignored so, they can be null or absent.
-- `FuzzyAlgorithm` needs to be one from this [here](https://docs.procesio.com/how-to/similarity-search), written exactly as is written in the link provided.
+- `FuzzyAlgorithm` needs to be one from this [here](/docs/platform-actions/call-api/similarity-search), written exactly as is written in the link provided.
 - `FuzzyThreshold` is a `double` between 0 and 1, where 0 means anything can pass and 1 means that it needs to have 100% confidence. From experimenting, we noticed 0.7 is a good threshold to experiment with.
 
 ## SoundexDistance

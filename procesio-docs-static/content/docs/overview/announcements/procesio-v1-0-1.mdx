@@ -16,19 +16,19 @@ The owner of the Development account has full administrative rights, including u
 
 In order to add new workspaces to a Development account you will need to reach out to the support team through the chat.
 
-[Link to documentation](https://docs.procesio.com/workspace-management)
+[Link to documentation](/docs/overview/dashboard/how-to-create-a-workspace-in-a-master-workspace)
 
 # Credential Manager
 
 PROCESIO allows you to connect to other platforms, servers, applications in a no-code way by using dedicated actions (e.g. Call API action, Send email). Use the Credentials Manager to configure the authentication credentials of the REST API or email server you want to access. Once created, you can use that configuration in actions such as Call API without reconfiguring the authorization steps every time.
 
-[Link to documentation](https://docs.procesio.com/working-with-credentials-manager)
+[Link to documentation](/docs/overview/processes/untitled/working-with-credentials)
 
 # Data Model Designer
 
 Use the Data Model Designer to create your custom data type. It helps you define the relationships between the data elements (attributes) you have, to give it a structure. Data models are a key concept in PROCESIO as they can be used to configure the data type of process variables.
 
-[Link to documentation](https://docs.procesio.com/working-with-data-models)
+[Link to documentation](/docs/overview/processes/data-model-designer/working-with-data-models)
 
 # Process Scheduler
 
@@ -41,13 +41,13 @@ A process that needs to be run:
 
 Is a task for the scheduler, as the scheduler will automatically run processes for you. You can add contacts that will receive an email notification based on process completion status (completes/fails/both).
 
-[Link to documentation](https://docs.procesio.com/scheduling-a-process)
+[Link to documentation](/docs/overview/automation/schedules)
 
 # Process Variables
 
 A process variable acts as a placeholder for data when configuring a process. When the process is running, it passes dynamic data between actions.
 
-[Link to documentation](https://docs.procesio.com/working-with-process-variables)
+[Link to documentation](/docs/overview/processes/process-designer/working-with-process-variables)
 
 # Platform Actions:
 
@@ -55,7 +55,7 @@ A process variable acts as a placeholder for data when configuring a process. Wh
 
 Call subprocess action enables users to use existing processes within another process (parent process). When a parent process calls a subprocess (a child process), the child process executes in a sequential manner. Once it completes, the execution control is then transferred to the main parent process.
 
-[Link to documentation](https://docs.procesio.com/call-subprocess-action)
+[Link to documentation](/docs/platform-actions/call-subprocess)
 
 **Get File Data**
 
@@ -65,13 +65,13 @@ You can proceed with the action configuration by manually creating the structure
 
 You need to map the file structure created to a process variable which will give you the possibility to use the data in other actions in process flows.
 
-[Link to documentation](https://docs.procesio.com/get-file-data-action)
+[Link to documentation](/docs/platform-actions/get-file-data)
 
 **Call API action**
 
 Allows users to connect to any external system exposing an API.
 
-[Link to documentation](https://docs.procesio.com/call-api-action)
+[Link to documentation](/docs/platform-actions/call-api)
 
 **Decisional action**
 
@@ -79,7 +79,7 @@ Decisional action will execute one of the many branches configured, depending on
 
 You can add several actions after a decisional and build as many cases as you need. A case configuration consists in defining the condition and its successor branch (called "target"). A target action is an action connected to the Decisional as a successor.
 
-[Link to documentation](https://docs.procesio.com/decisional-action)
+[Link to documentation](/docs/platform-actions/decisional)
 
 **For Each action**
 
@@ -87,13 +87,13 @@ ForEach actions performs an action (or a set of actions), actions included withi
 
 The elements of a list can be referenced in the action(s) within the border by creating and using a local variable (iterator).
 
-[Link to documentation](https://docs.procesio.com/for-each-action)
+[Link to documentation](/docs/platform-actions/for-each)
 
 **Join action**
 
 Join action is used to unify (bring back together) 2 or more branches in one branch after a decisional action. After Join - only one action can be connected as a successor. When branches are unified in a Join, we only need one of them to be executed in order to start executing the “Join” action. The process then continues.
 
-[Link to documentation](https://docs.procesio.com/join-action)
+[Link to documentation](/docs/platform-actions/join)
 
 **Send Email action**
 
@@ -101,4 +101,4 @@ Use the Send Email action to send a message (Body and Subject) to one or more re
 
 PROCESIO integrates Send Email action with your email server configurations. This means that once you configure the Email server to use (check Working with Credentials Manager), you can start configuring the Send Email action in any flow.
 
-[Link to documentation](https://docs.procesio.com/send-email-action)
+[Link to documentation](/docs/platform-actions/send-email)

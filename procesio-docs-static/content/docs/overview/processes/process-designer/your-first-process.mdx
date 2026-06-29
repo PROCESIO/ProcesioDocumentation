@@ -36,17 +36,17 @@ Yes, we'll get the current date **automatically** so that we won't have to input
 
 Let's check the **Platform Actions** section first to see if we can find an action that can get the current date.
 
-- *There seems to be a&#x20;****DateTime****&#x20;folder so let's look over there for now*
+- *There seems to be a&#x20;****<span style={{color:'#ff9307'}}>DateTime</span>****&#x20;folder so let's look over there for now*
 
 ![](/images/docs/xKp6QWsUkmSItzRnkqYPG_finding.gif)
 
-**Today** seems like a good fit, let's check the [documentation page](https://docs.procesio.com/how-to/today) to learn how to use it.
+**Today** seems like a good fit, let's check the [documentation page](/docs/platform-actions/call-api/today) to learn how to use it.
 
 ![](/images/docs/JbF-CIwV760sJsjxwn1jQ_docs.gif)
 
 - *Now we know how the&#x20;****Today****&#x20;action works, how do we proceed ?*
 
-We'll declare an **Output** variable called **CurrentDate** of type DateTime which will hold the current date provided by the **Today** action.&#x20;
+We'll declare an **Output** variable called **CurrentDate** of type <span style={{color:'#ff9307'}}>DateTime</span> which will hold the current date provided by the **Today** action.&#x20;
 
 ![](/images/docs/kP0RPQvyeKDTFPa9OaWVH_variabled.gif)
 
@@ -60,9 +60,9 @@ When the process becomes valid, we'll hit **Run** to see if the **CurrentDate** 
 
 - *Now we got the date... How do we figure out if it's on a weekend ?*
 
-The thought process should be similar. We check the **DateTime** folder again to see if anything fits our needs.
+The thought process should be similar. We check the **<span style={{color:'#ff9307'}}>DateTime</span>** folder again to see if anything fits our needs.
 
-- ***Is Weekend****&#x20;seems promising so let's check its&#x20;*[documentation page](https://docs.procesio.com/how-to/is-weekend)*.*
+- ***Is Weekend****&#x20;seems promising so let's check its&#x20;*[documentation page](/docs/platform-actions/call-api/is-weekend)*.*
 
 ![](/images/docs/HtTTU2MrfHxYWE2p7Mxzv_wekeendd.gif)
 
@@ -82,15 +82,15 @@ Now we're done, let's see how **your first process** runs now 😁
 
 It's a bit more complex but sure, let's make it show **'Yes'** instead of **true** and **'No'** instead of **false**.
 
-We'll declare a third **Output** variable called **Message** of type String to store the message.
+We'll declare a third **Output** variable called **Message** of type <span style={{color:'#1c417e'}}>String</span> to store the message.
 
 ![](/images/docs/pcVSl_-faUpAc78roIGMq_third.gif)
 
 To convert the value of **IsWeekend** to a message we will use the following actions:
 
-1. [Decisional](https://docs.procesio.com/how-to/decisional) ➜ to choose which message to map based on the value of **IsWeekend**
-2. [Map Process Data](https://docs.procesio.com/how-to/map-process-data) ➜ to map the right message to the **Message&#x20;**&#x76;ariable
-3. [Join](https://docs.procesio.com/how-to/join) ➜ to merg&#x65;**&#x20;Decisional&#x20;**&#x62;ranches&#x20;
+1. [Decisional](/docs/platform-actions/call-api/decisional) ➜ to choose which message to map based on the value of **IsWeekend**
+2. [Map Process Data](/docs/platform-actions/call-api/map-process-data) ➜ to map the right message to the **Message&#x20;**&#x76;ariable
+3. [Join](/docs/platform-actions/call-api/join) ➜ to merg&#x65;**&#x20;Decisional&#x20;**&#x62;ranches&#x20;
 
 Let's build the flow now and make sure it's valid.
 

@@ -13,17 +13,17 @@ As a PROCESIO user, I want to have an action that identifies duplicates in a Lis
 
 The example requires a process with just the **DeDuplicate list** action with the following configuration.
 
-**&#x20;  Step 1.   &#x20;**[Create a new process](https://docs.procesio.com/creating-a-basic-process) and give it a name.
+**&#x20;  Step 1.   &#x20;**[Create a new process](/docs/overview/processes/process-designer/your-first-process) and give it a name.
 
 **&#x20;  Step 2.   &#x20;**&#x44;rag the **Deduplicate list** action action to the canvas and link it to the other actions.&#x20;
 
 *(Screenshot unavailable — image was removed from the original source.)*
 
-**&#x20;  Step 3.   &#x20;**[Add the needed variables](https://docs.procesio.com/working-with-process-variables).
+**&#x20;  Step 3.   &#x20;**[Add the needed variables](/docs/overview/processes/process-designer/working-with-process-variables).
 
 *(Screenshot unavailable — image was removed from the original source.)*
 
-All the output variables will be of type list\&lt;object> and with the input &lt;%list%&gt; variable you have the option to provide the default value or add the value when you run the process.&#x20;
+All the output variables will be of type list\&lt;object> and with the input <span style={{color:'#2166ae'}}>&lt;%list%&gt;</span> variable you have the option to provide the default value or add the value when you run the process.&#x20;
 
 *(Screenshot unavailable — image was removed from the original source.)*
 
@@ -32,7 +32,7 @@ All the output variables will be of type list\&lt;object> and with the input &lt
 ```
 
 <Callout type="info">
-The &lt;%correlations%&gt; output variable will use the system preconfigured **correlation** data type that you can find in the Type dropdown.&#x20;
+The <span style={{color:'#2166ae'}}>&lt;%correlations%&gt;</span> output variable will use the system preconfigured **correlation** data type that you can find in the Type dropdown.&#x20;
 
 *(Screenshot unavailable — image was removed from the original source.)*
 </Callout>
@@ -81,7 +81,7 @@ The &lt;%correlations%&gt; output variable will use the system preconfigured **c
 
 
 
-- **Fuzzy&#x20;**- this uses the algorithms available in the **StringSimilarity** Action to compare one string against the other (read this for more details: [Actions | String similarity](https://docs.procesio.com/string-similarity) ).
+- **Fuzzy&#x20;**- this uses the algorithms available in the **StringSimilarity** Action to compare one string against the other (read this for more details: [Actions | String similarity](/docs/platform-actions/lists/similarity-search) ).
   - **FuzzyAlgorithm** and  **FuzzyThresholdproperties** are only used when MatchType = Fuzzy. If MatchType is something else, those properties will be ignored so, they can be null or can even not be present.
 
 ```json

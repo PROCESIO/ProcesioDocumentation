@@ -12,10 +12,10 @@ Module imports can be performed using CommonJS **require('module')** syntax only
 
 Use the **return&#x20;**&#x6B;eyword to set the output value. You can return either **Single Values&#x20;**&#x6F;r **List** **Values**, not both at same time.
 
-**Timeout**: → Integer representing execution time limit(when timeout limit is reached, the action will throw an error)
+**Timeout**: → <span style={{color:'#16c9c9'}}>Integer</span> representing execution time limit(when timeout limit is reached, the action will throw an error)
 **Single result**: → Output that will be set for single value outputs.
 **List result**: → Output that will be set for list value outputs.
-**Error**: → String representing errors resulted from the execution of the script (the output is set only when an error occurs, otherwise it’s **null**)
+**Error**: → <span style={{color:'#9c70ce'}}>String</span> representing errors resulted from the execution of the script (the output is set only when an error occurs, otherwise it’s **null**)
 
 <Callout type="warn">
 Something to consider before trying to use the **Node&#x20;**&#x61;ction to automate your use cases is that it does not support working with files.
@@ -54,31 +54,31 @@ Obs: If you set the **Timeout&#x20;**&#x74;o 5 seconds, the action will throw an
 
 **&#x20;    2. Scripts with Single outputs.**
 
-Integer
+<span style={{color:'#16c9c9'}}>Integer</span>
 
 > var a = 1
 > var b = 2
 > return a + b
 
-Float
+<span style={{color:'#935b0e'}}>Float</span>
 
 > var a = 1.0
 > var b = 2.5
 > return a + b
 
-String
+<span style={{color:'#9c70ce'}}>String</span>
 
 > var a = "aa"
 > var b = "bb"
 > return a + b
 
-Boolean
+<span style={{color:'#ff6900'}}>Boolean</span>
 
 > var a = 1
 > var b = 2
 > return a == b
 
-Json / DataModel
+<span style={{color:'#30c922'}}>Json / DataModel</span>
 
 > var x = \&#123;
 > &#x20; "user": \&#123;
@@ -90,7 +90,7 @@ Json / DataModel
 >
 > return x
 
-DateTime
+<span style={{color:'#10a2f9'}}>DateTime</span>
 
 > let d = new Date()
 > return d

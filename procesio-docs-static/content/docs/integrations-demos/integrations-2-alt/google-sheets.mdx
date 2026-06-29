@@ -7,7 +7,7 @@ description: "💡 Imagine automating your work processes and workflows with PRO
 # PROCESIO x Google Sheets
 
 <Callout type="error">
-### **This documentation is outdated. For the up-to-date version, visit:** [https://docs.procesio.com/integrations/oauth2-google-sheets](https://docs.procesio.com/integrations/oauth2-google-sheets)
+### **This documentation is outdated. For the up-to-date version, visit:** [/docs/integrations-demos/integrations-2-alt/integrations/oauth2-google-sheets](/docs/integrations-demos/integrations-2-alt/integrations/oauth2-google-sheets)
 </Callout>
 
 
@@ -75,7 +75,7 @@ You can only Filter by **Google Sheets API**, if you enabled it.
 
 ![](/images/docs/EfCMhMq_rTQeyMC-ZTDad_image.png)
 
-Fill in the **OAuth Client ID** details as below.
+Fill in the **OAuth <span style={{color:'#3b9f0f'}}>Client ID</span>** details as below.
 
 - **Application type&#x20;**➜ Web
   &#x20;application
@@ -97,11 +97,11 @@ Don't forget to click **Create** after you fill in the details.
 
 To generate an OAUTH token, we'll need 3 things:
 
-- client_id - part of the Google Sheets API Credential we just created.
-- client_secret - also part of the Google Sheets API Credential we just created.
-- code - secret code valid for 60 seconds after obtaining it.
+- <span style={{color:'#3b9f0f'}}>client_id</span> - part of the Google Sheets API Credential we just created.
+- <span style={{color:'#3b9f0f'}}>client_secret</span> - also part of the Google Sheets API Credential we just created.
+- <span style={{color:'#fcb900'}}>code</span> - secret <span style={{color:'#fcb900'}}>code</span> valid for 60 seconds after obtaining it.
 
-### **Finding&#x20;**client_id**&#x20;and&#x20;**client_secret
+### **Finding&#x20;**<span style={{color:'#3b9f0f'}}>client_id</span>**&#x20;and&#x20;**<span style={{color:'#3b9f0f'}}>client_secret</span>
 
 - From within [Google API Console](https://console.cloud.google.com/) navigate to the credential tab, and click the credential you've just created.&#x20;
 
@@ -111,13 +111,13 @@ Make sure you have the right project selected.
 
 ![](/images/docs/lkO8yKRgdwnvlhd-X0gVI_image.png)
 
-- Now copy the values for **Client ID** and **Client secret** and save them for later.
+- Now copy the values for **<span style={{color:'#3b9f0f'}}>Client ID</span>** and **Client secret** and save them for later.
 
 ![](/images/docs/legmblPu8duSmmkU0OqHP_image.png)
 
 ### **Preparing the request**
 
-Now that we have the **client\_id** and **client\_secret** ,we only need to get the code so that we can use it to receive the **OAuth token**. The code has a 60 second validity so before obtaining it, we'll prepare a request in **Postman** so that we can just **Obtain the code** & **Send the request** straight away.
+Now that we have the **client\_id** and **client\_secret** ,we only need to get the <span style={{color:'#fcb900'}}>code</span> so that we can use it to receive the **OAuth token**. The <span style={{color:'#fcb900'}}>code</span> has a <span style={{color:'#eb144c'}}>60 second</span> validity so before obtaining it, we'll prepare a request in **Postman** so that we can just **Obtain the <span style={{color:'#fcb900'}}>code</span>** & **Send the request** straight away.
 
 - Open **Postman** and configure a **POST** request with **x-www-form-urlencoded** body type.
 
@@ -125,23 +125,23 @@ Now that we have the **client\_id** and **client\_secret** ,we only need to get 
 
 - Set the following key-value pairs
   - **grant\_type&#x20;**➜ `authorization_code`
-  - code ➜ here you need to add the code we obtain in the next step
-  - client_id ➜ Value of **Client** **ID** that you saved.
-  - client_secret ➜ Value of **Client secret** that you saved.
+  - <span style={{color:'#fcb900'}}>code</span> ➜ <span style={{color:'#fcb900'}}>here you need to add the <span style={{color:'#fcb900'}}>code</span> we obtain in the next step</span>
+  - <span style={{color:'#3b9f0f'}}>client_id</span> ➜ Value of **Client** **ID** that you saved.
+  - <span style={{color:'#3b9f0f'}}>client_secret</span> ➜ Value of **Client secret** that you saved.
   - **redirect\_uri** ➜ [`https://procesio.com/`](https://procesio.com/)
     **access\_type&#x20;**➜ `offline`
 
 ![](/images/docs/Repj2eOUMOz2_aPgixc4O_image.png)
 
-### **Getting the&#x20;**code
+### **Getting the&#x20;**<span style={{color:'#fcb900'}}>code</span>
 
-The request is ready to be sent and only needs the code. To obtain the code you need to:
+The request is ready to be sent and only needs the <span style={{color:'#fcb900'}}>code</span>. To obtain the <span style={{color:'#fcb900'}}>code</span> you need to:
 
 - Build an URL as per below:
 
-[https://accounts.google.com/o/oauth2/auth?access\_type=offline\&prompt=consent\&client\_id=\&response\_type=code\&scope=https://www.googleapis.com/auth/spreadsheets\&redirect\_uri=https://procesio.com/](https://accounts.google.com/o/oauth2/auth?access_type=offline\&prompt=consent\&client_id=YORCIENTID.apps.googleusercontent.com\&response_type=code\&scope=https://www.googleapis.com/auth/spreadsheets\&redirect_uri=https://procesio.com/)
+[https://accounts.google.com/o/oauth2/auth?access\_type=offline\&prompt=consent\&client\_id=\&response\_type=<span style={{color:'#fcb900'}}>code</span>\&scope=https://www.googleapis.com/auth/spreadsheets\&redirect\_uri=https://procesio.com/](https://accounts.google.com/o/oauth2/auth?access_type=offline\&prompt=consent\&client_id=YORCIENTID.apps.googleusercontent.com\&response_type=<span style={{color:'#fcb900'}}>code</span>\&scope=https://www.googleapis.com/auth/spreadsheets\&redirect_uri=https://procesio.com/)
 
-In the green highlighted section you will insert the value of Client ID just like in the request.&#x20;
+In the <span style={{color:'#3b9f0f'}}>green highlighted</span> section you will insert the value of <span style={{color:'#3b9f0f'}}>Client ID</span> just like in the request.&#x20;
 
 - Copy the URL & paste it into a browser. This should prompt you to select a corresponding account to which resources will become accessible via OAuth.
 
@@ -155,20 +155,20 @@ Make sure to sellect the right account.
 
 ![](/images/docs/uOD6fuTLebJ0E6K-nSXUD_image.png)
 
-- After allowing, you’ll be redirected to a screen that should look something like below. This new URL (on which you were redirected) contains the code to be used in POSTMAN for obtaining the Access Token as well as the Refresh Token. (We have about 60 s until the code expires)
+- After allowing, you’ll be redirected to a screen that should look something like below. This new URL (on which you were redirected) contains the <span style={{color:'#fcb900'}}>code</span> to be used in POSTMAN for obtaining the Access Token as well as the Refresh Token. <span style={{color:'#eb144c'}}>(We have about 60 s until the <span style={{color:'#fcb900'}}>code</span> expires)</span>
 
 ![](/images/docs/GegVV7nc5RQlJJCIztYLX_image.png)
 
-- Complete your **Postman** request by adding the **code** and hit **Send**.
+- Complete your **Postman** request by adding the **<span style={{color:'#fcb900'}}>code</span>** and hit **Send**.
 
 
 
 ![](/images/docs/iRLIYrD3JsPANpRLZhRvw_image.png)
 
-- You have now obtained the access token and the refresh token. Make sure to save them 💪
+- You have now obtained the <span style={{color:'#9900ef'}}>access token</span> and the <span style={{color:'#ff6900'}}>refresh token</span>. Make sure to save them 💪
 
 <Callout type="error">
-The access token expires in **one hour** so a refresh mechanism needs to be put in place.
+The <span style={{color:'#9900ef'}}>access token</span> expires in **one hour** so a refresh mechanism needs to be put in place.
 
 More on how to refresh the token [here](https://docs.informatica.com/integration-cloud/cloud-data-integration-connectors/current-version/google-sheets-connector/introduction-to-google-sheets-connector/administration-of-google-sheets-connector/generating-oauth-2-0-access-tokens.html).
 </Callout>
@@ -188,9 +188,9 @@ We are going to skip testing the credential.
 
 | Name                    | Type                                     | Default value                                      | Single value | Set as     |
 | ----------------------- | ---------------------------------------- | -------------------------------------------------- | ------------ | ---------- |
-| **Token**               | String      | `Bearer `access_token | ✔            | -          |
-| **SheetsAPIStatus**     | ****Integer |                                                    | ✔            | **Output** |
-| **SheetsAPIBodyOutput** | Json        |                                                    | ✔            | **Output** |
+| **Token**               | <span style={{color:'#1c417e'}}>String</span>      | `Bearer `<span style={{color:'#9900ef'}}>access_token</span> | ✔            | -          |
+| **SheetsAPIStatus**     | ****<span style={{color:'#0039e3'}}>Integer</span> |                                                    | ✔            | **Output** |
+| **SheetsAPIBodyOutput** | <span style={{color:'#007364'}}>Json</span>        |                                                    | ✔            | **Output** |
 
 
 

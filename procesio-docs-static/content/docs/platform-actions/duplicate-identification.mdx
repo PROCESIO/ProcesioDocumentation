@@ -17,22 +17,22 @@ As a PROCESIO user, I want to have an action that identifies duplicates in a Lis
 
 The example requires a process with just the **Duplicate identification** action with the following configuration.
 
-**&#x20;   Step 1.   &#x20;**[Create a new process](https://docs.procesio.com/creating-a-basic-process) and give it a name.
+**&#x20;   Step 1.   &#x20;**[Create a new process](/docs/overview/processes/process-designer/your-first-process) and give it a name.
 
 &#x20;**&#x20;  Step 2.   &#x20;**&#x44;rag the **Duplicate identification** action to the canvas and link it to the other actions.
 
 *(Screenshot unavailable — image was removed from the original source.)*
 
-**&#x20;  Step 3.   &#x20;**&#x57;e will use in our example the **employeelist** [data model](https://docs.procesio.com/working-with-data-models).
+**&#x20;  Step 3.   &#x20;**&#x57;e will use in our example the **employeelist** [data model](/docs/overview/processes/data-model-designer/working-with-data-models).
 
 *(Screenshot unavailable — image was removed from the original source.)*
 
-**&#x20;  Step 4.   &#x20;**[Add the needed variables](https://docs.procesio.com/working-with-process-variables).
+**&#x20;  Step 4.   &#x20;**[Add the needed variables](/docs/overview/processes/process-designer/working-with-process-variables).
 
 *(Screenshot unavailable — image was removed from the original source.)*
 
 <Callout type="info">
-We will use the data type created in the previous step to create the input variable &lt;%input_list%&gt; and the output variables &lt;%duplicates%&gt; and &lt;%unique%&gt;.  The &lt;%correlation%&gt; output variable will use the preconfigured **correlation** data type that you can find in the Type dropdown.&#x20;
+We will use the data type created in the previous step to create the input variable <span style={{color:'#2166ae'}}>&lt;%input_list%&gt;</span> and the output variables <span style={{color:'#2166ae'}}>&lt;%duplicates%&gt;</span> and <span style={{color:'#2166ae'}}>&lt;%unique%&gt;</span>.  The <span style={{color:'#2166ae'}}>&lt;%correlation%&gt;</span> output variable will use the preconfigured **correlation** data type that you can find in the Type dropdown.&#x20;
 
 *(Screenshot unavailable — image was removed from the original source.)*
 </Callout>
@@ -135,7 +135,7 @@ We will use the data type created in the previous step to create the input varia
     - phone numbers E.g. 376-323-1111 and 323-1111 are a match (if after replacing special characters and spaces with string.empty the string contains only numbers, a Field1 contains Field2 OR Field2 contains Field1 assessment is made).
     - regardless of whether WWW, HTTP(s)://,  exists to enhance domain or URL comparison.
     - an email is written with @ or " at " or "\[at]" (should be a match).
-  - **Fuzzy&#x20;**- this uses the algorithms available in StringSimilarity Action to compare one string against the other (read this for more details: [Actions | String similarity](https://docs.procesio.com/string-similarity) ).
+  - **Fuzzy&#x20;**- this uses the algorithms available in StringSimilarity Action to compare one string against the other (read this for more details: [Actions | String similarity](/docs/platform-actions/lists/similarity-search) ).
   - **Contains&#x20;**- this checks if Field1 contains Field2 OR Field2 contains Field1.
   - **Soundex -&#x20;**&#x74;his checks if 2 words are similar if you would speak them. See [implementation example](https://www.techrepublic.com/blog/software-engineer/how-do-i-implement-the-soundex-function-in-c). This matching algorithm evaluates the distance in “sounding” on a scale from 0 to 4, where 4 means the most similar “sounding” and 0 means that the words are very different.
   - **SimilarWordMatch&#x20;**- This checks if the first N words in a string are the same as the first N words in another string OR if the last N words in a string are the same as the last N words in another string.

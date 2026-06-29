@@ -26,8 +26,8 @@ We'll start by first building the ***template*** for the email and then the ***p
 
 We'll define two variables that will be used in our template:
 
-- **Name** ➜ String as a placeholder for the customer's name.
-- **SaleDate** ➜ String as a placeholder for the date of the sale written in a custom format.
+- **Name** ➜ <span style={{color:'#1c417e'}}>String</span> as a placeholder for the customer's name.
+- **SaleDate** ➜ <span style={{color:'#1c417e'}}>String</span> as a placeholder for the date of the sale written in a custom format.
 
 ![](/images/docs/yYLvTa2cO5g4eePVBO2Dx_create-variable.gif)
 
@@ -43,19 +43,19 @@ The **document template** is now ready to be used in our process.
 
 First we define some variables:
 
-- **PotentialCustomerList** ➜ **List**\&lt;PotentialCustomer> where PotentialCustomer is a DM with
-  - **name** ➜ String representing the potential customer name.
-  - **email** ➜ String representing the potential customer email address.
-- **BlackFridayDate** ➜ DateTime variable with `24 November 2023` as default value.
-- **Format** ➜ String variable with `dddd, dd MMMM` as default value.
-- **FormattedDate** ➜ String value containing **BlackFridayDate** in **Format**.
-- **HTMLBody** ➜ String containing the email body generated using the document template.
+- **PotentialCustomerList** ➜ **List**\&lt;PotentialCustomer> where <span style={{color:'#007364'}}>PotentialCustomer</span> is a DM with
+  - **name** ➜ <span style={{color:'#1c417e'}}>String</span> representing the potential customer name.
+  - **email** ➜ <span style={{color:'#1c417e'}}>String</span> representing the potential customer email address.
+- **BlackFridayDate** ➜ <span style={{color:'#ff9307'}}>DateTime</span> variable with `24 November 2023` as default value.
+- **Format** ➜ <span style={{color:'#1c417e'}}>String</span> variable with `dddd, dd MMMM` as default value.
+- **FormattedDate** ➜ <span style={{color:'#1c417e'}}>String</span> value containing **BlackFridayDate** in **Format**.
+- **HTMLBody** ➜ <span style={{color:'#1c417e'}}>String</span> containing the email body generated using the document template.
 
 ![](/images/docs/4FijvBnHX8zc_xZI-8g-Y_define-vars.gif)
 
 Then we build the actual flow:
 
-1. We format the *Black Friday* date using **Format DateTime**.
+1. We format the *Black Friday* date using **Format <span style={{color:'#ff9307'}}>DateTime</span>**.
 2. We go over each potential customer in our list using **For Each**.
 3. We generate an email body for each customer using **Generate Document**.
 4. We send the generated HTML body in an email to each customer with **Send Email**.
@@ -68,7 +68,7 @@ Time to run
 
 **Action Pool**
 
-- [For Each](https://docs.procesio.com/how-to/for-each)
-- [Format DateTime](https://docs.procesio.com/how-to/format-datetime)
-- [Generate Document](https://docs.procesio.com/how-to/generate-document)
-- [Send Email](https://docs.procesio.com/how-to/send-email)
+- [For Each](/docs/platform-actions/call-api/for-each)
+- [Format <span style={{color:'#ff9307'}}>DateTime</span>](/docs/platform-actions/call-api/format-datetime)
+- [Generate Document](/docs/platform-actions/call-api/generate-document)
+- [Send Email](/docs/platform-actions/call-api/send-email)

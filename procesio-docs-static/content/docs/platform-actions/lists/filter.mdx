@@ -100,7 +100,7 @@ An exact match requires validation (**=**) against the specified `FilterExpressi
 
 ### Fuzzy
 
-Utilizes algorithms from **Similarity Search** to compare fields against `FilterExpression`. More details [here](https://docs.procesio.com/how-to/similarity-search).
+Utilizes algorithms from **Similarity Search** to compare fields against `FilterExpression`. More details [here](/docs/platform-actions/call-api/similarity-search).
 
 ### Contains
 
@@ -123,7 +123,7 @@ Validates if the field matches the pattern specified in `FilterExpression`. The 
 ### FuzzyAlgorithm & FuzzyThreshold
 
 - Only used when `MatchType` = `Fuzzy`. If `MatchType` is something else, those properties will be ignored so, they can be null or can even not be present.
-- `FuzzyAlgorithm` needs to be one from this [here](https://docs.procesio.com/how-to/similarity-search), written exactly as in the link provided.
+- `FuzzyAlgorithm` needs to be one from this [here](/docs/platform-actions/call-api/similarity-search), written exactly as in the link provided.
 - `FuzzyThreshold` is a double between 0 and 1, where 0 means any match is accepted and 1 requires 100% confidence.
 
 ### SoundexDistance

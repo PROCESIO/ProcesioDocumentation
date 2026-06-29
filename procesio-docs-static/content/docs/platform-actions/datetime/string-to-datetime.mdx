@@ -4,7 +4,7 @@ icon: "📕"
 description: "This action parses a DateTime value from a String, based on a custom format specification."
 ---
 
-This action parses a DateTime value from a String, based on a custom format specification.
+This action parses a <span style={{color:'#fcb900'}}>DateTime</span> value from a <span style={{color:'#6889c1'}}>String</span>, based on a custom format specification.
 
 
 
@@ -14,17 +14,17 @@ This action parses a DateTime value from a String, based on a custom format spec
 
 **Inputs**
 
-- **String** — String value to parse from.
+- **<span style={{color:'#6889c1'}}>String</span>** — <span style={{color:'#6889c1'}}>String</span> value to parse from.
 - **Language** — Language used in the Input string for month names and days of the week.
   - Drop-down with multiple languages.
-- **Format** — String containing the DateTime format specification.
+- **Format** — <span style={{color:'#6889c1'}}>String</span> containing the <span style={{color:'#fcb900'}}>DateTime</span> format specification.
 - **Format List** — A list of formats (array of strings) that the input can match against.
   - When a **Format List** is provided, it **overrides** the single *Format* value.
   - This gives more flexibility when the input may match more than one potential format.
 
 **Outputs**
 
-- **Date** — Parsed DateTime value.
+- **Date** — Parsed <span style={{color:'#fcb900'}}>DateTime</span> value.
 - **Exact format parsing** — Boolean output that returns:
   - **TRUE** when the output was parsed using an **exact format** from either *Format* or *Format List*.
   - **FALSE** when a flexible or culture-based parse was used as a fallback.
@@ -46,7 +46,7 @@ If you don't understand how **Format** or **Format list** should look, check the
 ![](/images/docs/qbKbZ8kE-0rw0SGLYy_xV_image.png)
 
 - Configure the inputs:
-  - Set the **String** you want to parse.
+  - Set the **<span style={{color:'#6889c1'}}>String</span>** you want to parse.
   - Choose **Language**.
   - Provide either a **Format** or a **Format List** (better for multiple possible formats). If you don't understand how it should look like, check the #helpers **Helpers**.
 - Declare some variables to be used with the action.&#x20;
@@ -69,8 +69,8 @@ If you don't understand how **Format** or **Format list** should look, check the
 
 ## Use Cases
 
-- Extracting DateTime values from bodies of text coming from any source.
-- Translating month names or days of the week from one language to another using the *String To DateTime* and *Format DateTime* actions together.
+- Extracting <span style={{color:'#fcb900'}}>DateTime</span> values from bodies of text coming from any source.
+- Translating month names or days of the week from one language to another using the *<span style={{color:'#6889c1'}}>String</span> To <span style={{color:'#fcb900'}}>DateTime</span>* and *Format <span style={{color:'#fcb900'}}>DateTime</span>* actions together.
 - Handling inputs that may come in several different date formats reliably using *Format List*.
 
 ## Tips
@@ -79,13 +79,13 @@ If you don't understand how **Format** or **Format list** should look, check the
 - The *Language* selector determines which language to use when the desired format contains:
   - Month names: June (UK) | Iunie (RO) | Juin (FR)
   - Days of the week: Monday (UK) | Luni (RO) | Lundi (FR)
-- Make sure to escape letters used as format specifiers using quotes; otherwise those letters may be treated as placeholders for DateTime fields and the action will fail to parse.
+- Make sure to escape letters used as format specifiers using quotes; otherwise those letters may be treated as placeholders for <span style={{color:'#fcb900'}}>DateTime</span> fields and the action will fail to parse.
 
 # 📝 Helpers
 
 - Using Format List with Literal Text
 
-When your input string contains fixed text before or after the DateTime value, you must wrap the literal parts in **single quotes ' '** inside the format string.
+When your input string contains fixed text before or after the <span style={{color:'#fcb900'}}>DateTime</span> value, you must wrap the literal parts in **single quotes ' '** inside the format string.
 
 ### Correct Example (based on your input)
 
@@ -103,10 +103,10 @@ Correct **Format List**:
 ### Why This Works
 
 - Everything wrapped in single quotes ' ' is treated as **literal text**&#x20;
-- yyyy-MM-dd HH\:mm and yyyy-MM-dd HH\:mm\:ss represent the DateTime format patterns&#x20;
+- yyyy-MM-dd HH\:mm and yyyy-MM-dd HH\:mm\:ss represent the <span style={{color:'#fcb900'}}>DateTime</span> format patterns&#x20;
 - The entire input string must match the format exactly&#x20;
 
-⚠️ If the literal text is not wrapped in single quotes, parsing will fail because letters like T, r, e, etc., are interpreted as DateTime format specifiers.
+⚠️ If the literal text is not wrapped in single quotes, parsing will fail because letters like T, r, e, etc., are interpreted as <span style={{color:'#fcb900'}}>DateTime</span> format specifiers.
 
 ## Hour Format Specifiers
 

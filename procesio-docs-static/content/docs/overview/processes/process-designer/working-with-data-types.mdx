@@ -6,30 +6,30 @@ description: "Each process variable has a data type. PROCESIO supports the follo
 
 Each process variable has a data type. **PROCESIO** supports the following data types:
 
-- **Primitives:&#xA0;**String, Integer, Float**&#x20;/** Double, Boolean, DateTime, Json, GUID, **Object**.
-- **Custom:&#xA0;**Data Model (custom data type with one or more attributes), File.&#x20;
+- **Primitives:&#xA0;**<span style={{color:'#1c417e'}}>String</span>, <span style={{color:'#0039e3'}}>Integer</span>, <span style={{color:'#064907'}}>Float</span>**&#x20;/** <span style={{color:'#064907'}}>Double</span>, <span style={{color:'#7239e3'}}>Boolean</span>, <span style={{color:'#ff9307'}}>DateTime</span>, <span style={{color:'#007364'}}>Json</span>, GUID, **Object**.
+- **Custom:&#xA0;**<span style={{color:'#007364'}}>Data Model</span> (custom data type with one or more attributes), <span style={{color:'#0671d6'}}>File</span>.&#x20;
 
 ### **Examples of data types**
 
-- Primitive Value (String)
+- Primitive Value (<span style={{color:'#1c417e'}}>String</span>)
 
 ![](/images/docs/lksEHU9lAICI3MZ-pKOce_john.PNG)
 
-- List of Primitive Values (**List\&lt;**String**>**)
+- List of Primitive Values (**List\&lt;**<span style={{color:'#1c417e'}}>String</span>**>**)
 
 ![](/images/docs/3fXN_4OG_W9_54nIp8K2c_names.PNG)
 
-- Data Model**&#xA0;**
+- <span style={{color:'#007364'}}>Data Model</span>**&#xA0;**
 
 ![](/images/docs/HOQzG1E0Z3hDGoL0cAewk_datamodel.PNG)
 
-- List of Data Models
+- List of <span style={{color:'#007364'}}>Data Models</span>
 
 ![](/images/docs/vBqpVP5gnPp_yoTo81DI4_listofmodels.PNG)
 
-### **The&#x20;**File**&#x20;data type**
+### **The&#x20;**<span style={{color:'#0671d6'}}>File</span>**&#x20;data type**
 
-**File&#x20;**&#x69;s a Data Model that contains the following attributes:
+**<span style={{color:'#0671d6'}}>File</span>&#x20;**&#x69;s a <span style={{color:'#007364'}}>Data Model</span> that contains the following attributes:
 
 - **path**: path to file (set on upload)
 - **name**: name of the file
@@ -37,9 +37,9 @@ Each process variable has a data type. **PROCESIO** supports the following data
 - **size**: file size
 - **hash**: file checksum
 
-Use a File variable type as process input to be able to create processes that use dynamic files as attachments in the **Send Email** action. Or use it as an output variable to map to it a file that you get from the **Call API** action. Or many others! 🚀
+Use a <span style={{color:'#0671d6'}}>File</span> variable type as process input to be able to create processes that use dynamic files as attachments in the **Send Email** action. Or use it as an output variable to map to it a file that you get from the **Call API** action. Or many others! 🚀
 
-### **Mapping variables to other data types**
+### **Mapping <span style={{color:'#ff9307'}}>variables</span> to other data types**
 
 Be mindful of the data type compatibility when passing values from one process variable to the property of an action. Each action property expects a given data type. This means that the variable type must match the expected property type of the action. We refer to this as data mapping.&#x20;
 
@@ -55,28 +55,28 @@ Don't worry, there are tooltips that tell you what data type is expected in inpu
 
 
 
-The variables used at a process level are called process variables. Each process may have:
+The <span style={{color:'#ff9307'}}>variables</span> used at a process level are called process <span style={{color:'#ff9307'}}>variables</span>. Each process may have:
 
-1. **Input** process variables
-2. **Output** process variables
+1. **Input** process <span style={{color:'#ff9307'}}>variables</span>
+2. **Output** process <span style={{color:'#ff9307'}}>variables</span>
 3. **Process Variables** used within the process
 
-If the process needs certain dynamic data in order to start, you need to configure process variables that have the “Input” tag enabled. Declare variables as “Output” if there is certain data that you expect to get back from the process once the process has been executed successfully.
+If the process needs certain dynamic data in order to start, you need to configure process <span style={{color:'#ff9307'}}>variables</span> that have the “Input” tag enabled. Declare <span style={{color:'#ff9307'}}>variables</span> as “Output” if there is certain data that you expect to get back from the process once the process has been executed successfully.
 
- You need to consider the following when mapping input/outputs to process variables:
+ You need to consider the following when mapping input/outputs to process <span style={{color:'#ff9307'}}>variables</span>:
 
 - **PROCESIO** does not support mapping data from one type to another thus you need to map data of the same data types. You can always create a new process variable of the corresponding data type if needed.
-  - **Exception**: conversion from Integerto Float is allowed, as well as conversion from any primitive data type to String. 
-- Pay attention to the  **List\&lt;>** type of a process variable. Even though 2 process variables may have the same data type, you cannot map a process variable declared as a single value to a process variable declared as a list.
+  - **Exception**: conversion from Integerto <span style={{color:'#064907'}}>Float</span> is allowed, as well as conversion from any primitive data type to <span style={{color:'#1c417e'}}>String</span>. 
+- Pay attention to the  **List\&lt;>** type of a process variable. Even though 2 process <span style={{color:'#ff9307'}}>variables</span> may have the same data type, you cannot map a process variable declared as a single value to a process variable declared as a list.
 
 **Mapping Rules**
 
-- String: you can map any type of variable and concatenations.  
-  - **Exception**: A Data Model cannot be mapped to a String property. Mapping of a Data Model attribute to a String property is allowed.
-- Integer property: you can map only  Integer variables
-- Float property: you can map only Float and Integer
-- Boolean property: you can map only Boolean variables
-- DateTime property: you can map only DateTime variables and hard-coded values with the format:&#x20;
+- <span style={{color:'#1c417e'}}>String</span>: you can map any type of variable and concatenations.  
+  - **Exception**: A <span style={{color:'#007364'}}>Data Model</span> cannot be mapped to a <span style={{color:'#1c417e'}}>String</span> property. Mapping of a <span style={{color:'#007364'}}>Data Model</span> attribute to a <span style={{color:'#1c417e'}}>String</span> property is allowed.
+- <span style={{color:'#0039e3'}}>Integer</span> property: you can map only  <span style={{color:'#0039e3'}}>Integer</span> <span style={{color:'#ff9307'}}>variables</span>
+- <span style={{color:'#064907'}}>Float</span> property: you can map only <span style={{color:'#064907'}}>Float</span> and <span style={{color:'#0039e3'}}>Integer</span>
+- <span style={{color:'#7239e3'}}>Boolean</span> property: you can map only <span style={{color:'#7239e3'}}>Boolean</span> <span style={{color:'#ff9307'}}>variables</span>
+- <span style={{color:'#ff9307'}}>DateTime</span> property: you can map only <span style={{color:'#ff9307'}}>DateTime</span> <span style={{color:'#ff9307'}}>variables</span> and hard-coded values with the format:&#x20;
   - `dd/MM/yyyy hh:mm:ss`
-- Data Model: you can map only a Data Model variable of the same type. e.g. a “Customer” property accepts only the “Customer” data type as a variable. 
-- File: you can map only another File.
+- <span style={{color:'#007364'}}>Data Model</span>: you can map only a <span style={{color:'#007364'}}>Data Model</span> variable of the same type. e.g. a “Customer” property accepts only the “Customer” data type as a variable. 
+- <span style={{color:'#0671d6'}}>File</span>: you can map only another <span style={{color:'#0671d6'}}>File</span>.

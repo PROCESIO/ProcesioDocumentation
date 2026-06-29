@@ -38,7 +38,7 @@ description: "1. Do you have a plan to add a template library for automation?&x2
    No, webhooks that trigger a process are not counted against the processing time****
 
 4. **Is PROCESIO limited to a set of applications, or can they work with any application? If not, what is the plan to add more?**
-   PROCESIO is designed to integrate with any API and we have focused on this capability to be as powerful as possible. [https://docs.procesio.com/how-to/call-api](https://docs.procesio.com/how-to/call-api) We do not **yet** have out-of-the-box integrations, however, all those products expose an API and by making use of the Call API action, you’ll be able to integrate.
+   PROCESIO is designed to integrate with any API and we have focused on this capability to be as powerful as possible. [/docs/platform-actions/call-api/call-api](/docs/platform-actions/call-api/call-api) We do not **yet** have out-of-the-box integrations, however, all those products expose an API and by making use of the Call API action, you’ll be able to integrate.
 5.
 6. **Do you have any custom App integrators like Zapier, Make, Paably, Albato, or n8n?**
    We do not **yet** have out-of-the-box integrations, however, all those products expose an API and by making use of the Call API action, you’ll be able to integrate.
@@ -50,7 +50,7 @@ description: "1. Do you have a plan to add a template library for automation?&x2
    This should be possible via REST API.
 
 10. **Can we integrate with ChatGpt and other AI platforms?**
-    1. PROCESIO is designed to integrate with any API and we have focused on this capability to be as powerful as possible. [https://docs.procesio.com/how-to/call-api](https://docs.procesio.com/how-to/call-api)
+    1. PROCESIO is designed to integrate with any API and we have focused on this capability to be as powerful as possible. [/docs/platform-actions/call-api/call-api](/docs/platform-actions/call-api/call-api)
 11. **Any plans to automate automation with the help of AI? Is any ChatGPT plugin coming for PROCESIO?**
     Integrations with AI are already possible via API, potentially PROCESIO users could create Chat GPT plug-ins using PROCESIO. In the future, we might have predefined AI tasks in PROCESIO that will aid the user in building processes.
 
@@ -60,7 +60,7 @@ description: "1. Do you have a plan to add a template library for automation?&x2
 ## Processing time
 
 1. **Do we use our time when an external service is waiting to reply?**
-   Yes, the processing time is consumed while waiting for an external service to reply as a running process consumes resources on our infrastructure. More on processing time can be found [here](https://docs.procesio.com/processing-time-and-usage).
+   Yes, the processing time is consumed while waiting for an external service to reply as a running process consumes resources on our infrastructure. More on processing time can be found [here](/docs/overview/more-tools/analytics/processing-time-and-usage).
 
 2. **Why did you choose time instead of a number of tasks to consume workflows?**
    We decided to charge per time and not per task because it is a more accurate and transparent way of measuring the value we provide.&#x20;
@@ -79,7 +79,7 @@ description: "1. Do you have a plan to add a template library for automation?&x2
    2. processing time = time consumed by an individual action within a process while running. Varying in their complexity, our Platform Actions take on average around **100 ms** to execute. It can be less or equal to the `Last update - Started on `in instances or analytics views.
 
 4. **What happens if the allocated time is consumed? Will we have a special Appsumo addon to increase the time on-demand?**
-   Related to this question, for the AppSumo LTD, what you see is what you get meaning that for each purchased AppSumo Tier the soft limit=hard limit. In other words, should you purchase Tier with 3h of processing, 3 hours of processing timr will be your hard limit. In case you need more Processing Time, you'll have the option to contact us, or "sef shop" starting July 2023. More on Processing Time principles can be found [here](https://docs.procesio.com/execution-time-and-usage).
+   Related to this question, for the AppSumo LTD, what you see is what you get meaning that for each purchased AppSumo Tier the soft limit=hard limit. In other words, should you purchase Tier with 3h of processing, 3 hours of processing timr will be your hard limit. In case you need more Processing Time, you'll have the option to contact us, or "sef shop" starting July 2023. More on Processing Time principles can be found [here](/docs/overview/more-tools/analytics/processing-time-and-usage).
 
 5. **Do you count the processing time if we are still doing testing?**
    If you're using the Test Action functionality, then it is not counted as processing/processing time.&#x20;
@@ -90,7 +90,7 @@ description: "1. Do you have a plan to add a template library for automation?&x2
    Delay action is counted only while during its processing. But for the period set to delay (e.g. 20 hours, 1 day, 1 week) the action is not processing, and therefore this delay time is not counted.&#x20;
 
 7. **How to set the auto-timeout of a process so that we don't accidentally run out of limited process time?**
-   Setting a time-out for a process individually is not possible. However, PROCESIO notifies the admins/owners once the processing time is consumed up to 70%. Once the plan is fully consumed,  PROCESIO allows extra processing past your plan’s allocated processing time, up to 30% of your monthly resources - which will be invoiced at the end of the month. This is what we call the “hard limit”. Check out here more details about execution time usage: [https://docs.procesio.com/processing-time-and-usage](https://docs.procesio.com/processing-time-and-usage)
+   Setting a time-out for a process individually is not possible. However, PROCESIO notifies the admins/owners once the processing time is consumed up to 70%. Once the plan is fully consumed,  PROCESIO allows extra processing past your plan’s allocated processing time, up to 30% of your monthly resources - which will be invoiced at the end of the month. This is what we call the “hard limit”. Check out here more details about execution time usage: [/docs/overview/more-tools/analytics/processing-time-and-usage](/docs/overview/more-tools/analytics/processing-time-and-usage)
 8. **When will you introduce the process timeout feature to prevent INFINITE LOOPS from consuming all our processing time?**
    If you consider this feature important please vote for it in our [Discord ](https://discord.com/channels/895279447022915644/1100301452464881704)roadmap channel. As there are many new features requested, we promise to prioritize taking votes into account.
 
@@ -102,10 +102,10 @@ description: "1. Do you have a plan to add a template library for automation?&x2
    We have CI/CD in place implying that we have continuous releases throughout our development cycle. Although we have continuous releases external release notes are shared ****
 
 2. **What new features will be included in the next release? And when can we expect it?**
-   We already had several releases since our launch on AppSumo. These improvements and fixes were announced on our Discord channel in the announcement section. Our public roadmap can be consulted [here](https://docs.procesio.com/roadmap). Some of the major features released include Test Action & OAuth.
+   We already had several releases since our launch on AppSumo. These improvements and fixes were announced on our Discord channel in the announcement section. Our public roadmap can be consulted [here](/docs/overview/roadmap). Some of the major features released include Test Action & OAuth.
 
 3. **When is the next release and what will be included?**
-   1. Our public roadmap can be found here: [https://docs.procesio.com/roadmap](https://docs.procesio.com/roadmap) and is assumed for this year.
+   1. Our public roadmap can be found here: [/docs/overview/roadmap](/docs/overview/roadmap) and is assumed for this year.
 
 
 
@@ -160,14 +160,14 @@ description: "1. Do you have a plan to add a template library for automation?&x2
    PROCESIO can handle large-scale automation, at this point, limitations revolve around the processing time, in case a user wants more, s/he can purchase more.
 
 2. **This looks like a basic feature but are there any monitoring or alerting features to notify users about process failures or delays in real time?**
-   Yes, we have a feature which is called [Process Notification](https://docs.procesio.com/set-process-notifications), which alerts the user of the process outcome. Also, there are alerts set in place when processing (processing) time limits are reached. See more [here](https://docs.procesio.com/execution-time-and-usage).
+   Yes, we have a feature which is called [Process Notification](/docs/overview/processes/process-designer/set-process-notifications), which alerts the user of the process outcome. Also, there are alerts set in place when processing (processing) time limits are reached. See more [here](/docs/overview/more-tools/analytics/processing-time-and-usage).
 
 
 
 ## Documentation, tutorials, and academy
 
 1. **How many use case tutorials do you have?**
-   You can always check our knowledgebase here for the latest Integrations and Demos: [https://docs.procesio.com/integrations](https://docs.procesio.com/integrations)
+   You can always check our knowledgebase here for the latest Integrations and Demos: [/docs/integrations-demos/integrations-2-alt/integrations](/docs/integrations-demos/integrations-2-alt/integrations)
 2.
 3. **In case of low code or code, how can you help people with no-code knowledge?**
    Short answer: [Discord ](https://discord.com/invite/CEBuKgJefv)is the place to be, in case you want to learn more. On top of that follow our youtube videos & documented use cases.
@@ -176,7 +176,7 @@ description: "1. Do you have a plan to add a template library for automation?&x2
    Yes, we constantly provide new articles/ videos and our community is also contributing to educating end-users.
 
 5. **Could we have a video or documentation on how to create custom actions?**
-   You can find very detailed documentation here [https://docs.procesio.com/custom-actions](https://docs.procesio.com/custom-actions) about building a custom action. We will also consider preparing a video for that.&#x20;
+   You can find very detailed documentation here [/docs/custom-actions/what-is-a-custom-action](/docs/custom-actions/what-is-a-custom-action) about building a custom action. We will also consider preparing a video for that.&#x20;
 6.
 7. **Are you going to have a tutorial or masterclass to deep dive and learn more about different use cases?**
    We will consider this and on a timely basis, we intend to have community meet-ups.
@@ -186,22 +186,22 @@ description: "1. Do you have a plan to add a template library for automation?&x2
 
 
 
-[How to stop a running process?](https://docs.procesio.com/stop-a-running-process)
+[How to stop a running process?](/docs/overview/processes/process-designer/stop-a-running-process)
 
-[How to create a workspace in my Master workspace?](https://docs.procesio.com/how-to-create-a-workspace-in-a-master-workspace)
+[How to create a workspace in my Master workspace?](/docs/overview/dashboard/how-to-create-a-workspace-in-a-master-workspace)
 
 [What pricing plans does PROCESIO offer? ](https://procesio.com/pricing/)
 
-[How do I schedule a process?](https://docs.procesio.com/schedules)
+[How do I schedule a process?](/docs/overview/automation/schedules)
 
-[How do I create a webhook? How do I make it trigger a process?](https://docs.procesio.com/webhooks)
+[How do I create a webhook? How do I make it trigger a process?](/docs/overview/automation/webhooks)
 
-[How do I generate an API key?](https://docs.procesio.com/api-keys)
+[How do I generate an API key?](/docs/overview/automation/api-keys)
 
-[How do I create a document?](https://docs.procesio.com/document-template-creation)
+[How do I create a document?](/docs/overview/processes/document-designer/document-template-creation)
 
-[How do I connect the document created to the process?](https://docs.procesio.com/using-the-template)
+[How do I connect the document created to the process?](/docs/overview/processes/document-designer/using-the-template)
 
-[Where can I read more about PROCESIO actions I can use to create a process?](https://docs.procesio.com/how-to)
+[Where can I read more about PROCESIO actions I can use to create a process?](/docs/platform-actions/call-api)
 
-[How do I connect to REST API/SMTP/SQL/FTP  in my process?](https://docs.procesio.com/working-with-credentials)
+[How do I connect to REST API/SMTP/SQL/FTP  in my process?](/docs/overview/processes/untitled/working-with-credentials)

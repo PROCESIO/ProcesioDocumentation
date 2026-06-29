@@ -16,7 +16,7 @@ The process flow created will look like this:
 
 ## &#x20;Create the connection credentials&#x20;
 
-**&#x20; Step 1. Create the email server configuration**: check [Working with Credentials Manager](https://docs.procesio.com/working-with-credentials) article. We will use the email server configuration in [Send Email action](https://docs.procesio.com/how-to/send-email) setup.
+**&#x20; Step 1. Create the email server configuration**: check [Working with Credentials Manager](/docs/overview/processes/untitled/working-with-credentials) article. We will use the email server configuration in [Send Email action](/docs/platform-actions/call-api/send-email) setup.
 
 &#x20; **Step 2. Create connection to Jira platform**. Similar to the email server config, go to Credentials Manager section to set it up.  We will use this API configuration in Call API action. Check [JIRA Cloud platform REST API documentation](https://developer.atlassian.com/cloud/jira/platform/rest/v2/intro/). 
 
@@ -81,7 +81,7 @@ Go to Process Variables **(x)** in the top bar to start creating the variables
 To open the variables selector in Body and add process variables to your message: press Insert key (for Windows) or Shift +Tab (for MacOS)
 </Callout>
 
-- Map the status variable to the &lt;%Status%&gt; output property.
+- Map the status variable to the <span style={{color:'#2166ae'}}>&lt;%Status%&gt;</span> output property.
 - **Save** the changes.
 
 ![](/images/docs/j_jmQ8GtRUZCsTZPbiwyo_image.png)
@@ -95,7 +95,7 @@ To open the variables selector in Body and add process variables to your message
 
 - Configure the parameters of the action:
 - The **From** field will set the display name of the sender. The actual email address of the sender is the one set in the Credential Manager, but we can set here the display name to be anything we want. I’ll use “Department name”.
-- The **To**: the user requesting the ticket to be open; add &lt;%requesterEmailAddress%&gt; variable;
+- The **To**: the user requesting the ticket to be open; add <span style={{color:'#2166ae'}}>&lt;%requesterEmailAddress%&gt;</span> variable;
 - The **Subject**: Your issue has been submitted! 
 - The **Body**:
 

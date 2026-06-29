@@ -12,8 +12,8 @@ This particular flow has the aim of sending an SMS alert as well as an e-mail to
 
 Before you get started, you will need the following items in order to complete the suggested process:
 
-- a configuration to an email server that will be used to send the email. ([see here](https://docs.procesio.com/working-with-credentials))
-- a configuration to a REST API of an web-to-sms service. ([see here](https://docs.procesio.com/rest-api-credential)) 
+- a configuration to an email server that will be used to send the email. ([see here](/docs/overview/processes/untitled/working-with-credentials))
+- a configuration to a REST API of an web-to-sms service. ([see here](/docs/overview/processes/untitled/working-with-credentials/rest-api-credential)) 
   - the above require creation of 2 connection configurations in the Credentials Manager.
 - Excel/ CSV file containing tabular data
 
@@ -38,9 +38,9 @@ Drag and drop a **For Each** and connect it to the **Get File Data**. 
   - Within the **For Each** border, drag and drop a second **Send Email** and connected to the **Decisional** and to the **Join&#x20;**&#x61;ction.
 - Connect the **For Each** border to the **Stop** action.
 
-**Step 2:&#xA0;**&#x43;onfigure the **Get File Data** according to [documentation](https://docs.procesio.com/how-to/get-file-data). For configuring this step [video available here](https://www.youtube.com/watch?v=aLMgtMHQjb4).
+**Step 2:&#xA0;**&#x43;onfigure the **Get File Data** according to [documentation](/docs/platform-actions/call-api/get-file-data). For configuring this step [video available here](https://www.youtube.com/watch?v=aLMgtMHQjb4).
 
-**Step 3:&#xA0;**[Configure](https://docs.procesio.com/how-to/for-each) the **For Each**
+**Step 3:&#xA0;**[Configure](/docs/platform-actions/call-api/for-each) the **For Each**
 
 - **In List -&#x20;**&#x77;e will use the variable/ data model, defined at Step 2.
 
@@ -51,7 +51,7 @@ Drag and drop a **For Each** and connect it to the **Get File Data**. 
 
 ![](/images/docs/7Pox-GQE5B8MnF1n-pB_I_image.png)
 
-**Step 4:&#xA0;**&#x43;onfigure the "Decisional" action within the "For Each" border. Each case of the [Decisional](https://docs.procesio.com/how-to/decisional) needs to be configured.
+**Step 4:&#xA0;**&#x43;onfigure the "Decisional" action within the "For Each" border. Each case of the [Decisional](/docs/platform-actions/call-api/decisional) needs to be configured.
 
 - For this demo, you will have to configure two cases:
   - greater than or equal to 100$
@@ -59,25 +59,25 @@ Drag and drop a **For Each** and connect it to the **Get File Data**. 
 
 ### Decisional logic
 
-**Case 1**: we will use &lt;%CustomerCsvLine.price%&gt;, defined in the "For Each" output (mentioned in Step 3).
+**Case 1**: we will use <span style={{color:'#2166ae'}}>&lt;%CustomerCsvLine.price%&gt;</span>, defined in the "For Each" output (mentioned in Step 3).
 
-- We will set the &lt;%customercsvline.price%&gt; to be greater than or equal to 100.
+- We will set the <span style={{color:'#2166ae'}}>&lt;%customercsvline.price%&gt;</span> to be greater than or equal to 100.
   - Additionally at "Target", Go To, we will set "Call Api Action". This means that if the condition is met, the "Decisional" will follow the "Call Api Action" branch.
 
 ![](/images/docs/Z2Y-6Yx_nxLwcb1F65t7C_image.png)
 
 
 
-**Case 2**: we will use &lt;%CustomerCsvLine.price%&gt;, defined in the "For Each" output (mentioned in Step 3).
+**Case 2**: we will use <span style={{color:'#2166ae'}}>&lt;%CustomerCsvLine.price%&gt;</span>, defined in the "For Each" output (mentioned in Step 3).
 
-- We will set the &lt;%customercsvline.price%&gt; to be less than 100.
+- We will set the <span style={{color:'#2166ae'}}>&lt;%customercsvline.price%&gt;</span> to be less than 100.
   - Additionally at "Target", Go To, we will set "Send Email (less 100)". This means that if the condition is met, the "Decisional" will follow the "Send Email (less 100)" branch.
 
 ![](/images/docs/1MzfoZpY5-SrhfrzCwFCO_image.png)
 
 **Step 5:&#xA0;**&#x43;onfigure "Call Api Action" & "Send Email (greater 100)" actions
 
-- As mentioned at the beginning of this article, connections for "Call Api Action" as well as "Send Email" have to be created within "Credentials Manager". See in this [article](https://docs.procesio.com/working-with-credentials) how to set up connections in Credentials Manager for  "Call Api Action" as well as "Send Email".
+- As mentioned at the beginning of this article, connections for "Call Api Action" as well as "Send Email" have to be created within "Credentials Manager". See in this [article](/docs/overview/processes/untitled/working-with-credentials) how to set up connections in Credentials Manager for  "Call Api Action" as well as "Send Email".
 - Once connections have been created in Credentials Manager:
   - "Call API Action":
     - Select Api configuration (previously configured in Credentials Manager) and proceed to configure request.
@@ -89,7 +89,7 @@ Drag and drop a **For Each** and connect it to the **Get File Data**. 
 ![](/images/docs/i7igK3omA5mr_8_MsaDsG_image.png)
 
 - In accordance with [SMSO API documentation](https://api-docs.smso.ro/#introduction), we will use the following Query Params:
-  - To: &lt;%CustomerCsvLine.phonenumber%&gt; (leveraging the phone number contained in the excel file)
+  - To: <span style={{color:'#2166ae'}}>&lt;%CustomerCsvLine.phonenumber%&gt;</span> (leveraging the phone number contained in the excel file)
   - body: Can be customised according to needs
   - Sender: 4 (in accordance to SMSO API documentation)
 - "Send Email (greater 100)":
@@ -102,7 +102,7 @@ Drag and drop a **For Each** and connect it to the **Get File Data**. 
 ![](/images/docs/J6GOZIoMH6YNZLMX-YUcD_image.png)
 
 - **From:** Type a desired display name. (The e-mail addressed configured in the Credentials Manager will be leveraged).
-- **To:** &lt;%CustomerCsvLine.email%&gt; (leveraging the e-mail address contained in the excel file).
+- **To:** <span style={{color:'#2166ae'}}>&lt;%CustomerCsvLine.email%&gt;</span> (leveraging the e-mail address contained in the excel file).
 - **Body:** Custom, according to your needs. 
 
 <Callout type="info">
@@ -122,7 +122,7 @@ To open the variables selector in Body and add process variables to your message
 
 
 - **From**: Type a desired display name.
-- **To**: &lt;%CustomerCsvLine.email%&gt; (leveraging the e-mail address contained in the excel file)
+- **To**: <span style={{color:'#2166ae'}}>&lt;%CustomerCsvLine.email%&gt;</span> (leveraging the e-mail address contained in the excel file)
 - **Body**: Custom according to needs. Variables in the body of the e-mail can be inserted by pressing the **Insert&#x20;**&#x62;utton.
 
 **Step 6:  Save&#x20;**& **Validate&#x20;**&#x50;rocess

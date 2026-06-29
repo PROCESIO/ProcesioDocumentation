@@ -6,9 +6,9 @@ description: "In this article I'll show you step-by-step how to automatically se
 
 In this article I'll show you step-by-step how to automatically send Typeform responses to a base in Airtable using Procesio.
 
-To begin, create and sign in to your accounts on [Procesio](https://procesio.com/), [Airtable](https://airtable.com/) and [﻿](https://www.typeform.com/)﻿[Typeform](https://www.typeform.com/).
+To begin, create and sign in to your accounts on [Procesio](https://procesio.com/), [Airtable](https://airtable.com/) and [Typeform](https://www.typeform.com/).
 
-## ****[Typeform](https://docs.procesio.com/integrations/typeform)****
+## ****[Typeform](/docs/integrations-demos/integrations-2-alt/integrations/typeform)****
 
 &#x20; 1\.    In your Typeform workspace create a form. I used the Candidate Experience Survey template with the following entries:
 
@@ -34,7 +34,7 @@ Mark the fields that you want to export as mandatory. In the **Create&#x20;**&#x
 
 &#x20; 4\.    Select **Personal tokens** and generate a new token. **Save** the token as it will only be displayed once.
 
-## ****[Airtable](https://docs.procesio.com/integrations/airtable)****
+## ****[Airtable](/docs/integrations-demos/integrations-2-alt/integrations/airtable)****
 
 &#x20; 1\.    Create the table where you'd like to import the data.
 
@@ -129,11 +129,11 @@ a. Name the credential, select **Rest API Configuration** from the credential ty
 
 ![](/images/docs/0f3LqwqWBpeUYqagu2Lya_image.png)
 
-&#x20; 4\.    Create the process [process variables](https://docs.procesio.com/working-with-process-variables):
+&#x20; 4\.    Create the process [process variables](/docs/overview/processes/process-designer/working-with-process-variables):
 
-- ****&lt;%Typeform%&gt; - the input variable generated when we add the webhook to store the Typeform data.
-- &#x20;&lt;%department%&gt;, &lt;%name%&gt;, &lt;%punctual%&gt;, &lt;%email%&gt;, &lt;%rating%&gt;**&#x20;-&#x20;**&#x74;he variables that will store the form inputs in Procesio.
-- ****&lt;%status%&gt;, &lt;%body%&gt; - the helper variables that will help us diagnose the Airtable API Call in case of an error.&#x20;
+- ****<span style={{color:'#2166ae'}}>&lt;%Typeform%&gt;</span> - the input variable generated when we add the webhook to store the Typeform data.
+- &#x20;&lt;%department%&gt;, <span style={{color:'#2166ae'}}>&lt;%name%&gt;</span>, <span style={{color:'#2166ae'}}>&lt;%punctual%&gt;</span>, <span style={{color:'#2166ae'}}>&lt;%email%&gt;</span>, <span style={{color:'#2166ae'}}>&lt;%rating%&gt;</span>**&#x20;-&#x20;**&#x74;he variables that will store the form inputs in Procesio.
+- ****<span style={{color:'#2166ae'}}>&lt;%status%&gt;</span>, <span style={{color:'#2166ae'}}>&lt;%body%&gt;</span> - the helper variables that will help us diagnose the Airtable API Call in case of an error.&#x20;
 
 ![](/images/docs/wuX6w-nyJ4CpD-HSrZfJE_image.png)
 
@@ -141,7 +141,7 @@ a. Name the credential, select **Rest API Configuration** from the credential ty
 
 - give the action a name that will make it easier to recognize.
 - click the action to select it and access its configurations.
-- add the &lt;%Typeform%&gt; variable as the **Input Json\***.
+- add the <span style={{color:'#2166ae'}}>&lt;%Typeform%&gt;</span> variable as the **Input Json\***.
 - In **Query\*** add the corresponding JQuery expression (keep in mind that the data you search in is stored in the \&lt;%Typeform%> variable):
   - Get Department -> $..answers\[0].text
   - &#x20;Punctuality -> $..answers\[1].choice.label

@@ -35,17 +35,17 @@ The variables need to be adjusted according to your expected result for each pro
 
 **Example 1**
 
-&#x20; 1\.    [Create a new process](https://docs.procesio.com/creating-a-basic-process) and give it a name.
+&#x20; 1\.    [Create a new process](/docs/overview/processes/process-designer/your-first-process) and give it a name.
 
 &#x20; 2\.    Drag th&#x65;**&#x20;Extract List** action to the canvas and link it to the other actions.
 
 ![](/images/docs/i114HJDLiesXDdgGMwNXb_image.png)
 
-3\.    [Add the needed variables](https://docs.procesio.com/working-with-process-variables).
+3\.    [Add the needed variables](/docs/overview/processes/process-designer/working-with-process-variables).
 
 ![](/images/docs/goZLbUDlHQ65_cP-zK1ft_image.png)
 
-- ****﻿&lt;%JSONin%&gt; will contain the JSon data, the default will use. The variable will be of Type Json, Single Value.
+- ****<span style={{color:'#2166ae'}}>&lt;%JSONin%&gt;</span> will contain the JSon data, the default will use. The variable will be of Type Json, Single Value.
 
 ```json
 {
@@ -86,9 +86,9 @@ The variables need to be adjusted according to your expected result for each pro
 }
 ```
 
-- ****﻿&lt;%Filter%&gt; will contain the JQuery expression that we will use in order to extract from the Json input data. The variable will be of Type String and Single Value. The query will retrieve the last book in order (notice that the result of the query will be a list with one value). This is the filter for obtaining the last book: `$..book[-1:]`
+- ****<span style={{color:'#2166ae'}}><span style={{color:'#2166ae'}}>&lt;%Filter%&gt;</span></span> will contain the JQuery expression that we will use in order to extract from the Json input data. The variable will be of Type String and Single Value. The query will retrieve the last book in order (notice that the result of the query will be a list with one value). This is the filter for obtaining the last book: `$..book[-1:]`
 
-  ﻿&lt;%result%&gt; will be our actions output. The variable will be a List of type Json.
+  <span style={{color:'#2166ae'}}>&lt;%result%&gt;</span> will be our actions output. The variable will be a List of type Json.
 
 &#x20; 4\.    Click the **Extract List** action to access its configurations and add the variables created at the previous space.
 
@@ -108,37 +108,37 @@ The variables need to be adjusted according to your expected result for each pro
 
 **Further queries**
 
-We will continue with further examples of queries by only changing the &lt;%Filter%&gt; and showcasing the returned results for the same Json input, below the examples.
+We will continue with further examples of queries by only changing the <span style={{color:'#2166ae'}}>&lt;%Filter%&gt;</span> and showcasing the returned results for the same Json input, below the examples.
 
-- &lt;%Filter%&gt; will use `$..book[0,1]` to obtain the first two books:
+- <span style={{color:'#2166ae'}}>&lt;%Filter%&gt;</span> will use `$..book[0,1]` to obtain the first two books:
 
 ![](/images/docs/JEFDMyXt4IQb59smu1L87_image.png)
 
 
 
-- &lt;%Filter%&gt; will use `$..book[?(@.isbn)]` to filter all books with isbn number:
+- <span style={{color:'#2166ae'}}>&lt;%Filter%&gt;</span> will use `$..book[?(@.isbn)]` to filter all books with isbn number:
 
 ![](/images/docs/0vJCpPjuuqdXPc5OjtGdI_image.png)
 
-- &lt;%Filter%&gt; will use `$..book[?(@.price<10)]` to filter all books cheaper than 10:
+- <span style={{color:'#2166ae'}}>&lt;%Filter%&gt;</span> will use `$..book[?(@.price<10)]` to filter all books cheaper than 10:
 
 ![](/images/docs/jRPoNGo2ODM_ylXZFOFcT_image.png)
 
 
 
-**Example 2**[﻿](https://kb.procesio.com/regex-replace#qd-how-to)**&#xFEFF;**[﻿](https://docs.procesio.com/merge-lists#q-how-to)**&#xFEFF;**
+**Example 2****&#xFEFF;****&#xFEFF;**
 
-&#x20; 1\.    [Create a new process](https://docs.procesio.com/creating-a-basic-process) and give it a name.
+&#x20; 1\.    [Create a new process](/docs/overview/processes/process-designer/your-first-process) and give it a name.
 
 &#x20; 2\.    Drag the **Extract List** action to the canvas and link it to the other actions.
 
 ![](/images/docs/aN2KxThXyuLLUsCjDm20Z_image.png)
 
-3\.    [Add the needed variables](https://docs.procesio.com/working-with-process-variables).
+3\.    [Add the needed variables](/docs/overview/processes/process-designer/working-with-process-variables).
 
 ![](/images/docs/Ve2Yjjgz8TDWEzLviXVO9_image.png)
 
-- ****﻿&lt;%input%&gt; will contain the Json data, the default will use. The variable will be of Type JSon, Single Value.
+- ****<span style={{color:'#2166ae'}}>&lt;%input%&gt;</span> will contain the Json data, the default will use. The variable will be of Type JSon, Single Value.
 
 ```json
 
@@ -146,8 +146,8 @@ We will continue with further examples of queries by only changing the &lt;%Filt
 
 ```
 
-- ****&lt;%filter%&gt; will contain the JQuerry expression that we will use on our data. The variable will be of Type String and Single Value. In this case `..name`
-- ﻿&lt;%result%&gt; will be our actions output.
+- ****<span style={{color:'#2166ae'}}>&lt;%filter%&gt;</span> will contain the JQuerry expression that we will use on our data. The variable will be of Type String and Single Value. In this case `..name`
+- <span style={{color:'#2166ae'}}>&lt;%result%&gt;</span> will be our actions output.
 
 &#x20; 4\.    Click the **Extract List** action to access its configurations and add the variables created at the previous space.
 

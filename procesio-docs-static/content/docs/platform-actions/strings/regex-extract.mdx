@@ -12,7 +12,7 @@ As a user I want an action that extracts all the emails from a document/string b
 
 ### **How to**
 
-&#x20; 1\.    [Create a new process](https://docs.procesio.com/creating-a-basic-process) and give it a name.
+&#x20; 1\.    [Create a new process](/docs/overview/processes/process-designer/your-first-process) and give it a name.
 
 &#x20; 2\.    Drag the **Regex Extract** action to the canvas and link it to the other actions.
 
@@ -20,15 +20,15 @@ As a user I want an action that extracts all the emails from a document/string b
 
 &#x20; 3\.    Click the **Regex Extract** action to access its configurations and click the button **Regex Configurations**.
 
-&#x20; 4\.    [Add the needed variables](https://docs.procesio.com/working-with-process-variables).
+&#x20; 4\.    [Add the needed variables](/docs/overview/processes/process-designer/working-with-process-variables).
 
 ![](/images/docs/OmO6-fiAn7hby44Vauon6_image.png)
 
 
 
-- &lt;%texttoextractfrom%&gt; - variable that awaits the text to search in, it will ask for the text every time the process is ran (this is an input variable).&#x20;
-- ****&lt;%regexexpression%&gt; - variable that has the Regex Value saved as **Default value**. The Regex  that looks for email addresses is "(\[\_\\.0-9a-zA-Z-]+@(\[\\-0-9a-zA-Z]+\\.)+\[a-zA-Z]\&#123;2,6&#125;)".
-- ****&lt;%listofemails%&gt; - the list that will contain all the emails present in the text you entered in the first variable.
+- <span style={{color:'#2166ae'}}>&lt;%texttoextractfrom%&gt;</span> - variable that awaits the text to search in, it will ask for the text every time the process is ran (this is an input variable).&#x20;
+- ****<span style={{color:'#2166ae'}}>&lt;%regexexpression%&gt;</span> - variable that has the Regex Value saved as **Default value**. The Regex  that looks for email addresses is "(\[\_\\.0-9a-zA-Z-]+@(\[\\-0-9a-zA-Z]+\\.)+\[a-zA-Z]\&#123;2,6&#125;)".
+- ****<span style={{color:'#2166ae'}}>&lt;%listofemails%&gt;</span> - the list that will contain all the emails present in the text you entered in the first variable.
 
 <Callout type="info">
 If you wish to search the text regardless of case check the **Ignore case** checkbox.
@@ -42,6 +42,6 @@ If you wish to search the text regardless of case check the **Ignore case** chec
 
 ![](/images/docs/5eJ8NGilHLN2xOzHj42IU_image.png)
 
-&#x20; 7\.    Because we have created &lt;%listofemails%&gt; of type output, when you click **Check instances** you will be able to see that the email addresses were saved in the list.
+&#x20; 7\.    Because we have created <span style={{color:'#2166ae'}}>&lt;%listofemails%&gt;</span> of type output, when you click **Check instances** you will be able to see that the email addresses were saved in the list.
 
 ![](/images/docs/1DgQiB5ynbuPLGYB_l8H5_image.png)

@@ -20,3 +20,9 @@ html > body[data-scroll-locked] {
   padding-bottom: 0.5rem;
 }
 #nd-page { padding-top: 3.5rem; }
+
+/* feedback: white background (light mode) instead of gray */
+:root:not(.dark) {
+  --color-fd-background: #ffffff;
+  --color-fd-card: #ffffff;
+}

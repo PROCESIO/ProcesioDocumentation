@@ -12,7 +12,7 @@ Before you get started: by the end of the process creation, we will configure:
 
 - a configuration to an email server that will be used to send the email.
 - a configuration to a REST API of an web-to-sms service. 
-- the above requires the creation of 2 connection configurations in the [Credentials Manager](https://docs.procesio.com/working-with-credentials).
+- the above requires the creation of 2 connection configurations in the [Credentials Manager](/docs/overview/processes/untitled/working-with-credentials).
 
 ## Let's build this process! 
 
@@ -28,10 +28,10 @@ The process flow created will look like this:
 
 Click **Next step** to take you to the next step of the configuration, i.e. **Details**. 
 
-For this demo we have created a connection to a Gmail server, check the [GMail documentation](https://docs.procesio.com/integrations).
+For this demo we have created a connection to a Gmail server, check the [GMail documentation](/docs/integrations-demos/integrations-2-alt/integrations).
 
 <Callout type="info">
-You can also create and use a connection to any email server (check [Yahoo](https://docs.procesio.com/integrations/yahoo) or [SendGrid](https://docs.procesio.com/integrations/sendgrid) connection documentation).
+You can also create and use a connection to any email server (check [Yahoo](/docs/integrations-demos/integrations-2-alt/integrations/yahoo) or [SendGrid](/docs/integrations-demos/integrations-2-alt/integrations/sendgrid) connection documentation).
 </Callout>
 
 See below how the email server configuration for sending out emails from your Gmail account is configured (add your Gmail username & app password):
@@ -40,7 +40,7 @@ See below how the email server configuration for sending out emails from your Gm
 
 Click **Test connection** to see if you completed the settings correctly. If the test is successful, click **Save** to save this configuration. We will use this configuration in setting up the SendEmail action.
 
-&#x20; **Step 2.**    Create connection to the web-to-sms service provider you want to use. Similar to the email server config, go to Credentials Manager section to set it up. For this demo we used SMSO's API (check documentation for [SMSO connection](https://docs.procesio.com/integrations/smso)).We will use this API configuration in CallAPI action.
+&#x20; **Step 2.**    Create connection to the web-to-sms service provider you want to use. Similar to the email server config, go to Credentials Manager section to set it up. For this demo we used SMSO's API (check documentation for [SMSO connection](/docs/integrations-demos/integrations-2-alt/integrations/smso)).We will use this API configuration in CallAPI action.
 
 ## &#x20; Create and configure the process
 
@@ -67,8 +67,8 @@ Go to Process Variable&#x73;**&#xA0;(x)** in top bar to start creating the vari
 Configure the parameters of the action:
 
 - The **From** field will set the display name of the sender. The actual email address of the sender is the one set in the Credential Manager, but we can set the display name to be anything we want. I’ll use “Shop Name”.
-- The **To**: &lt;%customeremail%&gt; variable.
-- The **Subject**: &lt;%customerName%&gt;, your order is now confirmed!
+- The **To**: <span style={{color:'#2166ae'}}>&lt;%customeremail%&gt;</span> variable.
+- The **Subject**: <span style={{color:'#2166ae'}}>&lt;%customerName%&gt;</span>, your order is now confirmed!
 - The **Body**:
 
 ```text
@@ -85,7 +85,7 @@ To open the variables selector in Body and add process variables to your message
 
 ![](/images/docs/2lS274nMgXIP64p9CnKCi_image.png)
 
-- The attachment will be the &lt;%invoice%&gt; variable created earlier.
+- The attachment will be the <span style={{color:'#2166ae'}}>&lt;%invoice%&gt;</span> variable created earlier.
 
 ![](/images/docs/c64unXdBow25ndrvayeBu_image.png)
 
@@ -103,10 +103,10 @@ We’ll select the verb **POST**. As you can see here the URL is prefilled. This
 
 Add the needed query parameters:
 
-- **to**: &lt;% variable
-- **body**: &lt;%, your order *orderId* (variable)has been confirmed. Thank you for your purchase!
+- **to**: <span style={{color:'#2166ae'}}>&lt;%</span> variable
+- **body**: <span style={{color:'#2166ae'}}>&lt;%</span>, your order *orderId* (variable)has been confirmed. Thank you for your purchase!
 - **sender**: 4 (as per SMSO REST API documentation, you'll need to set it).
-- **Status output** will contain the &lt;%smsOutput%&gt; variable.
+- **Status output** will contain the <span style={{color:'#2166ae'}}>&lt;%smsOutput%&gt;</span> variable.
 - **Save&#x20;**&#x74;he changes.
 
 ![](/images/docs/vwuCPR3FEX_SrR7hnf587_image.png)

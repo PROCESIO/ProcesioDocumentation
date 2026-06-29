@@ -6,7 +6,7 @@ description: "SenseTask uses AI and OCR (optical character recognition) to autom
 
 SenseTask uses AI and OCR (optical character recognition) to automate data entry from paper-based documents.&#x20;
 
-In this use case we'll show you how to use data from SenseTask using [webhooks](https://docs.procesio.com/webhooks) in a workflow that sends notifications.
+In this use case we'll show you how to use data from SenseTask using [webhooks](/docs/overview/automation/webhooks) in a workflow that sends notifications.
 
 ### **Prerequisites**
 
@@ -89,21 +89,21 @@ In this use case we'll show you how to use data from SenseTask using [webhooks](
 
 &#x20; **Step 6**:    The **Today** action.
 
-We will use the &lt;%dateRegistered%&gt; variable to store the current date.&#x20;
+We will use the <span style={{color:'#2166ae'}}>&lt;%dateRegistered%&gt;</span> variable to store the current date.&#x20;
 
 ![](/images/docs/UowQ7yGB7xvD_zT9halIy_image.png)
 
 &#x20; **Step 7**:    The **Get Month** action.
 
-We will use the value of the &lt;%dateRegistered%&gt; variable to get the month the webhook data was received and store it in the &lt;%Month%&gt; variable.
+We will use the value of the <span style={{color:'#2166ae'}}>&lt;%dateRegistered%&gt;</span> variable to get the month the webhook data was received and store it in the <span style={{color:'#2166ae'}}>&lt;%Month%&gt;</span> variable.
 
 ![](/images/docs/_PzkdleTRZniCBf4_hpTf_image.png)
 
 &#x20; **Step 8**:    The **Send Email** action.
 
-Select the [SMTP server credential](https://docs.procesio.com/smtp-server-credential) that will be used click the **Send Email&#x20;**&#x62;utton.
+Select the [SMTP server credential](/docs/overview/processes/untitled/working-with-credentials/smtp-server-credential) that will be used click the **Send Email&#x20;**&#x62;utton.
 
-We will add the &lt;%Month%&gt; variable in the subject to help the recipient group them by month and in the body we will use the insert key to add the the &lt;%SensTskNotification%&gt; to add the data inside the email in text form.
+We will add the <span style={{color:'#2166ae'}}>&lt;%Month%&gt;</span> variable in the subject to help the recipient group them by month and in the body we will use the insert key to add the the <span style={{color:'#2166ae'}}>&lt;%SensTskNotification%&gt;</span> to add the data inside the email in text form.
 
 ![](/images/docs/ydPeCnah9iedVsshfc_2h_image.png)
 

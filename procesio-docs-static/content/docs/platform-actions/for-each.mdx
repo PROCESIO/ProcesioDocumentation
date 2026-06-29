@@ -8,7 +8,7 @@ description: "For Each action performs an action (or a set of actions) included 
 
 For Each action performs an action (or a set of actions) included within ForEach border. ForEach action enables you to step through lists and iterate through the data and process each information (row) individually. 
 
-The elements of a list can be referenced in the action(s) within the border by creating and using a local variable (iterator).
+The elements of a list can be referenced in the action(s) within the border by creating and using a local variable (<span style={{color:'#2166ae'}}>iterator</span>).
 
 To show how ForEach works, let's create a process that goes through each element of a list (list of contacts and email addresses) and sends emails out to each and one of them.  
 
@@ -20,9 +20,9 @@ Go to the Process Designers section and open a new or an existing process. Actio
 
 **Step 1**: Drag the **For Each** action from Toolbar and drop it on canvas.
 
-**Step 2**: From the Process Variables **(X)** panel, create a new process variable, called inputData with the following specs:
+**Step 2**: From the Process Variables **(X)** panel, create a new process variable, called <span style={{color:'#2166ae'}}>inputData</span> with the following specs:
 
-- type clientDetails  (data model with 3 attributes: *email, name, body* - type string) ;
+- type <span style={{color:'#193be5'}}>clientDetails</span>  (data model with 3 attributes: *email, name, body* - type string) ;
 - List
 - set as Input
 
@@ -36,13 +36,13 @@ Go to the Process Designers section and open a new or an existing process. Actio
 
 1. Select the list to iterate through, i.e. `inputData`&#x20;
 
-In List represents the list of items you want to iterate through. Select from the Process Variables selector a list type variable.  Select the inputData**&#xA0;**&#x6C;ist from the selector: 
+In List represents the list of items you want to iterate through. Select from the Process Variables selector a list type variable.  Select the <span style={{color:'#2166ae'}}>inputData</span>**&#xA0;**&#x6C;ist from the selector: 
 
 ![](/images/docs/6O6rd9XXbuksAKELH3YS9_screenshot-2022-06-02-at-200933.png)
 
-&#x20;     2\. Set the iterator name (you can name it iterator etc). &#x20;
+&#x20;     2\. Set the <span style={{color:'#2166ae'}}>iterator</span> name (you can name it <span style={{color:'#2166ae'}}>iterator</span> etc). &#x20;
 
-*For Each item* represents the item in the list used for each iteration. You can create a local variable by manually entering a name for it. This local variable will be further used in the actions within ForEach. We will name it now "iterator":
+*For Each item* represents the item in the list used for each iteration. You can create a local variable by manually entering a name for it. This local variable will be further used in the actions within ForEach. We will name it now "<span style={{color:'#2166ae'}}>iterator</span>":
 
 ![](/images/docs/5u24f2k2wx4Q4JLcCDYXs_screenshot-2022-06-02-at-201114.png)
 
@@ -68,7 +68,7 @@ Now you can start adding actions within the border. Drag an action from Toolbar 
 
 **Step 5:** Add the **Send Email** action within the border - click on it and the corresponding Properties Panel of the action will open.  
 
-In Send Email action configuration, use the iterator variable created to reference each element of the list:
+In Send Email action configuration, use the <span style={{color:'#0855f1'}}><span style={{color:'#2166ae'}}>iterator</span> variable</span> created <span style={{color:'#154ae0'}}>to reference each element of the list</span>:
 
 ![](/images/docs/VVTuwxwHGrz40ASm26DrY_screenshot-2022-06-02-at-201829.png)
 

@@ -42,7 +42,7 @@ Before going further we should identify who are the actors in this automated pla
 
 <Accordions type="single">
 <Accordion title="HubSpot">
-- you will be needing an HS account - preferably a development account for testing purposes (if you already have an HS account, development or otherwise, skip the underlying steps or take a quick read [here](https://docs.procesio.com/integrations/hubspot) although you still need a test account if you don't want to mess with your production like environment first)
+- you will be needing an HS account - preferably a development account for testing purposes (if you already have an HS account, development or otherwise, skip the underlying steps or take a quick read [here](/docs/integrations-demos/integrations-2-alt/integrations/hubspot) although you still need a test account if you don't want to mess with your production like environment first)
 - follow this link [https://developers.hubspot.com/get-started](https://developers.hubspot.com/get-started) and choose *Create App Developer Account*
 - once done with the previous step go to the *Home&#x20;*&#x70;age and choose to *Create a test account* (for more info check [https://legacydocs.hubspot.com/docs/faq/how-do-i-create-a-test-account](https://legacydocs.hubspot.com/docs/faq/how-do-i-create-a-test-account))
 - for API usage you will need an API key in order to make authorized calls so from the top-right corner click on the avatar and select *Profile & Preferences* then on the left list of settings expand the *Integrations* drop-down and select *API Key* and then create one if no active API key available and save it for later
@@ -65,7 +65,7 @@ Finally, it's time to connect the dots and bring **PROCESIO** in. If HubSpot and
 
 ![](/images/docs/kTUiIqOzEk4IK7_W0qNT8_mainprocess.JPG)
 
-If you are slightly familiar with how PROCESIO works then you can continue reading, otherwise, it will be a bit fuzzy but you can of course go through the PROCESIO documentation starting with the [basics,](https://docs.procesio.com/creating-a-basic-process) and easily reach a level where you can understand almost any process and then come back.
+If you are slightly familiar with how PROCESIO works then you can continue reading, otherwise, it will be a bit fuzzy but you can of course go through the PROCESIO documentation starting with the [basics,](/docs/overview/processes/process-designer/your-first-process) and easily reach a level where you can understand almost any process and then come back.
 
 The solution evolves around orchestrating four main API calls:
 
@@ -192,7 +192,7 @@ No-code can be tricky when dealing with lists, but we can make use of *constants
 
 <Accordions type="single">
 <Accordion title="analytics">
-There are two reasons why I decided to organize/hide this analytics part (i.e. from analyzing each article) as a [sub-process](https://docs.procesio.com/call-subprocess-action) namely because it is complex and no-code is in the end about abstraction AND because having more than one contact and more than one article per contact brings the no-code developer in a ***For Each*** in ***For Each*** situation or *nested* ***For Each***.
+There are two reasons why I decided to organize/hide this analytics part (i.e. from analyzing each article) as a [sub-process](/docs/platform-actions/call-subprocess) namely because it is complex and no-code is in the end about abstraction AND because having more than one contact and more than one article per contact brings the no-code developer in a ***For Each*** in ***For Each*** situation or *nested* ***For Each***.
 
 At the moment this can only be achieved in **PROCESIO** by calling a sub-process from the main ***For Each*** that will implement another ***For Each*** inside.
 

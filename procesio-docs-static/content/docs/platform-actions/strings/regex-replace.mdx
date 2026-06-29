@@ -12,7 +12,7 @@ Let's assume that you have a template file that you wish to use with several of 
 
 ### **How to**
 
-&#x20; 1\.    [Create a new process](https://docs.procesio.com/creating-a-basic-process) and give it a name.
+&#x20; 1\.    [Create a new process](/docs/overview/processes/process-designer/your-first-process) and give it a name.
 
 &#x20; 2\.    Drag the **Regex Replace** action to the canvas and link it to the other actions.
 
@@ -20,14 +20,14 @@ Let's assume that you have a template file that you wish to use with several of 
 
 &#x20; 3\.    Click the **Regex Replace** action to access its configurations and click the button **Regex Configurations**.
 
-&#x20; 4\.    [Add the needed variables](https://docs.procesio.com/working-with-process-variables).
+&#x20; 4\.    [Add the needed variables](/docs/overview/processes/process-designer/working-with-process-variables).
 
 ![](/images/docs/thW7Gdj4Vq6VvB0p12tc3_image.png)
 
-- &lt;%stringToSearchIn%&gt; - variable that has the default text saved as **Default value**.
-- ****&lt;%reGexExpression%&gt; - variable that has the Regex Value saved as **Default value**. The Regex is "(\[\_\\.0-9a-zA-Z-]+@(\[\\-0-9a-zA-Z]+\\.)+\[a-zA-Z]\&#123;2,6&#125;)".
-- ****&lt;%updatedText%&gt; - variable that will hold the modified text.
-- **** &lt;%email%&gt; -  input variable that will ask the email that the regex expression will use.
+- <span style={{color:'#2166ae'}}>&lt;%stringToSearchIn%&gt;</span> - variable that has the default text saved as **Default value**.
+- ****<span style={{color:'#2166ae'}}>&lt;%reGexExpression%&gt;</span> - variable that has the Regex Value saved as **Default value**. The Regex is "(\[\_\\.0-9a-zA-Z-]+@(\[\\-0-9a-zA-Z]+\\.)+\[a-zA-Z]\&#123;2,6&#125;)".
+- ****<span style={{color:'#2166ae'}}>&lt;%updatedText%&gt;</span> - variable that will hold the modified text.
+- **** <span style={{color:'#2166ae'}}>&lt;%email%&gt;</span> -  input variable that will ask the email that the regex expression will use.
 
 <Callout type="info">
 If you wish to search the text regardless the case check the **Ignore case** checkbox.
@@ -41,4 +41,4 @@ If you wish to search the text regardless the case check the **Ignore case** che
 
 ![](/images/docs/3NdEc7he4nzDWQCurhHDX_image.png)
 
-&#x20; 7\.    Because we have created &lt;%updatedText%&gt; of type output, when you click **Check instances** you will be able to see that the text was updated.
+&#x20; 7\.    Because we have created <span style={{color:'#2166ae'}}>&lt;%updatedText%&gt;</span> of type output, when you click **Check instances** you will be able to see that the text was updated.

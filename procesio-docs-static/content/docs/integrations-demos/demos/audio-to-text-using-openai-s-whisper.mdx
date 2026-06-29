@@ -37,17 +37,17 @@ Notice that the file is publicly accessible so **No authentication** is required
 
 We define some variables to be used in our flow:
 
-- **FileURL**  ➜ String containing the audio file location.
+- **FileURL**  ➜ <span style={{color:'#1c417e'}}>String</span> containing the audio file location.
   - To create the file URL for your own files, you can follow [this tutorial](https://www.youtube.com/watch?v=KYm03K7weKA).
-- **Endpoint** ➜ String representing the Google Drive endpoint to download from.
-- **DownloadStatusCode** ➜ Integer representing the status code of the download request.
-- **AudioFile&#x20;**➜ File representing the downloaded audio file.
+- **Endpoint** ➜ <span style={{color:'#1c417e'}}>String</span> representing the Google Drive endpoint to download from.
+- **DownloadStatusCode** ➜ <span style={{color:'#0039e3'}}>Integer</span> representing the status code of the download request.
+- **AudioFile&#x20;**➜ <span style={{color:'#0671d6'}}>File</span> representing the downloaded audio file.
 
 ![](/images/docs/E-7qxmRs6urowEFPgkr7H_vars.png)
 
 Then we build the actual flow:
 
-- We extract the **Endpoint&#x20;**&#x62;y removing the base URL from **FileURL** using **String Replace**
+- We extract the **Endpoint&#x20;**&#x62;y removing the base URL from **FileURL** using **<span style={{color:'#1c417e'}}>String</span> Replace**
 - We download the file using **Call API** with our Google Drive credential.
 
 For **Call API** we will have to use the following headers:
@@ -69,11 +69,11 @@ Make sure to use your own API Key instead of **$OPENAI\_API\_KEY&#x20;**&#x77;he
 
 We define some variables to be used in our flow:
 
-- **FileURL** ➜ String containing the audio file location.
-- **AudioFile** ➜ File representing the downloaded audio file.
-- **queryResponse** ➜ Json holding the model's response.
-- **queryStatusCode** ➜ Integer representing the model response status code.
-- **Transcript** ➜ String containing the transcript for the audio file.
+- **FileURL** ➜ <span style={{color:'#1c417e'}}>String</span> containing the audio file location.
+- **AudioFile** ➜ <span style={{color:'#0671d6'}}>File</span> representing the downloaded audio file.
+- **queryResponse** ➜ <span style={{color:'#007364'}}>Json</span> holding the model's response.
+- **queryStatusCode** ➜ <span style={{color:'#0039e3'}}>Integer</span> representing the model response status code.
+- **Transcript** ➜ <span style={{color:'#1c417e'}}>String</span> containing the transcript for the audio file.
 
 ![](/images/docs/Svq5t5pzlP1TdT4jErHkU_vars2.png)
 
@@ -81,20 +81,20 @@ Then we build the actual flow:
 
 - We download the audio file by using **Call Subprocess** with our first process.
 - We query the Whisper model using **Call API** with a **form-data** body.
-- We extract the transcript from the model's response using **Json Mapper**.
+- We extract the transcript from the model's response using **<span style={{color:'#007364'}}>Json</span> Mapper**.
 
 For **Call API** we will use **form-data**:
 
-- **file \[**File**]** ➜ insert **AudioFile&#x20;**&#x76;ariable
-- **model \[**Text**]** ➜ **whisper-1**
-- **response\_format** **\[**Text**]** ➜ **json**
+- **file \[**<span style={{color:'#0671d6'}}>File</span>**]** ➜ insert **AudioFile&#x20;**&#x76;ariable
+- **model \[**<span style={{color:'#9900ef'}}>Text</span>**]** ➜ **whisper-1**
+- **response\_format** **\[**<span style={{color:'#9900ef'}}>Text</span>**]** ➜ **json**
 
 ****
 
 ![](/images/docs/vWchFG0KwM3rx0IgAJFCW_openai-run-whisper.gif)
 
 <Callout type="warn">
-Make sure to select the right type (**File** or **Text**) when using **Call API** with **form data**.
+Make sure to select the right type (**<span style={{color:'#0671d6'}}>File</span>** or **<span style={{color:'#9900ef'}}>Text</span>**) when using **Call API** with **form data**.
 </Callout>
 
 **Transcript**
@@ -103,12 +103,12 @@ Make sure to select the right type (**File** or **Text**) when using **Call API*
 
 **Action Pool**
 
-- [Call API](https://docs.procesio.com/how-to)
-- [String Replace](https://docs.procesio.com/how-to/string-replace)
-- [Call Subprocess](https://docs.procesio.com/how-to/call-subprocess)
-- [Json Mapper](https://docs.procesio.com/how-to/json-mapper)
+- [Call API](/docs/platform-actions/call-api)
+- [<span style={{color:'#1c417e'}}>String</span> Replace](/docs/platform-actions/call-api/string-replace)
+- [Call Subprocess](/docs/platform-actions/call-api/call-subprocess)
+- [<span style={{color:'#007364'}}>Json</span> Mapper](/docs/platform-actions/call-api/json-mapper)
 
-**Import File**
+**Import <span style={{color:'#0671d6'}}>File</span>**
 
 <Callout type="success">
 Use below .procesio file, for importing this use-case dirctly to one of your workspaces (feel free to create a new workspace dedicted for this example).

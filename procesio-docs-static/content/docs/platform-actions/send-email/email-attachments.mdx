@@ -8,32 +8,32 @@ Email attachments is a must have when building automations that involve email co
 
 ### **Prerequisites**
 
-1. Procesio [Document Template](https://docs.procesio.com/document-template-creation)
+1. Procesio [Document Template](/docs/overview/processes/document-designer/document-template-creation)
 2. SMTP server
 
 ### **How to**
 
-&#x20; 1\.    Create the [SMTP credential](https://docs.procesio.com/working-with-credentials).
+&#x20; 1\.    Create the [SMTP credential](/docs/overview/processes/untitled/working-with-credentials).
 
-&#x20; 2\.    Create the [document template](https://docs.procesio.com/document-template-creation) (you have the ability to use variables in your templates).
+&#x20; 2\.    Create the [document template](/docs/overview/processes/document-designer/document-template-creation) (you have the ability to use variables in your templates).
 
 ![](/images/docs/Nh3Rx81AKTJeKOpbN2VBb_image.png)
 
-&#x20; 4\.    Create the [process](https://docs.procesio.com/creating-a-basic-process).
+&#x20; 4\.    Create the [process](/docs/overview/processes/process-designer/your-first-process).
 
 ![](/images/docs/bxUyLtq-qjUPdXn4LUtmh_image.png)
 
 &#x20; 5\.    Configure the actions:
 
-a. [Generate document](https://docs.procesio.com/how-to/generate-document)﻿
+a. [Generate document](/docs/platform-actions/call-api/generate-document)
 
 Create the process variables:
 
-- ﻿&lt;%vacation%&gt; - output variable of type File.
-- ﻿&lt;%StartDate%&gt; - input DateTime variable.
-- ﻿&lt;%EndDate%&gt; - input DateTime variable.
-- ﻿&lt;%Reason%&gt; - input String variable.
-- ﻿&lt;%Name%&gt; - input String variable.
+- <span style={{color:'#2166ae'}}>&lt;%vacation%&gt;</span> - output variable of type File.
+- <span style={{color:'#2166ae'}}>&lt;%StartDate%&gt;</span> - input DateTime variable.
+- <span style={{color:'#2166ae'}}>&lt;%EndDate%&gt;</span> - input DateTime variable.
+- <span style={{color:'#2166ae'}}>&lt;%Reason%&gt;</span> - input String variable.
+- <span style={{color:'#2166ae'}}>&lt;%Name%&gt;</span> - input String variable.
 
 Click the **Generate Document** action:
 
@@ -49,12 +49,12 @@ Click **Map Document Data** and use the following configuration
 
 b. **List Add**
 
-- create the list variable &lt;%attachment%&gt; of type File.
-- use the following configuration to add the &lt;%vacation%&gt; file variable in to the &lt;%attachment%&gt; variable.
+- create the list variable <span style={{color:'#2166ae'}}>&lt;%attachment%&gt;</span> of type File.
+- use the following configuration to add the <span style={{color:'#2166ae'}}>&lt;%vacation%&gt;</span> file variable in to the <span style={{color:'#2166ae'}}>&lt;%attachment%&gt;</span> variable.
 
 ![](/images/docs/x4esHAZJVnvE8jX7oSGnO_image.png)
 
-c. [Send Email](https://docs.procesio.com/how-to/send-email) - add the configuration and map the &lt;%attachment%&gt; variable to the email.
+c. [Send Email](/docs/platform-actions/call-api/send-email) - add the configuration and map the <span style={{color:'#2166ae'}}>&lt;%attachment%&gt;</span> variable to the email.
 
 ![](/images/docs/rYBQZwjATrPfvnXdXq6Hs_image.png)
 
