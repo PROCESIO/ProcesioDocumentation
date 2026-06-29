@@ -10,3 +10,13 @@ html > body[data-scroll-locked] {
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
 }
+
+/* Section tab bar (tabMode="top"): pin to the TOP of the content column. */
+#nd-docs-layout > div.items-end.border-b {
+  align-self: start;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding-bottom: 0.5rem;
+}
+#nd-page { padding-top: 3.5rem; }
