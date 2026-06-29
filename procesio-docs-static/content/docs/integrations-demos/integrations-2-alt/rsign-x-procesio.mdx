@@ -1,0 +1,133 @@
+---
+title: "RSign x PROCESIO"
+icon: "📗"
+description: "The RSign® integration with Procesio allows users to create automated workflows, integrating RSign® with thousands of platforms via a low-code…"
+---
+
+# RSign® for Procesio:  Use Case Guide
+
+
+
+The RSign® integration with Procesio allows users to create automated workflows, integrating RSign® with thousands of platforms via a low-code solution. This streamlines tasks related to document signing and e-signature requests management, without requiring coding skills.
+
+This article covers the following topics:
+
+- Prerequisites
+- Sending documents to be signed
+- Sending the signed documents automatically to Procesio
+
+## Prerequisites
+
+### **Setup**
+
+The RSign® service can only be set up by an RPost representative. The Procesio configuration will be handled by a Procesio system administrator. If the integration has not been set up for your company, please get in touch with your Procesio system administrator.
+
+### **Templates**
+
+The RSign®- Procesio integration only works with Templates created in the RSign® platform. Uploading ad hoc documents is out of the integration’s scope.
+
+Please review this [article ](https://help.rpost.com/hc/en-us/articles/10941121698323-Templates)to learn how to create an RSign® Template.
+
+
+
+## Sending documents to be signed
+
+The following flow could be modified or complemented by Procesio users to adapt it to a variety of different use cases. What is presented here are the basic steps and functionality, but results can be adjusted to different customer needs:
+
+1.      Login to the Procesio platform.
+
+![](/images/docs/ihXbMDPV05eMaf7C1WsgI_image.png)
+
+2.      Click on the Open App button within the RSign® banner\[JIB1]&#x20;
+
+![](/images/docs/JGGZss7xpUygB7r-JbrUs_.blob)
+
+3.      The user will be redirected to this site in which they will be able to Import either automatically or manually the RSign® workspace.
+
+![](/images/docs/_AiSlxO3-Uq37tk2EtumE_image.png)
+
+![](/images/docs/-Ww5SDWyFYK00hOK9zpbQ_image.png)
+
+***Note:*** If the user chooses the Automatic Import, the RSign® workspace will be created in the user’s Procesio’s profile. On the other hand, in the Manual Download the user will receive a file in their local machine and they will be able to import it manually in the desire workspace.
+
+4.      Go to the imported workspace (Automatic Import) to review the RSign® processes.
+
+![](/images/docs/Co_oWEQekGC6mNGJNWpIv_image.png)
+
+5.      Review the RSign® processes in the imported workspace and click on Send Envelope from Template for Sending a document for eSignature.
+
+![](/images/docs/_OhNR9eB2OEl7UJk_FeTK_image.png)
+
+6.      In the Send Envelope from Template flow, the Procesio’s user will be able to modify the flow leveraging all the Procesio’s platform actions in the left panel.
+
+![](/images/docs/IX-6_vTd7CCt4xruOM15H_image.png)
+
+7.      When the user clicks on Run, the following form will appear.
+
+![](/images/docs/xkKe-r0loc2nNyZlBEKzS_image.png)
+
+![](/images/docs/BRru58ejQjG2gSkSE7df7_image.png)
+
+![](/images/docs/oyWrU2DVdkz6kN2eF9zyN_image.png)
+
+8.      The mandatory variables need to be completed before clicking on Run. The user must have an RSign® valid account with credentials and units available, and a valid RSign® template. An RSign® collaborator will help the Procesio’s user to set up their workflows.
+
+
+
+9.      In Process instances, the user will be able to review the status of the eSignature envelopes.
+
+
+![](/images/docs/2BawasI1Lhd-yQe-d0VC2_image.png)
+
+10.  The RSign® Envelope generated is sent to the user or users (defined in the form). They will receive, in their mailbox, the document to complete and sign.
+
+![](/images/docs/6zy_kUQQXxSLXGIoIGIhj_image.png)
+
+11.  After clicking on the “**View & Sign Document**” button, the signer will be redirected to the RSign® service for completing the eSignature request.
+
+![](/images/docs/jz0QMN9TERK9fIEG0lb7K_image.png)
+
+12.  Click on the menu icon to expand the options bar, where the signer will have the option to filter based on fields that need completion or required fields.
+
+-       Green boxes show the fillable control field is complete.
+
+-       White boxes show the fillable control field is not complete.
+
+-       The asterisk icon (\*) indicates the fillable control field is required.
+
+![](/images/docs/1Lb7H7HMhwlPZKJ330Hl5_image.png)
+
+13.  After filling in all the fields, click on any of the available “**Finish**” buttons to complete the transaction.
+
+![](/images/docs/gNaPAZALmWTdq7OEaMn1I_image.png)
+
+## Sending the signed documents automatically to Procesio
+
+1.      When the eSignature request is completed, the flow will receive the RSign® notification via RSign® webhooks. The RSign® webhook needs to be set-up with an RSign® collaborator in Procesio.
+
+![](/images/docs/NCohazDRxzBObxuRxY68__image.png)
+
+***Note:*** the user can review this [article ](https://help.rpost.com/hc/en-us/articles/14385055376275-RSign-webhooks)to understand the RSign Webhooks behavior.
+
+When the RSign Webhook is configured, the Procesio’s user will receive the final signed document along with the certificate.
+
+**RSign® Final Signed Document&#x20;**
+
+![](/images/docs/l5bKmevNAj1xJHK__WtdH_image.png)
+
+**E-Signature Certificate view&#x20;**(included in the same document, depending on your RSign® account settings).
+
+![](/images/docs/94QJFcjtgnEKimkWPmRmJ_image.png)
+
+2.      The user will also be able to:
+
+a.      ***Get Envelope Download Signed Documents:&#x20;***&#x62;y passing the Envelope Code in this flow.
+
+![](/images/docs/C_2JQMey5Q_V45yatNVFm_image.png)
+
+b.     ***Get Envelope Status:&#x20;***&#x63;heck the status of an eSignature envelope by passing the code in this flow.
+
+![](/images/docs/54vrw3UcBW7dcZ3zrjna-_image.png)
+
+
+Any of these flows could be combined with the Procesio’s platform actions to achieve the business needs that users have.

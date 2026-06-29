@@ -1,0 +1,116 @@
+---
+title: "Build a Conversational Chatbot with Archbee and Chat GPT"
+icon: "📘"
+description: "In this article, we will explore the process of creating a conversational chatbot using Archbee and Chat GPT. By leveraging the power of Archbee's…"
+---
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qRFpvA_Mj6c" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+
+In this article, we will explore the process of creating a conversational chatbot using Archbee and Chat GPT. By leveraging the power of Archbee's documentation platform and integrating it with the capabilities of Chat GPT, we can develop a chatbot that interacts with users and retrieves information from a knowledge base or data source. This article will guide you through the steps required to set up and configure the chatbot, highlighting the use of Archbee and Chat GPT in the process.
+
+![](/images/docs/lniqNHZNPlEvqZOvKzo1A_screenshot-2023-05-30-at-124310.png)
+
+## Step 1: Import the .procesio file into your workspace
+
+We have already prepared for you the process flows needed to build this use case. For that, go to your workspace in PROCESIO. Press **Import/Export**, and continue with importing the `ConversationalCahtBot.procesio` file we have attached below.&#x20;
+
+[📎 ConversationalChatBot.zip](/files/_nekXA-ntVKbO3hpEu-Tp_conversationalchatbot.zip)
+
+![](/images/docs/xFdWqWZxYWQdrCbwYjRcq_screenshot-2023-05-30-at-125000.png)
+
+The below processes will be imported into your workspace, together with others (4 credentials and a  data model) in order for everything to work.
+
+![](/images/docs/ALcLyb606deQFOnBwPznK_screenshot-2023-06-06-at-111603.png)
+
+## **Step 1: Setting up the database, Archbee and Chat GPT connections**
+
+To begin, we need to ensure that we have Archbee and Chat GP&#x54;**&#x20;credentials** properly configured.
+
+<Callout type="error">
+Go to **Credentials Manager** and update the following credential configurations with **your details**:
+
+`ChatBot Database`&#x20;
+
+`ChatGPT`
+</Callout>
+
+
+
+<Callout type="info">
+It is now time to run the SQL scripts to create and update your database:&#x20;
+
+**Chat create all DB objects.sql:** [https://drive.google.com/file/d/1X9VKL3X1bBpmLGLDh3AO5IyoTvEXT7Ur/view](https://drive.google.com/file/d/1X9VKL3X1bBpmLGLDh3AO5IyoTvEXT7Ur/view)
+
+**Useful selects.sql:&#x20;**[https://drive.google.com/file/d/1YuX6ISJPNI\_ZoZiOkiEiMNmdWHQYuHG7/view](https://drive.google.com/file/d/1YuX6ISJPNI_ZoZiOkiEiMNmdWHQYuHG7/view)
+</Callout>
+
+The "**Chat create all DB objects.sql**" file contains the scripts that need to be executed in the database to create the necessary objects. This file is essential for setting up the database structure correctly.
+
+The "**Useful selects.sql**" file contains several useful queries that can be executed in the database. These queries provide insights into the received questions, response times, keywords, relevance scores, missing keywords, and more. By analyzing this data, you can:
+
+a. Identify the missing information in the documentation that needs to be completed.
+b. Understand the information that users frequently inquire about.
+c. Determine the most sought-after articles or topics.
+
+## **Step 2: Connecting Archbee and Chat GPT**
+
+Next, we establish the connection between Archbee and Chat GPT. Archbee allows us to extract relevant information from the documentation by connecting it to an SQL database. By caching the necessary data, we avoid redundant queries and enhance the chatbot's response time. Ensure that the Archbee credentials are correctly set up to connect with the SQL database (check Step 1).
+
+To make this, go to process `Chatbot/1. Call GPTChat` and select the `Call GPT API` action
+
+In its setting, make sure you add your `OpenAI Organization` in Headers.&#x20;
+
+![](/images/docs/dwOpT5efVtAv1zdj1iPVL_screenshot-2023-06-06-at-112438.png)
+
+See below how you can find the Organization for your OpenAI account:
+
+![](/images/docs/AmuRFrwuNzE4QSjiH0Ina_screenshot-2023-06-06-at-113210.png)
+
+Next, go to `Chatbot/1. ArchBee get articles by SearchTerm` process. If you also use Archbee as a source, you need to add the DocsSpaceID value to the body of the `Search ArchBee` action, like below:
+
+
+
+![](/images/docs/WxNB3nF1lRHAZok7y_OpV_screenshot-2023-06-06-at-113807.png)
+
+To get a `docSpaceId` you can go to document info and copy the Doc Space Id value:&#x20;
+
+![](/images/docs/lpqRh7rRC2jmdu7Y67pDh_screenshot-2023-06-06-at-114443.png)
+
+## **Congrats! You can now run and test your configuration! 🎉**
+
+Go to process `Chatbot/0. Search` and press **Run.**
+
+A modal will pop-up requesting input parameters. Add your question and press **Run** again to initiate the flows.
+
+![](/images/docs/DTOVFVxmiN5o9rRjT5rfi_screenshot-2023-06-06-at-141536.png)
+
+## Once you hit run, this is what will happen behind the scenes:
+
+### **1) Deconstructing User Queries**
+
+When a user interacts with the chatbot, the first step is to deconstruct their question into keywords using Chat GPT. This process helps in identifying the user's intent and extracting the most relevant information from the documentation.
+
+### **2) Searching and Caching Articles**
+
+Using the extracted keywords, the chatbot searches the Archbee documentation for relevant articles. The retrieved articles are then cached in the SQL database for faster access. This caching mechanism eliminates the need for repeated searches for previously answered queries.
+
+### **3) Calculating Relevance and Scoring**
+
+For each keyword extracted from the user's question, Chat GPT calculates its relevance to the articles found in the documentation. Based on this relevance calculation, a score is assigned to each keyword, determining its importance in answering the user's query accurately.
+
+### **4) Generating a Response**
+
+Using the scored keywords and associated articles, Chat GPT formulates a response to the user's question. By leveraging the power of language generation, Chat GPT provides a coherent and informative answer based on the most relevant articles from the Archbee documentation.
+
+To see the output, go to process `Chatbot/0. Search` and check instances. Click on the `Question Answer` action to see the variables used for configuration. The variable `GptReplyToQuestionsSQL` stores the answer that is returned to users in the chatbot:
+
+![](/images/docs/9E3k0S2Hz-5TTPgW_52Oo_screenshot-2023-06-06-at-204511.png)
+
+### **5) Testing and Debugging**
+
+Once the chatbot setup is complete, it is essential to thoroughly test and debug the system. Through the chat interface, you can interact with the chatbot by asking various questions and verifying the accuracy of its responses. Debugging allows you to examine the input, intermediate steps, and output to ensure the chatbot is functioning as intended.
+
+## **Conclusion:**
+
+By combining the capabilities of Archbee's documentation platform with the conversational prowess of Chat GPT, you can build a powerful and intelligent chatbot. The seamless integration of Archbee and Chat GPT enables the retrieval of relevant information from the knowledge base, resulting in accurate and informative responses. As you explore this technology further, you can enhance the chatbot's capabilities, incorporate context awareness, and integrate with other systems in your organization. Start building your conversational chatbot with Archbee and Chat GPT today and revolutionize how you interact with users and provide them with valuable information.

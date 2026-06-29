@@ -1,0 +1,30 @@
+---
+title: "Best practices"
+icon: "📚"
+description: "&x20;💌 Name processes & actions by their purpose. Always name all processes, actions and cases (where applicable) on the process and avoid identical…"
+---
+
+****
+
+**&#x20;💌  Name processes & actions by their purpose**. Always name all processes, actions and cases (where applicable) on the process and avoid identical and similar names. Action names should include an action, that is to be executed by that action, and the object to which said action is applied, for example: “Place order’, “Send message”, “Register issue”.
+
+This will help both you and your colleagues to easily navigate between processes and troubleshoot.
+
+**▪️   Create small processes**. We do not recommend placing more than 50 actions on a single canvas. If a process is complex, some action groups in a process can be implemented by using sub-processes, and then connecting those sub-processes into your main process.
+
+**〰️  Build a process so that the actions are lined in one direction**. There are two ways to achieve this: building a process from the bottom up or from left to right. Minimize the number of intersecting connectors to make the process appear clearer.
+
+**❌  Delete process variables that are obsolete or not used in the process**.
+
+�&#xDCDA;**&#x20; Avoid overlapping of actions** and connectors and make sure names are clearly visible.
+
+**🔁  Avoid generating infinite loops.** For example, an action in Process1 triggers Process2, and an action in Process2 triggers Process1. The looping causes your workspace to exceed its consumption limits.
+
+**✍️  Watch out for actions that overwrite previous changes.&#x20;**&#x41;void having or be careful when multiple actions update the same process variable.
+
+**😎  Build reusable actions.&#x20;**&#x53;ome process actions are always reusable: email alerts, Call APIs, etc. Here is how you can use actions in multiple processes:
+
+- To reuse any type of action, build an action template. Action templates can be used in any process within your workspace.
+- To reuse a group of actions, configure them in a standalone process, and call this process in any other process using the Call Subprocess action.
+
+**⏹️  When you perform updates in a process, deactivate the process or triggers first.&#x20;**&#x4F;therwise, you can get unexpected results, such as overwritten records or redundant actions (e.g. email messages), if the process is being kicked off.

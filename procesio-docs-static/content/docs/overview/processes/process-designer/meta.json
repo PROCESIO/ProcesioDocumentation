@@ -1,0 +1,17 @@
+{
+  "title": "Process Designer",
+  "icon": "🏗️",
+  "pages": [
+    "error-path",
+    "process-designer-basics",
+    "your-first-process",
+    "running-a-process",
+    "stop-a-running-process",
+    "set-process-notifications",
+    "working-with-data-types",
+    "working-with-process-variables",
+    "system-variable",
+    "process-custom-response",
+    "save-action-as-a-template"
+  ]
+}

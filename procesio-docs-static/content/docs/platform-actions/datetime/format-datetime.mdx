@@ -1,0 +1,47 @@
+---
+title: "Format DateTime"
+icon: "📕"
+description: "&x20; This action transform a DateTime to String, using a custom format specification."
+---
+
+&#x20; This action transform a DateTime to String, using a custom format specification.
+
+![](/images/docs/2dWHH022kJdZQikkfM2HR_tdy.png)
+
+## Inputs & Outputs
+
+- **\[ I ] Datetime:** DateTime to be transformed.
+- **\[ I ] Language**: Language to be used for month names and days of the week when formatting.
+  - Drop-down with **multiple languages.**
+- **\[ I ] Format**: String representing the wanted format.
+- **\[O] Formatted datetime**: String representing the formatted date.
+
+![](/images/docs/BQLI_tTHTZV2H0NOpe20l_tdy.png)
+
+## Example Usage
+
+- Drag action onto the canvas to get familiarized with it.
+
+![](/images/docs/2GB_tZ6EzBSC-G8vCYsjL_tdy.png)
+
+- Declare some variables to be used with the action.
+
+![](/images/docs/jUg5IdRlbLNfNbOmzS21X_tdy.png)
+
+- Assign the newly created variables.
+- **Save & Run** the process and then **Check Instance** to see the output.
+
+![](/images/docs/opV49FzkT8-SfTezIoow4_tdy.png)
+
+## Use Cases
+
+- Formatting DateTime values into a more human readable format.
+- Translating month names or days of the week from one language to another using the [Parse DateTime](https://docs.procesio.com/how-to/parse-datetime) and **Format DateTime** actions together.
+
+## Tips
+
+- The **Format** field uses standard .NET format specifiers which are documented [here](https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings).
+- The **Language** selector picks which language should be used when the wanted format contains :
+  - **Month names**: June (UK) 🆚 Iunie (RO) 🆚 Juin (FR)
+  - **Days of the week**: Monday (UK) 🆚 Luni (RO) 🆚 Lundi (FR)
+  - **Abbreviations**&#x20;

@@ -1,0 +1,19 @@
+{
+  "title": "Excel",
+  "icon": "📁",
+  "pages": [
+    "create-workbook",
+    "get-sheet-names",
+    "insert-sheet",
+    "rename-sheet",
+    "delete-sheet",
+    "apply-formula",
+    "copy-paste",
+    "get-named-range",
+    "read-range",
+    "get-last-used-row",
+    "parse-ole-date",
+    "split-workbook",
+    "xls-to-xlsx"
+  ]
+}

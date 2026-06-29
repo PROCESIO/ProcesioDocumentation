@@ -1,0 +1,247 @@
+---
+title: "HubSpot contacts analytics"
+icon: "📘"
+description: "This is a proof of concept on how the PROCESIO platform can be used to integrate with HubSpot, fetch a contact list, iterate through it, make web…"
+---
+
+## Synopsis
+
+This is a proof of concept on how the **PROCESIO** platform can be used to integrate with HubSpot, fetch a contact list, iterate through it, make web searches based on a certain property of the contact to extract useful information and close the loop by posting an engagement back in HubSpot as a note containing a list of links to relevant articles along with a weighted summary of what topics are addressed in each article.
+
+## What's HubSpot?
+
+HubSpot is a cloud-based CRM designed to help align sales and marketing teams, foster sales enablement, boost ROI, and optimize the inbound marketing strategy of a company in order to generate more qualified leads.
+
+Among its various use cases, the HubSpot platform allows sales teams to organize a pool of leads or potential leads as a list of contacts.
+
+Properties like phone number, email, company name, status, or owner are associated with a contact which helps model the relationship with the client throughout all phases from reaching them to closing the deal.
+
+In addition, each contact has dedicated sections like notes, tasks, and meetings that represent different types of engagement with that contact.
+
+![](/images/docs/shWB7FW25n5lbTa5uHA0H_capture.JPG)
+
+For example, the owner wants to keep track of what tasks they have to do regarding a certain contact. By creating a task they will remember to follow up with a call or an email and maintain the relationship with the client alive.
+
+Also, notes are useful if one wants to have observations from previous meetings stored in a digital format, not only in a notebook.
+
+## What's the goal?
+
+Let's say a HubSpot user, typically a salesperson, wants to be up to date with all that's going on in the news regarding his contacts. By being constantly informed one can have valuable insight into a client's company which might be useful when approaching the contact.
+
+Nowadays news runs fast and it's sometimes hard to keep up with the huge amount of information that's available on the world wide web. Going through each contact in HubSpot and scrolling through the news websites to find out the latest things about them sounds like a time-consuming activity.
+
+What if, instead, you could have the top 3 most relevant articles about each contact aggregated directly in HubSpot as notes? Maybe you're interested in a certain list of topics and want to read only the articles that are related to health or investments. Having a classification of each article by topic might seem necessary.
+
+Say you want to skip an article on Tesla (one of your contacts is working at this company) that talks about business because you are already knowledgeable about this particular combination. Just check the next article about Tesla which happens to have been identified as approaching the environment subject.
+
+The examples can go on and on, but the bottom line is how much amount of time can be saved by having well-structured insight data enclosed in the list of contacts that you go through day by day. Data that can be easily tailored at any time to be relevant and up to date.
+
+## Integrations
+
+Before going further we should identify who are the actors in this automated play.
+
+<Accordions type="single">
+<Accordion title="HubSpot">
+- you will be needing an HS account - preferably a development account for testing purposes (if you already have an HS account, development or otherwise, skip the underlying steps or take a quick read [here](https://docs.procesio.com/integrations/hubspot) although you still need a test account if you don't want to mess with your production like environment first)
+- follow this link [https://developers.hubspot.com/get-started](https://developers.hubspot.com/get-started) and choose *Create App Developer Account*
+- once done with the previous step go to the *Home&#x20;*&#x70;age and choose to *Create a test account* (for more info check [https://legacydocs.hubspot.com/docs/faq/how-do-i-create-a-test-account](https://legacydocs.hubspot.com/docs/faq/how-do-i-create-a-test-account))
+- for API usage you will need an API key in order to make authorized calls so from the top-right corner click on the avatar and select *Profile & Preferences* then on the left list of settings expand the *Integrations* drop-down and select *API Key* and then create one if no active API key available and save it for later
+</Accordion>
+</Accordions>
+
+<Accordions type="single">
+<Accordion title="NewsAPI">
+- [NewsAPI](https://newsapi.org/) is a web project that allows users to search the web for news via powerful APIs and client libraries for several programming languages
+- the existence of a wide list of search parameters lets you create versatile queries
+- a similar service called [newsapi.ai](https://newsapi.ai/) has APIs oriented towards analytics and one can benefit from analyzing the sentiment of a given text or the extraction of topics from a given article
+- both services are well-documented and work based on API keys
+- the caveat is that there are some limitations when using the free plan
+</Accordion>
+</Accordions>
+
+## Building the solution with PROCESIO
+
+Finally, it's time to connect the dots and bring **PROCESIO** in. If HubSpot and NewsAPI are the actors then **PROCESIO** is the scene, the director, the machinist...you get the idea.
+
+![](/images/docs/kTUiIqOzEk4IK7_W0qNT8_mainprocess.JPG)
+
+If you are slightly familiar with how PROCESIO works then you can continue reading, otherwise, it will be a bit fuzzy but you can of course go through the PROCESIO documentation starting with the [basics,](https://docs.procesio.com/creating-a-basic-process) and easily reach a level where you can understand almost any process and then come back.
+
+The solution evolves around orchestrating four main API calls:
+
+- **getContacts** - used to read all contacts from HubSpot
+- **getNews** - a query-based search that returns news about a given contact
+- **analytics** - a gateway to a sub-process that runs a sequence of endpoints that will be used to analyze text from articles and summarize the main topics along with their weight in that article; this is mapped into an object which will be validated and formatted for posting in HS by the parent process
+- **postNote** - the call that posts an engagement to HubSpot which adds the results in the notes section of a given contact&#x20;
+
+<Accordions type="single">
+<Accordion title="getContacts">
+First, we want to bring all contacts into the process. I used the **Call API&#x20;**&#x61;ction and configured it according to the HubSpot API documentation namely the [contacts](https://legacydocs.hubspot.com/docs/methods/contacts/get_contacts) section.
+
+<Callout type="info">
+HubSpot has a limit of 100 contacts per page. The scope of this article does not cover scenarios with over 100 contacts in the CRM. For that, you might need to use a **For Each** loop to iterate through each set of contacts.
+</Callout>
+
+The configuration should include choosing a previously created REST API credential. You just need to create a new entry in the credential manager for HubSpot API where you set the root of the endpoints you will be using along with the authentication method (API key) and a test endpoint to see that it's working.
+
+![](/images/docs/SVpOkNDcwMvTJHnvDFlGU_credential.JPG)
+
+An important note here is that you don't need to mention the authentication method later when using this credential in any of your processes. This will be stored in the configuration from the credential manager and taken into account automatically on top of building your request.
+
+
+![](/images/docs/fiItClgMmygA2OhYkJEWj_requesths.JPG)
+
+This is what the request looks like. Just save the body output in a JSON variable and optionally the status output in an integer variable and start using it. You can also test it before in Postman or directly in the action with the Test Action feature.
+
+
+
+<Callout type="success">
+There are two methods by which you can save the body output of a request:
+
+1. using a JSON variable
+2. using a **Data Model** object variable
+
+In the second you will have to go to the Data Models section ➜ Create from JSON (should be visible after expanding the arrow on the right of Create data model) ➜ give it a name and then choose Editor (JSON content) radio button that will bring an editor where you can paste the raw JSON of your expected body output response. A Data Model will be created with the keys and values from that JSON.
+
+
+
+Each approach has its advantages and disadvantages. For option 1 you'll need to use a JSON Mapper action and with JSON path language query your way to what object you need. Option 2 it is more intuitive since you have your JSON serialized into an object. Ultimately it is your choice.
+</Callout>
+
+Once the list of contacts is extracted by using the JSON Mapper action then it should be iterated upon using the **For Each** action.&#x20;
+</Accordion>
+</Accordions>
+
+<Accordions type="single">
+<Accordion title="getNews&#xA;">
+For complete usage of the endpoint used to fetch news about our contacts check [this link](https://newsapi.org/docs/endpoints/everything).
+
+
+Similar to the other API call (getContacts) there is a REST API credential that will drive the Call API action and will take care of the authentication which is API key based.
+
+
+
+Below is an example of a body response for a news query about McDonald's returning the 3 most relevant articles from a given day:&#x20;
+
+
+```json
+{
+    "status": "ok",
+    "totalResults": 19,
+    "articles": [
+        {
+            "source": {
+                "id": null,
+                "name": "The Guardian"
+            },
+            "author": "Australian Associated Press",
+            "title": "New Zealand cricket great Daniel Vettori joins Australia's new coaching staff",
+            "description": "<ul><li>Former Test spinner joins Andre Borovec in new positions</li><li>Pair will begin their roles on next month’s Sri Lanka tour</li></ul>Former New Zealand Test spinner Daniel Vettori will make a full-time switch to Australia’s cricket set-up after being …",
+            "url": "https://amp.theguardian.com/sport/2022/may/24/new-zealand-cricket-great-daniel-vettori-joins-australias-new-coaching-staff",
+            "urlToImage": "https://i.guim.co.uk/img/media/338e360d3e12ef3ecf2120f9ac98b53686110f38/0_139_3500_2100/master/3500.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=2b6431ba8894f79bb87897123eb6d653",
+            "publishedAt": "2022-05-24T03:45:05Z",
+            "content": "Former New Zealand Test spinner Daniel Vettori will make a full-time switch to Australias cricket set-up after being appointed as one of Andrew McDonalds two new assistant coaches. Vettori and Victor… [+1976 chars]"
+        },
+        {
+            "source": {
+                "id": "axios",
+                "name": "Axios"
+            },
+            "author": "Sara Fischer",
+            "title": "Friendly corporate brands poisoned by politics",
+            "description": "Companies that once seemed immune from partisan backlash are seeing their reputations plunge in response to political drama, according to new rankings from the annual Axios/Harris Poll 100. Why it matters: The findings suggest that companies that are slow to …",
+            "url": "https://www.axios.com/2022/05/24/axios-harris-poll-100-corporate-brands-politics",
+            "urlToImage": "https://images.axios.com/MQEzUWqaVmZhwOCjEUytJizFVLI=/0x0:1920x1080/1366x768/2022/05/20/1653069057732.jpg",
+            "publishedAt": "2022-05-24T09:31:03Z",
+            "content": "Companies that once seemed immune from partisan backlash are seeing their reputations plunge in response to political drama, according to new rankings from the annual Axios/Harris Poll 100. \r\nWhy it … [+2652 chars]"
+        },
+        {
+            "source": {
+                "id": null,
+                "name": "The Guardian"
+            },
+            "author": "Samantha Lock",
+            "title": "Russia-Ukraine war updates: Moscow to deepen ties with China, Lavrov says; west pledges to send more advanced weapons to Ukraine – live",
+            "description": "Russia’s foreign minister says Moscow will only depend on ‘reliable’ countries not beholden to the west; new aid packages include Harpoon anti-ship missiles to protect Ukraine’s coast<ul><li>Russian diplomat in Geneva resigns over Ukraine invasion</li><li>Ukr…",
+            "url": "https://www.theguardian.com/world/live/2022/may/24/russia-ukraine-war-updates-moscow-to-deepen-ties-with-china-lavrov-says-west-pledges-to-send-more-advanced-weapons-to-ukraine-live",
+            "urlToImage": "https://i.guim.co.uk/img/media/e6fa761c65bf417ef381e5abf55198ce364cf280/0_83_8234_4944/master/8234.jpg?width=1200&height=630&quality=85&auto=format&fit=crop&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctbGl2ZS5wbmc&enable=upscale&s=cab92c023cf11bd912d21146da574ed3",
+            "publishedAt": "2022-05-24T04:57:37Z",
+            "content": "Outgoing Philippine president Rodrigo Duterte has sharply criticised Russian president Vladimir Putin for the killings of innocent civilians in Ukraine.\r\nI kill criminals, I dont kill children and th… [+7612 chars]"
+        }
+    ]
+}
+```
+</Accordion>
+</Accordions>
+
+Within the **For Each** block we will process each contact in a series of steps:
+
+![](/images/docs/ff5e15oKC51iu2gN4gAj0_part1.JPG)
+
+- read the company name of the contact and the ID of the contact (will be used later to post back in HS in his Notes)
+- call the NewsAPI and fetch the  top 3 most relevant articles about that company
+  - here we also pass the current day (i.e. today) as we want fresh news
+- call the *analytics&#x20;*&#x73;ub-process and gather some insights on what are the topics from the content of the articles
+- validate the output from the sub-process while preparing the received information (list of articles + topic analysis) to be posted back in HS as a note
+
+<Callout type="success">
+No-code can be tricky when dealing with lists, but we can make use of *constants* (variables with default values - e.g. an integer with the value 0 acting as a counter),  the array of List platform actions (**Get X Element**, **Return List Element Count**), Numerical actions like **Subtract Operation** and, of course, **Decisional** action all which combined give control over the list that is being processed.
+</Callout>
+
+![](/images/docs/LHo9NcI7lTpzMSM2JbH6k_part2.jpg)
+
+<Accordions type="single">
+<Accordion title="analytics">
+There are two reasons why I decided to organize/hide this analytics part (i.e. from analyzing each article) as a [sub-process](https://docs.procesio.com/call-subprocess-action) namely because it is complex and no-code is in the end about abstraction AND because having more than one contact and more than one article per contact brings the no-code developer in a ***For Each*** in ***For Each*** situation or *nested* ***For Each***.
+
+At the moment this can only be achieved in **PROCESIO** by calling a sub-process from the main ***For Each*** that will implement another ***For Each*** inside.
+
+![](/images/docs/P3UT8pEi1WnkqIWx98iZB_subprocess.JPG)
+
+As a recap, the analytics sub-process receives a list of articles (as URLs) relevant for contact and returns another list containing the original articles and some data regarding what the articles are addressing.
+
+
+
+There are two API calls to the analytics endpoints of NewsAPI: [categorize ](https://newsapi.ai/documentation?tab=categorize)and [extract article information](https://newsapi.ai/documentation?tab=categorize). Let's showcase the latter.
+
+
+
+Having the text provided by the *extract article information&#x20;*&#x63;all, the *categorize* endpoint will return a categorization by (news) topics.
+
+
+
+Now, all that's needed is a list of connected actions (**To String**, **String Replace**, **Multiply**, **Json Mapper**, **Decisional**, **Join**, **Map Process Data**) which will process and format the raw information.
+
+
+
+![](/images/docs/7qHowMSogQ92l6MkI0XX6_analytics.jpg)
+</Accordion>
+</Accordions>
+
+<Accordions type="single">
+<Accordion title="postNote">
+We've reached the final API call. Once the processing is done a variable named "toBePosted" will contain the result in the desired format. This variable and the Id read in the previous steps from the contact object it's all we need to close the loop and post back to HubSpot.
+
+![](/images/docs/pAALAaA00Q3V5Doa2b1t5_postnote.JPG)
+</Accordion>
+</Accordions>
+
+## Results
+
+It's now time to run the process!
+
+![](/images/docs/1Xp_gVjf8aJuw1yg0gZBT_runok.JPG)
+
+And check the results!
+
+![](/images/docs/jRDDbt89WochamSdTsXvD_final.JPG)
+
+## Conclusions
+
+A sales use case was implemented. Fresh and valuable news about each contact from the CRM is being aggregated as a note in the contact view. Once a day new content will be uploaded and displayed in HubSpot for the salesperson to browse.&#x20;
+
+The format of the aided information can vary and it's not limited to the news link - categorization combination. Instead of using the name of the company as input for the news query one can use the contact name. Possibilities are multi-fold.
+
+One can make use of sentiment analysis APIs or translation APIs. This is just a proof of concept showing that with PROCESIO you can bridge two complementary tools to simplify the life of the user and why not the whole department's activity.
+
+Going forward, imagination is the only limit!

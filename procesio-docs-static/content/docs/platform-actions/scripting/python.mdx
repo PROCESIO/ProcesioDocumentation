@@ -1,0 +1,198 @@
+---
+title: "Python"
+icon: "📕"
+description: "In this article, we will explore the power of Python scripting actions in PROCESIO. Discover how Python scripting action can enhance your automation…"
+---
+
+In this article, we will explore the power of Python scripting actions in PROCESIO. Discover how Python scripting action can enhance your automation workflows and enable you to perform complex tasks with ease. From data manipulation to advanced calculations, Python action in PROCESIO opens up a world of possibilities. Dive into the world of Python scripting and unleash the full potential of PROCESIO's automation capabilities.
+
+Would you like to learn how to use this powerful action? Dive into this article where each step of using Python action is explained in an incremental order of complexity. It starts with printing "Hello world" and covers topics such as working with files in Python scripts.
+
+### **How to configure the Python action?**
+
+Go to the Process Designers section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas. 
+
+**Step 1**: Drag the Python action from Toolbar (Scripting folder) and drop it on the canvas; click on the action to open the Properties Panel.
+
+![](/images/docs/vg9eOJfJqEelw78sa9Vz7_image.png)
+
+**Step 2**: You can edit the action name. Link it to other actions:
+
+![](/images/docs/LZwCcxbczn5474kjPgCaN_image.png)
+
+**Step 3:&#x20;**&#x20;Create the variables needed for the configuration of the action, and then add them to the configuration panel in **Output**:&#x20;
+
+![](/images/docs/YqL8vjwbaYHwguAfEcVCR_screenshot-2023-07-19-at-205711.png)
+
+<Callout type="warn">
+The output of the Python action is always **a JSON&#x20;**&#x68;aving the following structure:
+
+`{`
+
+`"result": ``result (JSON/JSON Array/Object)`
+
+`}`
+
+Read below how you can extract only the JSON/Json Array/Object you need 💡
+</Callout>
+
+
+
+**Step 4:&#x20;**&#x54;his is why we will also add a JSON Mapper action to the process. The JSON Mapper action will extract only the object needed from the Python response (json).
+
+
+
+![](/images/docs/SGUFxm1iUM8mBqKSjEP8t_screenshot-2023-07-19-at-210103.png)
+
+For JSON Mapper configuration:
+
+- **input JSON** - is the output variable from Python action (PythonResult variable)
+- **query**:   $.result
+- **Output**: a new variable of type object that will fetch only the desired object from the actual Python output
+
+![](/images/docs/iydLXgRQYcJHtd0vxlii0_screenshot-2023-07-19-at-210214.png)
+
+**Step 5:** Let's add the script to the Python action!
+
+To clearly understand what we have done in step 4, let's run the process, and check the outputs of the 2 actions.&#x20;
+
+For this simple demonstration, keep the default script as is `print("Hello world"). `
+
+You can see how with JSON Mapper action we have extracted the object from the Python output:
+
+![](/images/docs/OHn19Vusrkypw1XFlDSxV_screenshot-2023-07-19-at-210825.png)
+
+**Step 6:&#x20;**&#x4C;et's do a more complicated scenario.&#x20;
+
+<Callout type="info">
+Python action has a list of available libraries to be used: JSON, Base64.&#x20;
+</Callout>
+
+Add this script to your Python action:&#x20;
+
+```python
+import json
+
+def create_json_object():
+    # Create a dictionary representing the JSON object
+    json_object = {
+        "name": "John Doe",
+        "age": 30,
+        "email": "johndoe@example.com"
+    }
+
+    return json_object
+
+# Create the JSON object
+json_object = create_json_object()
+
+# Print the JSON object
+print(json.dumps(json_object, indent=4))
+```
+
+Check out the result:&#x20;
+
+![](/images/docs/CGV80ihKrXbhCoKKPyIxa_screenshot-2023-07-19-at-211546.png)
+
+**Step 7**: Let's use variables in Python action!
+
+<Callout type="info">
+How do variables work in a Python action? Prior to processing the script in Python action, PROCESIO replaces the variable with the value of the variable and then utilizes it within the code.
+</Callout>
+
+Try out this script:
+
+```python
+def add_numbers(num1, num2):
+    # Calculate the sum of the two numbers
+    result = num1 + num2
+
+    return result
+
+# Input numbers
+number1 = <%number1%>
+number2 = <%number2%>
+
+# Add the numbers and get the result
+result = add_numbers(number1, number2)
+
+# Print the result
+print(result)
+```
+
+
+
+<Callout type="error">
+**number1** and **number2** are process variables that you need to create upfront, like this:
+</Callout>
+
+
+
+![](/images/docs/E7w9xnhCH6ym-auf_v5_Q_screenshot-2023-07-19-at-213012.png)
+
+We assign to those integers some default values (3 and 6), thus the result is 9:&#x20;
+
+![](/images/docs/c92lLTOPZqLDR5DyajABq_screenshot-2023-07-19-at-213143.png)
+
+<Callout type="warn">
+Files cannot be added in Python script. Read below steps to discover how you can still achieve this! 💡
+</Callout>
+
+
+
+**Step 8:&#x20;**&#x50;ython script does not process files, however, it does process strings. So how can we use this information? PROCESIO has a **File to BASE64&#x20;**&#x61;ction, that converts the file into a string. And this result can be used in Python action.
+
+Add a **File to BASE64** action in your process:
+
+![](/images/docs/75EX9eR3-M61j4DtHxRQN_screenshot-2023-07-19-at-214800.png)
+
+Create variables for the file and Base64 content and them to the configuration like this:
+
+![](/images/docs/YIPyTlqJTsFa6NKRklqgz_screenshot-2023-07-19-at-214850.png)
+
+Go to Python action.&#x20;
+
+Create a variable of type string (we named it `Fisier_Base64`) and add the following script:
+
+```python
+import base64
+
+def get_file_length(base64_data):
+    file_data = base64.b64decode(base64_data)
+    return len(file_data)
+
+# Example usage
+base64_variable = "<%Fisier_Base64%>"  # Replace with your actual Base64 variable
+file_length = get_file_length(base64_variable)
+print("File length:", file_length)
+```
+
+Run the process, give it a file for input and check instances.
+
+You will see the string created in **File to Base64** action to be processed by **the Python** action:
+
+![](/images/docs/y2kFF-sGGewnQZv_G4Sas_screenshot-2023-07-19-at-215243.png)
+
+Python action read the string and returned the file length:
+
+![](/images/docs/AnDnzFwI2TgNSTbrStsf4_screenshot-2023-07-19-at-215351.png)
+
+<Callout type="info">
+If you want to **output&#x20;**&#x66;iles from Python action, use **Base64 to File** action, using the same conversion principles.
+</Callout>
+
+## Available Python Libraries
+
+The following libraries are preinstalled and can be used inside the **Python Action**:
+
+| Library        | Version |
+| -------------- | ------- |
+| matplotlib     | 3.7.0   |
+| beautifulsoup4 | 4.12.0  |
+| scipy          | 1.10.1  |
+| PyPDF2         | 3.0.1   |
+| pandas         | 2.0.3   |
+| pdfplumber     | 0.11.4  |
+| spacy          | 3.8.4   |
+| staticmap      | 0.5.7   |
+| pillow         | 12.1.1  |

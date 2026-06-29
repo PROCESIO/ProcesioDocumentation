@@ -1,0 +1,13 @@
+{
+  "title": "Pdf",
+  "icon": "📁",
+  "pages": [
+    "merge-files",
+    "select-pages",
+    "remove-pages",
+    "extract-text",
+    "area-mapper",
+    "extract-embedded-files",
+    "acroform-insert-image"
+  ]
+}

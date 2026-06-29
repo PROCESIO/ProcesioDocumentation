@@ -1,0 +1,15 @@
+{
+  "title": "Converters",
+  "icon": "📁",
+  "pages": [
+    "hash-mac",
+    "hash",
+    "from-base-64",
+    "json-to-xml",
+    "to-base-64",
+    "to-string",
+    "xml-to-json",
+    "encrypt-to-aes256",
+    "decrypt-from-aes256"
+  ]
+}

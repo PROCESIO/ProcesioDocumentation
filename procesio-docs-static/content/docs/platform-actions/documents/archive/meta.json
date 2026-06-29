@@ -1,0 +1,10 @@
+{
+  "title": "Archive",
+  "icon": "📁",
+  "pages": [
+    "zip",
+    "unzip",
+    "unrar",
+    "untar"
+  ]
+}

@@ -1,0 +1,121 @@
+---
+title: "Decisional"
+icon: "📕"
+description: "The Decisional action will execute one of the many branches configured, depending on whether a specified condition is met. If no condition is met,…"
+---
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ciT6EwyM0TE" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+The **Decisional** action will execute one of the many branches configured, depending on whether a specified condition is met. If no condition is met, you have the option to define a Default path for the action. 
+
+You can add several actions after a **Decisional** and build as many cases as you need. A case configuration consists in defining the condition and its successor branch (called "target"). A target action is an action connected to the **Decisional** as a successor. 
+
+<Callout type="info">
+Connecting a target action to the **Decisional** will automatically generate a case that requires configuration.
+</Callout>
+
+The outcome of a case can be **True** o&#x72;**&#x20;False**, depending on how the condition is evaluated. The value of the evaluation determines the next action target to be processed within the flow. 
+
+<Callout type="info">
+The process will only consider the first **True** evaluation, continuing the process on the correspondent target branch. All other cases will be ignored once the first **True** evaluation of a case is met.
+</Callout>
+
+## **How to configure the Decisional action?**
+
+Go to the Process Designer section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas from the Toolbar.
+
+![](/images/docs/b5MDySHIRKlLhAttflTzT_screenshot-2023-05-19-at-120911.png)
+
+**Step 1**: Drag the **Decisional** action onto the canvas and click on it to open the Properties Panel.
+
+**Step 2**: You can edit the action name.
+
+![](/images/docs/H-V2yhMyYTozdbws5rrsv_screenshot-2023-05-19-at-120955.png)
+
+**Step 3**: If there is at least one target action connected, you will see in the Properties Panel a case generated that requires configuration (not set).
+
+![](/images/docs/6NnRjSnpOCBYgQpj9S-PP_cases.png)
+
+**Click** on it to go to the case configuration steps.
+
+<Callout type="info">
+If there are no target actions connected to **Decisional**, you will see a message displayed in Properties Panel guiding you to "Please connect one or more actions to start configuring your cases."
+</Callout>
+
+
+**Step 4:&#xA0;**&#x43;ase configuration
+
+![](/images/docs/GCEktfKEc9Mlb94FY0kI4_step4-configuration.png)
+
+1. **Name**: set a name for you case; it will be also displayed on the connector going to this case's target action to easily identify the branches.
+2. **Advanced Filtering Builde**r: here you can add either a **condition** or a **group**
+
+### **Adding a condition**
+
+![](/images/docs/IQ3FELBd95SVT30_RSu6Q_addcondition.png)
+
+Once you press **Add condition**, an expression will be displayed where you will need to define:
+
+- **First Operand** (left): click on th&#x65;**&#x20;+** icon and a process variables list will open. Select the process variable to be compared or input a value manually.
+- **Operator**: click to select the operator
+
+![](/images/docs/rieA0Y8knP36SDuoaTSMH_operator.png)
+
+
+
+- **Second Operand** (right): you can either fill in a hard-coded value (e.g. 1000, Name etc.) or select another process variable to be used as an operand;
+- **Logical Operators**: you can also use logical operators to join together multiple expressions and build complex conditions. On **click**, you can switch between AND to OR operators.
+
+<Callout type="info">
+When adding a condition or a group, please note that **AND&#x20;**&#x68;as priority ove&#x72;**&#x20;OR** in evaluation.
+</Callout>
+
+Please see below the variable/conditions matrix for dynamic conditions:
+
+![](/images/docs/NiwgLYe8plsgIgtUmg5oN_variable-condition-matrix.png)
+
+### **Adding a group**
+
+![](/images/docs/8Aq6w8CXAF7HU4NpfU6Zk_addgroup.png)
+
+Once you have created a group, you can:
+
+- Rename it.
+
+![](/images/docs/wdogmvVUYInr23pNmZ9ya_renamegroup.png)
+
+- Add new conditions to the group or drag & drop previously created conditions.
+- Add a subgroup.
+
+![](/images/docs/nJg6MKYDHnYHa3qWkDY6v_addsubgroup.png)
+
+- Ungroup: this action will delete the group, but the conditions will be kept and placed outside the group
+- Delete group: this action will delete the group and the conditions contained in the group
+
+
+
+    3.**&#xA0;Target**: select from the list the go-to action that will be processed within the flow when the specified condition is met. The target list will include only the actions connected to the Decisional as successors.
+
+<Callout type="info">
+The actions already assigned as target in previous cases will no longer be available in the list when configuring a case. To have multiple actions reach the same path, consider using a **Join&#x20;**&#x61;ction.
+</Callout>
+
+**Step 5:&#xA0;**&#x44;efining a **Default&#x20;**&#x63;ase is essential when configuring a **Decisional**. When none of the conditions defined in other cases is met, two things can happen:
+
+1. **The flow stops** - this will be the default behaviour if no **Default** case is defined.
+
+![](/images/docs/jSpMiHoz3mL2LPySyZzKI_default.png)
+
+       2. **The flow follows the default path** - By setting a default path (a target action that will be processed only when no above condition is met), you can make sure your logic can handle cases that were not considered at first.
+
+The target action for the default path must be connected on canvas to Decisional as shown below.
+
+![](/images/docs/uGeKkfCyQFYmmTVlmy1uv_decision2.png)
+
+Once the target action for **Default** path is connected it will be automatically displayed in configuration: 
+
+![](/images/docs/V5rVzHxCwX5DydxkxsPkK_defaultcallapi.png)
+
+This is an example of how the **Decisional** action looks on the canvas:
+
+![](/images/docs/MsGLyYEDCK8cK-7fidN6H_procesdecisional.png)

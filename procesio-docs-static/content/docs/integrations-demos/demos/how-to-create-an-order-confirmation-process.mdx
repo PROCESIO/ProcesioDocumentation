@@ -1,0 +1,134 @@
+---
+title: "How to create an order confirmation process"
+icon: "📘"
+description: "Scenario:&xA0;&x57;e will create a process flow that can be very useful for every ecommerce platform as it represents one of the steps they need to…"
+---
+
+**Scenario:&#xA0;**&#x57;e will create a process flow that can be very useful for every ecommerce platform as it represents one of the steps they need to perform in the end-to-end selling process. Every time an order is placed by a customer, they receive confirmation details via email/SMS. 
+
+ This will be a basic scenario where PROCESIO can help you with sending the confirmation email and SMS to the customer, together with the invoice and order details.
+
+Before you get started: by the end of the process creation, we will configure:
+
+- a configuration to an email server that will be used to send the email.
+- a configuration to a REST API of an web-to-sms service. 
+- the above requires the creation of 2 connection configurations in the [Credentials Manager](https://docs.procesio.com/working-with-credentials).
+
+## Let's build this process! 
+
+The process flow created will look like this:
+
+![](/images/docs/MnO0KMVjDVNQQ5TcCBCI3_image.png)
+
+## Create the credentials
+
+&#x20; **Step 1.**    **Create the email server configuration**: Go to **Credentials Manager** section and click on **Add New** button. This will take you to the **Basic Info** step of the configuration. Fill in the inputs like below: 
+
+![](/images/docs/RTRz3Sd2IbtvGKYZWk0pJ_image.png)
+
+Click **Next step** to take you to the next step of the configuration, i.e. **Details**. 
+
+For this demo we have created a connection to a Gmail server, check the [GMail documentation](https://docs.procesio.com/integrations).
+
+<Callout type="info">
+You can also create and use a connection to any email server (check [Yahoo](https://docs.procesio.com/integrations/yahoo) or [SendGrid](https://docs.procesio.com/integrations/sendgrid) connection documentation).
+</Callout>
+
+See below how the email server configuration for sending out emails from your Gmail account is configured (add your Gmail username & app password):
+
+![](/images/docs/moQIepqTAElbB61dxz0Em_image.png)
+
+Click **Test connection** to see if you completed the settings correctly. If the test is successful, click **Save** to save this configuration. We will use this configuration in setting up the SendEmail action.
+
+&#x20; **Step 2.**    Create connection to the web-to-sms service provider you want to use. Similar to the email server config, go to Credentials Manager section to set it up. For this demo we used SMSO's API (check documentation for [SMSO connection](https://docs.procesio.com/integrations/smso)).We will use this API configuration in CallAPI action.
+
+## &#x20; Create and configure the process
+
+**&#x20; Step 1.&#xA0;**&#x20;  **Create a new process**: Go to the **Process Designer** section and click on the **Create New** button. This will take you to the canvas where you will build the flow.
+
+&#x20;  **Step 2.**    Add **Send Email** and **Call API** actions on canvas and connect them by dragging relations between all the actions. 
+
+![](/images/docs/JQDl6z3WnckV47ndKfXDY_image.png)
+
+&#x20; **Step 3.**   **Create the process variables**: as mentioned at the beginning, we want to automate this process and make it pass dynamic data such as customer name, email, order id etc. Thus, we need to create some process variables within our process flow, which will act as data placeholders while designing the flow. At runtime, they will take new values. 
+
+Go to Process Variable&#x73;**&#xA0;(x)** in top bar to start creating the variables needed for this process. Click **Add Variable**. You need to define variables as follows:
+
+![](/images/docs/IKYw0H2UYzG_q8tLCl__c_image.png)
+
+&#x20; **Step 4.**    **Configure the SendEmail action**.&#x20;
+
+- Click on it and the properties panel will open. You can rename it from Send Email to Email - order confirmed. 
+- Select the email server configuration created in step 1.
+- Click on the **Send Email** card to proceed to the next steps:
+
+![](/images/docs/go6RptxD5pXVsmiGGFDP9_image.png)
+
+Configure the parameters of the action:
+
+- The **From** field will set the display name of the sender. The actual email address of the sender is the one set in the Credential Manager, but we can set the display name to be anything we want. I’ll use “Shop Name”.
+- The **To**: &lt;%customeremail%&gt; variable.
+- The **Subject**: &lt;%customerName%&gt;, your order is now confirmed!
+- The **Body**:
+
+```text
+Dear <%customerName%>,
+Your order is now confirmed!
+You have successfully purchased a <%productOrdered%>.
+Kind regards,
+Shop Name
+```
+
+<Callout type="info">
+To open the variables selector in Body and add process variables to your message: press Insert key (for Windows) or Shift + Tab (for MacOS)
+</Callout>
+
+![](/images/docs/2lS274nMgXIP64p9CnKCi_image.png)
+
+- The attachment will be the &lt;%invoice%&gt; variable created earlier.
+
+![](/images/docs/c64unXdBow25ndrvayeBu_image.png)
+
+&#x20;   **Step 5.**    Configure the Call API action which is the send SMS step.
+
+- Click on Call API action and the properties panel will open. You can rename it from Call API to Send SMS.
+- Select the API configuration created in step 2.
+- Click on **Configure Request** to proceed next steps:
+
+![](/images/docs/x1CJ6tTp87gRNAgKmTnlw_image.png)
+
+For the Call API configurations you are going to check the SMS provider's API documentation regarding the method name, parameters needed, etc. 
+
+We’ll select the verb **POST**. As you can see here the URL is prefilled. This comes from the REST API credential configuration. I just need to specify which method name to use to have a valid endpoint - **/api/v1/send**. 
+
+Add the needed query parameters:
+
+- **to**: &lt;% variable
+- **body**: &lt;%, your order *orderId* (variable)has been confirmed. Thank you for your purchase!
+- **sender**: 4 (as per SMSO REST API documentation, you'll need to set it).
+- **Status output** will contain the &lt;%smsOutput%&gt; variable.
+- **Save&#x20;**&#x74;he changes.
+
+![](/images/docs/vwuCPR3FEX_SrR7hnf587_image.png)
+
+Use the **Activate multi line Editing** functionality in order to expand the editor:
+
+![](/images/docs/Ly-97KA-ykKQn9m8TFZJn_image.png)
+
+&#x20;    **Step 6.**    **Save&#x20;**&#x74;he process. **Validate&#x20;**&#x74;he process. **Run&#x20;**&#x74;he process.
+
+![](/images/docs/BFnddoMtiQG3F1ipqeOQh_image.png)
+
+Fill in the values for the input variables declared and press **Run**:
+
+![](/images/docs/SdAYSStHiD0wotApcSKuH_image.png)
+
+Once the process completes, a notification will appear. Click on the **Check instances** button to view the details at the process and action level:
+
+![](/images/docs/LQdO8fV80A2k6ke7R67UB_image.png)
+
+<Callout type="success">
+**Congrats!** You have just created a new process flow in PROCESIO!
+</Callout>
+
+If you encountered any issues while creating this first process flow, please let us know as we are all growing together.

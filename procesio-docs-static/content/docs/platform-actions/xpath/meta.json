@@ -1,0 +1,10 @@
+{
+  "title": "XPath",
+  "icon": "📁",
+  "pages": [
+    "mapper",
+    "update",
+    "processor",
+    "builder"
+  ]
+}

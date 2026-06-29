@@ -1,0 +1,8 @@
+{
+  "title": "Analytics",
+  "icon": "🔎",
+  "pages": [
+    "resource-tracking",
+    "processing-time-and-usage"
+  ]
+}

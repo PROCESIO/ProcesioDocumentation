@@ -1,0 +1,35 @@
+---
+title: "HTML Sanitizer"
+icon: "📕"
+description: "Use this action to sanitize HTML input string to prevent HTML Injection.&x20;"
+---
+
+### Overview[﻿](https://docs.procesio.com/write-to-file#yJA0T)﻿
+
+Use this action to sanitize HTML input string to prevent HTML Injection.&#x20;
+
+### How to configure the HTML Sanitizer action?[﻿](https://kb.procesio.com/regex-replace#qd-how-to)﻿[﻿](https://docs.procesio.com/merge-lists#q-how-to)﻿[﻿](https://docs.procesio.com/write-to-file#-s0Vi)﻿
+
+Step 1. Create a process and give it a name.
+
+Step 2. Drag the **HTML Sanitizer** action to the canvas and link it to the other actions.
+
+![](/images/docs/fhde34GgOquxYfwul-k4R_image.png)
+
+Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
+
+![](/images/docs/9DviU2jgFLRzuIuBEjYYe_screenshot-2022-09-21-at-162557.png)
+
+**HTML string to sanitize**: you need to input a string variable which contains the value which needs to be sanitized
+
+**Encode the result checkbox**: will only take care of HTML characters. It does not protect you from cross-site scripting (XSS) or JavaScript injection vulnerabilities.
+
+**Sanitized string**: the output contains the returned sanitized string
+
+Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+
+Step 5. You will be prompted to add the HTML string for the input variable. Click **Run**.
+
+Step 6. To verify the process click **Check instance**.
+
+Step 7. In the **Output&#x20;**&#x73;ection, you can see sanitized HTML stored in the output variable.

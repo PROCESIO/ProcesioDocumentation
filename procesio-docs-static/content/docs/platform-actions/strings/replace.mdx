@@ -1,0 +1,53 @@
+---
+title: "Replace"
+icon: "📕"
+description: "Use this action to search a string for a specified value and return a new string where the specified value(s) are replaced (ex. you have a text and…"
+---
+
+### Overview[﻿](https://docs.procesio.com/write-to-file#yJA0T)﻿
+
+Use this action to search a string for a specified value and return a new string where the specified value(s) are replaced (ex. you have a text and you want to replace a specific word in the whole document).
+
+### How to configure the Replace action?[﻿](https://kb.procesio.com/regex-replace#qd-how-to)﻿[﻿](https://docs.procesio.com/merge-lists#q-how-to)﻿[﻿](https://docs.procesio.com/write-to-file#-s0Vi)﻿
+
+Step 1. Create a process and give it a name.
+
+Step 2. Drag the **Replace** action to the canvas and link it to the other actions.
+
+![](/images/docs/QWpMihpwwZfsFhiZsAj2J_screenshot-2022-09-21-at-164149.png)
+
+Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
+
+![](/images/docs/jstvlszMtOQ2UoyHScG59_screenshot-2022-09-21-at-165053.png)
+
+****
+
+**Source string**: you need to input a string variable which contains the text to be searched and modified
+
+**Search string:** you need to input a string variable with the string which you want to be searched and replaced in the source string
+
+**Replacement string:** you need to input a string variable with which the matched values will be replaced
+
+**Ignore case checkbox**: Check to ignore case sensitivity for the used strings
+
+**Result**: the output with the new string containing replacements
+
+****
+
+For example, if you have the Source string: "This is a cat" and you want to replace the word "cat" with "dog", you should configure the action like this:&#x20;
+
+Source string: This is a cat
+
+Search string: cat
+
+Replacement string: dog
+
+Result: the result should be: "This is a dog"
+
+Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+
+Step 6. To verify the process click **Check instance**.
+
+Step 7. In the **Output&#x20;**&#x73;ection, you can see the updated string:&#x20;
+
+![](/images/docs/pOFB_AkWSnSbQOsr-iIFu_screenshot-2022-09-21-at-165345.png)

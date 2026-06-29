@@ -1,0 +1,43 @@
+---
+title: "Decisional Further Reading"
+icon: "⚓"
+description: "Here's a list of things that you probably didn't know you can do with the Decisional action."
+---
+
+Here's a list of things that you probably didn't know you can do with the Decisional action.
+
+### **Setting a condition evaluation order**
+
+<Callout type="info">
+If multiple conditions are evaluated as **True** when a **Decisional** action is reached, the flow of execution will continue only on the first condition's branch.
+</Callout>
+
+![](/images/docs/i1gqJVZkpa07AKJlZeVOW_case-ordering.gif)
+
+To choose which condition should be evaluated first, you can reorder conditions in the configuration. &#x20;
+
+### **Organizing cases for better visualization**
+
+Sometimes you might implement complex business logic using the **Decisional** and all those branches might overlap and turn into something that is hard to explain visually.&#x20;
+
+When this happens, you can:
+
+- &#x20;Use a fe&#x77;**&#x20;Join** actions to clear up the flow overlaps and make it more readable.
+
+![](/images/docs/MT2i_rMOM_IueWV-2p0vs_first-option.gif)
+
+- Use an ordered staircase-like arrangement for the cases to improve the appearance
+
+![](/images/docs/9xxk9dHKuOVu6eoaSqaZT_second-option.gif)
+
+### **Creating a Do While logic**
+
+If your use case requires some logic to be executed at least once before checking for a stopping condition then a **Do While** sequence might be something you would find useful.&#x20;
+
+You only need a **Decisional** and a **Join** to implement such logic in **PROCESIO**.
+
+![](/images/docs/6yQGsWZvxfoRRnEGtqM8m_do-while.gif)
+
+You can also skip the extra **Join** action but it's less pretty like this.
+
+![](/images/docs/RlHF9TNUkJXInm-RVteRZ_no-extra-join.png)

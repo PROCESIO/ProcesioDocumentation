@@ -1,0 +1,65 @@
+---
+title: "Get File List"
+icon: "📕"
+description: "The action lists file names within a folder, from the FTP/SFTP server. Displays files name, path, type and size."
+---
+
+![](/images/docs/LZ-jgATEnLXFMDddDYgp__image.png)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kqDyQvFUZQo" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+The action lists file names within a folder, from the FTP/SFTP server. Displays files name, path, type and size.
+
+### **FTP connection**
+
+For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+
+&#x20; **Step 1**:    Go to the **Credentials Manager** section and click **Add New**.
+
+&#x20; **Step 2**:    Give your credential a **Name\*** and **Description** (optional) and click **Next step**.
+
+![](/images/docs/LNb0bP-2VrA653qz3TMko_image.png)
+
+&#x20; **Step 3**:    Configure the FTP / sFTP connection as needed:
+
+- **Port number\*** - the port number used by the server.
+- **Protocol type** - the protocol used depending on the encryption.
+- **Directory path** - the entry point of the server.
+- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
+
+![](/images/docs/EauVTVKR-BU_WxyKUcLFU_image.png)
+
+&#x20; **Step 4**:    Click **Test connection** and if successful click **Save**.
+
+### **Create the process**
+
+&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
+
+&#x20; **Step 2**:    Give you process a name.
+
+&#x20; **Step 3**:    Drag the action **Get File List** on the canvas and link the action inside you process.
+
+![](/images/docs/ODfT0qK2KjYoN3obJVQHd_image.png)
+
+&#x20; **Step 4**:    Create the &lt;%ftpinfo%&gt; JSon variable of type list.
+
+![](/images/docs/RVEr1IR7_gqHlG8ERoxy2_image.png)
+
+&#x20;  **Step 5:**    Click the **Get File List** action to access its configurations.
+
+- **Node name\*** - gives you the option to change the actions name.
+- **Select ftp server\*** - here we will select the connection created in the previous section.
+- **Folder path** - allows you to select the path to the folder you wish to check.
+- **Is it recursive?** - we have the ability to choose True or False.
+- **File type\*** - choose the type of files that should be retrieved.
+- **Output\*** - here we will add the variable created at Step 4.
+
+![](/images/docs/YWzQTLFRH7deU0F7numtu_image.png)
+
+&#x20; **Step 6:**    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+
+&#x20; **Step 7:**    Click **Check Instance**.
+
+&#x20; **Step 8:**    Here you have the ability to check the data saved in our variable by clicking it, or to download the data in the form of a JSon file.
+
+![](/images/docs/w2-lI9R1XdRtma4rr5i6W_image.png)

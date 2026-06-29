@@ -1,0 +1,8 @@
+{
+  "title": "SQL Server",
+  "icon": "📁",
+  "pages": [
+    "execute-query",
+    "execute-command"
+  ]
+}

@@ -1,0 +1,72 @@
+---
+title: "Extract Object"
+icon: "📕"
+description: "The Extract Object action is one of the actions at your disposal to work with Json data. Extract Object enables you to extract a value from a JSON or…"
+---
+
+![](/images/docs/LXBvHmV7N4Z_M0Off3a42_image.png)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RW3cRYng1Bg" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+<Callout type="warn">
+Extract Object was previously called Json Mapper.
+</Callout>
+
+
+
+The **Extract Object** action is one of the actions at your disposal to work with Json data. Extract Object enables you to extract a value from a JSON or a JSON array.
+
+The action will be able to query/extract data from a JSON input using a [JSONPath expression](https://goessner.net/articles/JsonPath/) and save it to a variable.
+
+<Callout type="info">
+**You can use this&#x20;**[website](https://www.jsonquerytool.com/)**&#x20;to test your JPath queries.**
+</Callout>
+
+### **Overview**
+
+The action is used to filter the Json data that we will import in our process for future use.
+
+Input Field 1: “Input JSON” - Input your JSON object / Array or a data model.
+
+Input Field 2:  “Query” - The Input Jquery expression for obtaining the desired key value of your Json input.
+
+Output Field1: “Result” ( JSON Object value corresponding to the query)
+
+### How to[﻿](https://kb.procesio.com/regex-replace#qd-how-to)﻿
+
+&#x20; 1\.    [Create a new process](https://docs.procesio.com/creating-a-basic-process) and give it a name.
+
+&#x20; 2\.    Drag the **Extract Object** action to the canvas and link it to the other actions.
+
+![](/images/docs/zQwckpp_j8tufSmTpN8ey_image.png)
+
+&#x20; 3\.    [Add the needed variables](https://docs.procesio.com/working-with-process-variables).
+
+![](/images/docs/3-mR2l3PRJjqdm2f1OqXi_image.png)
+
+- ****&lt;%input%&gt; will contain the JSon data, the default will use
+
+```json
+
+[ { "name": "Eric", "invoicenumber": "INV99901", "duedate": "2021-08-30T07:00:00.000Z", "amount": 122.45, "phonenumber": "0700000000", "emailaddress": "employee@procesio.com" }, { "name": "Chris", "invoicenumber": "INV99902", "duedate": "2021-08-03T07:00:00.000Z", "amount": 144.99, "phonenumber": "0711111111", "emailaddress": "otheremployee@procesio.com" }, { "name": "Diana", "invoicenumber": "INV99903", "duedate": "2021-08-30T07:00:00.000Z", "amount": 99.99, "phonenumber": "0722222222", "emailaddress": "employee@procesio.com" } ]
+
+```
+
+- ****&lt;%filter%&gt; will contain the JQuerry expression that we will use on our data. In this exaplte the &lt;%filter%&gt; will be `..name`
+- ****&lt;%result%&gt; will be our actions output.
+
+&#x20; 4\.    Click the **Extract Object** action to access its configurations and add the variables created at the previous space.
+
+![](/images/docs/o7gAqx-oFPzIsbeM2owPR_image.png)
+
+&#x20; 5\.    **Save**, **Validate** and **Run** the process.&#x20;
+
+&#x20; 6\.    The process will ask for the inputs, w could leave the defaults as is for now.
+
+![](/images/docs/WN0-II6eysTBlPPBdlqGy_image.png)
+
+&#x20; 7\.    Click **Run**.
+
+&#x20; 8\.  Click **Check Instance&#x20;**&#x74;o view the results. We will se that the first name from the json was saved in the variable. Keep in mind that the action will extract only one value from a JSON or a JSON array.&#x20;
+
+![](/images/docs/NIPC4Cp8vy8TJBnuSj1I7_image.png)

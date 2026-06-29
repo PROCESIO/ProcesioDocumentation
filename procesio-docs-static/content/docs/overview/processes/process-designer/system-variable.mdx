@@ -1,0 +1,41 @@
+---
+title: "System Variable"
+icon: "📘"
+description: "Each process has a system variable, this is a data model that contains the medatada of the process and instance."
+---
+
+Each process has a system variable, this is a data model that contains the medatada of the process and instance.
+
+![](/images/docs/nO09mCkaUKWYVb-uIEow5_image.png)
+
+Each process has a system variable that serves as a data model containing the metadata of the process and its instance. This system variable plays a crucial role in the workflow by providing essential information and context about the process.
+
+The system variable includes, but is not limited to, the following metadata attributes:
+
+- **Process ID**
+
+  : A unique identifier for the process.
+- **Instance ID**
+
+  : A unique identifier for the instance of the process.
+- **Process Name**
+
+  : The name assigned to the process.
+- **Workspace ID**
+
+  : A unique identifier for the workspace.
+
+This variable can be utilized in two primary ways:
+
+1. **As an Input**
+   - The system variable can be used as an input to other processes or activities within a workflow. By referencing the metadata contained within this variable, subsequent processes can make informed decisions, ensuring that they have the context needed to operate correctly.
+   - Example: A process may check the status of a previous instance before proceeding, or it may use the variables passed from the initial process to perform specific actions.
+
+![](/images/docs/n_uF6OeJyVfCSxjXsB3Ju_image.png)
+
+**As a Custom Response**
+
+- The system variable can be returned as a custom response, providing detailed metadata about the process and its instance to external systems or users.
+- Example: When a process completes, it can return the system variable to an API endpoint, giving external systems all the necessary metadata about the process instance.
+
+![](/images/docs/8TvUlvqQIRzwcJ8OX84t2_image.png)

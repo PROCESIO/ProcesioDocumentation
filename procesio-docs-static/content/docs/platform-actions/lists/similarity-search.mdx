@@ -1,0 +1,72 @@
+---
+title: "Similarity Search"
+icon: "📕"
+description: "The Similarity Search action enables users to search for a specific string within a list of strings using various similarity algorithms. This feature…"
+---
+
+## Description
+
+The `Similarity Search` action enables users to search for a specific string within a list of strings using various similarity algorithms. This feature is particularly useful for tasks such as fuzzy matching or finding similar items within a dataset.
+
+## Action Inputs
+
+The action requires the following inputs:
+
+### List of strings to search in
+
+Specify the list of strings (`list<string>`) in which the search will be performed.
+
+### Similarity Algorithm
+
+Choose one of the available similarity algorithms to use for the search. The supported algorithms are:
+
+1. Block Distance
+2. Chapman Length Deviation
+3. Chapman Mean Deviation
+4. Cosine Similarity
+5. Jaccard Similarity
+6. Euclidean Distance
+7. Dice Similarity
+8. Jaro
+9. Jaro Winkler
+10. Matching Coefficient
+11. Monge Elkan
+12. Levenstein
+13. Needleman Wunch
+14. Overlap Coefficient
+15. QGrams Distance
+16. Smith Waterman
+17. Smith Waterman Gotoh
+18. Smith Waterman Gotoh Windowed Affine
+
+### Similarity Threshold
+
+Define a threshold value of type `double` between 0 and 1.&#x20;
+
+Strings with a similarity below this threshold will not be included in the search results.
+
+### String to search for
+
+Specify the string you want to search for within the list of strings.
+
+### Limit number of search results
+
+Limit the number of search results returned by specifying the maximum number of results to display.
+
+## Action Output
+
+Upon execution, the action returns a list containing the top x strings, with the most relevant ones appearing at the top.
+
+## Usage Example
+
+
+
+![](/images/docs/_Uhqi2tLtJhjuohJVPhlA_image.png)
+
+<Callout type="info">
+For a more in-depth guide intended for C#/.Net developers follow this [link](https://github.com/StefH/SimMetrics.Net/blob/master/Documentation/PDF/SimMetrics.PDF).
+</Callout>
+
+<Callout type="info">
+The code used to create the action can be found [here](https://github.com/PROCESIO/Custom-Actions/tree/main/StringActions/SearchByStringSimilarity).
+</Callout>

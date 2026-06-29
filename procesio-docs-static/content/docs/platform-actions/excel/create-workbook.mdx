@@ -1,0 +1,35 @@
+---
+title: "Create Workbook"
+icon: "📕"
+description: "Use this action to create a new workbook with one sheet."
+---
+
+### Overview[﻿](https://docs.procesio.com/write-to-file#yJA0T)﻿
+
+Use this action to create a new workbook with one sheet.
+
+### How to configure the Create Workbook action?[﻿](https://kb.procesio.com/regex-replace#qd-how-to)﻿[﻿](https://docs.procesio.com/merge-lists#q-how-to)﻿[﻿](https://docs.procesio.com/write-to-file#-s0Vi)﻿
+
+Step 1. Create a process and give it a name.
+
+Step 2. Drag the **Create Workbook** action to the canvas and link it to the other actions.
+
+![](/images/docs/-1T7UObjkj5G6e7G-QW0U_image.png)
+
+Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
+
+![](/images/docs/ieZhLWnrBkcpFZzYsWIyS_screenshot-2022-09-22-at-121223.png)
+
+- **Workbook name**: you must enter a string variable that represents the workbook name (.xlsx file extension is added automatically)
+- **Sheet name**: you must enter a string variable representing the name of the first sheet in the workbook
+- **Workbook**: file variable output which contains the workbook with your given name and given sheet name
+
+Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+
+Step 5. You will be prompted to add the file for our input variable (if the values are not already added as default values for each variable). Click **Run**.
+
+Step 6. To verify the process click **Check instance**.
+
+Step 7. In the **Output&#x20;**&#x73;ection, you can see the file variable with the .xls content as defined. You can download the file:
+
+![](/images/docs/6k_mRcZWYQR-4wx58o7-1_screenshot-2022-09-22-at-121816.png)

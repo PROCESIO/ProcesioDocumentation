@@ -1,0 +1,54 @@
+---
+title: "Microsoft Outlook"
+icon: "📗"
+description: "Microsoft Outlook is a well known email service used by professionals. The SMTP service it offers for free can be easily used in conjunction with…"
+---
+
+Microsoft Outlook is a well known email service used by professionals. The SMTP service it offers for free can be  easily used in conjunction with your apps, printer or scanner and added to your Procesio flows.
+
+Before we begin you must first configure your [Outlook](https://login.microsoftonline.com/) account:
+
+### **Outlook configuration**
+
+&#x20; 1\.    Click the **Settings** widget from the upper right corner and type and select in the in the Search box **POP and IMAP**.
+
+![](/images/docs/uuWvfniFPINl6d1gwTmL1_image.png)
+
+&#x20; 2\.    Under the POP and IMAP options area, select Yes under the **Let devices and apps use POP** option. You can then choose whether or not to let apps and devices delete emails from Outlook or preserve them permanently.
+
+![](/images/docs/hmXfCMOioWdTHVk3gFEsP_image.png)
+
+### **&#x20; Create the connection**
+
+&#x20;  Create the connection between Procesio and your Outlook account:
+
+- Navigate to the [Credentials Manager](https://docs.procesio.com/working-with-credentials-manager) section.
+- Select the **+ Add New** button from the upper right corner.
+- Give a Name to the newly created connection, select **SMTP Server Configuration** from the Credential Type dropdown and optionally add the Description.
+
+![](/images/docs/MJmpneChtSy8O1Q2nvbTG_image.png)
+
+- Add the connection data like in the screen.
+  - Config Type: Outgoing
+  - Server Name\*: smtp-mail.outlook.com
+  - Port Number\*: 587
+  - Encryption: TLS
+  - The username and password of your Outlook account.
+
+![](/images/docs/CMmhzavNorlUvs0hpH0tz_image.png)
+
+- **Test** and **Save** the connection.
+
+### **Create and configure the process&#x20;**
+
+&#x20; 1\.    Create a process using your newly created connection.
+
+&#x20; 2\.    Select the **SMTP credential&#x20;**&#x79;ou just created.
+
+![](/images/docs/5lVtjMxVAynnLW_syI5Zw_image.png)
+
+
+
+&#x20; 3\.    Add the email configurations and the email **Subject** and **Body**.
+
+![](/images/docs/N-OswFhrj7dOENjjo-jDq_image.png)

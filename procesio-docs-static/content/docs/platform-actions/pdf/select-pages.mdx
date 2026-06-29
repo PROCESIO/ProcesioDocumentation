@@ -1,0 +1,45 @@
+---
+title: "Select pages"
+icon: "📕"
+description: "Use this action to select pages from a PDF and return them in the order of selection, as a new PDF."
+---
+
+### Overview[﻿](https://docs.procesio.com/write-to-file#yJA0T)﻿
+
+Use this action to select pages from a PDF and return them in the order of selection, as a new PDF.
+
+### How to configure the Select pages action?[﻿](https://kb.procesio.com/regex-replace#qd-how-to)﻿[﻿](https://docs.procesio.com/merge-lists#q-how-to)﻿[﻿](https://docs.procesio.com/write-to-file#-s0Vi)﻿
+
+Step 1. Create a process and give it a name.
+
+Step 2. Drag the **Select pages** action to the canvas and link it to the other actions.
+
+![](/images/docs/YI6uTKbzy_7w4eKI_-Ybv_image.png)
+
+Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
+
+![](/images/docs/QFaHnL7Opqo3U3K6XUEgp_screenshot-2022-09-28-at-160706.png)
+
+**Input File**: you need to input a File that contains a .pdf file.
+
+**Page selection:&#x20;**&#x79;ou need to write inside the editor the selection of pages you want to select. Supports intervals (ex 5-7) and single values (ex 11). You need to enter each selection on a new row. Press enter to separate selections.
+
+**Resulting file**: you need to add an output File variable which will return the .pdf with the selection. The resulting Pdf page order should be the same as the selection order.
+
+<Callout type="info">
+Given an input PDF with 10 pages and the following selection:
+
+3,
+
+7-8
+
+Resulting .pdf should contain pages: 3,7,8.
+</Callout>
+
+Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+
+Step 5. You will be prompted to add the file for our input variable. Click **Run**.
+
+Step 6. To verify the process click **Check instance**.
+
+Step 7. In the **Output&#x20;**&#x73;ection, you can see the output variable containing the PDF file with the selected pages only.

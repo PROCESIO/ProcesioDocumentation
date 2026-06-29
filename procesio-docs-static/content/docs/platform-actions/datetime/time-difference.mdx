@@ -1,0 +1,45 @@
+---
+title: "Time Difference"
+icon: "📕"
+description: "This action computes the difference between two DateTime values. [hour, minute, second]"
+---
+
+This action computes the difference between two **DateTime** values. **\[hour, minute, second]**
+
+![](/images/docs/RawnYz2DwRIXXnND7AQoI_tdy.png)
+
+## Inputs & Outputs
+
+- **\[ I ] Unit of time**: Drop-down to choose which unit of time will be used for measuring the difference.
+  - **Hour**
+  - **Minute**
+  - **Second**
+- **\[ I ] First Datetime**: DateTime representing the minuend.
+- **\[ I ] Second Datetime**: DateTime representing the subtrahend.
+- **\[ O ] Difference**: Integer equal to the result of **First Datetime - Second Datetime** in **Unit of time**.
+
+![](/images/docs/jFmRi56eIgu52MNqvOqXQ_tdy.png)
+
+## Example Usage
+
+- Drag action onto canvas to get familiarized with it.
+
+![](/images/docs/4p2tiPNtaaXaVhL1bDiD8_tdy.png)
+
+- Declare some variables to be used with the action
+
+![](/images/docs/3EHy4mvgUnf20N09bG7a6_tdy.png)
+
+- Assign the newly created variables.
+- **Save & Run** the process and then **Check Instance** to see the output.
+
+![](/images/docs/YTFyi2PWeAv_1_5Bwup8w_tdy.png)
+
+## Use Cases
+
+- Computing the time difference between two DateTime values.
+
+## Tips
+
+- If **Second Datetime** is lesser than **First Datetime**, the **Difference** will be negative.
+- To compute date difference, consider using [Date Difference](https://docs.procesio.com/how-to/date-difference).

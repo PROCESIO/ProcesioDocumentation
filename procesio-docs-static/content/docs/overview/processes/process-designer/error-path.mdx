@@ -1,0 +1,49 @@
+---
+title: "Error Path"
+icon: "📘"
+description: "The Error Path presents the ability to control how PROCESIO handles errors. Now, you have the power to decide whether your process should stop or…"
+---
+
+The Error Path presents the ability to control how PROCESIO handles errors. Now, you have the power to decide whether your process should stop or continue execution when an error arises.
+
+If you have a process with multiple actions, when one of them fails, the process stops at the action that resulted in an error:
+
+![](/images/docs/hVWpsVUvN1-pK8Y4MFNnV_image.png)
+
+With Error Path, you can create an alternative path in case of errors, or even join with the main path if the errors can be ignored.
+
+Each action, now, has the option to continue on an Error Path, in order to create an Error Path, select the action and drag the bullet displayed under the action to a different action. A connexion from an error port can be dragged only to a normal input port (blue port):
+
+![](/images/docs/KiLudYTmIlZ__wOpCv6Wz_image.png)
+
+In the following example, if an error occurs on the Call API action, it will send an email then it will continue on the main process path:
+
+![](/images/docs/bkXW_Eqs_HZWX1rpi3wFs_image.png)
+
+Or you can create a totally separate path in case of errors:&#x20;
+
+![](/images/docs/6xroCve53Ab5zCxbraV6r_image.png)
+
+<Callout type="warn">
+Please note that an Error Path must also end with a Stop Action.
+</Callout>
+
+You can also create a retry path, in case an action fails, you can setup the Error Path to retry the same action:&#x20;
+
+![](/images/docs/pBhgGxebRlHO52QlBNCZK_image.png)
+
+<Callout type="warn">
+If a retry action path is setup in case of errors, please setup a decisional and count the number of retries with a condition to stop after a certain number of retries, this will prevent the process the get stuck in a loop and consume all your resources. The delay is optional, however is recommended just to limit the number of retries in a short period of time.
+</Callout>
+
+
+
+Once an Error Path is created, an error variable will automatically be generated in the process. This varibles are internal by default and with a default name, however you can change the name and you also have the option to set the variable as output:
+
+![](/images/docs/WsupHF5J-tI37EdfNvt2z_image.png)
+
+This variable is a data model and it can be used as any other data models in PROCESIO:
+
+![](/images/docs/59Tm76OApEmSDGya03T2__image.png)
+
+With Error Path you now have control over the process even if errors occur, making error handling easier.&#x20;

@@ -1,0 +1,10 @@
+{
+  "title": "Processes",
+  "icon": "👑",
+  "pages": [
+    "process-designer",
+    "untitled",
+    "data-model-designer",
+    "document-designer"
+  ]
+}

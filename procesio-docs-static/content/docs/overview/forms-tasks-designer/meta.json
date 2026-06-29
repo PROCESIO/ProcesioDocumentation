@@ -1,0 +1,14 @@
+{
+  "title": "Forms & Tasks Designer🆕 🧨",
+  "icon": "📄",
+  "pages": [
+    "elements",
+    "themes",
+    "create-form",
+    "task-assignees-and-approvals",
+    "submissions",
+    "assigned-to-me",
+    "trigger-events-for-form-and-elements",
+    "list-table-control"
+  ]
+}

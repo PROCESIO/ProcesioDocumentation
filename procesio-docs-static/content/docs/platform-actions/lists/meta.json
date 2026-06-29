@@ -1,0 +1,28 @@
+{
+  "title": "Lists",
+  "icon": "📁",
+  "pages": [
+    "add-2-alt",
+    "contains-2-alt",
+    "get-index-2-alt",
+    "get-element",
+    "remove",
+    "sort",
+    "length-2-alt",
+    "sum",
+    "median",
+    "max",
+    "min",
+    "arithmetic-mean",
+    "first-n-elements",
+    "last-n-elements",
+    "find-duplicates",
+    "deduplicate",
+    "similarity-search",
+    "concatenate-2-alt",
+    "filter",
+    "simple-filter",
+    "sort-data-model-2-alt",
+    "list-tostring"
+  ]
+}

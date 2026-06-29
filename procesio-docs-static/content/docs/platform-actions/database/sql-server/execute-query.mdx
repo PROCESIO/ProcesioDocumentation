@@ -1,0 +1,86 @@
+---
+title: "Execute Query"
+icon: "📕"
+description: "Use this action to execute an SQL query in Microsoft SQL.&x20;"
+---
+
+<Callout type="info">
+&#x20;    Query vs Commands: There's a basic difference between them - commands modify the data, and queries retrieve the data.
+</Callout>
+
+Use this action to execute an SQL query in Microsoft SQL.&#x20;
+
+![](/images/docs/VlFzWssmVHFPffO_6gx7t_image.png)
+
+First of all, you'll have to enter credentials for the **Execute Query** action. You can find out how to do that [here](https://docs.procesio.com/sql-credential).&#x20;
+
+
+
+**How to configure the Execute Query action?**
+
+Go to the Process Designers section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas.
+
+![](/images/docs/77ZeWoEdbL7UMYTkETvqg_screenshot-2023-02-22-at-165549.png)
+
+**Step 1**: Drag the **Execute Query** action from Toolbar and drop it on canvas; click on the action to open the **Properties Panel**.
+
+**Step 2**: You can edit the Action Name.
+
+**Step 3:&#x20;**&#x53;elect a credential [(see here how to create one)](https://docs.procesio.com/sql-credential)
+
+**Step 4:&#x20;**&#x43;lick on **Execute Query (not configured)** card to go to the configurations steps.
+
+**Step 5: &#x20;**&#x54;ype your SQL query in the editor.
+
+> Note: you can always add process variables to your query. Press INSERT/Ctrl+I (Windows) or Cmd+I (Mac).
+
+**Step 6:&#x20;**&#x41;dd the output variable. Note: it has to be defined as a list\&lt;objects>.&#x20;
+
+`In the output variable, you will see the retrieved data/results based on the query.`
+
+
+
+![](/images/docs/aNIrdEJG8dJYXXiuJpZCt_screenshot-2023-02-22-at-173725.png)
+
+**Step 7:**   **Save**, **Validate** and **Run** the process.&#x20;
+
+**Step 8:** Click **Check Instance&#x20;**&#x74;o view the results.
+
+Based on our query, a list with data was retrieved in the output variable:&#x20;
+
+![](/images/docs/SiZZhEA5FIGsUfPyxwt6b_screenshot-2023-02-22-at-173906.png)
+
+## Notes
+
+### Using SQL Parameters
+
+When writing SQL queries in **Execute Query**, you can use **SQL parameters** instead of inserting variables directly inside the query text.
+
+Parameters allow you to safely pass values from process variables to the SQL query and help prevent errors caused by special characters.
+
+For example, instead of writing:
+
+> SELECT Id, FirstName, EmailFROM ClientsWHERE Email = '\&#123;\&#123;client.email&#125;&#125;'
+
+You can define a parameter:
+
+> SELECT Id, FirstName, EmailFROM ClientsWHERE Email = @email
+
+Then map the parameter in the **configuration panel shown above**:
+
+| Parameter | SQL Type | Value              |
+| --------- | -------- | ------------------ |
+| email     | NVarChar | \&#123;\&#123;client.email&#125;&#125; |
+
+Using parameters is recommended because it:
+
+- prevents SQL errors when values contain characters like '&#x20;
+- improves query security&#x20;
+- keeps SQL statements easier to read&#x20;
+- works better with dynamic process variables&#x20;
+
+If the mapped value is **null**, PROCESIO automatically sends a **SQL NULL** value to the database.
+
+
+
+![](/images/docs/1YQ7q8dem6GISbuXMPkuq_image.png)

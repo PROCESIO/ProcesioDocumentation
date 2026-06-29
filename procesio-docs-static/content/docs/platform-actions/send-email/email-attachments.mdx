@@ -1,0 +1,67 @@
+---
+title: "Email attachments"
+icon: "📎"
+description: "Email attachments is a must have when building automations that involve email communications."
+---
+
+Email attachments is a must have when building automations that involve email communications.
+
+### **Prerequisites**
+
+1. Procesio [Document Template](https://docs.procesio.com/document-template-creation)
+2. SMTP server
+
+### **How to**
+
+&#x20; 1\.    Create the [SMTP credential](https://docs.procesio.com/working-with-credentials).
+
+&#x20; 2\.    Create the [document template](https://docs.procesio.com/document-template-creation) (you have the ability to use variables in your templates).
+
+![](/images/docs/Nh3Rx81AKTJeKOpbN2VBb_image.png)
+
+&#x20; 4\.    Create the [process](https://docs.procesio.com/creating-a-basic-process).
+
+![](/images/docs/bxUyLtq-qjUPdXn4LUtmh_image.png)
+
+&#x20; 5\.    Configure the actions:
+
+a. [Generate document](https://docs.procesio.com/how-to/generate-document)﻿
+
+Create the process variables:
+
+- ﻿&lt;%vacation%&gt; - output variable of type File.
+- ﻿&lt;%StartDate%&gt; - input DateTime variable.
+- ﻿&lt;%EndDate%&gt; - input DateTime variable.
+- ﻿&lt;%Reason%&gt; - input String variable.
+- ﻿&lt;%Name%&gt; - input String variable.
+
+Click the **Generate Document** action:
+
+- Select the document template\*
+- type a name for the file you will create
+- choose the File variable that will store the document.
+
+![](/images/docs/UrAT5-d-YRdqzV_pb7JaV_image.png)
+
+Click **Map Document Data** and use the following configuration
+
+![](/images/docs/-LNzp4xNM71GfqusbVsHV_image.png)
+
+b. **List Add**
+
+- create the list variable &lt;%attachment%&gt; of type File.
+- use the following configuration to add the &lt;%vacation%&gt; file variable in to the &lt;%attachment%&gt; variable.
+
+![](/images/docs/x4esHAZJVnvE8jX7oSGnO_image.png)
+
+c. [Send Email](https://docs.procesio.com/how-to/send-email) - add the configuration and map the &lt;%attachment%&gt; variable to the email.
+
+![](/images/docs/rYBQZwjATrPfvnXdXq6Hs_image.png)
+
+
+
+&#x20; 6\.    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process. You will be asked to enter the values of the input values. Click **Run&#x20;**&#x61;gain.
+
+![](/images/docs/r8Kca-ZXxVM2Hcsjcfmwv_image.png)
+
+&#x20; 7\.    Click **Check instance** to view the result.

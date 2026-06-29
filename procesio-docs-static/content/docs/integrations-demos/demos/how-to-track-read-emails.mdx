@@ -1,0 +1,308 @@
+---
+title: "How to Track read emails?"
+icon: "📘"
+description: "import file containing this ready&x20;&x74;o use, use-case (only few post-import configurations needed). - video tutorial, on how to import this…"
+---
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/SJ6OnEGUSEo" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+<Callout type="success">
+At the bottom of this article you'll be able to find:
+
+- **import file** containing this **ready&#x20;**&#x74;o use, use-case (only few post-import configurations needed).
+- **video tutorial**, on how to import this use-case & what needs to be done after importing it.
+</Callout>
+
+# **WHY Track read emails?**
+
+- **Email marketing campaigns** - Tracking email opens and clicks can help marketers measure the success of their campaigns and make adjustments to improve their effectiveness.
+- **Sales outreach** - Knowing when a prospect opens an email can help sales teams time their follow-up communications and improve their chances of converting the lead.
+- **Job applications** - Tracking when a potential employer opens your email can give you an idea of how interested they are in your application.
+- **Legal notices** - Tracking when a legal notice is opened can help ensure compliance and provide an audit trail for legal proceedings.
+- **Newsletters&#x20;**- Tracking email opens and clicks can help newsletter publishers understand which topics are most engaging to their readers.
+- **Support requests** - Tracking when a support request email is opened can help support teams prioritize their responses and improve customer satisfaction.
+- **Internal communications** - Tracking email opens can help managers ensure that important messages are being read by their teams.
+- **And many other scenarios!**
+
+# **HOW TO Track read emails?**
+
+## **By using a Tracking Pixel!**
+
+A tracking pixel is a 1x1 pixel image that gets placed in the header or the footer of the sent email so that when the recipient reads/opens the email the image gets downloaded and you can track the downloads of the image.
+
+
+Obviously, it is important to keep a correlation between the image and the emails sent, so you can uniquely identify each email.
+
+# **HOW to do this with PROCESIO**
+
+![](/images/docs/R7_3JkUW-9l7twspVU9m__screenshot-2023-02-27-at-154715.png)
+
+You need to create 2 processes in PROCESIO and 1 Webhook:
+
+- The first process sends the email with the tracking pixel in it and logs into a database the sent email. The tracking pixel is actually a PROCESIO webhook URL that, when downloaded, it triggers the 2nd process;
+- The second process logs the event in the database.
+
+
+**WEBHOOK**
+-----------
+
+We need to create first the Webhook, by selecting the option “*I want to manually define webhook payload*”. You can give it any name you want.
+
+![](https://lh6.googleusercontent.com/0QrFJcASo_wA0E-3j1CAYVzVm7fYizpd7GvgtgI2DM08waTC2lm6egaHL6fN7prACx274vKHH-PAMKh7Z-ZyZEeIHwtJpeN8HjPxsItISQqOhVwSW86WUQAEyyjNTMsTdnbuZvLX28gRwgVPvnSICqE)
+
+In the “Payload definition” section paste the following JSON structure and click “Generate data model”:
+
+> \&#123;"id": "CBE88532-BF5F-46EE-8C84-B944FE169DDA"&#125;
+
+![](https://lh5.googleusercontent.com/S3MARxNRkZJGAOgxd_TPMX_jcEsCyxSoEbXap-y9F0bWzvZGoEsHLvj119fXteRPDoqnv6S76lpylcsBIubGnm_fA6oH3gtIa7u53SwSkagEpQ0J5nCtNIYZCsS8zrTw9u6Z1F06BQNSXHCeUP9Ho08)
+
+Now, copy the “Webhook URL” and save the webhook!
+
+
+**PROCESS 1**
+-------------
+
+The first process looks like in the following image:
+
+
+
+![](https://lh6.googleusercontent.com/nC7H3-HvFdDXw-VX-bMP3nq2Ow4e1FH8CPGufQR3uT0XGV8QcF_NQQMJgV5szvA72jofKjcSQD8GGhVt-R19eEChMdvBxTlqbjmNJPfQRXkrtDEWm2hAdJYj37Me-_JC11A0GJY76LHTdExfLgCjcSI)
+
+Define the variables that you are going to use in this process as in the following image:
+
+
+
+![](https://lh6.googleusercontent.com/21HKnhfTfb--Cshl0HToaurVsZKbiSvIy0GmSDlpJ07PGpaAfjO3nJUgBm1R8Sa22oJY7ukixgAwOISAFdIRH7cEuNI55cOT4Jl5sPBYRTlhsauh6MvH5dMCQOOQfYEWzbsrRAB-Pwu1Sg3MZz0nPWo)
+
+
+
+
+Now configure the actions as follows:
+
+**EmailGuid** (*Utilitary/Generate GUID* action) - it generates a unique ID (GUID) for the email that is about to be sent.
+
+![](https://lh4.googleusercontent.com/xUTllq-hW4zOOL0kcHQnRLuN3JoBbHMolN3Kl21pq-aQwpdW9I7QvXj3iHn1djRyt6x2zg_91Zr4DaGKwJh9AfHyxqgr6_3628tUFo2JM6bT_uxbHL3GVNLbCHe9abm8u6mg2BzmOOG7G1y0nwjcGs8)
+
+
+**Register Email** (*Database/SQL Server/Execute command* action) - it logs in a database the email that is about to be sent so you can reference it later.
+
+
+
+![](https://lh6.googleusercontent.com/WEnVnnbGOh_O62vik9Li0eyP17JgsfVqpZx449zy4HMjHnIIGhjInpY1ZiaprN-6cjVhB2wRlCDT0YLyAZEBpG1LUesaAa7a9hwFTZR0tDDQbTNLxRO_MjInR0mGvrAr2jQNwL9EarSDLzklzlKT9sI)
+
+You will need to define your SQL server credentials to connect to a database where to store data in a table.
+
+![](https://lh4.googleusercontent.com/krAJnn5s5jhKQLIJbfZ4JGsxYDI0EjiGheZMXyawzA5qMwNXaTJAAOf1JEOVX1NYZu_uYfDd07Ewdza_GLS7CsKq160uCX1L48OTKDRZPTyI8vBCtrYQ3UZhByXMenKEwVolGrGH64eTvkxDbZJIzKM)
+
+> EXEC dbo.Email\_Register @EmailGUID = N'\&lt;%EmailGUID%>',
+> @SentTo = N'\&lt;%EmailTo%>',
+> @SentCC = N'\&lt;%EmailCC%>',
+> @SentBCC = N'\&lt;%EmailBCC%>',
+> @Subject = N'\&lt;%EmailSubject%>',
+> @Body = N'\&lt;%EmailBody%>'
+
+This action executes a stored procedure in the database which in turn saves the information to a table.
+
+To create the required objects in the database, run the following script:
+
+```text
+/****** Object:  Table [dbo].[EmailsSent] ******/
+CREATE TABLE [dbo].[EmailsSent](
+	[EmailGUID] [UNIQUEIDENTIFIER] NOT NULL,
+	[SentTime] [DATETIME] NOT NULL,
+	[SentTo] [NVARCHAR](400) NULL,
+	[SentCC] [NVARCHAR](400) NULL,
+	[SentBCC] [NVARCHAR](400) NULL,
+	[Subject] [NVARCHAR](1000) NOT NULL,
+	[Body] [NVARCHAR](MAX) NOT NULL,
+ CONSTRAINT [PK_EmailsSent] PRIMARY KEY CLUSTERED 
+(
+	[EmailGUID] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Email_Register] ******/
+-- =============================================
+-- Description: Registers an email
+-- =============================================
+CREATE PROCEDURE [dbo].[Email_Register]
+(
+	@EmailGUID UNIQUEIDENTIFIER,
+    @SentTo NVARCHAR(400),
+	@SentCC NVARCHAR(400),
+	@SentBCC NVARCHAR(400),
+	@Subject NVARCHAR(1000),
+	@Body NVARCHAR(MAX)
+)
+AS
+BEGIN
+    SET NOCOUNT ON
+
+    DECLARE @NowTime DATETIME = GETDATE()
+
+	INSERT INTO dbo.EmailsSent (EmailGUID, SentTime, SentTo, SentCC, SentBCC, Subject, Body)
+	VALUES (@EmailGUID, @NowTime, @SentTo, @SentCC, @SentBCC, @Subject, @Body)
+END
+GO
+```
+
+
+**Encode tracking URL** (*Strings/String Url Encode* action) - it encodes the payload to be sent via the webhook to the 2nd process
+
+
+
+![](https://lh3.googleusercontent.com/ODC86fjGdLHLwz-BleGzVrqyrO4YJbkhFGMP1Cjox7fMYvCuMjwXyb2d1FagfxdU6KiSV8j31mRSvzca8xfjINM8d7mlaxY3Ch3U87geeEaR4rcpoQZ47-icQAS0GA72TaDbjFLiqDi22T7tUkhL4tI)
+
+**String Concat** (*Strings/String Concat* action) - it concatenates the Webhook URL you copied when creating the webhook and the encoded payload, as shown in the image bellow.
+
+![](https://lh6.googleusercontent.com/ONSpxGsA_GVMRbMlAyjpaP0l1qrGDk_yZMmJxM71icQQ7iPs3FbGWNxNxd5HKyNUk2U9b6K8VxrK80LorHdXtPVu_-3Iqs-DsVTSd2nOen2-p7jIp9blOTNxkmoema5il1I5xaLUaGMFJUampYQ4wPA)
+
+
+
+
+
+
+![](https://lh5.googleusercontent.com/sO3hkt-6a84ONGxoAGTE-WCOzNm563r3AwTllYHDybvft0Kg_Jd-H5hho83CDjrQVfQlQPhi3s8kCRrlYDjlSXnwKtUXlzZs2oJusF7-RHyF_pV8n0kKVXakwG5ODZNMhPchyvzY0aKFqlpqbCv0mJo)
+
+
+**Send Email** (*Send Email* action) - it sends the actual email.
+
+
+
+![](https://lh3.googleusercontent.com/NRXFntWB8ZHN90XGWXLwrrxjHxzB8Git2f75g4qmQjRnwvnr24ZFlAIewINrpDLTA6FmMz1dE86mJkeGbpvZCN3Rhe-mU9jLbfuUqy-QADS6q_7eIRb9frHaP4NBH8qGmkwbZwjXV6IXwghZSUN4VXU)
+
+You will need to define your SMTPserver credentials to send emails with PROCESIO.
+
+![](https://lh6.googleusercontent.com/BVuP4r9Thjn7MTMB8lsDusXAvVTMWXnChb84u1nRG0A17supJ1kg1G4AC5-inudjeuBJjDhr4qRxWCX-iV4LaYqY8lBHguYILfTdpeLbdpz3mW8ct68QPRrrLNo-1R4AQjzbQV1FJokmdrvpSkcqC0w)
+
+Keep in mind that you need to mark “Body is HTML” and in the Body, you need to have this:
+
+> \&lt;%EmailBody%>&#x20;
+> \<img src="\&lt;%EncodedTrackingURL%>" width="1" height="1">
+
+Where
+
+> \<img src="\&lt;%EncodedTrackingURL%>" width="1" height="1">
+
+
+Is the actual Tracking Pixel, basically adding the Webhook URL + Payload as an image to the email so that the email client will try to download the image triggering the webhook which in turn will trigger the 2nd process to run.
+
+
+
+
+## **PROCESS 2**
+
+The 2nd process looks like in the following screenshot:
+
+
+
+![](https://lh3.googleusercontent.com/6uT-bPvuPce8p3u5Qri1pyarzKDNrUtC5c1TSGW3-nTPv2CT2vtI1o8tXwHoqwgBSXE5tYJlz2vHSYo9a3M3KxlaQH2SWuyS1hhRVk0K13dnRNk8OMwY-2OUlS3LhTlQl-HIquQOmrzeuIyFmbv_aQ0)
+
+We need to assign the created webhook to this process so that the webhook will trigger this process when an email is read.
+
+Go to the right-hand sidebar, to the “Webhooks” menu and click “Assign webhook”, as seen in the screenshot:
+
+
+
+![](https://lh3.googleusercontent.com/12zamh1Z3xSkkDNoKocVv4Ypgykk3w75vv20bPPOhRH8Ac7wDU21-4ZxDS5I20o32N3bSMLqOlTo-_klRsMs6kM3MhVpcTTR9eBljPnkhUPuDVrX5yxfGkg2Kk3EVH2S_S1WAZ2t6LJymkTYp7KF3dw)
+
+
+Now, select the webhook you created and give a name to the “Local variable name”:
+
+![](https://lh5.googleusercontent.com/zTOYkOPHJSiep3-lLG5zzn4S56R1lYFth_Gkw8PjQCLaw5YhSx_EzqLzcE8hVaUy8uSAPzMvQlOM443UXJq2h3zIrLYciNBlSO2yRTFKiQ2VA2zTT7fo9r7gPF4_hSOxCQhp_mHiFLc2rTZ2jd-85T0)
+
+Now, define the variable “QueryOUT” that you are going to use in this process as in the following image:
+
+
+
+![](https://lh4.googleusercontent.com/GYavVHeWnDlLcd0eMzWPrZYamIlzZkTdj1EfE09KxQ5mAO1bkPrsx-bTHJbt1MCvUJ1aSeMnIlukmjEn5kKi-b2vf-UFrRQkG39bkG_YHm1pUlu0Pbsj-rSb09q6DUrRHpimKAh5MLo0oMHHs9y7yls)
+
+You will notice that the “TrackEmail” variable coming from the webhook is already visible and you will be able to use it in the process.
+
+
+
+
+Now configure the actions as follows:
+
+**Track email in DB** (*Database/SQL Server/Execute command* action) - it logs in a database the email ID that was read.
+
+
+
+![](https://lh3.googleusercontent.com/n7_zveD5HFGPsud6JDyhPTVJS8EvY_hp1i6yIJoRNRKXvvo1sramntgkHrQUm6ObabvvBHjqw6HGQkyPR4c0a2_ogstAkPE3QHQntbVUTqwRFMHh8-kDszjGmK3CDF55eBl0qIHBLoAos2eIeO3RIeQ)
+
+You will use the same SQL server credentials you used in the 1st process to connect to a database where to store data in a table.
+
+![](https://lh4.googleusercontent.com/2v7wp3_v59zprlMBNxYcQhJvSj1idV4z5Zchll1_701xexXpY7Wnj16DBVMUP3Byt3PA9Ql3unr8udJVG9Z7gHFiIS_VE1hzmnH-GmNtrxlmd4amJZf8rWg6by0HhADxxpApVanLsbHbc50rSio2tHw)
+
+The command is:
+
+> EXEC dbo.EmailOpened\_Register @EmailGUID = N'\&lt;%TrackEmail.id%>'
+
+This action executes a stored procedure in the database which in turn saves the information to a table.
+
+To create the required objects in the database, run the following script:
+
+```text
+/****** Object:  Table [dbo].[EmailsOpened] ******/
+CREATE TABLE [dbo].[EmailsOpened](
+	[EmailGUID] [UNIQUEIDENTIFIER] NOT NULL,
+	[OpenTime] [DATETIME] NOT NULL,
+ CONSTRAINT [PK_EmailsOpened] PRIMARY KEY CLUSTERED 
+(
+	[EmailGUID] ASC,
+	[OpenTime] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[EmailOpened_Register] ******/
+-- =============================================
+-- Description: Registers an email opened operation
+-- =============================================
+CREATE PROCEDURE [dbo].[EmailOpened_Register]
+(
+	@EmailGUID UNIQUEIDENTIFIER
+)
+AS
+BEGIN
+    SET NOCOUNT ON
+
+    DECLARE @NowTime DATETIME = GETDATE()
+
+	INSERT INTO dbo.EmailsOpened (EmailGUID, OpenTime)
+	VALUES (@EmailGUID, @NowTime)
+END
+GO
+```
+
+
+**That is it!**
+===============
+
+### Now you can run Process 1 to send emails directly or from other processes&#xA;&#xA;&#xA;**Import File**
+
+<Callout type="success">
+Use below .procesio file, for importing this use-case dirctly to one of your workspaces (feel free to create a new workspace dedicted for this example).
+</Callout>
+
+[📎 track-read-emails.procesio](/files/XSNDnLcLI6Qv1TXU8IiUW_track-read-emails.procesio)
+
+By using the import file you will obtain this almost ready to use, use-case directly to the workspace. You won't have to follow all the above mentioned steps but only perform the import & some configuration adjustments depicted in the video below.
+
+**Video tutorial on how to import**
+
+Watch below youtube tutorial, in order to do the ncessarly adjustment **post-import.**
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ONA_6Tktj8w" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+
+
+
+
+
+
+[📎 Download file]()

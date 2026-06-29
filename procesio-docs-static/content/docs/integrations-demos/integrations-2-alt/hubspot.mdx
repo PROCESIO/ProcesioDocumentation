@@ -1,0 +1,97 @@
+---
+title: "Hubspot"
+icon: "📗"
+description: "Hubspot is a CRM platform that's both powerful and easy to use at the same time. To integrate PROCESIO with Hubspot let's start by configuring your…"
+---
+
+Hubspot is a CRM platform that's both powerful and easy to use at the same time. To integrate PROCESIO with Hubspot let's start by configuring your Hubspot account:
+
+### Hubspot
+
+&#x20; 1\.    Create a [Hubspot]() account.
+
+&#x20; 2\.    Click the **Settings&#x20;**&#x77;idget in the upper right corner.
+
+![](/images/docs/Zy28XsxZUcC2pOzwohZQi_image.png)
+
+&#x20; 3\.    From **Account** **Setup&#x20;**&#x73;elect **Integrations&#x20;**> **APi keys**.
+
+![](/images/docs/584wRis_ca-rmTWbY_e4p_image.png)
+
+&#x20; 4\.    Click the **Show** button to view your **Api key**.
+
+![](/images/docs/zsUhx_0jW2Cq08fWNPyxv_image.png)
+
+### Procesio
+
+&#x20; 1\.   Login to your [Procesio account](https://procesio.app/).
+
+&#x20; 2\.    Navigate to the [Credentials Manager](https://docs.procesio.com/working-with-credentials) section.
+
+- Select the **+ Add New** button from the upper right corner.
+- Give a Name to the newly created connection, select **Rest Api Configuration** from the Credential Type dropdown and optionally add the Description.
+- Click **Next step**.
+
+&#x20; 3\.    Add the necessary configurations:
+
+- Url: [https://api.hubapi.com](https://api.hubapi.com)
+- Method: **Get**
+- Test endpoint: **/crm/v3/objects/contacts?limit=10\&archived=false** (any valid get endpoint can e used here)
+- Authentication method: **Api key authentication**
+- Key: **hapikey**
+- Value: the key retrieved in the previous section
+- Check the **Query Parameters** checkbox.
+
+![](/images/docs/_NldgRb8yoPiQa3MwlWRE_image.png)
+
+&#x20; 4\.    Click **Test connection** to validate the credential.
+
+&#x20; 5\.    Click **Save**.
+
+&#x20; 6\.    Navigate to the **Process Designer** section.
+
+&#x20; 7\.    Click the **Create New&#x20;**&#x62;utton.
+
+&#x20; 8\.    Give your process a name.
+
+&#x20; 9\.    Drag a Call Api action to the canvas and connect it with the other actions.
+
+![](/images/docs/U3Zk0mr9taidDHxyN3hcg_image.png)
+
+&#x20; 10\.    Click the **Call Api Action**.
+
+&#x20; 11\.    You have the ability to change its name.
+
+&#x20; 12\.    From **Select Api Configuration\*&#x20;**&#x73;elect the connection created on step 5.
+
+&#x20; 13\.   Click on **Configure Request**.
+
+&#x20; 14\.    Select the **Verb**.
+
+&#x20; 15\.    Add the endpoint you intend to use - **/contacts/v1/lists/all/contacts/all**.
+
+&#x20; 16\.    If needed you have the option to use **Query Params**, **Headers** or a **Body**. For the endpoint w will use w will use the count query parameter **count**,
+
+![](/images/docs/xLoG27jx3B08qBqfQTrV9_image.png)
+
+&#x20; 17\.    Create a variable to hold the api response.
+
+![](/images/docs/5VlWUyIMrw2p-hjj-fHAX_image.png)
+
+- click **+ Add Variable**
+- **Name\***: HubspotBodyOutput
+- **Type**: JSon
+- select **Single Value**
+- **set as: Output&#x20;**- the output check allows us to see the output of the instance
+
+&#x20; 18\.    Return to the Call Api Action Configure request and add the variable &lt;%HubspotBodyOutput%&gt; in the **Body Output** section.
+
+![](/images/docs/Omn5Jp0A8tE5Gf7vXrylf_image.png)
+
+
+
+&#x20; 19\.    **Save**, **Validate** and **Run** the process.
+
+&#x20; 20\.    Click **Check Instance**.
+
+![](/images/docs/zYqqhQUrnGbFppgXm7hKR_image.png)

@@ -1,0 +1,28 @@
+{
+  "title": "Strings",
+  "icon": "📁",
+  "pages": [
+    "between",
+    "replace",
+    "replace-eol",
+    "trim-start",
+    "trim-end",
+    "trim",
+    "to-upper",
+    "to-lower",
+    "ends-with",
+    "starts-with",
+    "split",
+    "null-or-empty",
+    "substing",
+    "take-form-left-mid-right",
+    "to-title-case",
+    "to-sentence-case",
+    "html-sanitizer",
+    "regex-validate",
+    "regex-replace",
+    "regex-extract",
+    "url-encode",
+    "url-decode"
+  ]
+}

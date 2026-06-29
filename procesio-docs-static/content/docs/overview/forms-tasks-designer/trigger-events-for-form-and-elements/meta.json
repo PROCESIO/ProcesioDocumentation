@@ -1,0 +1,10 @@
+{
+  "title": "Trigger Events for Form and Elements",
+  "icon": "📌",
+  "pages": [
+    "trigger-process",
+    "trigger-javascript",
+    "trigger-form",
+    "map-form-variable"
+  ]
+}

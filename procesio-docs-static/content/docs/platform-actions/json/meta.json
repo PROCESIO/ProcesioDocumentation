@@ -1,0 +1,10 @@
+{
+  "title": "Json",
+  "icon": "📁",
+  "pages": [
+    "extract-object",
+    "extract-list",
+    "key-value",
+    "parse-json"
+  ]
+}

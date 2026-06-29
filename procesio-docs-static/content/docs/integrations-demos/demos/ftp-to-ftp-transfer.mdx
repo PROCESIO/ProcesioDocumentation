@@ -1,0 +1,63 @@
+---
+title: "FTP to FTP transfer"
+icon: "📘"
+description: "With PROCESIO you can automate file transfers between two FTP servers."
+---
+
+With **PROCESIO** you can automate file transfers between two FTP servers.
+
+## **Scenario**
+
+A call center that records their calls with customers wishes to upload them to an FTP server and depending on their business rules, the file is then moved to another FTP server.
+
+### **Prerequisites**
+
+**&#x20;&#x20;**&#x31;.     Two FTP servers
+
+&#x20; 2\.     File to upload to the first FTP server and transfer to the second FTP server
+
+## **How to&#x20;**
+
+&#x20; 1\.    Create the **SFTP** **Credentials** for the two servers that will be used.
+
+&#x20; 2\.    Create the following process flow.
+
+![](/images/docs/SgJo5BJS4i_F3mK_YALsX_image.png)
+
+&#x20; 3\.    Define the variables.
+
+- **fileInput** ➜ Input variable of type File.
+- **resultOfUpload** ➜ Output variable of type Boolean.
+- **moveResult** ➜ Output variable of type Boolean.
+
+![](/images/docs/yLbF6QEL0y1Z9YunlLzu__image.png)
+
+&#x20; 4\.     Configure the actions.
+
+a. **Upload File**
+
+![](/images/docs/6VjrpuY2LLBsCRfSynElW_image.png)
+
+- **Select FTP server**: select the FTP credential of the server you wish to upload the file to.
+- **Input file**: use the variable that will hold the file you will work with.
+- **Target folder**: the location on the FTP server that will store the file.&#x20;
+- **Result**: use the first confirmation variable you created.
+
+b.  **Move File**
+
+![](/images/docs/BGYCccLG8sYjrMpFvepJl_image.png)
+
+- **From FTP server:** select the FTP server where the file was uploaded by the previous action.&#x20;
+- **From Folder:&#x20;**&#x20;path to the file.
+- **File name:**  name of the file being moved.
+- **To FTP server:**  use the drop-down to select the FTP server where the file will be moved.
+- **To folder:**  path in the second FTP server where the file will be placed.
+- **Result:**  use the second confirmation variable you created.
+
+&#x20; 5\.     **Save**, **Validate** and **Run** the process.
+
+&#x20; 6\.     Add the file you wish to upload inside the modal and click **Run**.
+
+![](/images/docs/3R28iyiS6xjPCazc_Flxw_image.png)
+
+&#x20; 7\.     Click the **Check instance** button to see the result.

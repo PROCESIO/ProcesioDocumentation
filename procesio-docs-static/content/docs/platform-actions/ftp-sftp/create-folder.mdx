@@ -1,0 +1,60 @@
+---
+title: "Create Folder"
+icon: "📕"
+description: "The action Create Folder, enables you to create a folder within the specified location."
+---
+
+![](/images/docs/Q9AVhbQhklwVjau6mz-4z_image.png)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OSXLXpINvWY" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+The action **Create Folder**, enables you to create a folder within the specified location.
+
+### **FTP connection**
+
+For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+
+&#x20; **Step 1**:    Go to th&#x65;**&#x20;Credentials Manager** section and click **Add New**.
+
+&#x20; **Step 2**:    Give your credential a **Name\*** and **Description** (optional) and click **Next step**.
+
+![](/images/docs/I8oFkhm59Oz39mOJek9pk_image.png)
+
+&#x20;**Step 3**:    Configure the FTP / sFTP connection as needed:
+
+- Port number\* - the port number used by the server.
+- Protocol type - the protocol used depending on the encryption.
+- Directory path - the entry point of the server.
+- Authentication method - here you have the option to use a basic username and password authentication or a user key authentication.
+
+![](/images/docs/X_c2dbo4-7DrymcYMhO4S_image.png)
+
+&#x20; **Step 4**:    Click **Test connection** and if successful click **Save**.
+
+### **Create the process**
+
+&#x20;**&#x20;Step 1**:    From the **Process Designer** section select **Create new**.
+
+&#x20; **Step 2**:    Give you process a name.
+
+&#x20; **Step 3**:    Drag the action **Create Folder** on the canvas and link the action inside you process.
+
+![](/images/docs/5Hhc5OpkLn930y9V-yPsF_image.png)
+
+&#x20; **Step 4**:    Create the &lt;%success%&gt; Boolean variable of type output.
+
+![](/images/docs/TcUOcRJ-E3zo08-xxi3mC_image.png)
+
+&#x20; **Step 5**:    Click the **Create Folder** action to access its configurations.
+
+- **Node name**\* - gives you the option to change the actions name.
+- **Choose server type**\* - here we will select the connection created in the previous section.
+- **Source folder** - allows you to select the path to the folder you wish to create.
+- **Folder name** - the name of the new folder.
+- **Result\*** - here we will add the variable created at Step 4.
+
+![](/images/docs/RLo0_tXH9YLwVOdUBqiHl_image.png)
+
+&#x20; Step 6:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+
+&#x20; Step 7:    Click **Check Instance**.

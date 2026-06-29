@@ -1,0 +1,69 @@
+---
+title: "Working with Data Models"
+icon: "📘"
+description: "Use the Data Model Designer to create your custom data type. It helps you define the relationships between the data elements (attributes) you have,…"
+---
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vICVshScodQ" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+Use the Data Model Designer to create your custom data type. It helps you define the relationships between the data elements (attributes) you have, to give it a structure. Data models are a key concept in PROCESIO as they can be used to configure the data type of process variables.
+
+### Data model structure
+
+A Data Model is an organized view of attributes and their relationships with other data models. 
+
+Each data model has one or more attributes. Each attribute has a data type, either primitive or data model, which would effectively create a relationship between 2 data models.
+
+Relationships consist of dependencies or associations between two data models. Thus a data model can have another data model as an attribute, describing the relationship between the two. 
+
+### Creating a data model
+
+Here are the steps to create a data model and add attributes to it:
+
+**Step 1:**  Go to the Designer panel and select ***Data Model Designer*** to access the Data Models page. 
+
+**Step 2:**  Once on the Data Models page, select **Create data model** from the upper right corner.
+
+![](/images/docs/if0Zkn1rkW26R2eT08Bes_datamodeltable.PNG)
+
+**Step 3:** A modal screen will pop up where you must set a name for your Data model.
+
+<Callout type="info">
+If you want to create several data models at this point, check the **Add another** option and hit **Create**. A similar form will be displayed to set a name for the following data model.  
+</Callout>
+
+**Step 5:** Press **Create&#x20;**&#x77;hen done.
+
+**Step 6:** The data model is now created and you can add attributes by pressing **Add attribute**.
+
+**Step 7:** Define the **Display Name**, **Type**, and **JSon** **Property**. 
+
+<Callout type="info">
+Note: the Type of an attribute can be a primitive (integer, string, boolean etc.) or another Data Model created upfront. This is how you can create Relationships between two or more data models.
+</Callout>
+
+![](/images/docs/lZfKXa4o0_dCTVVCgtPhX_attributes.PNG)
+
+<Callout type="info">
+If you want to create several attributes at this point, check the **Add another** option and click **Create**. A similar form will be displayed to set a name for the following attribute.
+</Callout>
+
+**Step 8:** Press **Create** button to complete the attribute definition. It will be listed within the data model you created.
+
+### Using a data model in a process
+
+After you created a process you can add variables that have a custom data type that you defined in the Data Model Designer. For example, you have defined the data model Country like in the image below:
+
+![](/images/docs/kGF0FmNkVQBLfJ0qhF8FA_datamodeler.png)
+
+In the process designer, you can create the &lt;country_var&gt; variable that has the data type “Country”:
+
+![](/images/docs/wzogpb-00P-EMSAoAySx3_createvariable.png)
+
+We can use the &lt;%country_var%&gt; variable in any action configuration, by selecting an attribute of the “Country” data model:
+
+![](/images/docs/Fzo831gzNEQbha-Jm-RnT_usevariable.png)
+
+When mapped to the property of an action, the format is &lt;%variable_name%&gt;.&lt;data_model_attribute_name&gt;, like in the image below:
+
+![](/images/docs/B4uLU2y6piTNWO0XSbq1p_usevariable2.png)

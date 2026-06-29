@@ -1,0 +1,14 @@
+{
+  "title": "Numerical",
+  "icon": "📁",
+  "pages": [
+    "substract",
+    "modulo",
+    "divide",
+    "multiply",
+    "round-up",
+    "round",
+    "round-down",
+    "parse-number"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Working with Credentials",
+  "icon": "📘",
+  "pages": [
+    "rest-api-credential",
+    "smtp-server-credential",
+    "ftp-credential",
+    "sql-credential",
+    "smtp-inbound-credential"
+  ]
+}

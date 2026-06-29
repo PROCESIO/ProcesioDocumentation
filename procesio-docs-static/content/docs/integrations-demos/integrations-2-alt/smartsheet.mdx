@@ -1,0 +1,55 @@
+---
+title: "SmartSheet"
+icon: "📗"
+description: "Smartsheet is a work execution platform that empowers organizations to plan, track, automate, and report on work. It is an online spreadsheet app…"
+---
+
+Smartsheet is a work execution platform that empowers organizations to plan, track, automate, and report on work. It is an online spreadsheet app that lets you create and format spreadsheets and work with other people.
+
+### **SmartSheet configuration**
+
+&#x20; 1\.    Navigate to your SmartSheet account.
+
+&#x20; 2\.    Click **Apps & Integrations** from the **Account** button, located in the bottom left side.
+
+![](/images/docs/TqzYSuM8YRvI-j31DqbZi_image.png)
+
+&#x20; 3\.    From the **Personal Settings** select the section **API Access** an click **Create new access token**.
+
+![](/images/docs/nZ6pxFfH5btv2LTaQrNT3_image.png)
+
+&#x20; 4\.    Give the token a name and click **OK**.
+
+&#x20; 5\.     The token that you will receive will be displayed only once.
+
+### **Create the credential**
+
+&#x20; 1\.     Navigate to the [Credentials Manager](https://docs.procesio.com/working-with-credentials) section.
+
+&#x20; 2\.     Select the **Add New** button from the upper right corner.
+
+&#x20; 3\.    Give a Name to the newly created connection, select **Rest Api Configuration** from the Credential Type dropdown and optionally add the Description.
+
+![](/images/docs/h9p89TqwZF0rLjaIQXrAQ_image.png)
+
+&#x20; 3\.    Add the connection data like in the screen using the password you generated in your smartsheet account.
+
+![](/images/docs/emH2LnvniYrRSayKzpBwj_image.png)
+
+&#x20; 4\.    **Test** and **Save** the connection.
+
+### **Create and configure the process**
+
+&#x20; 1\.     Select the Rest API credential you just created.
+
+![](/images/docs/jFLj15e7-7Xjei5h_9RpZ_image.png)
+
+&#x20; 2\.    Add the Rest API configurations like in the screenshot:
+
+<Callout type="info">
+Use the smartsheet [api documentation](https://smartsheet.redoc.ly/) to find the endpoint you wish to use and the configurations needed.&#x20;
+</Callout>
+
+![](/images/docs/hm2SkcXGlHM0a6Germ-Oy_image.png)
+
+The above call reads a sheet, the number at the end is the sheet ID.

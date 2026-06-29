@@ -1,0 +1,23 @@
+---
+title: "RegEx Validate"
+icon: "📕"
+description: "RegEx Validate action validates a string based on a Regular Expression (RegEx) expression."
+---
+
+## Overview
+
+`RegEx Validate` action validates a string based on a Regular Expression (RegEx) expression.
+
+![](/images/docs/BjQtwNdKp_NLQeHWR15AE_image.png)
+
+### Inputs & Outputs
+
+- \[I] **Value to validate** (`string`): The string to be validated.
+- \[I] **Regex expression** (`string`): The Regular Expression used for validation.
+- \[I] **Ignore case** (`checkbox`): Enable "ignore case" to disregard letter casing when matching inputs. This option ensures that both 'A' and 'a' will be treated equally. If left unchecked, matching will strictly adhere to case-sensitivity rules.
+- \[O] **Validation result** (`boolean`): Returns true if the value matches the specified Regular Expression; otherwise, returns false.
+
+## Important Notes
+
+- Ensure the Regular Expression provided is appropriate for the validation requirements.
+- If `Ignore case` is enabled, ensure it aligns with the desired validation behavior.

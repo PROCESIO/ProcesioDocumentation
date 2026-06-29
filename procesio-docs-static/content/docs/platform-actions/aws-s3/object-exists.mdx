@@ -1,0 +1,25 @@
+---
+title: "Object Exists"
+icon: "📕"
+description: "The Object Exists action checks if an S3 object is found in the specified Amazon S3 bucket."
+---
+
+## Overview
+
+The `Object Exists` action checks if an S3 object is found in the specified Amazon S3 bucket.
+
+![](/images/docs/vHXnybvzLrjyQxj-amsvG_image.png)
+
+## Inputs & Outputs
+
+**\[I]** Access key (`string`): The access key for the AWS account.
+**\[I]** Secret key (`string`): The secret key associated with the access key.
+**\[I]** Region (`string`): The AWS region where the S3 bucket is located.
+**\[I]** Bucket (`string`): The name of the Amazon S3 bucket to search in.
+**\[I]** Object key (`string`): This is a user-defined key that identifies the object in the bucket. Make sure to include all prefixes, split by the '/' character, since the full file path is needed for interrogation.
+**\[O]** Result (`boolean`): Returns `true` if the object was successfully found, `false` if not.
+
+## Important Notes
+
+- Ensure that the provided access key and secret key have the necessary permissions to access the specified S3 bucket.
+- Double-check the correctness of the region, bucket name, and object key to avoid errors in the search process.

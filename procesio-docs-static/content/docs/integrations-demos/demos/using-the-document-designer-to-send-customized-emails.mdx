@@ -1,0 +1,74 @@
+---
+title: "Using the Document Designer to send customized emails."
+icon: "📘"
+description: "The Document Designer is one of the coolest PROCESIO features to date. It allows creating custom document templates and parametrizing them with…"
+---
+
+The **Document Designer** is one of the coolest **PROCESIO** features to date. It allows creating custom document templates and parametrizing them with **Process Variables**.
+
+**Scenario:**
+
+*&#x20;   Let's say you work for the sales department of a company. Your company will have a huge sale on&#x20;****Black Friday****&#x20;and you'd like to send emails to a few potential customers to inform them about the sale. You have a list of names, emails and&#x20;****PROCESIO****&#x20;at your disposal so, how do you do it?*
+
+We'll start by first building the ***template*** for the email and then the ***process*** that will send emails.
+
+### **Building the document template**
+
+- Let's go to the **Document Designer** and create a ne&#x77;**&#x20;Document Template**.
+
+![](/images/docs/BtBuPDRkw8lmkUlenjfM4_create-template.gif)
+
+- We've already set up some HTML to use as background so we'll add it from the **Code View**.
+
+<iframe height="400" width="100%" src="https://codepen.io/PROCESIO/embed/MWPbvdg?editors=1000" frameBorder="0" allowFullScreen title="CodePen"></iframe>
+
+![](/images/docs/GSp_Ay00bB5g-mp4rTXkJ_add-html.gif)
+
+We'll define two variables that will be used in our template:
+
+- **Name** ➜ String as a placeholder for the customer's name.
+- **SaleDate** ➜ String as a placeholder for the date of the sale written in a custom format.
+
+![](/images/docs/yYLvTa2cO5g4eePVBO2Dx_create-variable.gif)
+
+- Now, it's time to fill in the actual content of the email.
+
+![](/images/docs/mZdiXj7WQuC04un90sJs5_template-text.gif)
+
+<Callout type="info">
+The **document template** is now ready to be used in our process.
+</Callout>
+
+### **Building the process**
+
+First we define some variables:
+
+- **PotentialCustomerList** ➜ **List**\&lt;PotentialCustomer> where PotentialCustomer is a DM with
+  - **name** ➜ String representing the potential customer name.
+  - **email** ➜ String representing the potential customer email address.
+- **BlackFridayDate** ➜ DateTime variable with `24 November 2023` as default value.
+- **Format** ➜ String variable with `dddd, dd MMMM` as default value.
+- **FormattedDate** ➜ String value containing **BlackFridayDate** in **Format**.
+- **HTMLBody** ➜ String containing the email body generated using the document template.
+
+![](/images/docs/4FijvBnHX8zc_xZI-8g-Y_define-vars.gif)
+
+Then we build the actual flow:
+
+1. We format the *Black Friday* date using **Format DateTime**.
+2. We go over each potential customer in our list using **For Each**.
+3. We generate an email body for each customer using **Generate Document**.
+4. We send the generated HTML body in an email to each customer with **Send Email**.
+
+![](/images/docs/zAdr1ffxofhsOQBoaGKby_configure-actions.gif)
+
+Time to run
+
+![](/images/docs/xqYM5-a9U_o_yfO6H_Lmc_demo-run-flow.gif)
+
+**Action Pool**
+
+- [For Each](https://docs.procesio.com/how-to/for-each)
+- [Format DateTime](https://docs.procesio.com/how-to/format-datetime)
+- [Generate Document](https://docs.procesio.com/how-to/generate-document)
+- [Send Email](https://docs.procesio.com/how-to/send-email)

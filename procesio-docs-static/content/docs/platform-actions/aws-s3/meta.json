@@ -1,0 +1,17 @@
+{
+  "title": "AWS S3",
+  "icon": "📁",
+  "pages": [
+    "object-exists",
+    "get-metadata",
+    "get-object",
+    "put-object",
+    "copy-object",
+    "move-object",
+    "delete-object",
+    "delete-by-prefix",
+    "delete-by-keys",
+    "list-keys",
+    "list-objects"
+  ]
+}

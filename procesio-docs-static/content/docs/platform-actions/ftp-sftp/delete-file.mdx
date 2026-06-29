@@ -1,0 +1,62 @@
+---
+title: "Delete File"
+icon: "📕"
+description: "The Delete File action, enables you to delete a file from within a specified folder."
+---
+
+![](/images/docs/MeyEu8YxRed3V37ON2oIX_image.png)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8jq0kcmKs54" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+The **Delete File** action, enables you to delete a file from within a specified folder.
+
+### **FTP connection**[﻿](https://docs.procesio.com/get-file-list#av-ftp-connection)**&#xFEFF;**[﻿](https://docs.procesio.com/create-folder#0d-ftp-connection)**&#xFEFF;**
+
+For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+
+&#x20;**&#x20;Step 1**:    Go to the **Credentials Manager** section and click **Add New**.
+
+&#x20;**&#x20;Step 2**:    Give your credential a **Name\*** and **Description** (optional) and click **Next step**.
+
+
+![](/images/docs/K4Eu8eJsFsU6xW94GUWnA_image.png)
+
+&#x20;  **Step 3**:    Configure the FTP / sFTP connection as needed:
+
+- **Port number\*** - the port number used by the server.
+- **Protocol type** - the protocol used depending on the encryption.
+- **Directory path** - the entry point of the server.
+- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
+
+![](/images/docs/n5rDtA2-wOmc2zFIc-buX_image.png)
+
+&#x20;**&#x20;Step 4**:    Click **Test connection** and if successful click **Save**.
+
+### **Create the process**[﻿](https://docs.procesio.com/get-file-list#vp-create-the-process)**&#xFEFF;**[﻿](https://docs.procesio.com/create-folder#-h-create-the-process)**&#xFEFF;**
+
+&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
+
+&#x20; **Step 2**:    Give you process a name.
+
+&#x20; **Step 3**:    Drag the action **Delete File&#x20;**&#x6F;n the canvas and link the action inside you process.
+
+![](/images/docs/C6zAiH7-fK4vVWlcCd8tN_image.png)
+
+&#x20;   **Step 4**:    Create the &lt;%result%&gt; Boolean variable of type output.
+
+![](/images/docs/HEOWINQImwcgNmDOgB8Nr_image.png)
+
+&#x20;   **Step 5**:    Click the **Delete File** action to access its configurations.
+
+- **Node name\*** - gives you the option to change the actions name.
+- **Choose server type\*** - here we will select the connection created in the previous section.
+- **Folder path** - base folder path.
+- **Folder name** - the name of the file that will be deleted.
+- **Result\*** - here we will add the variable created at Step 4.
+
+
+![](/images/docs/LeV-Nct2HUbvnFD7Wz2tS_image.png)
+
+&#x20; Step 6:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+
+&#x20; Step 7:    Click **Check Instance**.

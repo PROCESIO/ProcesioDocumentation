@@ -1,0 +1,47 @@
+---
+title: "RegEx Extract"
+icon: "📕"
+description: "RegEx Extract&x20;&x69;s one of the most useful Actions that you can add to your flows. It will allow you to automate the way you work with documents…"
+---
+
+**RegEx Extract&#x20;**&#x69;s one of the most useful Actions that you can add to your flows. It will allow you to automate the way you work with documents inside your flows.
+
+### **Scenario**
+
+As a user I want an action that extracts all the emails from a document/string based on RegEx validations and saves them into a list.  This action will help me extract from a strings only the values that validates with the RegEx expression and in this scenario I will extract a list of emails that I could use for marketing purposes.
+
+### **How to**
+
+&#x20; 1\.    [Create a new process](https://docs.procesio.com/creating-a-basic-process) and give it a name.
+
+&#x20; 2\.    Drag the **Regex Extract** action to the canvas and link it to the other actions.
+
+![](/images/docs/ObODz6l9JiozcXDJN8Rzy_image.png)
+
+&#x20; 3\.    Click the **Regex Extract** action to access its configurations and click the button **Regex Configurations**.
+
+&#x20; 4\.    [Add the needed variables](https://docs.procesio.com/working-with-process-variables).
+
+![](/images/docs/OmO6-fiAn7hby44Vauon6_image.png)
+
+
+
+- &lt;%texttoextractfrom%&gt; - variable that awaits the text to search in, it will ask for the text every time the process is ran (this is an input variable).&#x20;
+- ****&lt;%regexexpression%&gt; - variable that has the Regex Value saved as **Default value**. The Regex  that looks for email addresses is "(\[\_\\.0-9a-zA-Z-]+@(\[\\-0-9a-zA-Z]+\\.)+\[a-zA-Z]\&#123;2,6&#125;)".
+- ****&lt;%listofemails%&gt; - the list that will contain all the emails present in the text you entered in the first variable.
+
+<Callout type="info">
+If you wish to search the text regardless of case check the **Ignore case** checkbox.
+</Callout>
+
+![](/images/docs/8UgHR-nfLkOACYztEV2pA_image.png)
+
+&#x20; 5\.    **Save** and **Validate** the process.
+
+&#x20; 6\.    Each time you will run the process you are expected to add the text you wish to check.
+
+![](/images/docs/5eJ8NGilHLN2xOzHj42IU_image.png)
+
+&#x20; 7\.    Because we have created &lt;%listofemails%&gt; of type output, when you click **Check instances** you will be able to see that the email addresses were saved in the list.
+
+![](/images/docs/1DgQiB5ynbuPLGYB_l8H5_image.png)

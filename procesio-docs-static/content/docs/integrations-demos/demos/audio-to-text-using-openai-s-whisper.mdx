@@ -1,0 +1,117 @@
+---
+title: "Audio to Text using OpenAI's Whisper"
+icon: "📘"
+description: "Integrating OpenAI models with PROCESIO is something anyone can do due to the simplicity of using the Call API action. If you don't believe us, we're…"
+---
+
+Integrating **OpenAI** models with **PROCESIO** is something anyone can do due to the simplicity of using the **Call API** action. If you don't believe us, we're going to prove how easy it is with this brand-new use case.
+
+<Callout type="success">
+At the bottom of this article you'll be able to find:
+
+- **import file** containing this ready to use, use-case.
+- following the import, credentials will need to be configured.
+</Callout>
+
+**Scenario:**
+
+&#x20;   *Let's say you work for a company that specializes in providing accessibility services for people with hearing impairments. You want to generate transcripts from audio files such as podcasts or radio theater so that anyone who suffers from hearing loss or similar impairments can enjoy this type of content.*
+
+We're going to use the [Whisper](https://openai.com/research/whisper) model from **OpenAI** to generate transcripts from audio files. First, we retrieve the audio file from our **Google Drive** and then we generate the transcript.
+
+The audio file that will be used in our example is an MP3 recording from Marian.
+
+![](/images/docs/LXln-C-RLFqP3tR8YLEbN_marian.png)
+
+[📎 Thanks from Marian.mp3](/files/hiXLBAZ8ny4GeXwfDqaGa_thanks-from-marian.mp3)
+
+### **Retrieve the file from Google Drive**
+
+We'll start by creating the **Credential** to access **Google Drive**.
+
+![](/images/docs/2t1mJiVWOfIgD49eR34Ds_drive-cred.gif)
+
+<Callout type="info">
+Notice that the file is publicly accessible so **No authentication** is required to download it.
+</Callout>
+
+We define some variables to be used in our flow:
+
+- **FileURL**  ➜ String containing the audio file location.
+  - To create the file URL for your own files, you can follow [this tutorial](https://www.youtube.com/watch?v=KYm03K7weKA).
+- **Endpoint** ➜ String representing the Google Drive endpoint to download from.
+- **DownloadStatusCode** ➜ Integer representing the status code of the download request.
+- **AudioFile&#x20;**➜ File representing the downloaded audio file.
+
+![](/images/docs/E-7qxmRs6urowEFPgkr7H_vars.png)
+
+Then we build the actual flow:
+
+- We extract the **Endpoint&#x20;**&#x62;y removing the base URL from **FileURL** using **String Replace**
+- We download the file using **Call API** with our Google Drive credential.
+
+For **Call API** we will have to use the following headers:
+
+- **Content-Type** ➜ **application/force-download**
+- **Content-Disposition** ➜ **attachment**
+
+![](/images/docs/50bQvekZxFCB-84r-PAfV_download-overview.gif)
+
+### **Generate the transcript**
+
+We create the **Credential** for **OpenAI**.
+
+![](/images/docs/R_8-HkSloJJ7Ad-vxUY19_openai-creds.gif)
+
+<Callout type="info">
+Make sure to use your own API Key instead of **$OPENAI\_API\_KEY&#x20;**&#x77;hen configuring the credential.
+</Callout>
+
+We define some variables to be used in our flow:
+
+- **FileURL** ➜ String containing the audio file location.
+- **AudioFile** ➜ File representing the downloaded audio file.
+- **queryResponse** ➜ Json holding the model's response.
+- **queryStatusCode** ➜ Integer representing the model response status code.
+- **Transcript** ➜ String containing the transcript for the audio file.
+
+![](/images/docs/Svq5t5pzlP1TdT4jErHkU_vars2.png)
+
+Then we build the actual flow:
+
+- We download the audio file by using **Call Subprocess** with our first process.
+- We query the Whisper model using **Call API** with a **form-data** body.
+- We extract the transcript from the model's response using **Json Mapper**.
+
+For **Call API** we will use **form-data**:
+
+- **file \[**File**]** ➜ insert **AudioFile&#x20;**&#x76;ariable
+- **model \[**Text**]** ➜ **whisper-1**
+- **response\_format** **\[**Text**]** ➜ **json**
+
+****
+
+![](/images/docs/vWchFG0KwM3rx0IgAJFCW_openai-run-whisper.gif)
+
+<Callout type="warn">
+Make sure to select the right type (**File** or **Text**) when using **Call API** with **form data**.
+</Callout>
+
+**Transcript**
+
+> Hello, hello, smalllings. This is Marian from Procesio, the technology that uncomplicates your automation life. I want to say you rock! And thank you for trusting and being with us for two days already. Don't forget, Procesio is a proven technology with use cases at enterprise level. So, if you have use cases that you want to discuss or just need help, join our Discord community and we will be more than happy to help. Happy automation with Procesio!
+
+**Action Pool**
+
+- [Call API](https://docs.procesio.com/how-to)
+- [String Replace](https://docs.procesio.com/how-to/string-replace)
+- [Call Subprocess](https://docs.procesio.com/how-to/call-subprocess)
+- [Json Mapper](https://docs.procesio.com/how-to/json-mapper)
+
+**Import File**
+
+<Callout type="success">
+Use below .procesio file, for importing this use-case dirctly to one of your workspaces (feel free to create a new workspace dedicted for this example).
+</Callout>
+
+[📎 AudioTranscripts.procesio](/files/HbnO21k8jut055kB0kcCe_audiotranscripts.procesio)

@@ -1,0 +1,91 @@
+---
+title: "Update"
+icon: "📕"
+description: "Th&x65;&x20;Update action is one of the actions at your disposal to work with XML data.&x20;"
+---
+
+![](/images/docs/jTwwyV1cgPdjzQmB3SGL7_image.png)
+
+Th&#x65;**&#x20;Update** action is one of the actions at your disposal to work with XML data.&#x20;
+
+&#x20;Update enables you to **update** an XML input, if the input tag exists, or to **insert** the input tag, if it doesn't exist, using XPath.
+
+The action will be able to update data from an XML input using an [XPath expression](https://www.w3schools.com/xml/xpath_syntax.asp).
+
+<Callout type="warn">
+Update was previously called XML Update.
+</Callout>
+
+
+
+### **Overview**
+
+The action is used to update the XML data that we will import into our process for future use.
+
+Input xml string - Input your XML schema in a process variable of type string
+
+Input xml file - Input your XML file in a process variable of type file
+
+Xpath expression - Input XPath expression for obtaining the key value(s) for your XML input
+
+Xml tag - Input XML tag you want to update or insert
+
+New value - Input new value to update the XML node
+
+File name - input file name if you want to store the new XML in a file. The .xml extensions will be automatically added.
+
+String result - returns the new XML as a string
+
+File result - returns the new XML as a file
+
+
+
+### How to configure the Update action?[﻿](https://kb.procesio.com/regex-replace#qd-how-to)﻿
+
+&#x20; 1\.   Create a process and give it a name.
+
+&#x20; 2\.    Drag th&#x65;**&#x20;update** action to the canvas and link it to the other actions.
+
+![](/images/docs/L0vtP2Z6Fj10C_dyVKmCm_image.png)
+
+3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
+
+![](/images/docs/tXj7jjEaa8Dph1lBiX5Fo_screenshot-2022-08-24-at-144655.png)
+
+In New Value we added "Great Gatsby" which will be updating the title of book\[1],. i.e. "Harry Potter".
+
+4\. Save, Validate and Run the process.
+
+5\. The process will ask for inputs: (see values with example purposes below)
+
+xmlString:&#x20;
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bookstore>
+
+<book>
+  <title lang="en">Harry Potter</title>
+  <price>29.99</price>
+</book>
+
+<book>
+  <title lang="en">Learning XML</title>
+  <price>39.95</price>
+</book>
+
+</bookstore>
+```
+
+xPath:&#x20;
+
+```xml
+/bookstore/book[1]	
+```
+
+6\. Click **Run**.
+
+&#x20; 7\.  Click **Check Instance&#x20;**&#x74;o view the results. You will see the new XML string saved in the `result` variable. The title of book\[1] is updated to "Great Gatbsy".
+
+![](/images/docs/tQ_dM6bRI1OgMixfYTSPN_screenshot-2022-08-24-at-150023.png)

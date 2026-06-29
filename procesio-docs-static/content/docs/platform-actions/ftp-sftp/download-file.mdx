@@ -1,0 +1,64 @@
+---
+title: "Download File"
+icon: "📕"
+description: "The action Download file allows you to download files with a size up to 100 MB from your FTP/ sFTP server."
+---
+
+![](/images/docs/Or9bv9IuI0kh8-Rj2x2ay_image.png)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Zfh9FCKG_AA" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+The action **Download file** allows you to download files with a size up to 100 MB from your FTP/ sFTP server.
+
+For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+
+&#x20; **Step 1**:    Go to the **Credentials Manager** section and click **Add New**.
+
+&#x20; **Step 2**:    Give your credential a **Name\*** and **Description** (optional) and click **Next step**.
+
+![](/images/docs/Wy8fMVvwsNaQ9A9E0N9vM_image.png)
+
+**Step 3**:    Configure the FTP / sFTP connection as needed:
+
+- **Port number\*** - the port number used by the server.
+- **Protocol type** - the protocol used depending on the encryption.
+- **Directory path** - the entry point of the server.
+- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
+
+![](/images/docs/RIzPCXs7_9w9b2cgtsyX__image.png)
+
+&#x20; **Step 4**:    Click **Test connection** and if successful click **Save**.
+
+### **Create the process**
+
+&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
+
+&#x20; **Step 2**:    Give you process a name.
+
+&#x20; **Step 3**:    Drag the action **Download File&#x20;**&#x6F;n the canvas and link the action inside you process.
+
+![](/images/docs/xor1FGNoPwHvIhMbUUzYe_image.png)
+
+
+
+**&#x20;  Step 4**:    Create the &lt;%download%&gt; JSon variable of type list.
+
+![](/images/docs/llTUF0ffvUqUGkhPru_tT_image.png)
+
+&#x20;  **Step 5:**    Click the **Download File&#x20;**&#x61;ction to access its configurations.
+
+- **Node name\*** - gives you the option to change the actions name.
+- **Select ftp server\*** - here we will select the connection created in the previous section.
+- **Source folder\*** - the path to the file that you wish to download.
+- **File name\*** - path to file and the name of the file.
+- **Result\*** - here we will add the variable created at Step 4.
+
+![](/images/docs/hs_rA_FeDBVVHcKAlQT9q_image.png)
+
+&#x20; **Step 6**:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+
+&#x20; **Step 7**:    Click **Check Instance**.
+
+&#x20; **Step 8**:    Here you have the ability to check the data saved in our variable by clicking it, or to download the data in the form of a file.
+
+![](/images/docs/vqpTIzx6Dlu9ySVEFrHNg_image.png)

@@ -1,0 +1,37 @@
+---
+title: "Sort"
+icon: "📕"
+description: "The Sort action enables the sorting of a primitive list in either ascending or descending order."
+---
+
+# Overview
+
+The `Sort` action enables the sorting of a primitive list in either ascending or descending order.
+
+
+
+![](/images/docs/GLSzwL6pfI1xqueUuGMo2_image.png)
+
+### Parameters
+
+### Inputs
+
+- List to be sorted (`list<object>`) - This is both input and output; it will return the updated list in the same variable.
+- Input order (a/d) (dropdown):
+  - Ascending Order
+  - Descending Order
+
+### Outputs
+
+- List to be sorted (`list<object>`)
+
+## Configuration Details
+
+- This action modifies the input list directly, updating it with the sorted order.
+- The sorting order can be specified by selecting either Ascending Order or Descending Order from the dropdown parameter.
+
+## Important Notes
+
+- Make sure to provide a valid list object as input to ensure proper sorting.
+- Changes made to the input list will be reflected in the output list.
+- This action is suited only for lists of primitives, and not suited for lists of data models or complex JSON objects. For sorting lists of data models or complex JSON objects, use the [Sort Data Model](https://docs.procesio.com/how-to/sort-data-model) action.

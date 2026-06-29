@@ -1,0 +1,45 @@
+---
+title: "SendGrid"
+icon: "📗"
+description: "Sendgrid has been leading the way when in comes to email marketing in the last decade being one of the most complete SMTP services on the market…"
+---
+
+Sendgrid has been leading the way when in comes to email marketing in the last decade being one of the most complete SMTP services on the market offering a wide range of integration options that together with a matured API library make it very customizable.
+
+We are assuming that you already signup on [Procesio](https://procesio.com/) and [Sendgrid](https://sendgrid.com/). If not then first create the accounts and activate them.
+
+### **Create the credential**
+
+&#x20; 1\.    Navigate to the **Credentials Manager** section.
+
+&#x20; 2\.    Select the **Add New&#xA0;**&#x62;utton from the upper right corner.
+
+&#x20; 3\.    Give a Name to the newly created connection, select Rest API Configuration from the Credential Type dropdown and optionally add the Description.
+
+![](/images/docs/RMDxHaTA23UqSw2Sug455_image.png)
+
+&#x20; 4\.    Select the **Next step** button.
+
+&#x20; 5\.    Enter the Sendgrid connection data as shown in the screenshot with the mention that in the password and API key are found in your [Sendgrid account](https://app.sendgrid.com/guide/integrate/langs/smtp).
+
+![](/images/docs/7DbLRcBQLvuhBLmHEBQCt_image.png)
+
+&#x20; 6\.    When you click the **Test connection** button Procesio will test the connection and give the Successfully tested! message.
+
+&#x20; 7\.    **Save&#xA0;**&#x74;he connection.
+
+### **&#x20;Process configuration**&#x20;
+
+&#x20; 1\.    Create a process using your newly created connection.
+
+&#x20; 2\.    After creating the flow using the drag and drop functionality you can give the Send Email Action a name, description and from the **Select SMTP Server** dropdown select the connection created at step 7 o the previous section.
+
+![](/images/docs/XQsk70eYOjUPdi5qfpoQt_image.png)
+
+&#x20; 3\.    In the Send Email screen enter the From(display name), To, Cc, Bcc, Subject and Body information and click Save.
+
+&#x20; 4\.    If the Body will use HTML tags you will need to check Body is HTML.
+
+![](/images/docs/nBCpEWrQ4YovncYMv-BcN_image.png)
+
+  5.    From the upper right corner you can **Save**, **Validate** and **Run** the Process.

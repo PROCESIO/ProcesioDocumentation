@@ -1,0 +1,44 @@
+---
+title: "RegEx Replace"
+icon: "📕"
+description: "RegEx Replace&x20;&x69;s one of the most useful Actions that you can add to your flows. It will allow you to automate the way you update documents…"
+---
+
+**RegEx Replace&#x20;**&#x69;s one of the most useful Actions that you can add to your flows. It will allow you to automate the way you update documents inside your flows.
+
+### **Scenario**
+
+Let's assume that you have a template file that you wish to use with several of your customers and the only thing you wish to change is the contact email address.
+
+### **How to**
+
+&#x20; 1\.    [Create a new process](https://docs.procesio.com/creating-a-basic-process) and give it a name.
+
+&#x20; 2\.    Drag the **Regex Replace** action to the canvas and link it to the other actions.
+
+![](/images/docs/nRvd6h64EDPzXhfPfsKqV_image.png)
+
+&#x20; 3\.    Click the **Regex Replace** action to access its configurations and click the button **Regex Configurations**.
+
+&#x20; 4\.    [Add the needed variables](https://docs.procesio.com/working-with-process-variables).
+
+![](/images/docs/thW7Gdj4Vq6VvB0p12tc3_image.png)
+
+- &lt;%stringToSearchIn%&gt; - variable that has the default text saved as **Default value**.
+- ****&lt;%reGexExpression%&gt; - variable that has the Regex Value saved as **Default value**. The Regex is "(\[\_\\.0-9a-zA-Z-]+@(\[\\-0-9a-zA-Z]+\\.)+\[a-zA-Z]\&#123;2,6&#125;)".
+- ****&lt;%updatedText%&gt; - variable that will hold the modified text.
+- **** &lt;%email%&gt; -  input variable that will ask the email that the regex expression will use.
+
+<Callout type="info">
+If you wish to search the text regardless the case check the **Ignore case** checkbox.
+</Callout>
+
+![](/images/docs/OJ4nWN2mNtpH6V0EVFfDR_image.png)
+
+&#x20; 5\.    **Save** and **Validate** the process.
+
+&#x20; 6\.    Each time you will run the process you are expected to add the new email address you wish to us.
+
+![](/images/docs/3NdEc7he4nzDWQCurhHDX_image.png)
+
+&#x20; 7\.    Because we have created &lt;%updatedText%&gt; of type output, when you click **Check instances** you will be able to see that the text was updated.

@@ -1,0 +1,241 @@
+---
+title: "List & Table Control"
+icon: "🎛️"
+description: "The List Control is a versatile component designed to showcase a collection of items within a form. It empowers users to effortlessly navigate…"
+---
+
+## List Control
+
+![](/images/docs/w09vXUVJ_9WdAdcum7oma_1.png)
+
+The List Control is a versatile component designed to showcase a collection of items within a form. It empowers users to effortlessly navigate through structured data while offering extensive customization options.
+
+### **1. Display of Items:**
+
+- Visually presents items in a vertically stacked list format.
+- Supports multiple controls within each item.
+- Option to add multiple fields for enhanced data representation.
+- Placeholder state when no controls are present at Design Time.
+- Renders all items from the Data Source at Design Time.
+
+![](/images/docs/9HLzNfpt20EYfNTFxJz_j_2.png)
+
+For **multiple controls** in an item there will be a **Toggle** “Add multiple fields” under the Data “Source value” **which must be on**. &#x20;
+
+Also the “Source value” for multiple fields is expected to be an array of objects.&#x20;
+
+![](/images/docs/y16SiodNw6zrZVxsHx8JO_3.png)
+
+Each item in the list can consist of Field Controls, List Control, or a combination thereof.&#x20;
+
+If no Control is dragged in the item list at Design Time, there will be an empty placeholder state, with different messages according to the value of “Add multiple fields“.
+
+![](/images/docs/Z7v86Iaw_ZnsKHnfdGtXu_4.png)
+
+![](/images/docs/0XqsHq9YmLDv-ttCKxg7I_5.png)
+
+All items in the Data “Source value” will be rendered at Design Time. If source is empty there will be by default one item rendered.
+
+If you have a List Control and inside it, there is another control that is empty, if you check the +Add option, in view mode, you will be able to click on the button in the picture to add the control.
+
+If no control is dragged in the item list at Run Time the control will not be shown.&#x20;
+
+### **2. Data Source:**
+
+- Connects to a JSON or URL data source.
+- Dynamically updates content based on changes to the underlying data.
+- Configurable options for modifying the Data Source.
+
+![](/images/docs/Gu1Dqvd91xv24H5fxGKGL_6.png)
+
+For a list with a single control inside the Iterator Container, “Add multiple fields” is expected to be off and the Data “Source value“ to be a list of primitives.&#x20;
+
+> For example:&#x20;
+> \- \[“first entry“, “second entry”]&#x20;
+> \- or \[1, 2, 3]
+> \- or \[“first entry”, 2, "3", false ]
+
+&#x20;For a list with multiple controls inside the Iterator Container,  “Add multiple fields” is expected to be on and the Data “Source value“ to be an array of objects.&#x20;
+
+> &#x20;For example:&#x20;
+> \[
+> &#x20;   \&#123;
+> &#x20;    "id": 1,
+> &#x20;    "name": "John Doe",
+> &#x20;    "address": "123 Main St"
+> &#x20;   &#125;,
+> &#x20;   \&#123;
+> &#x20;    "id": 2,
+> &#x20;    "name": "Jane Doe",
+> &#x20;    "address": "456 Elm St"
+> &#x20;   &#125;
+> ]
+
+Data “Source value” must be available in the control variable.   &#x20;
+
+### **3. Data Binding:**
+
+- Enables seamless synchronization between controls and Data Source.
+- Automatic binding for lists of primitives when "Add multiple fields" is off.
+- Manual binding by naming controls to match keys in the Data Source.
+- Recursive binding for nested lists.
+
+The List Controls binds to the data source, dynamically updating its content based on changes to the underlying data. This ensures that the list remains synchronize with the latest information from the data source.
+
+Each control dragged inside an Iterator Container can be bound to an item or a key of an item inside the Data “Source value”. As stated above, if the data source changes the UI value/text of the control should update as well. For Field Controls dragged inside the Iterator Container, if the user inputs new data or edits existing one the Data “Source value” should update as well.&#x20;
+
+If the Data “Source value” is a list of primitives and “Add multiple fields” is off, the control dragged inside will be bound automatically to the list item.
+
+![](/images/docs/kws74pqvZ5l3xLSpfZ3x4_7.png)
+
+If the Data “Source value” is a list of objects and “Add multiple fields” is on, the binding is done manually by the Designer by naming the control the same as one of the keys inside the list item.
+
+For example in the following image the Iterator Container contains a Number field and two Text fields and Data Source has two items, each with 3 keys/properties.&#x20;
+
+![](/images/docs/WOhq_oCxO-c7yxDSYCcZ7_8.png)
+
+None of the controls are bound to the data source because they have the default names (NumberInput1). In order to bind the Number Input to the “id” key we have to name it “id”.
+
+![](/images/docs/RUIcy8qwSN4BTvw4WWAkz_9.png)
+
+As soon as we name the control to one of the keys of the data source it synchronizes with it. You can do this recursively as many times as you want by dragging a List Structure Control inside the Iterator Container and bind it to a property which is also a list. Just like the parent List it can bind to a list of primitives or a list of objects. Data “Source value” will remain empty for List controls of type children if used as described above.
+
+![](/images/docs/u5R8flXcN985UWgelm5Jq_10.png)
+
+Data binding is available for Field controls and List.
+
+### **5. Customization and Interaction:**
+
+- Allows customization of item layout, styling, and themes.
+- Supports interaction through various actions like clicking, dragging, or tapping.
+- Integration with other controls for comprehensive form design.
+- Customize item layout, styling, and themes to align with design preferences.
+- Interact with items through various actions at Run Time.
+
+**Properties Bar:**
+
+- **General:**
+  - Customize properties such as Label, Tooltip, and Visibility.
+- **Name & ID:**
+  - Assign unique identifiers for easy reference.
+- **Data Source:**
+  - Specify the type of Data Source (JSON or URL).
+  - Configure Source Value and options for multiple fields.
+- **Min & Max:**
+  - Define minimum and maximum element limits for Data Source modification.
+- **Can Add & Can Remove:**
+  - Enable/disable options for adding and removing items from the list.
+- **Add Text Label & Add Label:**
+  - Customize labels for add buttons and item labels.
+
+With the List Control's robust features and intuitive interface, managing and presenting data within your forms becomes seamless and efficient.
+
+
+
+# Table Control
+
+<Callout type="warn">
+Work in progress
+</Callout>
+
+
+
+Overview:
+
+The Table Control allows you to visually represent tabular data within your forms. It provides a grid-like structure where you can view and interact with rows of data.
+
+
+
+Data Table:
+
+- The primary wrapper of the Table Control.
+- Can be dragged anywhere in the Form Designer.
+- By default, populated with an instance of "Dynamic Table Rows" and two instances of "Table Row".
+- Can have children such as "Dynamic Table Rows" and "Table Row".
+
+Static Table Row:
+
+- A static row draggable only inside a Table Control.
+- By default, contains as many columns/table data/cells as defined on the Data Table, each with a grey empty rectangle.
+- You can add any Fields or Structure controls in a table data/cell, except for the Approval Control.
+
+Dynamic Table Rows:
+
+- Combines features of "Table Row" and "List" control.
+- Maps the Iterator Container over a Data source, allowing dynamic population of rows.
+- Can be nested within other rows or added directly to the Data Table.
+
+Header Support
+
+- Headers can be configured on all Table Controls.
+- Headers can be defined sections for the table to display additional information such as column titles.
+
+
+
+Interaction Features:
+
+- &#x20;Pagination: Navigate through multiple pages of data if the table exceeds a certain number of rows per page.
+- &#x20;Summary Functions: Perform calculations on columns like sum, average, count, etc., to derive meaningful insights from your data.
+- &#x20;Sorting: Arrange rows based on column values in ascending or descending order for easier data analysis.
+- &#x20;Filtering: Apply filters to columns to display only the relevant data based on specified criteria.
+-   Adding and Editing Data: Easily add new rows to the table or edit existing data directly within the table cells.
+-   Multiple Items Action: Perform bulk actions on selected rows, such as delete, edit, or export.
+
+
+
+Data Binding and Data Source
+
+
+
+Data binding within the Table Control establishes a connection between the table structure and the underlying data source. This ensures that changes made to the data reflect in the table display and vice versa.
+
+The data source defines the information to be displayed in the Table Control. It can be static data entered directly into the Form Builder or dynamic data retrieved from external sources such as APIs or PROCESIO Processes.&#x20;
+
+The data source is defined within the "Dynamic Table Rows" control. It can be a URL returning JSON data, a JSON, or a Static list generated based on the column definition.
+
+The Data Table above has a “Dynamic Table Rows” Control. The Iterator Container has a “Dynamic Table Rows” as a Child Table Control. The expected Data Source for the first “Dynamic Table Rows” is:
+
+> *\&#123;&#x20;
+> "columnTitle": "value",
+> &#x20;"startedOn": "value",
+> "lastUpdate": "",&#x20;
+> "submittedBy": "",&#x20;
+> "children": \[&#x20;
+> \&#123;&#x20;
+> "columnTitle": "value - child",&#x20;
+> "startedOn": "value - child",
+> "lastUpdate": "",
+> &#x20;"submittedBy": ""&#x20;
+> &#125;
+> ]
+> &#125;*
+
+- Each object represents a row in the table.
+- The keys represent the columns, and the values represent the data in each cell.
+- Nested objects under the "children" key represent additional rows within a row, forming a hierarchical structure.
+
+
+
+
+
+3\. Data Binding Process:
+
+- &#x20;Automatic Binding: If the value associated with a Table Row Cell is a primitive data type (Text, Number, Boolean, File), data binding is automatically established with the cell. If a Table Row Cell has only one child control, the value binds automatically to that control.
+- &#x20;Multiple Controls in a Cell: If multiple controls are desired in a cell, the value associated with that Table Row Cell should be an object/JSON/data model/list. Each control in the cell should be named the same as the keys in the object to which it binds.
+- &#x20;Primitive Value Binding: To keep the value associated with a Table Row Cell as a primitive data type but bind it to one of the controls, the control should be named the same as the "keyName" defined in the "Define Column" property.
+
+4\. Approvals Integration:
+
+- If the "Approvals" section is populated, a new key called "approvals" will be added to the row's value, containing an array of booleans corresponding to custom Approval Controls added as columns in the table.
+
+5\. Customization:
+
+- The data source structure can be customized based on the specific requirements of your application and the layout of your table.
+
+Assignee & Approvals:
+
+- Specify assignees and approvers for columns and rows using dropdown controls with header values.
+-  Customize approval controls and assign them automatically to columns in the table.
+- Design and Placement:
+-  Flexibly manage columns within the table by dragging and dropping "Static Table Row" and "Dynamic Table Row" controls.
+- &#x20;Arrange controls directly into the Data Table or between rows, inside cells (Nested Table Control), or at the bottom of rows (Child Table Control).

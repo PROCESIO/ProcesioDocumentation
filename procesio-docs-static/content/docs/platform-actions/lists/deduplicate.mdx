@@ -1,0 +1,101 @@
+---
+title: "DeDuplicate"
+icon: "📕"
+description: "The DeDuplicate action allows PROCESIO users to identify duplicates within a simple list based on specified criteria and return a new list containing…"
+---
+
+# Description
+
+The DeDuplicate action allows PROCESIO users to identify duplicates within a simple list based on specified criteria and return a new list containing only the unique values.
+
+# Parameters
+
+- Input: List to process (`list<object>`)
+- Input: Duplicate identification JSON Configuration - this should be a “Monaco editor”, allowing JSON
+- Output: Duplicates found (`list<object>`)
+- Output: Duplicates correlation (`list<object>`) - the correlation between the found duplicates and the main item that they are duplicates of
+- Output: Deduplicate list (`list<object>`) - initial list minus the duplicates
+
+# JSON Configuration
+
+The configuration structure should be as follows:
+
+```json
+{
+	"MatchType": "Exact",
+	"FuzzyAlgorithm": "Levenstein",
+	"FuzzyThreshold": 0.7,
+	"SoundexDistance": 4,
+	"SimilarFirstNwords": 1,
+	"SimilarLastNwords": 1,
+	"IgnoredTerms": [
+		"ltd",
+		"usa"
+	],
+	"Sort": "Asc"
+}
+```
+
+- **MatchType**: Specifies the matching type.
+- **FuzzyAlgorithm**: Algorithm used for fuzzy matching.
+- **FuzzyThreshold**: Threshold for fuzzy matching.
+- **SoundexDistance**: Distance used for Soundex matching.
+- **SimilarFirstNwords**: Number of first words to compare.
+- **SimilarLastNwords**: Number of last words to compare.
+- **IgnoredTerms**: Terms to ignore during matching.
+- **Sort**: Specifies the sorting order.
+
+# MatchType Types
+
+## Exact
+
+An exact match needs to be validated (=).
+
+## Similar
+
+- Compares 2 elements to see:
+  - If special characters do not exist. For example, "John-Doe" and "John Doe" are a match (before comparing, special characters and space characters are replaced with an empty string).
+  - Phone numbers. For instance, "376-323-1111" and "323-1111" are a match (if after replacing special characters and spaces with an empty string, the string contains only numbers, a Field1 contains Field2 OR Field2 contains Field1 assessment is made).
+  - Regardless of whether "WWW", "HTTP(s)://", exist to enhance domain or URL comparison.
+  - If an email is written with "@" or " at " or "\[at]", it should be a match.
+
+## Fuzzy
+
+This utilizes the algorithms available in `Similarity Search` action to compare one string against the other. Read more details [here](https://docs.procesio.com/how-to/similarity-search).
+
+## Contains
+
+Checks if Field1 contains Field2 OR Field2 contains Field1.
+
+## Soundex
+
+Checks if two words are similar when spoken. This matching algorithm evaluates the distance in “sounding” on a scale from 0 to 4, where 4 means the most similar “sounding” and 0 means that the words are very different.
+
+## SimilarWordMatch
+
+This checks if the first N words in a string are the same as the first N words in another string OR if the last N words in a string are the same as the last N words in another string.
+
+# Properties
+
+## IgnoredTerms
+
+- This parameter is of type `list<string>` and replaces the words in this property with an empty string before making the match assessment.
+
+## FuzzyAlgorithm & FuzzyThreshold
+
+- Only used when `MatchType` = `Fuzzy`. If `MatchType` is something else, those properties will be ignored so, they can be null or absent.
+- `FuzzyAlgorithm` needs to be one from this [here](https://docs.procesio.com/how-to/similarity-search), written exactly as is written in the link provided.
+- `FuzzyThreshold` is a `double` between 0 and 1, where 0 means anything can pass and 1 means that it needs to have 100% confidence. From experimenting, we noticed 0.7 is a good threshold to experiment with.
+
+## SoundexDistance
+
+- Used only when the `MatchType` = `Soundex` and it can be set to 0, 1, 2, 3, or 4, where 4 means the words are very similar when spoken.
+
+## SimilarFirstNwords & SimilarLastNwords
+
+- Only used when `MatchType` = `SimilarWordMatch` in which case at least one should be >0. If both are =0 then the `SimilarWordMatch` will not be executed at all since it does not make sense. If MatchType is something else, those properties will be ignored, so, they can have any value or can even not be present.
+
+# Important Notes
+
+- Matching algorithms work only on primitive fields.
+- Matching is executed row-by-row, which will slow down with larger lists.

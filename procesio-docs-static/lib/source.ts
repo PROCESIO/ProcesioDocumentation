@@ -1,3 +1,4 @@
+import { createElement } from 'react';
 import { docs } from 'collections/server';
 import { loader } from 'fumadocs-core/source';
 import { docsContentRoute, docsImageRoute, docsRoute } from './shared';
@@ -6,6 +7,9 @@ import { docsContentRoute, docsImageRoute, docsRoute } from './shared';
 export const source = loader({
   baseUrl: docsRoute,
   source: docs.toFumadocsSource(),
+  icon(icon) {
+    if (icon) return createElement('span', { className: 'inline-block mr-1' }, icon);
+  },
   plugins: [],
 });
 

@@ -1,11 +1,13 @@
 {
-  "title": "🛠️ Developer’s Guide",
+  "title": "Developer’s Guide",
+  "icon": "🛠️",
   "root": true,
   "pages": [
-    "google-oauth-scopes",
-    "my-test",
     "onprem-agent-v1-0-3",
     "procesio-api-documentation",
-    "procesio-sdk-integrating-with-procesio"
+    "procesio-sdk-integrating-with-procesio",
+    "google-oauth-scopes",
+    "untitled",
+    "my-test"
   ]
 }

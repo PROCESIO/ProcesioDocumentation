@@ -1,0 +1,60 @@
+---
+title: "WebFlow"
+icon: "📗"
+description: "Procesio allows the creation of custom flows that meet your business need to interact with and automate repetitive tasks that work with projects and…"
+---
+
+Procesio allows the creation of custom flows that meet your business need to interact with and automate repetitive tasks that work with projects and websites hosted on third party platforms using their API libraries in a no-code environment.
+
+We are assuming that you already signup on [Procesio](https://procesio.com/) and [Webflow](https://webflow.com/). If not then first make an account and activate them.
+
+You can use the  Credentials Manager to configure the authentication credentials of the Webflow REST API by following the following steps:
+
+### **Webflow credentials**
+
+&#x20; 1\.    Navigate to the Credentials Manager section.
+
+&#x20; 2\.    Select the **Add New** button from the upper right corner.
+
+&#x20; 3\.    Give a Name to the newly created connection, select Rest API Configuration from the Credential Type dropdown and optionally add the Description.
+
+![](/images/docs/VMNBspcX4XkY1nxceCokm_image.png)
+
+
+
+&#x20; 4\.    Select the **Next step** button.
+
+&#x20; 5\.    Enter the Webflow API connection data as shown in the screenshot with the mention that:
+
+- The URL field will be the url pointing to the project you connect to
+- The Value field will be your access token
+
+![](/images/docs/ybPLnC_ohCt8VONSbDsZl_image.png)
+
+   6.    Due to requirements set by WebFlow in establishing the connection you will not test the connection and save it as is ignoring the not validated Status.
+
+![](/images/docs/l4w9HOz3PJgPc4MgXacxK_image.png)
+
+###    **Process configuration**
+
+&#x20;  1\.    Create a process using your newly created connection.
+
+   2.    After creating the flow with the aid of the drag and drop functionality you can give the Call Api Action a name, description and from the **Select Api Configuration** dropdown select the connection created at step 6 of the previous section.
+
+![](/images/docs/GcG37gANTP-FyDlztmI78_image.png)
+
+   3.    Click **Configure Request** button.
+
+   4.    To get the basic information and the id's from your account **Get** verb with th&#x65;**&#xA0;/sites** endpoint and according to the WebFlow API documentation. We will also use two output process variables  in the body output and status output that could be used for debugging purposes.
+
+![](/images/docs/H-QJ4vKA1mPxspbM2xeZu_image.png)
+
+   5.    To resolve the WebFlow access requirement we will add the following header in the header section. The autosave function will take care of the rest.
+
+![](/images/docs/AXh_FzW3b6qEnHLv5g56Y_image.png)
+
+    6.    From the upper right corner you will need to **Save** the process, **Validate** the process and click **Run**.
+
+    7.     By clicking th&#x65;**&#xA0;Check Instance** button you can see the resulting input and output variables, and if the result was not a success we can check the output messages to debug the flow configuration. You can download the .json file by clicking the down arrow.
+
+![](/images/docs/7ga-Rp0xPmUKJudr8qdOB_image.png)

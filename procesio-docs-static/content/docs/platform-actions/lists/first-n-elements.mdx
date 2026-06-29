@@ -1,0 +1,29 @@
+---
+title: "First N Elements"
+icon: "📕"
+description: "This action retrieves the top N elements from a given list. It allows users to specify the input list, the number of elements to retrieve, and the…"
+---
+
+## Overview
+
+This action retrieves the top N elements from a given list. It allows users to specify the input list, the number of elements to retrieve, and the sorting order.
+
+## Parameters
+
+### Inputs:
+
+- **input a list** (`list<object>`): Specifies the input list from which the elements will be retrieved.
+- **input the number of elements to receive** (`int`): Determines the number of elements to retrieve from the input list.
+- **sorted** (dropdown): Allows selection of sorting options:
+  - unsorted
+  - sorted ascendingly
+  - sorted descendingly
+
+### Outputs:
+
+- **results** (`list<object>`): Provides the final list containing the top N elements based on the specified parameters.
+
+## Important Notes
+
+- The number of elements to retrieve must be within the range of the input list size.
+- The output list will contain the first N elements based on the specified sorting order, if any.

@@ -1,0 +1,83 @@
+---
+title: "Mapper"
+icon: "📕"
+description: "The Mapper action is one of the actions at your disposal to work with XML data. Mapper enables you to extract a value from aN XML string or an XML file."
+---
+
+![](/images/docs/RXuOfjOYzPn5JPv_Iqp3N_image.png)
+
+The **Mapper** action is one of the actions at your disposal to work with XML data. Mapper enables you to extract a value from aN XML string or an XML file.
+
+The action will be able to query/extract data from an XML input using an [XPath expression](https://www.w3schools.com/xml/xpath_syntax.asp) and save it to a variable.
+
+<Callout type="warn">
+Mapper action was previously called XML Mapper.
+</Callout>
+
+
+
+### **Overview**
+
+The action is used to filter the XML data that we will import into our process for future use.
+
+Input xml string - Input your XML schema in a process variable of type string
+
+Input xml file - Input your XML file in a process variable of type file
+
+Xpath expression - Input XPath expression for obtaining the key value(s) for your XML input
+
+IsList - returns TRUE if the XPath expression returns a list, FALSE otherwise; outputs will be set according to this.
+
+The resulting value - returns a value corresponding to the XPath expression
+
+The resulting list values - returns a list of values corresponding to the XPath expression
+
+
+
+### How to configure the Mapper action?[﻿](https://kb.procesio.com/regex-replace#qd-how-to)﻿
+
+&#x20; 1\.   Create a process and give it a name.
+
+&#x20; 2\.    Drag th&#x65;**&#x20;mapper** action to the canvas and link it to the other actions.
+
+![](/images/docs/ab0ZQmml9bf8DShBjdFs5_screenshot-2022-08-23-at-170129.png)
+
+3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
+
+![](/images/docs/BEI95ig09m5x4-rh94CFy_screenshot-2022-08-23-at-170050.png)
+
+4\. Save, Validate and Run the process.
+
+5\. The process will ask for inputs: (see values with example purposes below)
+
+xmlString:&#x20;
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bookstore>
+
+<book>
+  <title lang="en">Harry Potter</title>
+  <price>29.99</price>
+</book>
+
+<book>
+  <title lang="en">Learning XML</title>
+  <price>39.95</price>
+</book>
+
+</bookstore>
+```
+
+xPath:&#x20;
+
+```xml
+/bookstore/book[1]	
+```
+
+6\. Click **Run**.
+
+&#x20; 7\.  Click **Check Instance&#x20;**&#x74;o view the results. You will see that it selects the first book element that is the child of the bookstore element, and it is saved in the `result` variable.&#x20;
+
+![](/images/docs/1r4QIwG26F9isCqlr7FHX_screenshot-2022-08-23-at-171028.png)

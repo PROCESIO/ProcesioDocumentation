@@ -1,0 +1,22 @@
+---
+title: "Split Workbook"
+icon: "📕"
+description: "The Split Workbook action divides an input workbook into multiple workbooks based on a given row number."
+---
+
+## Overview
+
+The `Split Workbook` action divides an input workbook into multiple workbooks based on a given row number.
+
+![](/images/docs/2w_Jv-C3R9jcpsfkYPZ70_image.png)
+
+### Inputs & Outputs
+
+- \[I] **Excel workbook** (`file`): The original Excel workbook that will be split.
+- \[I] **Sheet name** (`string`): The name of the workbook sheet that will be split.
+- \[I] **Rows number** (`int`): The number of rows based on which the split is made. (Maximum 10000) For example, if you have a file with 8000 rows and 1000 inputs, you will split the Excel workbook into 8 files.
+- \[O] **Workbooks&#x20;**(`list<file>`): A list of workbook parts resulting from the split operation.
+
+## Important Notes
+
+- Ensure that the row number specified for splitting is within the limits of the workbook to avoid unexpected behavior.

@@ -1,0 +1,22 @@
+{
+  "title": "Demos",
+  "icon": "💯",
+  "pages": [
+    "build-a-conversational-chatbot-with-archbee-and-chat-gpt",
+    "google-forms-procesio",
+    "using-the-document-designer-to-send-customized-emails",
+    "audio-to-text-using-openai-s-whisper",
+    "how-to-track-read-emails",
+    "hubspot-contacts-analytics",
+    "how-to-integrate-with-jira-to-create-tickets",
+    "how-to-create-an-order-confirmation-process",
+    "typeform-procesio-airtable",
+    "webflow-procesio-airtable-integration",
+    "sending-criteria-based-alerts-to-contacts-from-an-excel-workbook",
+    "how-to-integrate-with-uipath-robots",
+    "how-to-extract-e-mail-addresses-from-websites",
+    "sensetask-ocr-integration-notifications",
+    "retry-process-that-fails",
+    "ftp-to-ftp-transfer"
+  ]
+}

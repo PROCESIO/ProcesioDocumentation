@@ -1,0 +1,61 @@
+---
+title: "Delete Folder"
+icon: "📕"
+description: "Delete Folder, enables you to delete a folder within the specified location. All files & folders under the folder being deleted will also be removed."
+---
+
+![](/images/docs/M0eJCtGf-p_t3dROXxrqv_image.png)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/HPnUWFNmISk" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+Delete Folder, enables you to delete a folder within the specified location. All files & folders under the folder being deleted will also be removed.
+
+### **FTP connection**[﻿](https://docs.procesio.com/get-file-list#av-ftp-connection)**&#xFEFF;**
+
+For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+
+&#x20; Step 1:    Go to the **Credentials Manager** section and click **Add New**.
+
+&#x20; Step 2:    Give your credential a **Name\*** and **Description&#x20;**(optional) and click **Next step**.
+
+
+![](/images/docs/dgFaPs73JJzkVlV4Rrcy1_image.png)
+
+&#x20; **Step 3**:    Configure the FTP / sFTP connection as needed:
+
+- **Port number\*** - the port number used by the server.
+- **Protocol type** - the protocol used depending on the encryption.
+- **Directory path** - the entry point of the server.
+- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
+
+![](/images/docs/0vb5-R6DkOrnXaj13SU55_image.png)
+
+&#x20; Step 4:    Click **Test connection&#x20;**&#x61;nd if successful click **Save**.
+
+### **Create the process**[﻿](https://docs.procesio.com/get-file-list#vp-create-the-process)**&#xFEFF;**
+
+&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
+
+&#x20; **Step 2**:    Give you process a name.
+
+&#x20; **Step 3**:    Drag the action **Delete Folder** on the canvas and link the action inside you process.
+
+![](/images/docs/bgEZ9CdLl_XG_E0WPIzWj_image.png)
+
+&#x20; **Step 4**:    Create the &lt;%result%&gt; Boolean variable of type output.
+
+![](/images/docs/FsZRoX6ESKI8oMnLlBncL_image.png)
+
+&#x20; **Step 5**:    Click the **Delete Folder&#x20;**&#x61;ction to access its configurations.
+
+- **Node name\*** - gives you the option to change the actions name.
+- **Choose server type\*** - here we will select the connection created in the previous section.
+- **Source folder** - allows you to select the path to the folder you wish to create.
+- **Folder name** - the name of the new folder that will be deleted.
+- **Result\*** - here we will add the variable created at Step 4.
+
+![](/images/docs/wLmc0_BcQwWo-hdUCCWHP_image.png)
+
+&#x20; **Step 6**:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+
+&#x20; **Step 7**:    Click **Check Instance**.

@@ -1,0 +1,9 @@
+{
+  "title": "Automation",
+  "icon": "🧬",
+  "pages": [
+    "schedules",
+    "webhooks",
+    "api-keys"
+  ]
+}

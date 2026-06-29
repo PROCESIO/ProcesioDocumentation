@@ -1,0 +1,9 @@
+{
+  "title": "Scripting",
+  "icon": "📁",
+  "pages": [
+    "node",
+    "ruby",
+    "python"
+  ]
+}

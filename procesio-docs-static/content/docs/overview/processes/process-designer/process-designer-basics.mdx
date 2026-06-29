@@ -1,0 +1,147 @@
+---
+title: "Process Designer basics"
+icon: "📘"
+description: "This article covers everything you need to know about the process designer or so-called canvas."
+---
+
+This article covers everything you need to know about the process designer or so-called c**a**n**v**a**s**.
+
+To access the canvas, from the **Dashboard** page, click the **Create a process** button.
+
+![](/images/docs/uIjEg8rbm58CYe9mGTvrn_dash-clean.png)
+
+As a first step, let's clarify some terms:
+
+- **Process (Flow)** ➜ A visual workflow diagram of all the actions and relations involved.
+- **Action&#x20;**➜ Process flows are made up of actions connected by relations. Each action either pulls data into PROCESIO, pushes data out of PROCESIO, or transforms the data within PROCESIO.
+- **Relation (Connection)** ➜ Arrow between two actions; these arrows not only connect the actions but also tell you the direction of the flow of data.
+- **Canvas** ➜ The surface where you work with actions and relations to create process flows.
+
+![](/images/docs/LmrmLxLSBPXsL5mEPCxay_canvas.png)
+
+### **Topbar Left**
+
+On the left side of the **Topbar**, you'll find the **Dashboard** button, the **Back** button, and **Undo**/**Redo** arrows.
+
+- Click the **Dashboard** button to go back to the **Dashboard.**
+
+![](/images/docs/OYSwSsCnQdTHLkMfK7tnM_tdy.png)
+
+- Click the **Back** button to go back to the **Process Designer&#x20;**&#x73;ection from the main menu.
+
+![](/images/docs/zAPtV5-GMBk_bBX8pzTuB_tdy.png)
+
+- Use the **Undo**/**Redo** arrows to revert/restore actions performed inside the canvas.
+
+![](/images/docs/0jm_5PgDYDQUWt8RK39cI_tdy.png)
+
+<Callout type="error">
+The **Undo&#x20;**&#x61;n&#x64;**&#x20;Redo** functionality may sometimes behave poorly, so we suggest avoiding it when performing complex tasks or in general if possible until it becomes stable.
+</Callout>
+
+### **Topbar Mid**
+
+In the middle of the **Topbar**, you'll find an **activation switch&#x20;**&#x61;nd a button to access **process properties**.
+
+- Click the **activation switch** to set the process as either activeor inactive.
+
+![](/images/docs/1pTLn8wUVgcvMpy8Osi_V_tdy.png)
+
+<Callout type="warn">
+A process set as **inactive&#x20;**&#x77;ill not be triggered by webhooks or started by schedules.
+</Callout>
+
+- Click the arrow to access **process properties** and some extra actions.
+
+![](/images/docs/j9LpEiWGvYdUdlS9Z0wEi_tdy.png)
+
+- Click on **Edit process properties** to edit the process name and description.
+
+![](/images/docs/R4SgaR5rXwFgybgqvY7LE_rename-process.gif)
+
+- Click on **View Instances** to open the instance view for this process.
+- Click **Copy input variables** to save the input variables used inside this process to clipboard.
+
+### **Topbar Right**
+
+On the right side of the **Topbar**, you'll find the **Save**, **Validate**, and **Run** buttons along with the **notification center**, the **error log**, and your **user profile.**
+
+<Callout type="info">
+You can find both old and new notifications in the **notification center**.
+</Callout>
+
+- Click the **Save** button to save the current state of the process.
+
+![](/images/docs/Oe7a3KPgHRGYWRv2xCEoq_tdy.png)
+
+- Click the **Validate** button to validate the process structure.&#x20;
+
+![](/images/docs/c7jdyyN0URWt4mZUb2umi_tdy.png)
+
+- If any validation error occurs, it will be displayed in the **error log**.
+
+![](/images/docs/0p6NYc2HueyMyKToOrgM4_tdy.png)
+
+- Click the **Run** button to launch a new instance of the process.
+
+![](/images/docs/N4tlIH6WFS5QTs_1D0ksH_tdy.png)
+
+Example **Validation** and **Save & Run** combo:
+
+![](/images/docs/9rIpuccPjwHVow9bz34uL_save-validate-run-process.gif)
+
+- From the **user profile** icon, you can log out by pressing the **Sign Out** button.
+
+### **Toolbar**
+
+The Toolbar acts as an **action library**.&#x20;
+
+In the Platform Actions tab, you will find actions designed and created by PROCESIO, while in the Custom Actions tab, you will find the actions created by you using the [Custom Action Builder](https://docs.procesio.com/custom-actions).
+
+- You can search for actions using the **search bar**, or you can explore the Toolbar's categories.
+
+![](/images/docs/x1AFwaW5aw4OaFVTB8iEU_tdy.png)
+
+<Callout type="info">
+Every new process starts off as a blank canvas. The **Start** and **Stop** actions are available by default.
+</Callout>
+
+- To use an action, just drag in onto the canvas and connect it to other actions.
+
+![](/images/docs/ULcMQOrtpuUkTFAoHRl4-_drag-action.gif)
+
+<Callout type="info">
+Every branch of the process must end with a **Stop** action in order to have a valid process flow. One **Stop** action is by default on Canvas. If you have several branches, drag more **Stop** actions from **Toolbar**.
+</Callout>
+
+### **Sidebar**
+
+The sidebar gives you fast access to **Variable Manager**, **Credential Manager**, **Data Models**, **Webhooks**, **Schedules**, **Instance View,** and **Process Notifications**. For more details about each component, check out their documentation page by clicking the name.
+
+[Variable Manager](https://docs.procesio.com/working-with-process-variables)
+
+![](/images/docs/o-V39QjPZGYXuch1Ux9tJ_tdy.png)
+
+[Credential Manager](https://docs.procesio.com/working-with-credentials)
+
+![](/images/docs/grjNyGkxwx3FGKlxPW4nM_tdy.png)
+
+[Data Models](https://docs.procesio.com/working-with-data-models)
+
+![](/images/docs/1ycMJV3xJriYODpN94mVC_tdy.png)
+
+[Webhooks](https://docs.procesio.com/configure-and-assign-webhook-example)
+
+![](/images/docs/h85xCEo2U5ZPU0DQ9BRZ__tdy.png)
+
+[Schedules](https://docs.procesio.com/schedules)
+
+![](/images/docs/Bo6b4zvZ0KX4egFwipEOe_tdy.png)
+
+**Instance View**
+
+![](/images/docs/JtmT5Mb7i3Q_Q0N_Gwvju_tdy.png)
+
+**Process Notifications**
+
+![](/images/docs/Lrwp2oIjZNClkvyX21yKd_tdy.png)

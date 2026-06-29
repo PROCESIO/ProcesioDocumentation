@@ -1,17 +1,18 @@
 {
-  "title": "🧰 Custom Actions",
+  "title": "Custom Actions",
+  "icon": "🧰",
   "root": true,
   "pages": [
-    "backend-decorator",
-    "class-decorator",
+    "what-is-a-custom-action",
+    "prerequisites-and-environment-setup",
+    "your-first-custom-action",
     "custom-action-decorators",
-    "custom-action-rules-and-limitations",
     "frontend-decorator",
     "frontend-select-decorator-guide",
-    "full-guide-on-custom-actions",
+    "class-decorator",
+    "backend-decorator",
     "lists-and-display-rules-inside-custom-actions",
-    "prerequisites-and-environment-setup",
-    "what-is-a-custom-action",
-    "your-first-custom-action"
+    "full-guide-on-custom-actions",
+    "custom-action-rules-and-limitations"
   ]
 }

@@ -1,0 +1,23 @@
+{
+  "title": "DateTime",
+  "icon": "📁",
+  "pages": [
+    "today",
+    "utc-now",
+    "is-weekend",
+    "is-weekday",
+    "get-year",
+    "get-month",
+    "get-day",
+    "get-hour",
+    "get-minute",
+    "get-week-number",
+    "get-day-of-week",
+    "update-datetime",
+    "string-to-datetime",
+    "format-datetime",
+    "date-difference",
+    "time-difference",
+    "datetime-to-string"
+  ]
+}

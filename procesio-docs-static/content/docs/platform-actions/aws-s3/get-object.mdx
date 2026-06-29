@@ -1,0 +1,28 @@
+---
+title: "Get object"
+icon: "📕"
+description: "The 'Get Object' action in PROCESIO enables users to retrieve a file from a specified AZURE storage container using the provided account name,…"
+---
+
+The "Get Object" action in PROCESIO enables users to retrieve a file from a specified AZURE storage container using the provided account name, account key, container name, and key (file name).
+
+![](/images/docs/3Kru41GpXF-fth1kLbdYl_image.png)
+
+**Parameters:**
+
+1. **Account Name:**
+   - &#x20;The name of the storage account where the file is located.
+2. **Account Key:**
+   - &#x20;The access key associated with the storage account provides authentication and authorization.
+3. **Container Name:**
+   - &#x20;The name of the container where the file is stored.
+4. **Key (File Name):**
+   - &#x20;The unique identifier or name of the file to be retrieved from the specified container.
+5. **File:**
+   - &#x20;The file type variable that will store the downloaded file.
+
+**Note:**
+
+- Ensure that the provided account name, account key, container name, and key parameters are accurate and have the necessary permissions to access the specified file in the storage container.
+- It is recommended to securely manage and store access keys, avoiding exposure to unauthorized users.
+- Error handling mechanisms should be implemented to manage scenarios where the specified file is not found or access to the storage account is denied.

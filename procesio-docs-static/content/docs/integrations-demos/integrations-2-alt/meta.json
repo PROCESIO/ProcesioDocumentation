@@ -1,0 +1,26 @@
+{
+  "title": "Integrations",
+  "icon": "🔗",
+  "pages": [
+    "rsign-x-procesio",
+    "run-a-process-with-files-via-call-api-b",
+    "google-oauth2",
+    "azure-oauth2",
+    "gmail-outgoing",
+    "gmail-incoming",
+    "sendsms",
+    "smso",
+    "webflow",
+    "typeform",
+    "sendgrid",
+    "getgist",
+    "sendinblue",
+    "airtable",
+    "yahoo",
+    "smartsheet",
+    "microsoft-outlook",
+    "hubspot",
+    "oauth2-google-sheets",
+    "google-sheets"
+  ]
+}

@@ -1,0 +1,91 @@
+---
+title: "Simple Filter"
+icon: "📕"
+description: "The Simple Filter action allows you to filter simple lists, particularly those comprised of primitive types, used within your process."
+---
+
+# Overview
+
+The **Simple Filter** action allows you to filter simple lists, particularly those comprised of primitive types, used within your process.
+
+# Parameters
+
+- **Input (required):** List to filter (`list<object>`)
+- **Filter JSON Configuration (required):** Configuration for filtering criteria in JSON format
+- **Output (required):** Filtered list (`list<object>`)
+
+# Filter JSON Configuration
+
+The JSON Configuration consists of several parameters:
+
+```json
+{
+	"MatchType":"Exact",
+	"FilterExpression":"(RegEx)expression",
+	"FuzzyAlgorithm":"Levenstein",
+	"FuzzyThreshold":0.7,
+	"SoundexDistance":4,
+	"SimilarFirstNwords":1,
+	"SimilarLastNwords":1,
+	"KeepIfTrue":true
+}
+```
+
+## MatchType Types
+
+### Exact
+
+An exact match requires validation (**=**) against the specified `FilterExpression`.
+
+### Similar
+
+- Compares against `FilterExpression` considering:
+  - Special characters: For example, "John-Doe" and "John Doe" are considered a match after removing special characters.
+  - Phone numbers: e.g., "376-323-1111" and "323-1111" are considered a match.
+  - Domain/URL: Ignores prefixes like "WWW" or "HTTP(s)://".
+  - Email format: Matches emails with various representations like "@" or "\[at]".
+
+### Fuzzy
+
+Utilizes algorithms from **Similarity Search** to compare fields against `FilterExpression`. More details [here](https://docs.procesio.com/how-to/similarity-search).
+
+### Contains
+
+Checks if `FilterExpression` contains the field or vice versa.
+
+### Soundex
+
+Evaluates if two words are similar when spoken, based on a scale from 0 to 4.
+
+### SimilarWordMatch
+
+Compares the first or last N words in the field with those in `FilterExpression`.
+
+### RegEx
+
+Validates if the field matches the pattern specified in `FilterExpression`. The RegEx pattern must be JSON safe/encoded (e.g. by using [test json\_encode online - general PHP functions - functions-online](https://www.functions-online.com/json_encode.html)).
+
+## Properties
+
+### FuzzyAlgorithm & FuzzyThreshold
+
+- Only used when `MatchType` = `Fuzzy`. If `MatchType` is something else, those properties will be ignored so, they can be null or can even not be present.
+- `FuzzyAlgorithm` needs to be one from this [here](https://docs.procesio.com/how-to/similarity-search), written exactly as in the link provided.
+- `FuzzyThreshold` is a double between 0 and 1, where 0 means any match is accepted and 1 requires 100% confidence.
+
+### SoundexDistance
+
+- Used only when the `MatchType` = `Soundex` and it can be set to 0, 1, 2, 3, or 4, where 4 means the words are very similar when spoken.&#x20;
+
+### SimilarFirstNwords & SimilarLastNwords
+
+- Only used when `MatchType` = `SimilarWordMatch` in which case at least one should be >0. If both are =0 then the `SimilarWordMatch` will not be executed at all since it does not make sense. If MatchType is something else, those properties will be ignored, so, they can have any value or can even not be present.
+
+### KeepIfTrue
+
+- Determines if the record should be kept based on the match criteria. If set to **true**, the record will be retained.
+
+# Important Notes
+
+- Matching algorithms operate only on primitive field types, not data structures.
+- A row match is TRUE only if all matches are TRUE

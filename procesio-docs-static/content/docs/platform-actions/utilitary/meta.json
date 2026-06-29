@@ -1,0 +1,9 @@
+{
+  "title": "Utilitary",
+  "icon": "📁",
+  "pages": [
+    "generate-string",
+    "generate-integer",
+    "generate-guid"
+  ]
+}

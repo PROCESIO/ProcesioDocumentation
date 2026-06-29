@@ -1,0 +1,31 @@
+---
+title: "Get Metadata"
+icon: "📕"
+description: "The Get Metadata action retrieves metadata for a S3 object from the Amazon S3 bucket."
+---
+
+# Overview
+
+The `Get Metadata` action retrieves metadata for a S3 object from the Amazon S3 bucket.
+
+![](/images/docs/VnRpmgHbJJmonAX-e1J4i_image.png)
+
+## Inputs & Outputs
+
+**\[I]** Access key (`string`): The access key for your Amazon S3 account.
+
+**\[I]** Secret key (`string`): The secret key associated with the access key for your Amazon S3 account.
+
+**\[I]** Region (`string`): The region where the Amazon S3 bucket is located.
+
+**\[I]** Bucket (`string`): The name of the Amazon S3 bucket from which to retrieve the object metadata.
+
+**\[I]** Object key (`string`): This user-defined key identifies the object in the bucket. Ensure to include all prefixes, split by the '/' character, since the full file path is needed for interrogation.
+
+**\[O]** Result (`object`): Returns the object metadata.
+
+## Important notes
+
+- Ensure the provided access key and secret key have the necessary permissions to retrieve metadata from the specified Amazon S3 bucket.
+- Ensure that the region provided matches the region where the Amazon S3 bucket is located.
+- Include all necessary prefixes in the object key, split by the '/' character, to ensure the correct identification of the object in the bucket.
