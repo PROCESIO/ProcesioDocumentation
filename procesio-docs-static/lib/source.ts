@@ -7,6 +7,22 @@ import { docsContentRoute, docsImageRoute, docsRoute } from './shared';
 export const source = loader({
   baseUrl: docsRoute,
   source: docs.toFumadocsSource(),
+  url(slugs) {
+    const [space, ...pageSlugs] = slugs;
+    const legacySlug = pageSlugs.at(-1);
+
+    // Preserve the public URLs used by the PROCESIO application and by the
+    // original documentation site.
+    if (space === 'platform-actions') {
+      return legacySlug ? `/how-to/${legacySlug}` : '/how-to';
+    }
+
+    if (space === 'overview') {
+      return legacySlug ? `/${legacySlug}` : '/overview';
+    }
+
+    return `${docsRoute}/${slugs.join('/')}`;
+  },
   icon(icon) {
     if (icon) return createElement('span', { className: 'inline-block mr-1' }, icon);
   },

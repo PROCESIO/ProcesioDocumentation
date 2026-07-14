@@ -1,6 +1,7 @@
 {
-  "name": "procesiodocumentation",
+  "name": "prcdocs",
   "compatibility_date": "2025-06-01",
+  "preview_urls": true,
   "assets": {
     "directory": "./out",
     "not_found_handling": "404-page"
