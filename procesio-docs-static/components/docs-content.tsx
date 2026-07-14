@@ -1,4 +1,8 @@
+import { getMDXComponents } from '@/components/mdx';
 import { getPageImage, getPageMarkdownUrl, source } from '@/lib/source';
+import { gitConfig } from '@/lib/shared';
+import type { Metadata } from 'next';
+import { createRelativeLink } from 'fumadocs-ui/mdx';
 import {
   DocsBody,
   DocsDescription,
@@ -7,17 +11,10 @@ import {
   MarkdownCopyButton,
   ViewOptionsPopover,
 } from 'fumadocs-ui/layouts/docs/page';
-import { notFound } from 'next/navigation';
-import { getMDXComponents } from '@/components/mdx';
-import type { Metadata } from 'next';
-import { createRelativeLink } from 'fumadocs-ui/mdx';
-import { gitConfig } from '@/lib/shared';
 
-export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
-  if (!page) notFound();
+type DocsSourcePage = (typeof source)['$inferPage'];
 
+export function DocsContent({ page }: { page: DocsSourcePage }) {
   const MDX = page.data.body;
   const markdownUrl = getPageMarkdownUrl(page).url;
 
@@ -35,7 +32,6 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
       <DocsBody>
         <MDX
           components={getMDXComponents({
-            // this allows you to link to other pages with relative file paths
             a: createRelativeLink(source, page),
           })}
         />
@@ -44,23 +40,11 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   );
 }
 
-export async function generateStaticParams() {
-  return source.generateParams();
-}
-
-export async function generateMetadata(props: PageProps<'/docs/[[...slug]]'>): Promise<Metadata> {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
-  if (!page) notFound();
-
+export function getDocsMetadata(page: DocsSourcePage): Metadata {
   return {
     title: page.data.title,
     description: page.data.description,
-    alternates: {
-      canonical: page.url,
-    },
-    openGraph: {
-      images: getPageImage(page).url,
-    },
+    alternates: { canonical: page.url },
+    openGraph: { images: getPageImage(page).url },
   };
 }
