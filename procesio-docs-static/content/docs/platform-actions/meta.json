@@ -32,22 +32,6 @@
     "utilitary",
     "pdf",
     "aws-s3",
-    "community-made",
-    "add",
-    "beta",
-    "concatenate",
-    "contains",
-    "deduplicate-list",
-    "duplicate-identification",
-    "get-element-ai-generated",
-    "get-index",
-    "is-valid",
-    "javascript",
-    "join",
-    "length",
-    "read-file",
-    "sort-data-model",
-    "untitled",
-    "xml-processor"
+    "community-made"
   ]
 }
