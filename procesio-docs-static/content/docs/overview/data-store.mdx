@@ -1,0 +1,298 @@
+---
+title: "Data Store"
+icon: "🗄️"
+description: "A table you define and fill inside a workspace — rows and columns you can read and write from a process, from a form, or through the API."
+---
+
+<Callout type="info">
+Behaviours in this guide were verified on 31 July 2026. The screenshots come from the automated test suite, which is why the example store is named `AUTO_DSACT_Store`.
+</Callout>
+
+## What a Data Store is
+
+A Data Store holds structured records — a customer list, a price table, a queue of things to process — that live in your workspace and persist between process runs.
+
+You define the columns once, then add rows through the interface, a CSV import, a process, a form, or the API. Any process in the same workspace can read those rows, add to them, change them or remove them.
+
+### Data Store or Data Model?
+
+They solve different problems. A **Data Model** describes the *shape* of data moving through a single process run — it holds no records of its own. A **Data Store** is where records actually live and stay. If you need the information to still be there tomorrow, or to be shared between runs, use a Data Store.
+
+## Creating a Data Store
+
+Open **Data Stores** from the sidebar and choose **Create**. Give it a name, then define your columns.
+
+![The Data Stores screen listing the stores in a workspace](/images/docs/data-store/data-store-list.png)
+
+*The Data Store list. Each store shows its name and description; Create is top right.*
+
+### Columns
+
+| Setting | What it means |
+|---|---|
+| **Name** | Up to 64 characters. This is what you will pick from every column list later, so make it readable — `InvoiceNumber` reads better than `inv_no`. |
+| **Type** | One of nine types — see [Column types](#column-types). Choose deliberately: changing a type later can affect rows that already exist. |
+| **Primary key** | At least one column must be a primary key. It identifies a row uniquely, so no two rows may share the same value. You can mark several columns as the key together (a composite key) when one column alone isn't unique. |
+| **Required** | A required column must have a value in every row. Adding a row without one is rejected. |
+
+### Columns you get for free
+
+Every Data Store automatically tracks four system columns. You cannot create, rename or write to them, but you *can* filter and sort by them:
+
+| Column | Holds |
+|---|---|
+| `CreatedOn` | When the row was first added |
+| `UpdatedOn` | When the row last changed |
+| `CreatedById` | Who added it |
+| `UpdatedById` | Who last changed it |
+
+Those four names are reserved. A near-miss like `created_on` is accepted as an ordinary column, which is rarely what you want — it will sit alongside the real `CreatedOn` and confuse everyone later.
+
+<Callout type="warn">
+**Editing the schema** — saving a Data Store replaces its entire column definition. If you remove a column and save, that column's data is gone and cannot be recovered. Export a CSV before making structural changes to a store that holds real data.
+</Callout>
+
+## Column types
+
+Nine types are available. There is no separate Date, Time, Decimal or File type — use `DateTime` or `String` instead.
+
+| Type | Use it for | Worth knowing |
+|---|---|---|
+| `String` | Names, codes, notes, anything textual | Holds up to 65,535 bytes. Accented and non-Latin characters count for more than one byte each. |
+| `Integer` | Counts, quantities, whole numbers | 64-bit. A decimal is accepted and silently rounded — `2.5` becomes a whole number without warning. |
+| `Double` | Prices, measurements, anything fractional | Standard 64-bit floating point. |
+| `Float` | — | Stored identically to `Double`. It does not save space or give you lower precision; prefer `Double` for clarity. |
+| `Boolean` | Yes/no flags | Accepts `true`/`false` and `1`/`0`. See [Known issues](#known-issues) before filtering on one. |
+| `DateTime` | Dates and timestamps | Write as `2026-07-17T14:30:00`. A date alone (`2026-07-17`) works too. A trailing `Z` is rejected by the rows API. |
+| `Guid` | Identifiers from other systems | Values are *not* validated. A malformed identifier is accepted and stored in a mangled form, so validate before writing. |
+| `Json` | Nested or variable structures | Stored as JSON. Structure round-trips, but key order and whitespace are normalised, so don't compare the raw text. |
+| `Object` | Same as `Json` | Behaves identically to `Json`. |
+
+<Callout type="info">
+**Date and time format** — the accepted written form is `YYYY-MM-DDTHH:mm:ss`, for example `2026-07-17T14:30:00`. Formats like `17/07/2026 14:30` or a Unix timestamp are rejected. Values are stored as written, without timezone conversion, so decide on one timezone convention for your workspace and stick to it.
+</Callout>
+
+## Working with rows
+
+Open a Data Store to see its rows. From here you can add records, filter, sort and page through the data.
+
+![The Data Store viewer showing rows with typed column headers](/images/docs/data-store/data-store-rows.png)
+
+*The Data Store viewer. Each column header carries its type, the key column is marked, and required columns show an asterisk. Import and Export handle CSV; the Read-Only switch protects the data while you are just looking.*
+
+### Filtering and sorting
+
+Pick a column, an operator and a value. Which operators you get depends on the column's type — text columns offer *contains* and *starts with*, number and date columns offer *greater than* and *before/after*, and so on.
+
+**Text matching ignores case.** Searching `acme` finds `ACME` and `Acme`. Sorting is case-insensitive too, so `apple` and `Apple` sort together rather than in separate blocks.
+
+### Paging
+
+Rows come back a page at a time. Two behaviours are worth knowing if you page through data from a process or the API:
+
+- Asking for a page beyond the end returns the **last page**, not an empty one. Don't loop "until the page comes back empty" — it never will. Work out the number of pages from the total count instead.
+- A page size of `0` means **every row**, unpaged. Handy for small tables, risky for large ones.
+
+<Callout type="error">
+**Currently affected** — editing or deleting a row from the Data Store screen is failing on current builds. Until it is fixed, change rows using a process with the Data Store action, or replace the data with a CSV import. Adding rows and reading them is unaffected.
+</Callout>
+
+## Importing and exporting CSV
+
+Both run as background jobs — you start them, and the file becomes available when the job finishes. Large files take a moment; nothing is lost if you navigate away.
+
+### Preparing a file to import
+
+- Comma-separated, UTF-8. A byte-order mark is tolerated.
+- The first row is a header of **column names**. They are matched by name, ignoring case and surrounding spaces, so column order doesn't matter.
+- Booleans as `true` / `false` in lower case.
+- Dates as `2026-07-17T14:30:00`.
+
+### What happens to bad data
+
+| Situation | Result |
+|---|---|
+| A header doesn't match any column, or a required column is missing | The **whole import is rejected** before anything is written. |
+| Individual rows have bad values | The good rows are imported and the bad ones are collected into a **failures file** you can download, with the reason on each row. |
+| A row's primary key already exists | The existing row is **updated**. Import is the supported way to bulk-update. |
+
+That last one differs from adding rows through a process or the API, where a duplicate key is an error rather than an update.
+
+### Exporting
+
+Export produces the user columns only — the four system columns are not included. If you need `CreatedOn` in a spreadsheet, copy it into a column of your own.
+
+<Callout type="warn">
+**Opening exports in a spreadsheet** — cells beginning with `=`, `+`, `-` or `@` are exported exactly as stored. Spreadsheet applications may treat them as formulas when the file is opened. If your data can contain values like that, open exports with an import step that treats every column as text.
+</Callout>
+
+## Using a Data Store in a process
+
+The **Data Store** action reads and writes rows as part of a process. Find it in the toolbox by searching for "Data Store" and drop it onto the canvas.
+
+![The Data Store action in the process designer toolbox](/images/docs/data-store/action-toolbox.png)
+
+### Setting it up
+
+1. Click the action to open its panel.
+2. Pick the store under **Select Data Store**.
+3. Choose an **Operation** — Select, Insert, Update or Delete.
+4. Open **Configure Operation** to set up the details. The fields shown change with the operation you chose.
+
+![The Data Store action properties panel with a store and operation selected](/images/docs/data-store/action-panel.png)
+
+*The action panel: pick the store, then the operation. Configure Operation opens the fields for the operation you chose.*
+
+<Callout type="info">
+**Order matters** — pick the store *before* the operation. The column lists in Configure Operation are loaded when the operation changes, so choosing the store afterwards can leave the old store's columns on screen. If you change the store later, re-open the operation list and re-pick it to refresh everything.
+</Callout>
+
+### What each operation does
+
+| Operation | You configure | You get back |
+|---|---|---|
+| **Select** | Page Number, Page Item Count, Where, Sort By, Desc | `Result Rows` — the matching rows. `Total Count` — how many rows matched in total. |
+| **Insert** | Set Values — one entry per column you want to fill | `Affected Rows` |
+| **Update** | Set Values (what to change) and Where (which rows) | `Affected Rows` |
+| **Delete** | Where (which rows) | `Affected Rows` |
+
+### Reading rows
+
+**Page Item Count** defaults to `0`, which returns every matching row. Set a number to page through instead. **Total Count** always reports how many rows matched your filter, not how many are on the current page — use it to work out how many pages there are.
+
+**Sort By** lists your columns and the four system columns, so you can sort by `CreatedOn` to process the oldest records first. Tick **Desc** to reverse the order.
+
+### Writing rows
+
+**Set Values** maps a column to the value you want written. Each entry can be a fixed value or a process variable, so an Insert can write data collected earlier in the run. Columns you leave out of the mapping are untouched by an Update.
+
+![The Set Values mapper shown for the Insert operation](/images/docs/data-store/configure-operation-insert.png)
+
+*Set Values for an Insert — one entry per column you want to fill.*
+
+A primary key column cannot be changed by an Update — put it in the Where filter to choose which row to change instead. Trying to set it produces a clear error telling you the same.
+
+### Using the results downstream
+
+The outputs are ordinary process data. Bind `Result Rows` to a variable and a later action can loop over it, and `Total Count` can drive a Decisional — for example, branch when a lookup found nothing.
+
+<Callout type="warn">
+**If an operation fails** — a failing Data Store action stops the process unless you have connected its error path. Nothing is partially written: if an Insert is rejected, no rows are added at all.
+</Callout>
+
+## Filtering with Where
+
+The **Where** builder decides which rows a Select, Update or Delete applies to. Add a condition, pick the column, pick the operator, and give a value. Add more conditions and chain them with *and* / *or*.
+
+You can filter on the system columns too — `CreatedOn` after a given date is a common way to pick up recent records.
+
+![The Where builder with one condition configured on a number column](/images/docs/data-store/where-condition.png)
+
+*A single condition: Qty, greater than or equal, 40. "Add condition" chains another with and; "Add group" starts an or branch. Sort By, Desc and the outputs sit below.*
+
+### Which operators you get
+
+The list depends on the column's type:
+
+| Column type | Operators |
+|---|---|
+| `String` | Equals · Does not equal · Contains · Does not contain · Starts with · Ends with · Belongs · Does not belong · Is empty · Is not empty |
+| `Integer`, `Double`, `Float`, `DateTime` | Equals · Does not equal · Greater than · Less than · Greater than or equal · Less than or equal · Between · Is not between · Belongs · Does not belong · Is empty · Is not empty |
+| `Boolean` | Is true · Is false · Equals · Does not equal · Belongs · Does not belong · Is empty · Is not empty |
+| `Guid` | Equals · Does not equal · Belongs · Does not belong · Is empty · Is not empty |
+| `Json`, `Object` | Equals · Does not equal · Is empty · Is not empty |
+
+#### Operators that need a particular kind of value
+
+- **Between** and **Is not between** need *two* values — a lower and an upper bound. Both bounds are included in the match.
+- **Belongs** and **Does not belong** match against a list. Provide it as a JSON array, for example `["Draft","Pending"]`. A plain comma-separated list is not accepted.
+- **Is empty** matches rows where the column has no value at all. A column holding an empty piece of text is not "empty" in this sense.
+
+<Callout type="error">
+**Avoid these two operators** — *Like* and *Not like* appear in the list for text columns but are not implemented. A filter using either matches nothing, silently, with no error. Use **Contains** instead.
+</Callout>
+
+<Callout type="error">
+**Filtering a yes/no column** — use **Is true** and **Is false**. On current builds, *Equals true* returns the rows where the value is *false* — and reports no error. This matters most on Update and Delete, where it would change the wrong records.
+</Callout>
+
+## Using a Data Store in a form
+
+A form can read from and write to a Data Store through an **event**. The usual pattern is to show stored records in a table when the form opens.
+
+### Showing records in a table
+
+1. Add a **table** element to the form.
+2. On the form, add an event with the trigger **Form load** and the action **Run Data Store operation**.
+3. Choose the store and the operation **Read**.
+4. Map the returned `rows` to the table's value.
+
+<Callout type="warn">
+**One row showing instead of all of them?** The table's row template must be a **dynamic row**. A static row renders exactly once no matter how many records come back — this is the single most common cause of "only the first record appears".
+</Callout>
+
+![A public PROCESIO form displaying Data Store records in a table](/images/docs/data-store/public-form-table.png)
+
+*A public form whose Form load event reads a Data Store into a table. The pager reports the number of records the read returned.*
+
+### Writing from a form
+
+The same event action offers **Add**, **Update** and **Delete**, typically on a button click, with the form's fields mapped to columns.
+
+<Callout type="error">
+**Currently affected** — of the four operations, **Read** and **Add** work. **Update** and **Delete** from a form event are failing on current builds. Where you need a form to change or remove records, call a process that uses the Data Store action instead.
+</Callout>
+
+### Public forms
+
+A form shared publicly reads the Data Store without the visitor signing in, so treat any store bound to a public form as public data. The form can only reach stores in its own workspace, and only the store it is bound to.
+
+## Who can see what
+
+Access to Data Stores is governed by workspace permissions. A member without Data Store permission cannot list stores, view their structure, or read their rows — those requests are refused rather than returning an empty result.
+
+<Callout type="warn">
+**Empty store list?** If the store list is empty where you expect stores — in a form's event configuration, for instance — it usually means the account lacks Data Store permission rather than that no stores exist. Ask a workspace administrator to check your access.
+</Callout>
+
+## Known issues
+
+Behaviours confirmed on current builds (verified 31 July 2026), with what to do in the meantime. Each is being tracked and is expected to change — re-check this section after a release.
+
+| What you'll see | Impact | What to do |
+|---|---|---|
+| Filtering a yes/no column with *Equals true* returns the rows that are false | Wrong data | Use **Is true** / **Is false**. |
+| *Like* / *Not like* match nothing and report no error | Wrong data | Use **Contains** / **Does not contain**. |
+| Editing or deleting a row from the Data Store screen fails | Blocked | Change rows with a process using the Data Store action, or re-import a CSV. |
+| Form events: *Update* and *Delete* don't take effect | Blocked | Have the form call a process that performs the change. |
+| Changing the store on a configured action leaves the previous store's *Sort By* column selected | Silent | Re-pick Sort By after changing the store; otherwise the run fails on an unknown column. |
+| A newly created store doesn't appear in an action's store list | Annoyance | Reload the process designer. |
+| Picking a second column for an existing Where condition adds to it instead of replacing it | Silent | Delete the condition and add a fresh one. |
+| A decimal written to an Integer column is rounded without warning | Silent | Round deliberately before writing, or use `Double`. |
+| The action's *Learn more* link doesn't resolve | Cosmetic | Use this guide. |
+
+## Troubleshooting
+
+### My filter returns nothing, but I can see matching rows
+
+Check the operator first. *Like* and *Not like* always return nothing. On a yes/no column, *Equals* returns the opposite set — switch to *Is true* or *Is false*. If you used *Belongs*, the value must be a JSON array such as `["A","B"]`.
+
+### My process fails saying a column doesn't exist
+
+The action is pointing at a different store than the column belongs to — usually after changing **Select Data Store** on an action that was already configured. Re-open Configure Operation and re-pick Sort By and each Where column.
+
+### The process saved fine but does nothing when it runs
+
+A Where condition whose operator was never chosen is saved without complaint. Open the condition and confirm an operator is selected.
+
+### My form's table only shows one record
+
+The table's row template is static. Change it to a dynamic row — see [Using a Data Store in a form](#using-a-data-store-in-a-form).
+
+### My CSV import didn't add anything
+
+If a header doesn't match a column name, or a required column is absent, the entire import is rejected before any row is written. Compare your header row against the column names, then download the failures file for per-row reasons.
+
+### Dates are being rejected
+
+Use `2026-07-17T14:30:00`. A trailing `Z`, or a format like `17/07/2026`, is not accepted when writing rows.
