@@ -5,7 +5,7 @@ description: "A table you define and fill inside a workspace — rows and column
 ---
 
 <Callout type="info">
-Behaviours in this guide were verified on 31 July 2026. The screenshots come from the automated test suite, which is why the example store is named `AUTO_DSACT_Store`.
+Behaviours in this guide were verified on 12 August 2026. The screenshots come from the automated test suite, which is why the example stores are named `AUTO_DSACT_Store` and `AUTO_DOCS_Store`.
 </Callout>
 
 ## What a Data Store is
@@ -22,7 +22,7 @@ They solve different problems. A **Data Model** describes the *shape* of data mo
 
 Open **Data Stores** from the sidebar and choose **Create**. Give it a name, then define your columns.
 
-![The Data Stores screen listing the stores in a workspace](/images/docs/data-store/data-store-list.png)
+![The Data Stores list page, with a Create button in the top-right corner](/images/docs/data-store/data-store-list.png)
 
 *The Data Store list. Each store shows its name and description; Create is top right.*
 
@@ -46,10 +46,10 @@ Every Data Store automatically tracks four system columns. You cannot create, re
 | `CreatedById` | Who added it |
 | `UpdatedById` | Who last changed it |
 
-Those four names are reserved. A near-miss like `created_on` is accepted as an ordinary column, which is rarely what you want — it will sit alongside the real `CreatedOn` and confuse everyone later.
+Only those four exact names are reserved. A near-miss like `created_on` is accepted as an ordinary column, which is rarely what you want — it will sit alongside the real `CreatedOn` and confuse everyone later.
 
 <Callout type="warn">
-**Editing the schema** — saving a Data Store replaces its entire column definition. If you remove a column and save, that column's data is gone and cannot be recovered. Export a CSV before making structural changes to a store that holds real data.
+**Editing the schema** — saving a Data Store replaces its *entire* column definition. This is by design, and it is powerful enough to hurt: if you remove a column and save, that column's data is gone and cannot be recovered, and saving with every column removed empties the store the same way, without any extra confirmation. Export a CSV before making structural changes to a store that holds real data.
 </Callout>
 
 ## Column types
@@ -59,11 +59,11 @@ Nine types are available. There is no separate Date, Time, Decimal or File type 
 | Type | Use it for | Worth knowing |
 |---|---|---|
 | `String` | Names, codes, notes, anything textual | Holds up to 65,535 bytes. Accented and non-Latin characters count for more than one byte each. |
-| `Integer` | Counts, quantities, whole numbers | 64-bit. A decimal is accepted and silently rounded — `2.5` becomes a whole number without warning. |
+| `Integer` | Counts, quantities, whole numbers | 64-bit. A decimal is accepted and silently rounded — `2.5` becomes a whole number with no warning, and which way an exact half rounds differs between entry points. If the fraction matters, use `Double`; if it doesn't, round deliberately before writing. |
 | `Double` | Prices, measurements, anything fractional | Standard 64-bit floating point. |
 | `Float` | — | Stored identically to `Double`. It does not save space or give you lower precision; prefer `Double` for clarity. |
-| `Boolean` | Yes/no flags | Accepts `true`/`false` and `1`/`0`. See [Known issues](#known-issues) before filtering on one. |
-| `DateTime` | Dates and timestamps | Write as `2026-07-17T14:30:00`. A date alone (`2026-07-17`) works too. A trailing `Z` is rejected by the rows API. |
+| `Boolean` | Yes/no flags | Write it as unquoted `true` / `false` — those two literals are accepted everywhere: adding rows, filtering, CSV. Numbers (`1`/`0`) and quoted text (`"true"`) are each accepted in some places and rejected in others, so don't rely on them. |
+| `DateTime` | Dates and timestamps | Write as `2026-07-17T14:30:00`. A date alone (`2026-07-17`) works too and means midnight. A trailing `Z` is rejected by the rows API. |
 | `Guid` | Identifiers from other systems | Values are *not* validated. A malformed identifier is accepted and stored in a mangled form, so validate before writing. |
 | `Json` | Nested or variable structures | Stored as JSON. Structure round-trips, but key order and whitespace are normalised, so don't compare the raw text. |
 | `Object` | Same as `Json` | Behaves identically to `Json`. |
@@ -74,17 +74,38 @@ Nine types are available. There is no separate Date, Time, Decimal or File type 
 
 ## Working with rows
 
-Open a Data Store to see its rows. From here you can add records, filter, sort and page through the data.
+Open a Data Store to see its rows. From here you can add records, filter, sort and page through the data, and — with the **Read-Only** switch flipped to **Edit Mode** — change it in place.
 
-![The Data Store viewer showing rows with typed column headers](/images/docs/data-store/data-store-rows.png)
+![The Data Store viewer showing a grid of rows with typed column headers](/images/docs/data-store/data-store-rows.png)
 
 *The Data Store viewer. Each column header carries its type, the key column is marked, and required columns show an asterisk. Import and Export handle CSV; the Read-Only switch protects the data while you are just looking.*
 
 ### Filtering and sorting
 
-Pick a column, an operator and a value. Which operators you get depends on the column's type — text columns offer *contains* and *starts with*, number and date columns offer *greater than* and *before/after*, and so on.
+Every column header has a small filter icon. Click it to open the column's menu: sort the grid A→Z or Z→A from the top, or build a filter below — pick an operator, give a value, and press **Add**. Each active filter appears as a chip above the grid; remove one chip, or **Clear all**, to widen the view again.
+
+Which operators the menu offers depends on the column's type — text columns offer *contains* and *starts with*, number and date columns offer *greater than*, *less than* and *between*, and so on.
+
+![The column filter menu open on a DateTime column, with the operator list expanded](/images/docs/data-store/filter-menu-datetime-roster.png)
+
+*The filter menu on a DateTime column with its operator list open. Date columns take their value from a date picker plus a time picker — both matter, as explained below.*
 
 **Text matching ignores case.** Searching `acme` finds `ACME` and `Acme`. Sorting is case-insensitive too, so `apple` and `Apple` sort together rather than in separate blocks.
+
+#### Filtering dates: pick a date and a time
+
+On a date column, **equals** compares the *exact instant* — the date and the time together. If you pick only a date, the time part defaults to midnight (`00:00`), so the filter matches only rows stored at exactly midnight — against real data that is usually *no rows at all*, with no error to tell you why.
+
+![The filter menu on a DateTime column: an operator select plus separate Date and Time pickers](/images/docs/data-store/filter-menu-datetime.png)
+
+*A date column's filter takes its value from two pickers — Date and Time. Leaving Time empty means 00:00, not "any time that day".*
+
+- Looking for one exact record? Pick the date **and** the time with *equals*.
+- Looking for "everything on that day"? Use **between** — from the day at `00:00` to the day at `23:59` — or a pair of *greater than* / *less than* conditions.
+
+<Callout type="warn">
+**A date filter that matches nothing** — "Equals 17 July" with no time means "equals 17 July at 00:00:00 exactly". This is the single most common reason a date filter comes back empty while you can see matching rows on screen. Reach for **between** when you mean a whole day.
+</Callout>
 
 ### Paging
 
@@ -93,9 +114,25 @@ Rows come back a page at a time. Two behaviours are worth knowing if you page th
 - Asking for a page beyond the end returns the **last page**, not an empty one. Don't loop "until the page comes back empty" — it never will. Work out the number of pages from the total count instead.
 - A page size of `0` means **every row**, unpaged. Handy for small tables, risky for large ones.
 
-<Callout type="error">
-**Currently affected** — editing or deleting a row from the Data Store screen is failing on current builds. Until it is fixed, change rows using a process with the Data Store action, or replace the data with a CSV import. Adding rows and reading them is unaffected.
+## Editing rows in the grid
+
+The grid opens in **Read-Only** mode so nothing changes while you browse. Flip the switch to **Edit Mode** and the rows become editable in place: type into any cell, add new rows with **Add Row**, and remove a row with the bin icon at its end.
+
+![The Data Store grid in Edit Mode: cells rendered as inputs, an Add Row button, and commit/discard actions](/images/docs/data-store/edit-mode.png)
+
+*Edit Mode. Cells become inputs, Add Row appends a record, and the bin icon on each row deletes it. Nothing is saved yet — the edits are held until you commit.*
+
+Your edits are **collected, not saved one by one**. The **Commit Changes** button counts them as you go. When you are done, press it and a **Confirm changes** dialog tells you how many rows will be written and reminds you the write cannot be undone. **Yes, commit changes** writes the whole batch together; **Discard Changes** throws it away and puts the grid back the way it was; **Cancel** returns to editing with the batch intact.
+
+![The Confirm changes dialog with Cancel, Discard Changes and Yes, commit changes buttons](/images/docs/data-store/commit-dialog.png)
+
+*The Confirm changes dialog guards every batch of edits: Yes, commit changes writes them, Discard Changes abandons them, Cancel keeps editing.*
+
+<Callout type="warn">
+**Uncommitted edits are lost on navigation** — leaving the page, or switching back to Read-Only, without committing abandons the pending edits silently. If a row you "added" is missing later, this is almost always what happened: the commit step was skipped.
 </Callout>
+
+Two details to know: a new row must respect the schema — required columns need a value, and the primary key must be unique — and a cell edit that violates a rule is reported when you commit, not while you type. If the Edit Mode switch is greyed out, your account lacks the Data Store rows permission — see [Who can see what](#who-can-see-what).
 
 ## Importing and exporting CSV
 
@@ -132,6 +169,8 @@ The **Data Store** action reads and writes rows as part of a process. Find it in
 
 ![The Data Store action in the process designer toolbox](/images/docs/data-store/action-toolbox.png)
 
+*Search the toolbox for "Data Store" to find the action. If the toolbox shows shapes instead of actions, switch the toolbox source back to Actions — only that side has a search box.*
+
 ### Setting it up
 
 1. Click the action to open its panel.
@@ -139,12 +178,12 @@ The **Data Store** action reads and writes rows as part of a process. Find it in
 3. Choose an **Operation** — Select, Insert, Update or Delete.
 4. Open **Configure Operation** to set up the details. The fields shown change with the operation you chose.
 
-![The Data Store action properties panel with a store and operation selected](/images/docs/data-store/action-panel.png)
+![The Data Store action properties panel with a store selected and the Operation dropdown open](/images/docs/data-store/action-panel.png)
 
 *The action panel: pick the store, then the operation. Configure Operation opens the fields for the operation you chose.*
 
 <Callout type="info">
-**Order matters** — pick the store *before* the operation. The column lists in Configure Operation are loaded when the operation changes, so choosing the store afterwards can leave the old store's columns on screen. If you change the store later, re-open the operation list and re-pick it to refresh everything.
+**Order matters** — pick the store *before* the operation, and know these two quirks of the store list: a store created *while the designer is open* doesn't appear in the list until you reload the designer; and if you *change* the store on an action that was already configured, the previous store's columns stay on screen — re-pick the operation, **Sort By** and every Where column so the run doesn't fail on a column that no longer exists.
 </Callout>
 
 ### What each operation does
@@ -156,9 +195,17 @@ The **Data Store** action reads and writes rows as part of a process. Find it in
 | **Update** | Set Values (what to change) and Where (which rows) | `Affected Rows` |
 | **Delete** | Where (which rows) | `Affected Rows` |
 
+<Callout type="warn">
+**Update and Delete apply to every matching row** — the Where filter is a *filter*, not a key lookup. An Update or Delete whose Where matches ten rows changes ten rows. Before a destructive run against real data, try the same Where on a **Select** first and check `Total Count` — it tells you exactly how many rows the write would touch.
+</Callout>
+
 ### Reading rows
 
-**Page Item Count** defaults to `0`, which returns every matching row. Set a number to page through instead. **Total Count** always reports how many rows matched your filter, not how many are on the current page — use it to work out how many pages there are.
+**Page Item Count** defaults to `0`, which returns every matching row. Set a number to page through instead. **Total Count** always reports how many rows matched your filter, not how many are on the current page — use it to work out how many pages there are. Like the viewer, a page number past the end returns the *last* page, never an empty one.
+
+![The Configure Operation panel for a Select with paging, Where, sorting and outputs](/images/docs/data-store/configure-operation-select.png)
+
+*Configure Operation for a Select — paging, the Where builder, sorting, and the outputs.*
 
 **Sort By** lists your columns and the four system columns, so you can sort by `CreatedOn` to process the oldest records first. Tick **Desc** to reverse the order.
 
@@ -182,13 +229,21 @@ The outputs are ordinary process data. Bind `Result Rows` to a variable and a la
 
 ## Filtering with Where
 
-The **Where** builder decides which rows a Select, Update or Delete applies to. Add a condition, pick the column, pick the operator, and give a value. Add more conditions and chain them with *and* / *or*.
+The **Where** builder decides which rows a Select, Update or Delete applies to. Add a condition, pick the column, pick the operator, and give a value. Add more conditions and chain them with *and* / *or*. Picking the column also decides which operators the condition offers, so always pick the column first.
 
 You can filter on the system columns too — `CreatedOn` after a given date is a common way to pick up recent records.
 
-![The Where builder with one condition configured on a number column](/images/docs/data-store/where-condition.png)
+![The Configure Operation panel with one Where condition configured on a number column](/images/docs/data-store/where-condition.png)
 
-*A single condition: Qty, greater than or equal, 40. "Add condition" chains another with and; "Add group" starts an or branch. Sort By, Desc and the outputs sit below.*
+*A condition on Qty — operator "greater than or equal", value 40. Once picked, the column is not redisplayed in the collapsed row (only the operator and value show) — click the left box when you need to check or change which column a condition points at. "Add condition" chains another; the badge between two conditions toggles and/or. Sort By, Desc and the outputs sit below.*
+
+### Chaining conditions: and binds before or
+
+With three or more conditions mixing *and* with *or*, the *and* pairs are evaluated first — exactly as the builder's own tooltip says: *"AND has priority over OR in evaluating conditions."* So
+
+`City = Cluj` **or** `Qty > 50` **and** `Active is false`
+
+means *City is Cluj*, **or** (*Qty over 50 **and** not active*) — not "one of the first two, and also not active". If you mean the other grouping, put the *or* branch in its own **group**; a group is evaluated as one bracket.
 
 ### Which operators you get
 
@@ -196,7 +251,7 @@ The list depends on the column's type:
 
 | Column type | Operators |
 |---|---|
-| `String` | Equals · Does not equal · Contains · Does not contain · Starts with · Ends with · Belongs · Does not belong · Is empty · Is not empty |
+| `String` | Equals · Does not equal · Contains · Does not contain · Starts with · Ends with · Like · Not like · Belongs · Does not belong · Is empty · Is not empty |
 | `Integer`, `Double`, `Float`, `DateTime` | Equals · Does not equal · Greater than · Less than · Greater than or equal · Less than or equal · Between · Is not between · Belongs · Does not belong · Is empty · Is not empty |
 | `Boolean` | Is true · Is false · Equals · Does not equal · Belongs · Does not belong · Is empty · Is not empty |
 | `Guid` | Equals · Does not equal · Belongs · Does not belong · Is empty · Is not empty |
@@ -204,21 +259,23 @@ The list depends on the column's type:
 
 #### Operators that need a particular kind of value
 
-- **Between** and **Is not between** need *two* values — a lower and an upper bound. Both bounds are included in the match.
+- **Between** and **Is not between** need *two* values — a lower and an upper bound. Both bounds are included in the match; leaving the second one out fails the run with a clear message.
+- **Like** and **Not like** match text with SQL wildcards: `%` stands for any run of characters, so `%Pop%` finds "Ana Pop" and "Ioana Popescu", and `%Pop` only values that *end* in "Pop". **Without a wildcard, Like is an exact match** — `Pop` alone matches only the value "Pop". If you just want "text appears anywhere", **Contains** is the simpler operator.
 - **Belongs** and **Does not belong** match against a list. Provide it as a JSON array, for example `["Draft","Pending"]`. A plain comma-separated list is not accepted.
 - **Is empty** matches rows where the column has no value at all. A column holding an empty piece of text is not "empty" in this sense.
+- On a date column, **Equals** compares date *and* time — the same rule as the viewer's filter menu; see [Filtering dates](#filtering-dates-pick-a-date-and-a-time). Use **Between** for a whole day.
 
 <Callout type="error">
-**Avoid these two operators** — *Like* and *Not like* appear in the list for text columns but are not implemented. A filter using either matches nothing, silently, with no error. Use **Contains** instead.
+**Filtering a yes/no column** — use **Is true** and **Is false**. On current builds, *Equals true* in a process Where returns the rows where the value is *false* — and reports no error. This matters most on Update and Delete, where it would change the wrong records. (Filtering a yes/no column in the viewer or in a form is not affected.)
 </Callout>
 
-<Callout type="error">
-**Filtering a yes/no column** — use **Is true** and **Is false**. On current builds, *Equals true* returns the rows where the value is *false* — and reports no error. This matters most on Update and Delete, where it would change the wrong records.
+<Callout type="info">
+**Changing a condition's column** — to point an existing condition at a different column, delete the condition and add a fresh one. Re-picking a column on a condition that already has one *adds* a second operand instead of replacing the first, and the condition stops meaning what it reads as.
 </Callout>
 
 ## Using a Data Store in a form
 
-A form can read from and write to a Data Store through an **event**. The usual pattern is to show stored records in a table when the form opens.
+A form can read from and write to a Data Store through an **event**. The usual pattern is to show stored records in a table when the form opens; the same mechanism can add, update and delete records from the form's fields.
 
 ### Showing records in a table
 
@@ -226,6 +283,8 @@ A form can read from and write to a Data Store through an **event**. The usual p
 2. On the form, add an event with the trigger **Form load** and the action **Run Data Store operation**.
 3. Choose the store and the operation **Read**.
 4. Map the returned `rows` to the table's value.
+
+A Read loads **page 1** with **1,000 records per page** by default. For a bigger store, raise *Records per page*, or better, add [row filters](#filtering-what-the-form-reads) so the form only loads what it shows.
 
 <Callout type="warn">
 **One row showing instead of all of them?** The table's row template must be a **dynamic row**. A static row renders exactly once no matter how many records come back — this is the single most common cause of "only the first record appears".
@@ -235,47 +294,47 @@ A form can read from and write to a Data Store through an **event**. The usual p
 
 *A public form whose Form load event reads a Data Store into a table. The pager reports the number of records the read returned.*
 
-### Writing from a form
+### Filtering what the form reads
 
-The same event action offers **Add**, **Update** and **Delete**, typically on a button click, with the form's fields mapped to columns.
+A **Read** event doesn't have to load the whole store. Open the event's **Map data and filter rows** panel — the row carries a *Filters configured / not configured* badge — and use **Row filters** at the bottom: **+ Add condition** adds one condition (column, operator, value), **+ Add group** adds a bracketed sub-group, and the badge between conditions toggles *and*/*or*.
+
+![The form builder's Map data side panel with the Row filters section](/images/docs/data-store/form-row-filters.png)
+
+*The Row filters editor inside the event's mapping panel. It is the same condition builder the process designer uses, so the operators per column type match the Where tables above.*
+
+<Callout type="warn">
+**The same and-before-or rule applies — silently.** Row filters is a flat list with no brackets drawn, but mixed conditions still evaluate *and* pairs first. `City = Cluj` **or** `Qty > 50` **and** `Active is false` loads the Cluj rows *or* the (over-50 *and* inactive) rows — fewer than a left-to-right reading suggests, with no warning. When mixing *and* with *or*, put each *or* branch in its own group so the grouping is explicit.
+</Callout>
 
 <Callout type="error">
-**Currently affected** — of the four operations, **Read** and **Add** work. **Update** and **Delete** from a form event are failing on current builds. Where you need a form to change or remove records, call a process that uses the Data Store action instead.
+**List operators in form Row filters** — avoid **Belongs** / **Does not belong** in this panel for now: a list authored here reaches the form wrapped the wrong way, so *belongs* shows no rows and *does not belong* shows everything. Use several *equals* conditions joined with *or* instead — same result, reliable.
 </Callout>
+
+### Writing from a form
+
+The same event action offers **Add**, **Update** and **Delete**, typically on a button click, with the form's fields mapped to columns. All four operations work end to end: Add writes a new row (the primary key must be unique, exactly as everywhere else), Update changes the rows its filter matches, and Delete removes them.
 
 ### Public forms
 
-A form shared publicly reads the Data Store without the visitor signing in, so treat any store bound to a public form as public data. The form can only reach stores in its own workspace, and only the store it is bound to.
+A form shared publicly reads and writes its Data Store without the visitor signing in. That access is granted **workspace-wide**, so the safe way to think about it is: any store in the same workspace as a public form may be reachable from the outside. Keep public forms — and the stores they use — in a workspace of their own, holding only data you are comfortable exposing, and never a store with personal or internal records.
 
 ## Who can see what
 
-Access to Data Stores is governed by workspace permissions. A member without Data Store permission cannot list stores, view their structure, or read their rows — those requests are refused rather than returning an empty result.
+Access to Data Stores is governed by workspace permissions, and viewing is separate from editing: an account can be allowed to see stores and rows yet not change them — for such an account the viewer's Edit Mode switch is disabled. A member with no Data Store permission at all cannot list stores, view their structure, or read their rows — those requests are refused rather than returning an empty result.
 
 <Callout type="warn">
 **Empty store list?** If the store list is empty where you expect stores — in a form's event configuration, for instance — it usually means the account lacks Data Store permission rather than that no stores exist. Ask a workspace administrator to check your access.
 </Callout>
 
-## Known issues
-
-Behaviours confirmed on current builds (verified 31 July 2026), with what to do in the meantime. Each is being tracked and is expected to change — re-check this section after a release.
-
-| What you'll see | Impact | What to do |
-|---|---|---|
-| Filtering a yes/no column with *Equals true* returns the rows that are false | Wrong data | Use **Is true** / **Is false**. |
-| *Like* / *Not like* match nothing and report no error | Wrong data | Use **Contains** / **Does not contain**. |
-| Editing or deleting a row from the Data Store screen fails | Blocked | Change rows with a process using the Data Store action, or re-import a CSV. |
-| Form events: *Update* and *Delete* don't take effect | Blocked | Have the form call a process that performs the change. |
-| Changing the store on a configured action leaves the previous store's *Sort By* column selected | Silent | Re-pick Sort By after changing the store; otherwise the run fails on an unknown column. |
-| A newly created store doesn't appear in an action's store list | Annoyance | Reload the process designer. |
-| Picking a second column for an existing Where condition adds to it instead of replacing it | Silent | Delete the condition and add a fresh one. |
-| A decimal written to an Integer column is rounded without warning | Silent | Round deliberately before writing, or use `Double`. |
-| The action's *Learn more* link doesn't resolve | Cosmetic | Use this guide. |
-
 ## Troubleshooting
 
 ### My filter returns nothing, but I can see matching rows
 
-Check the operator first. *Like* and *Not like* always return nothing. On a yes/no column, *Equals* returns the opposite set — switch to *Is true* or *Is false*. If you used *Belongs*, the value must be a JSON array such as `["A","B"]`.
+Check the operator and the value shape. On a **date** column, *equals* with only a date means midnight exactly — use *between* for a whole day. With *Like*, no wildcard means an exact match — add `%` (`%Pop%`), or use *Contains*. With *Belongs*, the value must be a JSON array such as `["A","B"]`. And on a yes/no column in a process Where, use *Is true* / *Is false* rather than *Equals*.
+
+### My edits in the grid disappeared
+
+Edits made in Edit Mode are held until you press **Commit changes** and confirm with **Yes, commit changes**. Navigating away — or answering the dialog with **Discard Changes** — abandons the whole batch.
 
 ### My process fails saying a column doesn't exist
 
@@ -288,6 +347,10 @@ A Where condition whose operator was never chosen is saved without complaint. Op
 ### My form's table only shows one record
 
 The table's row template is static. Change it to a dynamic row — see [Using a Data Store in a form](#using-a-data-store-in-a-form).
+
+### My form filter on a list of values shows nothing (or everything)
+
+That's the *Belongs* / *Does not belong* limitation in form Row filters — replace the list with several *equals* conditions joined by *or*. See [Filtering what the form reads](#filtering-what-the-form-reads).
 
 ### My CSV import didn't add anything
 
