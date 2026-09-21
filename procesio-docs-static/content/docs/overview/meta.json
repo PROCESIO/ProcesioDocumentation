@@ -8,6 +8,7 @@
     "dashboard",
     "processes",
     "data-store",
+    "query-store",
     "automation",
     "user-permissions-and-roles-management",
     "best-practices",
