@@ -1,0 +1,302 @@
+---
+title: "Query Store"
+icon: "🔍"
+description: "A platform action that runs one SQL statement against your workspace's Data Stores — filter, join and total data, or change rows in bulk, with parameters and guardrails."
+---
+
+<Callout type="info">
+  Behaviours in this guide were verified on 18 September 2026. The screenshots come from a demo workspace, which is why the example Data Stores are named `DEMO_QS_Customers` and `DEMO_QS_Orders` and the processes start with `DEMO_QS_`.
+</Callout>
+
+## What Query Store does [#what-query-store-does]
+
+**Query Store** is a platform action that runs **one SQL statement** against the [Data Stores](/data-store) of your workspace, as a single step in a process.
+
+* **No setup.** There is no connection string, no credential and no external database. The action works on the Data Stores that already live in your workspace.
+* **Reads and writes.** Filter, join, group and total your data, or insert, update and delete rows in bulk.
+* **Point and click.** Pick Data Stores and columns from a list instead of typing their names.
+* **Safe values.** Values from your process reach the query as parameters, so they can't change what the query does.
+* **Guardrails.** Statements that could damage your data or reach outside your workspace are refused with a clear message.
+
+![A process with Start, a Query Store action and Stop](/images/docs/query-store/properties-panel.png)
+
+*A process with a Query Store step. Click the step to open its properties; everything is set up under **Configure Query**.*
+
+### Query Store, Data Store action or Execute Query? [#which-action]
+
+| You want to…                                                                                 | Use                                        |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| Read, add, change or delete rows in **one** Data Store, without writing SQL                  | The [Data Store](/data-store) action       |
+| Join Data Stores, build totals and reports, or update many rows with one condition            | **Query Store**                            |
+| Query your **own** Microsoft SQL Server database                                             | [Execute Query](/how-to/execute-query)     |
+
+## Before you start [#before-you-start]
+
+* **An organisation workspace.** Query Store is not available in a personal workspace. If you try to add it there, the process is refused with *"not available on a personal workspace"*.
+* **At least one Data Store** with some data. See [Creating a Data Store](/data-store#creating-a-data-store).
+* A process open in the **Process Designer**.
+
+## Step 1 — Add the action [#add-the-action]
+
+In the Process Designer, type **Query** in the toolbox search. **Query Store** is at the top of the list. Drag it onto the canvas, or double-click it, then connect it between your steps.
+
+![Adding Query Store from the toolbox to the canvas](/images/docs/query-store/add-action.gif)
+
+*Search the toolbox for "Query" and add **Query Store** to the canvas.*
+
+![The toolbox filtered by "Query", with Query Store at the top](/images/docs/query-store/toolbox.png)
+
+*Query Store sits above the database actions. Execute Query, underneath it, is a different action: it talks to your own SQL Server.*
+
+Click the new step to open its **properties panel**. Give it a name that says what it does, for example *Find customers in city*, then click **Configure Query**.
+
+## Step 2 — Write the query [#write-the-query]
+
+**Configure Query** opens an SQL editor with syntax highlighting.
+
+![The Configure Query panel with an SQL query that uses Data Store chips](/images/docs/query-store/configure-query.png)
+
+*A finished query. The highlighted **chips** are a Data Store and its columns; `@city` is a parameter.*
+
+### Insert Data Stores and columns with Ctrl + I [#insert-data-stores-and-columns]
+
+You never type a Data Store's name. Instead:
+
+1. Click in the editor where the table or column should go.
+2. Press **Ctrl + I** (**Cmd + I** on Mac) to open the picker.
+3. Type in the search box to filter, then click a Data Store to insert it as a table, or click one of its columns to insert that column.
+
+![Building a query with the Ctrl + I picker](/images/docs/query-store/insert-chips.gif)
+
+*Type SQL as usual. Press Ctrl + I, pick the Data Store, keep typing, press Ctrl + I again and pick a column.*
+
+![The picker open, filtered to a Data Store with its columns listed](/images/docs/query-store/picker.png)
+
+*The picker lists process variables at the top and your Data Stores, with their columns, underneath.*
+
+Each chip is linked to the Data Store's ID, not its name:
+
+* **Renaming is safe.** Rename a Data Store or a column and the query keeps working; the chip shows the new name.
+* **Deleting shows up in red.** If a Data Store or column used in the query is deleted, its chip turns red and reads `Unknown`. The step fails until you replace it.
+* **Any name works.** Names with spaces or special characters work, because the name never goes into the SQL.
+
+<Callout type="info">
+  **System columns** — the four columns every Data Store has (`CreatedOn`, `UpdatedOn`, `CreatedById`, `UpdatedById`) don't appear in the picker. Type them by name, for example `WHERE CreatedOn > @since`.
+</Callout>
+
+#### Two Data Stores in one query [#two-data-stores]
+
+When you join two Data Stores that have a column with the **same name**, give each one a short alias and put the alias in front of every column:
+
+```sql
+SELECT c.Name AS Customer, SUM(o.Amount) AS Revenue
+FROM   DEMO_QS_Customers AS c
+JOIN   DEMO_QS_Orders    AS o ON o.CustomerCode = c.CustomerCode
+GROUP BY c.Name
+```
+
+*(In the editor, each Data Store and column name above is a chip.)*
+
+Without the aliases the query is refused, because the database can't tell which `CustomerCode` you mean.
+
+![A JOIN between two Data Stores, with aliases](/images/docs/query-store/configure-query-join.png)
+
+*A sales report joining customers to orders, with `AS c` / `AS o` aliases.*
+
+## Step 3 — Pass values in with parameters [#parameters]
+
+To use a value from your process, such as a form field, an input or the output of an earlier step, write a **parameter** in the query and map it below the editor.
+
+1. In the query, write `@` followed by a name: `WHERE City = @city`.
+2. Under **Map the query parameter names to the values they are bound to**, click **+ Add parameter** (the first row is already there).
+3. In the **left** field, type the parameter name and press **Enter**. The list suggests the names it finds in your query.
+4. In the **right** field, either type a fixed value, or click **+** and pick a process variable.
+
+![Mapping @city to the City process variable](/images/docs/query-store/add-parameter.gif)
+
+*The name goes on the left (confirm it with Enter). On the right, click + and pick the variable that supplies the value.*
+
+![A parameter row: @city on the left, the City variable on the right](/images/docs/query-store/parameters.png)
+
+*`@city` gets its value from the process variable `City`.*
+
+**Why parameters matter:** a parameter's value is always treated as **data**, never as part of the SQL. If someone types `Cluj' OR '1'='1` into your form, the query looks for a city with exactly that name and finds nothing, instead of returning every row.
+
+<Callout type="warn">
+  **Avoid putting variables straight into the SQL text.** The picker also lets you insert a process variable directly into the query. That pastes the value into the SQL as text, so a value containing a quote can break the query or change what it does. For anything that comes from a user, a form or another system, use a parameter.
+</Callout>
+
+**Parameter names:** start with a letter or underscore, then letters, digits and underscores only, 64 characters at most, and each name once per query. The leading `@` in the mapping is optional.
+
+<Callout type="warn">
+  **An empty parameter row blocks Test Action.** If your query has no parameters, delete the empty row with its bin icon. Otherwise **Test Action** stops with a message about the Parameters row.
+</Callout>
+
+### Passing a list [#passing-a-list]
+
+A list variable, for example customer codes selected in a form, arrives in the query as a JSON array. Use one of these patterns:
+
+| The list holds… | Write                                                          |
+| --------------- | -------------------------------------------------------------- |
+| Text values     | `WHERE JSON_CONTAINS(@codes, JSON_QUOTE(CustomerCode))`         |
+| Whole numbers   | `WHERE Quantity MEMBER OF (CAST(@numbers AS JSON))`             |
+
+<Callout type="warn">
+  **`IN (@list)` returns nothing.** It runs without an error but matches no rows, because the list arrives as a single JSON text. Use the patterns above.
+</Callout>
+
+## Step 4 — Time out and outputs [#outputs]
+
+![Time Out, Result Rows and Total Count](/images/docs/query-store/outputs.png)
+
+*Result Rows and Total Count each write into a process variable.*
+
+| Setting         | What it does                                                                                                                                                                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Time Out**    | How long, in seconds, the query may run: **60 to 1800**, default 1800. A value outside that range is refused when you validate the process.                                                                                                            |
+| **Result Rows** | The rows the query returned, as a **list of JSON objects**, one per row. The keys are the column names you see in the Data Store, or your `AS` aliases. Empty for INSERT, UPDATE and DELETE. Map it to a variable of type list of Json.                  |
+| **Total Count** | For a **SELECT**: the number of rows returned. For **INSERT, REPLACE, UPDATE, DELETE**: the number of rows changed. Map it to an Integer variable.                                                                                                        |
+
+There is no row limit. A `SELECT` with no `WHERE` or `LIMIT` returns the whole table, so add a `LIMIT` when you only need a few rows.
+
+## Step 5 — Test the step on its own [#test-action]
+
+You can run a Query Store step without running the whole process. Open the step, click the vertical **Test Action** tab on the left edge of the properties panel, then click **Test action**.
+
+![The Test Action pane before and after a test run](/images/docs/query-store/test-action-result.png)
+
+*Test Action runs only this step. Test output shows the status and the value of each output.*
+
+## Step 6 — Run the process and see the results [#run]
+
+Click **Save**, **Validate** and **Run**. If the process has inputs, a dialog asks for them. Enter them and click **Run**.
+
+![Running the process and opening its results](/images/docs/query-store/run-and-results.gif)
+
+*Run, fill in the input, then open the instance. The results are on the **Variables** tab.*
+
+![The run dialog asking for the City input](/images/docs/query-store/run-dialog.png)
+
+*The process's inputs appear in the Run dialog.*
+
+When the run finishes, click **Check instance** (it opens in a new tab), or open the process's instances and choose **History → Show details**. On the **Variables** tab, the query's outputs are listed under **Output**.
+
+![Instance details, Variables tab, with the query results](/images/docs/query-store/results-variables.png)
+
+*Customers holds the rows as JSON; CustomerCount holds how many there were.*
+
+## What you can write [#what-you-can-write]
+
+Each run takes **exactly one** statement. These are allowed:
+
+| Statement                      | Use it to…                                                                                    | Total Count        |
+| ------------------------------ | --------------------------------------------------------------------------------------------- | ------------------ |
+| `SELECT`                       | Read, filter, sort (`ORDER BY`), page (`LIMIT`), join, group (`GROUP BY`) and total (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`) | Rows returned      |
+| `WITH`                         | Break a query into named steps (CTEs), including `WITH RECURSIVE`                              | Rows returned      |
+| `INSERT`                       | Add one row, several rows (`VALUES (…), (…)`), or copy rows (`INSERT … SELECT`)                | Rows added         |
+| `REPLACE`                      | Add a row, or overwrite the existing row with the same primary key                             | Rows changed       |
+| `UPDATE`                       | Change every row that matches a condition                                                      | Rows changed       |
+| `DELETE`                       | Remove every row that matches a condition                                                      | Rows removed       |
+
+`UNION`, subqueries and the usual MySQL functions work inside these statements.
+
+### Examples [#examples]
+
+In the editor, each Data Store and column name below is a chip inserted with Ctrl + I.
+
+**Filter with a parameter**
+
+```sql
+SELECT CustomerCode, Name, City, Tier
+FROM   DEMO_QS_Customers
+WHERE  City = @city
+ORDER BY Name
+```
+
+**A report across two Data Stores**
+
+```sql
+SELECT c.Name AS Customer, COUNT(*) AS Orders, SUM(o.Amount) AS Revenue
+FROM   DEMO_QS_Customers AS c
+JOIN   DEMO_QS_Orders    AS o ON o.CustomerCode = c.CustomerCode
+WHERE  o.Status <> 'Cancelled'
+GROUP BY c.Name
+ORDER BY Revenue DESC
+```
+
+**Update in bulk**
+
+```sql
+UPDATE DEMO_QS_Orders
+SET    Status = 'Shipped'
+WHERE  CustomerCode = @customer AND Status = 'New'
+```
+
+Total Count tells you how many orders were shipped.
+
+**Add rows**
+
+```sql
+INSERT INTO DEMO_QS_Customers (CustomerCode, Name, City, CreatedById, UpdatedById)
+VALUES (@code, @name, @city, @userId, @userId)
+```
+
+<Callout type="info">
+  **INSERT and REPLACE must fill `CreatedById` and `UpdatedById`.** Pass a user ID (a Guid) as a parameter, as above. Two more details: an `UPDATE` through Query Store does not refresh `UpdatedOn`, and a `REPLACE` counts as a new row, so it resets the created-by and created-on values.
+</Callout>
+
+## Guardrails: what is refused [#guardrails]
+
+Query Store only ever touches the Data Stores of the workspace the process runs in. On top of that, these are refused **before anything runs**, each with its own message:
+
+| Refused                                                               | Message you see                                                                                   |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| More than one statement (`…; …`)                                      | The query must contain exactly one SQL statement.                                                 |
+| Any other statement type: `CREATE`, `ALTER`, `DROP`, `TRUNCATE`, `GRANT`, … | Statement type '…' is not allowed. Allowed statement types: SELECT, WITH, INSERT, REPLACE, UPDATE, DELETE. |
+| Transactions, locks, session settings, prepared statements            | Session, transaction, lock, and prepared-statement control is not available in queries.          |
+| Reading or writing files                                              | File access operations are not allowed in queries.                                                |
+| Advisory lock functions                                               | Advisory lock functions are not allowed in queries.                                               |
+| System schemas (`information_schema`, `mysql`, …)                     | References to system schemas are not allowed in queries.                                          |
+| Executable comments `/*! … */`                                        | Executable comments (/*! ... */) are not allowed in queries.                                     |
+| SQL that doesn't parse                                                | The query contains invalid SQL syntax.                                                            |
+| A query running longer than **Time Out**                              | … did not finish within the configured time limit.                                                |
+
+You always get one of these clear messages, never a raw database error.
+
+## Handling errors in the process [#handling-errors]
+
+When a Query Store step fails, because a query was refused, a SQL error or a time-out, the process stops and the instance is marked **with errors**. To handle the failure yourself, add an **error branch**: drag a connection from the step's error port to the step that should run instead. You can store the error in a variable of type **Error** to use its `message`.
+
+![A Query Store step with a red Error branch](/images/docs/query-store/error-port.png)
+
+*When the DROP TABLE is refused, the process follows the red **Error** line. The error branch records the message and the process finishes successfully.*
+
+![Instance details showing the refused statement and the error branch outputs](/images/docs/query-store/error-result.png)
+
+*Action errors shows the message for the failed step. The error variable holds the same message for later steps.*
+
+## Combining Query Store with other features [#combining]
+
+| Together with                                       | You can…                                                                                                                                             |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Forms**                                           | Save each submission (`INSERT`), check for a duplicate first (`SELECT`), or look up extra data for the person who submitted.                          |
+| **Forms & Tasks**                                   | Query the open requests, assign a task for each one, and write the decision back with `UPDATE`.                                                     |
+| **Webhooks** + custom response                      | Offer a small API over your data: the caller sends a filter, and the process returns Result Rows.                                                     |
+| **Schedules**                                       | Clean up on a timer, for example `DELETE` rows older than 90 days every night.                                                                       |
+| **Generate Document** + **Send Email**              | Send a weekly report: a `GROUP BY` query fills a document template, and the PDF is emailed.                                                         |
+| **Call API**                                        | Copy data from another system into a Data Store with `REPLACE` (it adds new rows and updates existing ones), then report on it with SQL.            |
+| **For Each**                                        | Go through Result Rows one by one, for example calling an API or sending an email for each row.                                                     |
+| **Decisional**                                      | Branch on Total Count (for example, *0 rows → create, otherwise update*) or on a value in the results.                                              |
+| **Call Subprocess**                                 | Keep a query you use often in one subprocess and call it from many processes.                                                                        |
+
+## Troubleshooting [#troubleshooting]
+
+| What you see                                                             | What to do                                                                                                                                  |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| *"… not available on a personal workspace"*                              | Switch to an organisation workspace.                                                                                                        |
+| A red `Unknown` chip in the query                                        | The Data Store or column was deleted. Remove the chip and pick a replacement with Ctrl + I.                                                 |
+| A JOIN is refused, although each Data Store works on its own             | Two Data Stores share a column name. Add aliases (`AS c`, `AS o`) and prefix every column with its alias.                                  |
+| The query runs but returns 0 rows with `IN (@list)`                      | Use `JSON_CONTAINS` or `MEMBER OF`. See [Passing a list](#passing-a-list).                                                                  |
+| Test Action stops with a message about the **Parameters** row          | Fill in the row, or delete it if the query has no parameters.                                                                              |
+| *"A required column has no default value and was not supplied."*        | An INSERT is missing a required column, often `CreatedById` / `UpdatedById`.                                                               |
+| Validation fails on **Time Out**                                         | Use a value between 60 and 1800.                                                                                                            |
