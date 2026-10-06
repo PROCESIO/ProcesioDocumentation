@@ -4,6 +4,7 @@
   "pages": [
     "generate-string",
     "generate-integer",
-    "generate-guid"
+    "generate-guid",
+    "guid-converter"
   ]
 }
