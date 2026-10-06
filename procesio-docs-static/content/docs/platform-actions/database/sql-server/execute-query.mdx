@@ -84,3 +84,9 @@ If the mapped value is **null**, PROCESIO automatically sends a **SQL NULL** val
 
 
 ![](/images/docs/1YQ7q8dem6GISbuXMPkuq_image.png)
+
+### Comparing a Guid column [#guid-columns]
+
+<Callout type="info">
+  **Write a Guid in the form the column holds.** A column that stores Guids as 16 raw bytes (for example `binary(16)`) does not match the text `3f1a7c52-0000-4000-8000-0000000000aa`: `WHERE Id = '3f1a7c52-…'` finds **no rows**, and shows no error. Convert the Guid with the [GUID Converter](/how-to/guid-converter) action and put its **Hex** output in the query **without quotes**, for example `WHERE Id = 0x527C1A3F0000004080000000000000AA`. Use **Hex (big-endian)** instead if your database saved the bytes in the order of the text form. A SQL Server `uniqueidentifier` column accepts the standard text in quotes. See [Guids in other databases](/how-to/guid-converter#other-databases).
+</Callout>

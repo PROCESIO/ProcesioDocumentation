@@ -145,6 +145,36 @@ A list variable, for example customer codes selected in a form, arrives in the q
   **`IN (@list)` returns nothing.** It runs without an error but matches no rows, because the list arrives as a single JSON text. Use the patterns above.
 </Callout>
 
+### Finding a row by Guid [#guid-columns]
+
+<Callout type="info">
+  **A Guid column holds bytes, not text.** A Data Store Guid column stores each Guid as 16 raw bytes, not as the text `3f1a7c52-0000-4000-8000-0000000000aa`. So `WHERE Id = '3f1a7c52-…'` matches **no rows**, and shows no error. Write the Guid in the form the column holds: convert it with the [GUID Converter](/how-to/guid-converter) action and use its **Hex** output **without quotes**, for example `WHERE Id = 0x527C1A3F0000004080000000000000AA`. Passing the Guid as a parameter (`WHERE Id = @id`) also works.
+</Callout>
+
+<Callout type="warn">
+  **Don't use MySQL's `BIN_TO_UUID` or `UUID_TO_BIN` on a Data Store Guid column.** They expect the bytes in a different order from the one a Data Store uses, so they give a different Guid, without an error:
+
+  * `BIN_TO_UUID(Id)` on a row whose Id is `1f0d8533-cf4c-44d8-b805-a4d3d6aaca4d` returns `33850d1f-4ccf-d844-b805-a4d3d6aaca4d`.
+  * `UUID_TO_BIN('1f0d8533-cf4c-44d8-b805-a4d3d6aaca4d')` in an INSERT or UPDATE saves a different Guid from the one you wrote.
+
+  What to use instead:
+
+  * **To compare or save a Guid:** the **Hex** output of [GUID Converter](/how-to/guid-converter), without quotes, or a parameter.
+  * **To see the stored bytes:** `HEX(Id)` returns the same digits as the **Hex** output, without the `0x`.
+  * **To turn the column into standard text inside the query**, for example to compare it with a text column, reorder the bytes:
+
+  ```sql
+  LOWER(CONCAT_WS('-',
+    HEX(REVERSE(SUBSTRING(Id, 1, 4))),
+    HEX(REVERSE(SUBSTRING(Id, 5, 2))),
+    HEX(REVERSE(SUBSTRING(Id, 7, 2))),
+    HEX(SUBSTRING(Id, 9, 2)),
+    HEX(SUBSTRING(Id, 11, 6))))
+  ```
+
+  You don't need this for **Result Rows**: Guid columns already come back there as standard text.
+</Callout>
+
 ## Step 4 — Time out and outputs [#outputs]
 
 ![Time Out, Result Rows and Total Count](/images/docs/query-store/outputs.png)
@@ -297,6 +327,7 @@ When a Query Store step fails, because a query was refused, a SQL error or a tim
 | A red `Unknown` chip in the query                                        | The Data Store or column was deleted. Remove the chip and pick a replacement with Ctrl + I.                                                 |
 | A JOIN is refused, although each Data Store works on its own             | Two Data Stores share a column name. Add aliases (`AS c`, `AS o`) and prefix every column with its alias.                                  |
 | The query runs but returns 0 rows with `IN (@list)`                      | Use `JSON_CONTAINS` or `MEMBER OF`. See [Passing a list](#passing-a-list).                                                                  |
+| A `WHERE` on a Guid column returns 0 rows, although the row exists       | The column holds bytes, not text. Use the **Hex** output of [GUID Converter](/how-to/guid-converter) without quotes. See [Finding a row by Guid](#guid-columns). |
 | Test Action stops with a message about the **Parameters** row          | Fill in the row, or delete it if the query has no parameters.                                                                              |
 | *"A required column has no default value and was not supplied."*        | An INSERT is missing a required column, often `CreatedById` / `UpdatedById`.                                                               |
 | Validation fails on **Time Out**                                         | Use a value between 60 and 1800.                                                                                                            |

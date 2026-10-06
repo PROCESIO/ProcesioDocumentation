@@ -1,0 +1,166 @@
+---
+title: "GUID Converter"
+icon: "📕"
+description: "Convert a Guid between its text form, the hex value a Data Store column holds, a decimal number and Base64. Use it to find a row by its Guid with SQL."
+---
+
+## What GUID Converter does [#what-it-does]
+
+**GUID Converter** takes one Guid, written as text in any common format, and gives it back in every format at once: the standard text form, a Guid value, two hex forms, a decimal number and two Base64 forms.
+
+The most common reason to use it is **finding a row by its Guid with SQL**. A Guid column in a [Data Store](/data-store) does not hold the 36-character text you see, such as `3f1a7c52-0000-4000-8000-0000000000aa`. It holds the Guid as 16 raw bytes. So a query that compares the column with the text, `WHERE Id = '3f1a7c52-0000-4000-8000-0000000000aa'`, finds no rows, and shows no error either.
+
+The **Hex** output of GUID Converter is the Guid written exactly the way the column holds it. Put it in the query **without quotes** and the row is found:
+
+```sql
+WHERE Id = 0x527C1A3F0000004080000000000000AA
+```
+
+See the [worked example](#example) below.
+
+## Add the action [#add-the-action]
+
+In the Process Designer, open the **Utilitary** folder of the toolbox. **GUID Converter** is right after **Generate Guid**. Drag it onto the canvas, or double-click it, then connect it between your steps. Click the step to open its properties.
+
+You can try the action without running the whole process: open the step, click the vertical **Test Action** tab on the left edge of the properties panel, then click **Test action**.
+
+## Inputs [#inputs]
+
+| Input            | Required | What to enter                                                                                     |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------------- |
+| **Input**        | Yes      | The Guid, as text. Type it, or click **+** and pick the process variable that holds it.           |
+| **Input format** | No       | The format the Input is written in. The default is **Auto Detect**. See the options below.        |
+
+Spaces before or after the Guid are ignored.
+
+### Input formats [#input-formats]
+
+| Input format            | Write the Input as                                                                                       | Example                                    |
+| ----------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| **Auto Detect**         | Any format the action can recognise without guessing. See [Auto Detect](#auto-detect).                   |                                            |
+| **Standard**            | 32 hex digits, with or without dashes, braces or parentheses, in any case.                               | `3f1a7c52-0000-4000-8000-0000000000aa`     |
+| **Hex**                 | `0x` followed by 32 hex digits, in the byte order a Data Store stores. The `0x` is optional; any case.   | `0x527C1A3F0000004080000000000000AA`       |
+| **Hex (big-endian)**    | `0x` followed by 32 hex digits, in the order of the text form. The `0x` is optional; any case.           | `0x3F1A7C520000400080000000000000AA`       |
+| **Number**              | A whole number, digits only, up to 39 digits.                                                            | `83878884968272086728768165526133276842`   |
+| **Base64**              | 24 Base64 characters, in the order of the text form.                                                     | `Pxp8UgAAQACAAAAAAAAAqg==`                 |
+| **Base64 (.NET order)** | 24 Base64 characters, in the byte order a Data Store stores.                                             | `UnwaPwAAAECAAAAAAAAAqg==`                 |
+
+All the examples in this table are the same Guid.
+
+**Standard** accepts every usual way of writing a Guid. All of these are read as the same Guid:
+
+* `3f1a7c52-0000-4000-8000-0000000000aa`
+* `3F1A7C52-0000-4000-8000-0000000000AA`
+* `3f1a7c520000400080000000000000aa`
+* `{3f1a7c52-0000-4000-8000-0000000000aa}`
+* `(3f1a7c52-0000-4000-8000-0000000000aa)`
+* `{0x3f1a7c52,0x0000,0x4000,{0x80,0x00,0x00,0x00,0x00,0x00,0x00,0xaa}}`
+
+## Outputs [#outputs]
+
+Every successful run fills **all** the outputs. Map the ones you need to process variables and ignore the rest.
+
+For the Guid `3f1a7c52-0000-4000-8000-0000000000aa` the outputs are:
+
+| Output                  | Value                                      | Use it for                                                                                                                                          |
+| ----------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Standard**            | `3f1a7c52-0000-4000-8000-0000000000aa`     | Showing the Guid, a String variable, or a text column. Always lowercase, with dashes.                                                              |
+| **Guid**                | the same Guid, as a Guid value             | A Guid variable, or a Guid column filled through the Data Store action.                                                                            |
+| **Hex**                 | `0x527C1A3F0000004080000000000000AA`       | **Finding a row by Guid with SQL.** The bytes exactly as a Data Store Guid column holds them. Write it in the query **without quotes**.            |
+| **Hex (big-endian)**    | `0x3F1A7C520000400080000000000000AA`       | A database column that holds the bytes in the order of the text form. In Oracle, write the digits after `0x` as `HEXTORAW('…')`.                    |
+| **Number**              | `83878884968272086728768165526133276842`   | A system that keeps the Guid as one large number. It comes out as text, because it is too large for a whole-number variable.                       |
+| **Base64**              | `Pxp8UgAAQACAAAAAAAAAqg==`                 | A short text form, in the order of the text form.                                                                                                   |
+| **Base64 (.NET order)** | `UnwaPwAAAECAAAAAAAAAqg==`                 | A short text form, in the byte order a Data Store and .NET applications use.                                                                        |
+
+### Why there are two byte orders [#byte-orders]
+
+A Guid is 16 bytes, and there are two common ways to lay those bytes out. Compare the first eight digits of the two hex outputs: `527C1A3F` in **Hex**, `3F1A7C52` in **Hex (big-endian)**. The same groups appear in a different order.
+
+* **Hex** and **Base64 (.NET order)** use the order PROCESIO uses when it saves a Guid in a Data Store. This is also the order .NET applications use.
+* **Hex (big-endian)**, **Number** and **Base64** use the order of the text form: the digits read from left to right.
+
+Both are correct descriptions of the same Guid, but they are not interchangeable. If you give a database the wrong order, it looks for a **different** Guid, and it does not tell you. For a Data Store, always use **Hex**. For another database, see [Guids in other databases](#other-databases).
+
+The same goes for converting back. To turn a **Hex** value into the other formats, select **Hex** as the Input format; selecting **Hex (big-endian)** for the same text gives a different Guid.
+
+## Auto Detect [#auto-detect]
+
+With **Auto Detect**, the action works out the format by itself only when the Input can mean just one Guid:
+
+* **A Guid with dashes, braces or parentheses** is read as **Standard**.
+* **A number** (digits only) is read as **Number**, unless it is exactly 32 digits long.
+
+These spellings can be read as more than one Guid, so Auto Detect **refuses** them and asks you to select the Input format. It never guesses.
+
+| The Input is…                                                   | It could be…                                    |
+| --------------------------------------------------------------- | ----------------------------------------------- |
+| 32 hex digits without dashes (this includes a 32-digit number)  | Standard, Hex or Hex (big-endian)               |
+| `0x` followed by 32 hex digits                                  | Hex or Hex (big-endian)                         |
+| 24 Base64 characters ending in `==`                             | Base64 or Base64 (.NET order)                   |
+
+So when you convert a hex or Base64 value, select its Input format explicitly.
+
+## When the Input can't be read [#errors]
+
+If the Input is not a valid Guid in the selected format, the step **fails** with a message that names the expected format and shows an example. No output is filled: the action never returns an empty Guid or part of one.
+
+| Situation                                      | Message you see (examples)                                                                                                                                                                  |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The Input is empty                             | Input is empty. Provide a Guid as text.                                                                                                                                                      |
+| The Input doesn't match the selected format    | Input is not a valid Hex Guid. Expected 0x followed by 32 hex digits in the byte order PROCESIO stores, for example 0x527C1A3F0000004080000000000000AA.                                     |
+| Auto Detect found more than one meaning        | Input is ambiguous: 0x followed by 32 hex digits reads as Hex or as Hex (big-endian), and the two give different Guids. Select Hex or Hex (big-endian) as the input format.                 |
+| Auto Detect didn't recognise the Input         | Could not detect the format of the input. Select Standard, Hex, Hex (big-endian), Number, Base64, or Base64 (.NET order) as the input format.                                               |
+
+To handle a failure inside the process, add an error branch from the step, as described in [Handling errors in the process](/query-store#handling-errors).
+
+## Example: find a Data Store row by Guid in Query Store [#example]
+
+A process receives a customer's Id, for example from a form or a webhook, as text: `3f1a7c52-0000-4000-8000-0000000000aa`. It needs that customer's row from the `Customers` Data Store, whose `Id` column is a Guid.
+
+1. Add **GUID Converter** to the process. Map **Input** to the variable that holds the Id. Leave **Input format** on **Auto Detect** (the Id has dashes), or select **Standard**.
+2. Map the **Hex** output to a new String variable, for example `CustomerIdHex`.
+3. Add a [Query Store](/query-store) step after it. Write the query and insert `CustomerIdHex` with **Ctrl + I**, **without quotes** around it:
+
+   ```sql
+   SELECT Name, City
+   FROM   Customers
+   WHERE  Id = CustomerIdHex
+   ```
+
+   *(In the editor, `Customers`, the column names and `CustomerIdHex` are chips inserted with Ctrl + I.)*
+
+4. Run the process. When the query runs, `CustomerIdHex` is replaced by `0x527C1A3F0000004080000000000000AA`, and the query returns exactly that customer's row.
+
+Inserting a variable straight into the SQL text is safe here, because the Hex output only ever contains `0x` and hex digits.
+
+What each way of writing the Guid does:
+
+| In the query                                                | Result                                                                    |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `WHERE Id = 0x527C1A3F0000004080000000000000AA` (**Hex**)   | Finds the row.                                                            |
+| `WHERE Id = '3f1a7c52-0000-4000-8000-0000000000aa'`         | Finds **no rows**, and shows no error.                                    |
+| `WHERE Id = 0x3F1A7C520000400080000000000000AA` (**Hex (big-endian)**) | Looks for a **different** Guid: returns that other row if it exists, otherwise nothing. |
+
+**Alternative: a parameter.** In Query Store you can also write `WHERE Id = @id` and map `@id` to the Guid text (for example the **Standard** output) under the query's parameters. Query Store sends a Guid passed this way as the bytes the column holds. See [Pass values in with parameters](/query-store#parameters).
+
+You don't need to convert in the other direction: Guid columns come back in **Result Rows** in their standard text form.
+
+## Guids in other databases [#other-databases]
+
+With [Execute Query](/how-to/execute-query) and [Execute Command](/how-to/execute-command) you work with your own database, so how a Guid is written depends on how that column stores it:
+
+* **A column that holds 16 raw bytes** (for example `binary(16)`): write the Guid as a hex value **without quotes**. Use **Hex** if the Guids were saved by PROCESIO or by a .NET application. Use **Hex (big-endian)** if they were saved in the order of the text form, for example with MySQL's `UUID_TO_BIN`.
+* **A SQL Server `uniqueidentifier` column**: the standard text in quotes works, for example `WHERE Id = '3f1a7c52-0000-4000-8000-0000000000aa'`.
+* **A text column** (for example `char(36)`): use the **Standard** output in quotes.
+
+**Not sure which order a byte column uses?** Take one row whose Guid you know, look at the stored value as hex, and compare it with the **Hex** and **Hex (big-endian)** outputs for that Guid. The one that matches is the one to use.
+
+<Callout type="warn">
+  **MySQL's `BIN_TO_UUID` and `UUID_TO_BIN` don't match the Data Store byte order.** On a Data Store Guid column they give a different Guid, without an error. See [Finding a row by Guid](/query-store#guid-columns) in the Query Store guide.
+</Callout>
+
+## Related actions [#related]
+
+* [Generate Guid](/how-to/generate-guid) creates a new Guid.
+* [Query Store](/query-store) runs SQL on your Data Stores.
+* [Execute Query](/how-to/execute-query) and [Execute Command](/how-to/execute-command) run SQL on your own database.
