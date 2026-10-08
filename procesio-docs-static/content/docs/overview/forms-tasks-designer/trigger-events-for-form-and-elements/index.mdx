@@ -116,6 +116,18 @@ To add events to your forms:
 - Configure the event (check according documentation pages for more details).
 - Set condition(s)&#x20;
 
+# Changing events after tasks were created
+
+When a task is created (a user submits a step, or a process creates the form instance), the task keeps a copy of the form as it was at that moment, **including its events**. Event changes you publish later apply only to tasks created after the change.
+
+<Callout type="warn">
+If you add, change or remove an event on a form that already has tasks waiting in **Assigned to me**:
+- A task created **before** the change still runs the **old** events. A newly added event does not run for it, and a changed **Trigger process** event still starts the **old** process.
+- If that old process was **deleted**, the task's button can no longer start a process.
+
+Waiting tasks are not updated. If they must use the new events, create them again after you publish the change (for example, by running again the process that creates them). Avoid deleting a process that waiting tasks still use.
+</Callout>
+
 # Best Practices
 
 - **Clear Naming Conventions**
