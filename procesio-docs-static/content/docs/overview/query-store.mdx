@@ -1,16 +1,20 @@
 ---
 title: "Query Store"
 icon: "🔍"
-description: "A platform action that runs one SQL statement against your workspace's Data Stores — filter, join and total data, or change rows in bulk, with parameters and guardrails."
+description: "A platform action that runs SQL statements against your workspace's Data Stores — filter, join and total data, or change rows in bulk, with parameters and guardrails."
 ---
 
 <Callout type="info">
-  Behaviours in this guide were verified on 18 September 2026. The screenshots come from a demo workspace, which is why the example Data Stores are named `DEMO_QS_Customers` and `DEMO_QS_Orders` and the processes start with `DEMO_QS_`.
+  Behaviours in this guide were verified on 18 September 2026, and the several-statements behaviour on 8 October 2026. The screenshots come from a demo workspace, which is why the example Data Stores are named `DEMO_QS_Customers` and `DEMO_QS_Orders` and the processes start with `DEMO_QS_`.
+</Callout>
+
+<Callout type="info">
+  **Coming with the release after PROCESIO v2.0.6:** several statements in one query, user variables, Query Store in a personal workspace, and the *"Create a Data Store first"* message. On a PROCESIO that still runs v2.0.6, a query holds exactly one statement (a second one is refused with *"The query must contain exactly one SQL statement."*) and Query Store works only in an organisation workspace.
 </Callout>
 
 ## What Query Store does [#what-query-store-does]
 
-**Query Store** is a platform action that runs **one SQL statement** against the [Data Stores](/data-store) of your workspace, as a single step in a process.
+**Query Store** is a platform action that runs **SQL statements** against the [Data Stores](/data-store) of your workspace, as a single step in a process. A query may hold one statement or several.
 
 * **No setup.** There is no connection string, no credential and no external database. The action works on the Data Stores that already live in your workspace.
 * **Reads and writes.** Filter, join, group and total your data, or insert, update and delete rows in bulk.
@@ -30,10 +34,11 @@ description: "A platform action that runs one SQL statement against your workspa
 | Join Data Stores, build totals and reports, or update many rows with one condition            | **Query Store**                            |
 | Query your **own** Microsoft SQL Server database                                             | [Execute Query](/how-to/execute-query)     |
 
+A Query Store query behaves like Execute Query: it may hold several statements, it can use user variables, and it has the same outputs. What sets it apart is the [guardrails](#guardrails), which exist because Data Stores run on PROCESIO's shared database server rather than on your own.
+
 ## Before you start [#before-you-start]
 
-* **An organisation workspace.** Query Store is not available in a personal workspace. If you try to add it there, the process is refused with *"not available on a personal workspace"*.
-* **At least one Data Store** with some data. See [Creating a Data Store](/data-store#creating-a-data-store).
+* **A workspace with at least one Data Store.** Query Store works in a shared workspace and in your personal workspace. In a personal workspace it reaches only your own Data Stores. See [Creating a Data Store](/data-store#creating-a-data-store).
 * A process open in the **Process Designer**.
 
 ## Step 1 — Add the action [#add-the-action]
@@ -57,6 +62,34 @@ Click the new step to open its **properties panel**. Give it a name that says wh
 ![The Configure Query panel with an SQL query that uses Data Store chips](/images/docs/query-store/configure-query.png)
 
 *A finished query. The highlighted **chips** are a Data Store and its columns; `@city` is a parameter.*
+
+### Several statements in one query [#several-statements]
+
+A query may hold **several statements**, separated by `;`. They run in order, one after the other, as they do in the Execute Query action. Use this to read from one Data Store, write to another and clean up a third in one step.
+
+| Rule     | What happens                                                                                                                                                                       |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Order    | Statements run in the order you wrote them.                                                                                                                                       |
+| Saving   | Each statement is saved as soon as it runs. There is no transaction and no undo.                                                                                                   |
+| Rows     | At most one statement may return rows. See [One statement may return rows](#one-statement-returns-rows).                                                                           |
+| Checking | Every statement is checked against the [guardrails](#guardrails) before anything runs. A refused statement in second place is refused like one in first place, and nothing runs. |
+| Values   | Pass values through [parameters](#parameters), never by pasting a process variable into the query text. A pasted value can add a whole statement to your query, not only change one. |
+
+A `;` at the end of the query is fine, and so is a comment after the last statement. A `;` inside quoted text is part of the text, not a separator.
+
+#### When a statement fails in the middle [#statement-fails]
+
+If a statement fails, the statements before it have already run and their changes are kept. The failing statement and everything after it do not run, and the step fails. The error does not say which statement failed, so when a query has several writes, test it on a copy of the data first.
+
+The same applies when the Time Out is reached and when two statements return rows: the query has already run, and the step fails afterwards.
+
+#### One statement may return rows [#one-statement-returns-rows]
+
+Only one statement in a query may return rows. If two or more do, the step fails **after the query has run** (every statement ran and the changes are kept) with error code **2003** and the message:
+
+`Expected maximum one table but received 2 tables!`
+
+The number is the number of statements that returned rows. This is the same error, with the same code, that Execute Query gives for the same mistake. `SELECT @name := …` returns a row, so it counts as the statement that returns rows; `SELECT … INTO @name` does not.
 
 ### Insert Data Stores and columns with Ctrl + I [#insert-data-stores-and-columns]
 
@@ -128,6 +161,24 @@ To use a value from your process, such as a form field, an input or the output o
 
 **Parameter names:** start with a letter or underscore, then letters, digits and underscores only, 64 characters at most, and each name once per query. The leading `@` in the mapping is optional.
 
+### User variables [#user-variables]
+
+You can keep a value for a later statement in the same query in a **user variable**. Three forms work, as they do in Execute Query on MySQL:
+
+| Form                  | Example                                           |
+| --------------------- | ------------------------------------------------- |
+| `SET @name = value`   | `SET @cutoff = DATE_SUB(NOW(), INTERVAL 30 DAY)`  |
+| `SELECT … INTO @name` | `SELECT COUNT(*) INTO @total FROM DEMO_QS_Orders` |
+| `@name := …`          | `SELECT @total := COUNT(*) FROM DEMO_QS_Orders`   |
+
+Then use `@name` in any later statement of the same query. `SET @a = 1, @b = 2` sets several at once, and `:=` works in `SET` too. A variable lasts for that run of the step only.
+
+| Watch out for          | What happens                                                                                                                                                                                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `DECLARE`              | `DECLARE @name …` is SQL Server syntax. It does not work in MySQL, so it fails with *"The query contains invalid SQL syntax."*, exactly as it fails in Execute Query on a MySQL database. Use `SET @name = value`.                                                    |
+| Variable names         | Don't give a variable the same name as a parameter. The parameter's value replaces every `@name` of that name before the query runs, so `SET @city = 'Cluj'` with a parameter named `city` becomes `'Cluj' = 'Cluj'` and fails with *"The query contains invalid SQL syntax."* |
+| A misspelled parameter | A `@name` in the query that is not a parameter and was never set is an empty variable: it reads as `NULL`, and there is **no error**. `WHERE City = @ctiy` finds nothing; an `INSERT` writes `NULL`, or fails when the column is required. Check the spelling of every parameter name against the query. |
+
 <Callout type="warn">
   **An empty parameter row blocks Test Action.** If your query has no parameters, delete the empty row with its bin icon. Otherwise **Test Action** stops with a message about the Parameters row.
 </Callout>
@@ -183,11 +234,26 @@ A list variable, for example customer codes selected in a form, arrives in the q
 
 | Setting         | What it does                                                                                                                                                                                                                                           |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Time Out**    | How long, in seconds, the query may run: **60 to 1800**, default 1800. A value outside that range is refused when you validate the process.                                                                                                            |
-| **Result Rows** | The rows the query returned, as a **list of JSON objects**, one per row. The keys are the column names you see in the Data Store, or your `AS` aliases. Empty for INSERT, UPDATE and DELETE. Map it to a variable of type list of Json.                  |
-| **Total Count** | For a **SELECT**: the number of rows returned. For **INSERT, REPLACE, UPDATE, DELETE**: the number of rows changed. Map it to an Integer variable.                                                                                                        |
+| **Time Out**    | How long, in seconds, a statement may run: **60 to 1800**, default 1800. A value outside that range is refused when you validate the process. See [Time Out with several statements](#time-out).                                                        |
+| **Result Rows** | The rows returned by the one statement that returns rows, as a **list of JSON objects**, one per row. The keys are the column names you see in the Data Store, or your `AS` aliases. Empty when no statement returns rows. Map it to a variable of type list of Json. |
+| **Total Count** | When a statement returns rows: their number. Otherwise: the number of rows the whole query affected, added up over all its statements. Map it to an Integer variable.                                                                                     |
+
+Two details for Total Count:
+
+* For an `UPDATE`, every row that matched the `WHERE` counts, whether or not its value changed.
+* `SELECT … INTO @name` counts the rows it selected. `SET @name = …` counts nothing.
 
 There is no row limit. A `SELECT` with no `WHERE` or `LIMIT` returns the whole table, so add a `LIMIT` when you only need a few rows.
+
+### Time Out with several statements [#time-out]
+
+The Time Out applies to **each statement that returns rows**, not to the whole query, the same as Execute Query on a MySQL database. A query with two statements that each return rows can run for up to twice the Time Out. Statements that return no rows share one timer until the next statement that returns rows.
+
+When the Time Out is reached, the step fails with *"The query did not finish within the configured time limit."* The statements that finished before it are kept. Whatever the query does, the step waits no longer than the Time Out plus 30 seconds; past that it fails with *"The query did not finish within N seconds and was stopped. Narrow the query, or raise its Time Out."*
+
+<Callout type="info">
+  **`SLEEP()` and `BENCHMARK()` don't fail at the Time Out.** When the Time Out cuts one of them off, MySQL returns a value instead of an error (`SLEEP` returns 1, `BENCHMARK` returns 0), so the step finishes **successfully** with that value. Don't use them to test the Time Out.
+</Callout>
 
 ## Step 5 — Test the step on its own [#test-action]
 
@@ -217,7 +283,7 @@ When the run finishes, click **Check instance** (it opens in a new tab), or open
 
 ## What you can write [#what-you-can-write]
 
-Each run takes **exactly one** statement. These are allowed:
+A query holds one or more statements, each of one of these types:
 
 | Statement                      | Use it to…                                                                                    | Total Count        |
 | ------------------------------ | --------------------------------------------------------------------------------------------- | ------------------ |
@@ -227,6 +293,7 @@ Each run takes **exactly one** statement. These are allowed:
 | `REPLACE`                      | Add a row, or overwrite the existing row with the same primary key                             | Rows changed       |
 | `UPDATE`                       | Change every row that matches a condition                                                      | Rows changed       |
 | `DELETE`                       | Remove every row that matches a condition                                                      | Rows removed       |
+| `SET @name = …`                | Keep a value in a [user variable](#user-variables) for a later statement                        | Nothing            |
 
 `UNION`, subqueries and the usual MySQL functions work inside these statements.
 
@@ -264,6 +331,16 @@ WHERE  CustomerCode = @customer AND Status = 'New'
 
 Total Count tells you how many orders were shipped.
 
+**Several statements: clean up, then report**
+
+```sql
+SET @cutoff = DATE_SUB(NOW(), INTERVAL 90 DAY);
+DELETE FROM DEMO_QS_Orders WHERE Status = 'Cancelled' AND CreatedOn < @cutoff;
+SELECT Status, COUNT(*) AS Orders FROM DEMO_QS_Orders GROUP BY Status
+```
+
+The `DELETE` runs first and is saved. Result Rows holds the report from the last statement, and Total Count the number of report rows.
+
 **Add rows**
 
 ```sql
@@ -277,21 +354,53 @@ VALUES (@code, @name, @city, @userId, @userId)
 
 ## Guardrails: what is refused [#guardrails]
 
-Query Store only ever touches the Data Stores of the workspace the process runs in. On top of that, these are refused **before anything runs**, each with its own message:
+Query Store only ever touches the Data Stores of the workspace the process runs in. **Allowed** statement types are `SELECT`, `WITH`, `INSERT`, `REPLACE`, `UPDATE`, `DELETE`, and `SET @name = value` for user variables.
 
-| Refused                                                               | Message you see                                                                                   |
-| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| More than one statement (`…; …`)                                      | The query must contain exactly one SQL statement.                                                 |
-| Any other statement type: `CREATE`, `ALTER`, `DROP`, `TRUNCATE`, `GRANT`, … | Statement type '…' is not allowed. Allowed statement types: SELECT, WITH, INSERT, REPLACE, UPDATE, DELETE. |
-| Transactions, locks, session settings, prepared statements            | Session, transaction, lock, and prepared-statement control is not available in queries.          |
-| Reading or writing files                                              | File access operations are not allowed in queries.                                                |
-| Advisory lock functions                                               | Advisory lock functions are not allowed in queries.                                               |
-| System schemas (`information_schema`, `mysql`, …)                     | References to system schemas are not allowed in queries.                                          |
-| Executable comments `/*! … */`                                        | Executable comments (/*! ... */) are not allowed in queries.                                     |
-| SQL that doesn't parse                                                | The query contains invalid SQL syntax.                                                            |
-| A query running longer than **Time Out**                              | … did not finish within the configured time limit.                                                |
+The Data Store runs on a database server that every workspace shares, so a query may not change how the server behaves for the rest of the query, hold locks on it, or reach outside its own tables. These are refused **before anything runs**, whatever else the query holds. Execute Query and Execute Command run on your own database server and have no such limits.
 
-You always get one of these clear messages, never a raw database error.
+| Refused                                                                                                                                                                                                                           | Message you see                                                                                                                  |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Session settings and system variables: `SET SESSION …`, `SET GLOBAL …`, `SET @@sql_mode = …`, `SET sql_mode = …`, `SET autocommit = 0`, `SET NAMES …`, `SET CHARACTER SET …`, `SET TRANSACTION …`, a mixed list `SET @x = 1, sql_mode = ''` | SET can only assign user variables, as in SET @name = value. Session settings and system variables cannot be changed in a query. |
+| Switching database: `USE …`                                                                                                                                                                                                       | Statement type 'USE' is not allowed. Session, transaction, lock, and prepared-statement control is not available in queries.    |
+| Transactions: `START TRANSACTION`, `BEGIN`, `COMMIT`, `ROLLBACK`, `SAVEPOINT`, `RELEASE`                                                                                                                                          | The same message, with the statement type named                                                                                  |
+| Table locks: `LOCK TABLES`, `UNLOCK TABLES`                                                                                                                                                                                       | The same message, with the statement type named                                                                                  |
+| Prepared statements: `PREPARE`, `EXECUTE`, `DEALLOCATE`                                                                                                                                                                           | The same message, with the statement type named                                                                                  |
+| Distributed transactions and low-level table reads: `XA …`, `HANDLER …`                                                                                                                                                           | The same message, with the statement type named                                                                                  |
+| Named locks: `GET_LOCK(…)`, `RELEASE_LOCK(…)`, `RELEASE_ALL_LOCKS(…)`                                                                                                                                                             | Advisory lock functions are not allowed in queries.                                                                              |
+| File access: `INTO OUTFILE`, `INTO DUMPFILE`, `LOAD_FILE(…)`                                                                                                                                                                      | File access operations are not allowed in queries.                                                                               |
+| System schemas: `information_schema.…`, `mysql.…`, `performance_schema.…`, `sys.…`                                                                                                                                                | References to system schemas are not allowed in queries.                                                                         |
+| Executable comments `/*! … */`                                                                                                                                                                                                    | Executable comments (/*! ... */) are not allowed in queries.                                                                     |
+| Structure changes and anything else: `CREATE`, `ALTER`, `DROP`, `TRUNCATE`, `GRANT`, `CALL`, `SHOW`, …                                                                                                                            | Statement type '…' is not allowed. Allowed statement types: SELECT, WITH, INSERT, REPLACE, UPDATE, DELETE, SET.                  |
+
+In a query of several statements, the message starts with the position of the refused statement, for example `Statement 2: Statement type 'USE' is not allowed. …`.
+
+| Instead of                        | Use                                                       |
+| --------------------------------- | --------------------------------------------------------- |
+| `DECLARE @x …`                    | `SET @x = value`                                          |
+| `BEGIN … COMMIT`                  | One statement, or Execute Query on a database of your own |
+| `SET sql_mode …`, `SET SESSION …` | Write the query for the server's default settings         |
+| Building SQL text with `PREPARE`  | Parameters, or several plain statements                   |
+
+### All messages [#messages]
+
+You always get one of these messages, never a raw database error.
+
+| Message                                                                                                                       | When                                                                                                                                                       |
+| ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Expected maximum one table but received N tables! (error code 2003)                                                           | Two or more statements returned rows. The query has run.                                                                                                   |
+| Statement type '…' is not allowed. Allowed statement types: SELECT, WITH, INSERT, REPLACE, UPDATE, DELETE, SET.              | A statement type outside the allowed list. Nothing ran.                                                                                                    |
+| Statement type '…' is not allowed. Session, transaction, lock, and prepared-statement control is not available in queries.   | `USE`, transactions, locks, prepared statements, `XA`, `HANDLER`. Nothing ran.                                                                             |
+| SET can only assign user variables, as in SET @name = value. …                                                                | A `SET` that is not a user-variable assignment. Nothing ran.                                                                                               |
+| The statement does not start with a supported SQL statement keyword.                                                          | A statement that does not begin with a keyword. Nothing ran.                                                                                               |
+| File access operations are not allowed in queries.                                                                            | `INTO OUTFILE`, `INTO DUMPFILE`, `LOAD_FILE`. Nothing ran.                                                                                                 |
+| Advisory lock functions are not allowed in queries.                                                                           | `GET_LOCK` and relatives. Nothing ran.                                                                                                                     |
+| References to system schemas are not allowed in queries.                                                                      | `information_schema`, `mysql`, `performance_schema`, `sys`. Nothing ran.                                                                                   |
+| Executable comments (/*! ... */) are not allowed in queries.                                                                  | Nothing ran.                                                                                                                                               |
+| The query does not contain an executable statement.                                                                           | A query that holds only a comment, or only `;`. Nothing ran.                                                                                               |
+| The query contains invalid SQL syntax.                                                                                        | A database syntax error, including `DECLARE`, an empty statement between two others, or a variable named like a parameter. Statements before it have run. |
+| The query did not finish within the configured time limit.                                                                    | The Time Out was reached. Statements that finished before it are kept.                                                                                     |
+| The query did not finish within N seconds and was stopped. Narrow the query, or raise its Time Out.                          | No answer within the Time Out plus 30 seconds.                                                                                                             |
+| The specified database does not exist. Create a Data Store first.                                                             | The workspace has no Data Store yet.                                                                                                                       |
 
 ## Handling errors in the process [#handling-errors]
 
@@ -323,7 +432,9 @@ When a Query Store step fails, because a query was refused, a SQL error or a tim
 
 | What you see                                                             | What to do                                                                                                                                  |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| *"… not available on a personal workspace"*                              | Switch to an organisation workspace.                                                                                                        |
+| *"The specified database does not exist. Create a Data Store first."*    | A workspace's database is created together with its first Data Store. In a workspace (personal or shared) with no Data Store yet, there is nothing to run against: create a Data Store, then run the process again. |
+| *"Expected maximum one table but received 2 tables!"*                    | Two statements return rows. Keep one statement that returns rows; turn the others into `SELECT … INTO @name`. The writes before the error are already saved. |
+| *"The query contains invalid SQL syntax."* with several statements       | Look for an empty statement between two others (`…; ; …`), a `DECLARE` (use `SET @name = value`), or a variable named like a parameter. Statements before the error have already run. |
 | A red `Unknown` chip in the query                                        | The Data Store or column was deleted. Remove the chip and pick a replacement with Ctrl + I.                                                 |
 | A JOIN is refused, although each Data Store works on its own             | Two Data Stores share a column name. Add aliases (`AS c`, `AS o`) and prefix every column with its alias.                                  |
 | The query runs but returns 0 rows with `IN (@list)`                      | Use `JSON_CONTAINS` or `MEMBER OF`. See [Passing a list](#passing-a-list).                                                                  |
