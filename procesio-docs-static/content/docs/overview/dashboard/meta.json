@@ -2,6 +2,8 @@
   "title": "Dashboard",
   "icon": "📖",
   "pages": [
-    "how-to-create-a-workspace-in-a-master-workspace"
+    "how-to-create-a-workspace-in-a-master-workspace",
+    "rename-a-workspace",
+    "two-factor-authentication"
   ]
 }
