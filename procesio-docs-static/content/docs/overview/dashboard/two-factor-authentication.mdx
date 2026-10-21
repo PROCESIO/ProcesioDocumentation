@@ -1,0 +1,45 @@
+---
+title: "Two-factor authentication"
+icon: "📘"
+description: "Turn on two-factor authentication (2FA) for your account, require it for everyone in a master workspace, and what users see when a workspace requires it."
+---
+
+Two-factor authentication (2FA) asks for a code from an authenticator app each time you sign in, on top of your password.
+
+## Turn on 2FA for your account [#turn-on]
+
+1. Open the user menu at the top right of PROCESIO.
+2. Under **Preferences**, click **Enable 2FA**.
+3. A setup window opens. Follow its steps to connect your authenticator app.
+
+When setup finishes you see *"Two-factor authentication enabled!"*, and the user menu shows **2FA enabled** instead of **Enable 2FA**.
+
+<Callout type="info">
+The setup opens in a pop-up window. If your browser blocks it, you see *"The setup window was blocked. Please, allow pop-ups for this site and try again."* Allow pop-ups for PROCESIO and click **Enable 2FA** again.
+</Callout>
+
+If 2FA is already on for your account, the menu shows **2FA enabled** and there is nothing to set up.
+
+## Require 2FA in a master workspace [#require]
+
+The owner and co-owners of a master workspace can require 2FA for everyone who works in it.
+
+1. Open the master workspace and click **Workspaces** in the left menu.
+2. At the top of the **Workspace Management** page, switch on **Enable 2FA Enforcement**.
+
+![The Workspace Management header with the Enable 2FA Enforcement switch](/images/docs/two-factor/workspace-list-2fa.png)
+
+The setting applies to the master workspace **and to every workspace inside it**, including workspaces created after you switched it on. It doesn't affect anyone's personal workspace.
+
+<Callout type="info">
+Turn on 2FA for your own account first. Once enforcement is on, anyone without 2FA, including you, has to set it up before they can keep working in these workspaces.
+</Callout>
+
+## When a workspace requires 2FA [#required-dialog]
+
+If you open a workspace that requires 2FA and your account doesn't have it yet, PROCESIO shows this message:
+
+![The "Two-factor authentication required" dialog with the buttons Switch to personal workspace and Enable 2FA](/images/docs/two-factor/require-2fa.png)
+
+* **Enable 2FA** opens the setup window. As soon as 2FA is on, the workspace opens.
+* **Switch to personal workspace** takes you to your personal workspace instead.

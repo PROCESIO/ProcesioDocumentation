@@ -8,7 +8,7 @@ description: "PROCESIO allows you to work with documents by creating your own te
 
 PROCESIO allows you to work with documents by creating your own templates according to your requirements. The **Document Designer** gives you the ability to choose how the data is presented in your flows and with the use of variables you can create dynamic documents.
 
-&#x20; 1\.    Navigate to the **Document Designer** section and click **Create new document**.
+&#x20; 1\.    Navigate to the **Document Designer** section and click **Create document**.
 
 ![](/images/docs/GJ5g9wsW5GBBeXXf8dMXc_image.png)
 
@@ -21,3 +21,34 @@ PROCESIO allows you to work with documents by creating your own templates accord
 &#x20; 4\.    Click **Save Document**.
 
 ![](/images/docs/BJnxLFO7Gln0Zo3eMDusX_image.png)
+
+## The editor
+
+The Document Designer shows your template as pages, at the page size and orientation the document will have. The toolbar is grouped, and each **⋮** button opens more options of its group:
+
+![The Document Designer with the editor toolbar and a sample purchase order with a heading, a paragraph and a table](/images/docs/document-designer/editor.png)
+
+| Group | What you find there |
+| --- | --- |
+| Text | **Bold**, **Italic**, **Underline**; under **⋮ More Text**: strikethrough, subscript, superscript, font size, text and background color, clear formatting |
+| Paragraph | Align left, center, right; under **⋮ More Paragraph**: lists, **Paragraph Format** (Normal, Heading 1 to 4, Code), paragraph style, line height, indent |
+| Insert | Link, image, table, **Dynamic Table with Data Model**, special characters, horizontal line, **Insert Page Break** |
+| View | **Zoom** (50% to 200%), **Undo**, **Redo**; under **⋮ More Misc**: **Select All**, **Document Page Size**, **Document Page Orientation**, **Code View** |
+
+On an empty line, the **+** button next to the line inserts an image, a table, a list or a horizontal line.
+
+The text shows in the font that the generated PDF uses, so what you see is close to the final document. There is no font family choice, because the PDF always uses the same font.
+
+### Code View: HTML and preview side by side
+
+Click **⋮ More Misc** at the right end of the toolbar, then **Code View**. The template's HTML opens on the left and a live preview of the page on the right. Drag the divider between them to resize the panes. Click **Code View** again to go back to the visual editor.
+
+![Code View with the template's HTML on the left and the page preview on the right](/images/docs/document-designer/split-view.png)
+
+<Callout type="info">
+Before you leave the page, click **Save Document** or switch back to the visual editor: a change made only in the HTML pane is not yet counted as unsaved, so leaving with **Back** can lose it without a warning.
+
+The preview doesn't apply a template's own `<style>` block; it shows it as a placeholder. Inline styles are applied, and the generated PDF uses the `<style>` block as usual.
+</Callout>
+
+Templates made before this editor open as they are, with their variables. When you save one for the first time, the editor can tidy up its HTML: the text stays the same, but check the spacing with a test document.

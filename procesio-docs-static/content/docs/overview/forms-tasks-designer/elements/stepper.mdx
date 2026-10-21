@@ -50,4 +50,29 @@ Each Step within the Stepper is a separate container with its own label, tooltip
 
 
 
+## Move between steps from JavaScript
+
+Two functions move a stepper one step forward or back, the same as clicking its **Next** or **Previous** button. Call them from any **Trigger JAVASCRIPT** event in the form:
+
+| **Function** | **What it does** |
+| ------------ | ---------------- |
+| **goToNextStep()** | Moves to the next step. Does nothing on the last visible step. Fires the stepper's **onNextStep** and **onStepChange** events. |
+| **goToPreviousStep()** | Moves to the previous step. Does nothing on the first step. Fires **onPreviousStep** and **onStepChange**. |
+
+```javascript
+ProcesioForm.data.fields.stepper.goToNextStep();
+ProcesioForm.data.fields.stepper.goToPreviousStep();
+```
+
+Here `stepper` is the name of your Stepper element. The same example is in the **Scripting reference** of every JavaScript event in the form designer.
+
+<Callout type="info">
+Forms published before PROCESIO v2.0.7 don't have these functions yet. Open the form in the designer and publish it again. Tasks created from the form before you publish it again keep the old version.
+</Callout>
+
+* The functions don't check required fields on the current step, just like the **Next** button.
+* Hidden or empty steps are skipped.
+* Calling **goToNextStep()** from the stepper's own **onNextStep** or **onStepChange** event fires that event again, so guard such scripts to avoid a loop.
+* The designer's **Preview** doesn't run form scripts. Test on the published form.
+
 For support, please join our [Discord community](https://discord.com/invite/CEBuKgJefv) for further assistance and support.

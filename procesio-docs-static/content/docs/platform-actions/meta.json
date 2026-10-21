@@ -32,6 +32,7 @@
     "utilitary",
     "pdf",
     "aws-s3",
+    "azure-storage",
     "community-made"
   ]
 }

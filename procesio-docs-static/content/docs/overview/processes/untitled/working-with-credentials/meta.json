@@ -6,6 +6,7 @@
     "smtp-server-credential",
     "ftp-credential",
     "sql-credential",
-    "smtp-inbound-credential"
+    "smtp-inbound-credential",
+    "azure-storage-account-credential"
   ]
 }

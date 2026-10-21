@@ -129,3 +129,23 @@ As our action is inside a foreach border, use the <span style={{color:'#2166ae'}
 This is one sample of an email sent.
 
 ![](/images/docs/W6hDxTeoIs_eogWZSRxoc_order116.png)
+
+## Open the subprocess run from the parent run
+
+When you look at a run of the parent process, you can jump straight to the run of the subprocess that it started.
+
+1. Open the parent process's runs (**View instances**) and click **Show details** on a run.
+2. Click the **Call Subprocess** step, then the **General** tab on the right.
+3. Under **SUBPROCESS INSTANCE**, click the run ID. The subprocess run opens in a new browser tab.
+
+![The run details of a parent process with the Call Subprocess step selected and the subprocess run ID shown as a link](/images/docs/auto-variables/instance-view.png)
+
+You can also **double-click** the Call Subprocess step to open the subprocess run.
+
+If the step ran several times, for example inside a **For Each**, the tab shows **SUBPROCESS INSTANCES** with a numbered list of runs in the order they were started. Double-clicking the step then opens a **Subprocess instances** list, where you pick the run to open.
+
+The links stay available after the run has finished, after it moves to the run history, and when the subprocess ended with an error.
+
+<Callout type="info">
+This works for runs started from PROCESIO v2.0.7 onwards, and for the **Call Subprocess** action only. **Trigger Subprocess** doesn't show links to the runs it starts.
+</Callout>
