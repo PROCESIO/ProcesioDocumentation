@@ -5,7 +5,7 @@ description: "A table you define and fill inside a workspace — rows and column
 ---
 
 <Callout type="info">
-Behaviours in this guide were verified on 12 August 2026. The screenshots come from the automated test suite, which is why the example stores are named `AUTO_DSACT_Store` and `AUTO_DOCS_Store`.
+Behaviours in this guide were verified on 12 August 2026, and the column types, text matching, filter operators and API notes again on 23 October 2026. The screenshots come from the automated test suite, which is why the example stores are named `AUTO_DSACT_Store` and `AUTO_DOCS_Store`.
 </Callout>
 
 ## What a Data Store is
@@ -59,14 +59,14 @@ Nine types are available. There is no separate Date, Time, Decimal or File type 
 | Type | Use it for | Worth knowing |
 |---|---|---|
 | `String` | Names, codes, notes, anything textual | Holds up to 65,535 bytes. Accented and non-Latin characters count for more than one byte each. |
-| `Integer` | Counts, quantities, whole numbers | 64-bit. A decimal is accepted and silently rounded — `2.5` becomes a whole number with no warning, and which way an exact half rounds differs between entry points. If the fraction matters, use `Double`; if it doesn't, round deliberately before writing. |
+| `Integer` | Counts, quantities, whole numbers | 64-bit, whole numbers only. A value with decimals, such as `2.5`, is refused with a message that names the column; in a CSV import, that row goes to the failures file. If the fraction matters, use `Double`; if it doesn't, round deliberately before writing. |
 | `Double` | Prices, measurements, anything fractional | Standard 64-bit floating point. |
 | `Float` | — | Stored identically to `Double`. It does not save space or give you lower precision; prefer `Double` for clarity. |
 | `Boolean` | Yes/no flags | Write it as unquoted `true` / `false` — those two literals are accepted everywhere: adding rows, filtering, CSV. Numbers (`1`/`0`) and quoted text (`"true"`) are each accepted in some places and rejected in others, so don't rely on them. |
 | `DateTime` | Dates and timestamps | Write as `2026-07-17T14:30:00`. A date alone (`2026-07-17`) works too and means midnight. A trailing `Z` is rejected by the rows API. |
-| `Guid` | Identifiers from other systems | Values are *not* validated. A malformed identifier is accepted and stored in a mangled form, so validate before writing. |
-| `Json` | Nested or variable structures | Stored as JSON. Structure round-trips, but key order and whitespace are normalised, so don't compare the raw text. |
-| `Object` | Same as `Json` | Behaves identically to `Json`. |
+| `Guid` | Identifiers from other systems | A malformed identifier is refused with a message that names the column; in a CSV import, that row goes to the failures file. Letter case doesn't matter: values are stored in lower case, and a filter finds them whichever case you type. |
+| `Json` | Nested or variable structures | Stored as JSON. Structure round-trips, but key order and whitespace are normalised, so don't compare the raw text. If a key appears twice, the last one wins, and numbers may be rewritten (`1.10` becomes `1.1`). Empty text is saved as no value. |
+| `Object` | Same as `Json` | Stored the same way as `Json`. Unlike `Json`, it can be searched as text: see [Which operators you get](#which-operators-you-get). |
 
 <Callout type="info">
 **Date and time format** — the accepted written form is `YYYY-MM-DDTHH:mm:ss`, for example `2026-07-17T14:30:00`. Formats like `17/07/2026 14:30` or a Unix timestamp are rejected. Values are stored as written, without timezone conversion, so decide on one timezone convention for your workspace and stick to it.
@@ -84,13 +84,15 @@ Open a Data Store to see its rows. From here you can add records, filter, sort a
 
 Every column header has a small filter icon. Click it to open the column's menu: sort the grid A→Z or Z→A from the top, or build a filter below — pick an operator, give a value, and press **Add**. Each active filter appears as a chip above the grid; remove one chip, or **Clear all**, to widen the view again.
 
-Which operators the menu offers depends on the column's type — text columns offer *contains* and *starts with*, number and date columns offer *greater than*, *less than* and *between*, and so on.
+Which operators the menu offers depends on the column's type — text columns offer *contains* and *starts with*, number and date columns offer *greater than*, *less than* and *between*, and so on. List, `Json` and Data Model columns offer only *equals*, *does not equal*, *is empty* and *is not empty*; see [Filtering lists, JSON and Data Model columns](#filtering-lists-json-and-data-model-columns).
 
 ![The column filter menu open on a DateTime column, with the operator list expanded](/images/docs/data-store/filter-menu-datetime-roster.png)
 
 *The filter menu on a DateTime column with its operator list open. Date columns take their value from a date picker plus a time picker — both matter, as explained below.*
 
-**Text matching ignores case.** Searching `acme` finds `ACME` and `Acme`. Sorting is case-insensitive too, so `apple` and `Apple` sort together rather than in separate blocks.
+**Text matching ignores case and accents.** Searching `acme` finds `ACME` and `Acme`, and `cafe` finds `café`. Sorting ignores case too, so `apple` and `Apple` sort together rather than in separate blocks. Key columns follow the same rule: `Acme` and `ACME` count as the same key, so the second one is refused as a duplicate.
+
+For now, spaces at the end of a value are ignored as well (`abc` finds `abc `), and all emoji count as the same character. Both will start to count in an upcoming release, so don't rely on either.
 
 #### Filtering dates: pick a date and a time
 
@@ -113,6 +115,14 @@ Rows come back a page at a time. Two behaviours are worth knowing if you page th
 
 - Asking for a page beyond the end returns the **last page**, not an empty one. Don't loop "until the page comes back empty" — it never will. Work out the number of pages from the total count instead.
 - A page size of `0` means **every row**, unpaged. Handy for small tables, risky for large ones.
+
+### Through the API
+
+If you read or write rows through the API rather than on screen, three more things apply:
+
+- Values in `Json`, `Object`, Data Model and list columns come back as **text**. Read them with a JSON parser.
+- In a response, `pageItemCount` is **not** the number of rows on the page. Count the rows you got, and use the total count to work out how many pages there are. Leaving out the page size returns every row, the same as `0`.
+- When you add several rows in one call, every row must list the **same columns**. Send `null` for a blank value instead of leaving the column out. Column names must match exactly, including letter case.
 
 ## Editing rows in the grid
 
@@ -255,7 +265,8 @@ The list depends on the column's type:
 | `Integer`, `Double`, `Float`, `DateTime` | Equals · Does not equal · Greater than · Less than · Greater than or equal · Less than or equal · Between · Is not between · Belongs · Does not belong · Is empty · Is not empty |
 | `Boolean` | Is true · Is false · Equals · Does not equal · Belongs · Does not belong · Is empty · Is not empty |
 | `Guid` | Equals · Does not equal · Belongs · Does not belong · Is empty · Is not empty |
-| `Json`, `Object` | Equals · Does not equal · Is empty · Is not empty |
+| `Object` | Same as `String`. The text operators search the value as it is stored, with a space after `:` and `,` (`"a": 2`), and they match letter case exactly. |
+| `Json`, and any list column | Equals · Does not equal · Is empty · Is not empty |
 
 #### Operators that need a particular kind of value
 
@@ -263,7 +274,19 @@ The list depends on the column's type:
 - **Like** and **Not like** match text with SQL wildcards: `%` stands for any run of characters, so `%Pop%` finds "Ana Pop" and "Ioana Popescu", and `%Pop` only values that *end* in "Pop". **Without a wildcard, Like is an exact match** — `Pop` alone matches only the value "Pop". If you just want "text appears anywhere", **Contains** is the simpler operator.
 - **Belongs** and **Does not belong** match against a list. Provide it as a JSON array, for example `["Draft","Pending"]`. A plain comma-separated list is not accepted.
 - **Is empty** matches rows where the column has no value at all. A column holding an empty piece of text is not "empty" in this sense.
+- **Does not equal** (and the other "not" operators) never returns rows where the column has no value. To include them, add an **Is empty** condition joined with *or*.
 - On a date column, **Equals** compares date *and* time — the same rule as the viewer's filter menu; see [Filtering dates](#filtering-dates-pick-a-date-and-a-time). Use **Between** for a whole day.
+
+#### Filtering lists, JSON and Data Model columns
+
+On these columns, **Equals** compares the whole value. For a list, give the complete list as JSON, for example `["red","blue"]`:
+
+- The items must be in the **same order**: `["blue","red"]` does not match `["red","blue"]`.
+- **Letter case counts**: `["Red"]` does not match `["red"]`, unlike text columns.
+- Spacing doesn't matter, and for `Json` neither does the order of keys: `{"b":2,"a":1}` matches `{"a":1,"b":2}`.
+- `[]` matches an empty list.
+
+There is no "the list contains this item" filter: a single item, such as `red`, never matches a list. If you need to search for one item, keep it in its own column.
 
 <Callout type="error">
 **Filtering a yes/no column** — use **Is true** and **Is false**. On current builds, *Equals true* in a process Where returns the rows where the value is *false* — and reports no error. This matters most on Update and Delete, where it would change the wrong records. (Filtering a yes/no column in the viewer or in a form is not affected.)
