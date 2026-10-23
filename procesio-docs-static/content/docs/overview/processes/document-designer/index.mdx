@@ -4,4 +4,17 @@ icon: "📑"
 description: "Create document templates and generate filled-in documents from process data."
 ---
 
-Two halves of one workflow: **creating a document template**, then **using the template** in a process to generate documents filled with your data.
+The **Document Designer** lets you build your own document templates — invoices, contracts, reports, notification emails, anything you print or send out — and fill them automatically with the data flowing through your processes. Lay out the text, images and tables once; every run of your process produces a new document with that run's own data dropped in.
+
+It's two halves of one workflow:
+
+1. **[Create a document template](/docs/overview/processes/document-designer/document-template-creation)** — design the document in the built-in editor and mark the spots that should change with **variables**.
+2. **[Use the template](/docs/overview/processes/document-designer/using-the-template)** in a process with the **[Generate Document](/docs/platform-actions/generate-document)** action, mapping your process's data onto those variables, to produce a PDF or HTML file (or both) on every run.
+
+![The Document Designer editor, with the toolbar and a sample purchase order](/images/docs/document-designer/editor.png)
+
+<Cards>
+  <Card title="Document template creation" description="Build the template: the editor, variables, tables and Code View." href="/docs/overview/processes/document-designer/document-template-creation" />
+  <Card title="Using the template" description="Generate documents from a process, mapping your data onto the template." href="/docs/overview/processes/document-designer/using-the-template" />
+  <Card title="Generate Document action" description="The action reference for generating a document inside a process." href="/docs/platform-actions/generate-document" />
+</Cards>
