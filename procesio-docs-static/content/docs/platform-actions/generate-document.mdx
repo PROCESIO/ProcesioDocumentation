@@ -1,59 +1,46 @@
 ---
 title: "Generate Document"
 icon: "📕"
-description: "After creating the template you have the ability to generate documents in your processes."
+description: "Generate a filled-in PDF or HTML document from a Document Designer template, mapping your process data onto its variables."
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/OmQQyYq2h-g" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-After creating the [template](/docs/overview/processes/document-designer/document-template-creation) you have the ability to generate documents in your processes.
+After creating your [template](/docs/overview/processes/document-designer/document-template-creation), use it in a process with the **Generate Document** action to produce a filled-in file.
 
-&#x20; 1\.    Navigate to the [Process Designer](/docs/overview/processes/process-designer/your-first-process) section and create your process.
+1. Open the [Process Designer](/docs/overview/processes/process-designer/your-first-process) and create your process.
+2. Give it a name.
+3. Drag the **Generate Document** action onto the canvas.
 
-&#x20; 2\.    Give it a name.
+   ![](/images/docs/nmeiefzUvY3AM3fElZaXb_image.png)
+4. Create the [process variables](/docs/overview/processes/process-designer/working-with-process-variables) the action needs:
+   - **fileout** ➜ an **output** variable of type **File**, to receive the generated document.
+   - **htmlstring** ➜ an **output** variable of type **String**, to receive the generated HTML.
+   - **Name** ➜ an **input** variable of type **String**, one example of data you'll feed into the template.
 
-&#x20; 3\.    Drag the **Generate Document** action to the canvas.
+   ![](/images/docs/KrXNIFDicVNgys03wwWoE_image.png)
+5. Click the **Generate Document** action to configure it:
+   - **Select document template** — pick the template you created.
+   - **Save document as** — **PDF** or **HTML**.
+   - **File name** — the name of the generated file.
+   - **Document output** — bind the **fileout** variable.
+   - **HTML string** — bind the **htmlstring** variable.
 
-![](/images/docs/nmeiefzUvY3AM3fElZaXb_image.png)
+   ![](/images/docs/O_l-HLzsl5ErfTCMdsvdA_image.png)
+6. Click **Map Document Data** and map each template variable to a process variable or a typed value — the **Name** input variable created in the process, for example, to the **Name** variable used in the template (they don't need to have the same name). See [Using the template](/docs/overview/processes/document-designer/using-the-template#using-the-template) for the full mapping reference, including Data Model attributes and list-bound tables.
 
-&#x20; 4\.    Create the [variables](/docs/overview/processes/process-designer/working-with-process-variables).
+   ![](/images/docs/x-pyBGITBEVflCYZVXBPT_image.png)
+7. **Save**, **Validate** and **Run** the process.
+8. Running asks for the process's input variable values.
 
-- **fileout&#x20;**➜ the output variable of type File. &#x20;
-- **htmlstring** ➜ the output variable of type String.&#x20;
-- **Name** ➜ the input variable of type String.
+   ![](/images/docs/N_6SmQ_YMbwJXzmyyT5Zr_image.png)
+9. Click **Run**, then **Check instance** to see the run's output.
+10. Click the download button to get the generated file or the HTML output.
 
-![](/images/docs/KrXNIFDicVNgys03wwWoE_image.png)
-
-
-
-&#x20; 5\.    Click the **Generate Document** action to access its configurations.
-
-- **Select document template\*&#x20;**- select the template we created [here](/docs/overview/processes/document-designer/document-template-creation).&#x20;
-- **Save document as&#x20;**- the document will be saved s a PDF.
-- **File name&#x20;**- choose the name of the file we will create.
-- **Document output -&#x20;**&#x61;dd the file variable created in the previous step.
-- **HTML string -&#x20;**&#x61;dd the string **htmlstring** variable created in the previous step.
-
-![](/images/docs/O_l-HLzsl5ErfTCMdsvdA_image.png)
-
-&#x20; 6\.    Click **Map Document Data&#x20;**&#x61;nd map the input variable **Name** created in the process to the **Name** variable used in the template (they do not need to have the same name).
-
-![](/images/docs/x-pyBGITBEVflCYZVXBPT_image.png)
-
-&#x20; 7\.    **Save**, **Validate** and **Run** the process.
-
-&#x20; 8\.    The process will ask for the input variables value. &#x20;
-
-![](/images/docs/N_6SmQ_YMbwJXzmyyT5Zr_image.png)
-
-&#x20; 9\.    Click **Run** again and than click **Check instance**.
-
-&#x20; 10\.    If you wish to download the the file or the html output you just need to click the download button.&#x20;
-
-![](/images/docs/LbYMjo5gUlU6owQGiucm2_image.png)
+    ![](/images/docs/LbYMjo5gUlU6owQGiucm2_image.png)
 
 <Callout type="info">
-The pdf file output:
+The PDF file output:
 
 ![](/images/docs/sJtDOnh1pnf_3cvKh_aZm_image.png)
 </Callout>
