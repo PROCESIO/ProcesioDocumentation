@@ -1,0 +1,14 @@
+# Cloudflare static-asset redirects (copied to out/ by the static export).
+# Keep old addresses working when a page moves. Format: <from> <to> <status>
+
+# Marketplace guides moved out of Integrations & Demos
+/docs/integrations-demos/demos/audio-to-text-using-openai-s-whisper /docs/marketplace/audio-to-text-using-openai-s-whisper 301
+/docs/integrations-demos/demos/build-a-conversational-chatbot-with-archbee-and-chat-gpt /docs/marketplace/build-a-conversational-chatbot-with-archbee-and-chat-gpt 301
+/docs/integrations-demos/demos/how-to-track-read-emails /docs/marketplace/how-to-track-read-emails 301
+/docs/integrations-demos/run-a-process-with-files-via-call-api /docs/marketplace/run-a-process-with-files-via-call-api 301
+
+# The same guides at their old Archbee addresses
+/integrations/audio-to-text-using-openais-whisper /docs/marketplace/audio-to-text-using-openai-s-whisper 301
+/integrations/build-a-conversational-chatbot-with-archbee-and-chat-gpt /docs/marketplace/build-a-conversational-chatbot-with-archbee-and-chat-gpt 301
+/integrations/how-to-track-read-emails /docs/marketplace/how-to-track-read-emails 301
+/integrations/run-a-process-with-files-via-call-api /docs/marketplace/run-a-process-with-files-via-call-api 301

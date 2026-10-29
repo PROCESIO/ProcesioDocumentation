@@ -1,6 +1,7 @@
 ---
 title: "Run a process with files via Call API"
-description: "import file containing this ready to use, use-case. - following the import, credentials will need to be configured. :::"
+icon: "📘"
+description: "Start a process that takes a file as input from another process, with three Call API requests: publish the flow, upload the file and launch it."
 ---
 
 ![](/images/docs/FFSCUxy2vzqon6WDMsk1g_image.png)
@@ -10,6 +11,8 @@ At the bottom of this article you'll be able to find:
 
 - **import file** containing this ready to use, use-case.
 - following the import, credentials will need to be configured.
+
+Or get it straight from the [PROCESIO Marketplace](https://procesio.app/FlowZy/Marketplace/Usecases): click **Get free** on its card, sign in and choose **Import**. It lands in a new workspace of its own.
 </Callout>
 
 In order to run a process that uses files as input, 3 API Calls must be set up: Publish Flow, Upload File, and Launch Flow.
@@ -20,21 +23,21 @@ In order to run a process that uses files as input, 3 API Calls must be set up: 
 
 **Step 1:** Create a process that requires a file input with a file variable called inputFile.
 
-**Step 2:**  Then create a new process that will run the first process:
+**Step 2:** Then create a new process that will run the first process:
 
 ### Imputs & Outputs:
 
 **\[I] file:** A file type variable that contains the file for the procees that needs to be started.
 
-**\[I] workspace id :&#x20;**&#x54;he workspace Id of the workspace where the process that needs to be started is.&#x20;
+**\[I] workspace id :** The workspace Id of the workspace where the process that needs to be started is.
 
-**\[I] inputFile&#x20;**: The same type of variable and name with the one from the first process.
+**\[I] inputFile** : The same type of variable and name with the one from the first process.
 
-**\[I] API key:** The API key created in the workspace where the process that needs to be started is.&#x20;
+**\[I] API key:** The API key created in the workspace where the process that needs to be started is.
 
-\[I] flowTemplateId: A guid variable that stores the uid of the process you want to start.&#x20;
+\[I] flowTemplateId: A guid variable that stores the uid of the process you want to start.
 
-**\[I] API key Value:** The API key value created in the workspace where the process that needs to be started is.&#x20;
+**\[I] API key Value:** The API key value created in the workspace where the process that needs to be started is.
 
 **\[O] publishResultBody**: Json variable that stores the body output for the Publish Flow Call API.
 
@@ -44,9 +47,9 @@ In order to run a process that uses files as input, 3 API Calls must be set up: 
 
 **\[O] uploadFileStatus:** String variable that stores the Upload File Call API status.
 
-**\[O] uploadFileRespone:&#x20;**&#x4A;son variable that stores the body output for the Upload File Call API.
+**\[O] uploadFileRespone:** Json variable that stores the body output for the Upload File Call API.
 
-**\[O] Extraction:&#x20;**&#x4A;son variable that stores the result for the Json Mapper - Map Extraction.
+**\[O] Extraction:** Json variable that stores the result for the Json Mapper - Map Extraction.
 
 **\[O] error:** String variable that stores the result for the Json Mapper - Map Error.
 
@@ -60,7 +63,7 @@ In order to run a process that uses files as input, 3 API Calls must be set up: 
 
 ![A Post on https://webapi.procesio.app/api/projects/\&#123;flowTemplateId&#125;/instance/publish](/images/docs/xbVbEi_AgiS3KbYS4EYFE_image.png)
 
-Headers:&#x20;
+Headers:
 
 | Key         | Value             |
 | ----------- | ----------------- |
@@ -77,7 +80,7 @@ Body:
 
 In the body send the file id and name.
 
-In order to get the file id:&#x20;
+In order to get the file id:
 
 - Open the developer tools in your browser.
 - Open the project you want to run.
@@ -135,7 +138,7 @@ Headers:
 
 Body:
 
-form-data:&#x20;
+form-data:
 
 Key: package Value
 

@@ -13,9 +13,11 @@ In this article, we will explore the process of creating a conversational chatbo
 
 ## Step 1: Import the .procesio file into your workspace
 
-We have already prepared for you the process flows needed to build this use case. For that, go to your workspace in PROCESIO. Press **Import/Export**, and continue with importing the `ConversationalCahtBot.procesio` file we have attached below.&#x20;
+We have already prepared for you the process flows needed to build this use case. For that, go to your workspace in PROCESIO. Press **Import/Export**, and continue with importing the `ConversationalChatBot.procesio` file we have attached below.
 
 [📎 ConversationalChatBot.zip](/files/conversationalchatbot.zip)
+
+You can also get it from the [PROCESIO Marketplace](https://procesio.app/FlowZy/Marketplace/Usecases): click **Get free** on its card, sign in and choose **Import**. It lands in a new workspace of its own.
 
 ![](/images/docs/xFdWqWZxYWQdrCbwYjRcq_screenshot-2023-05-30-at-125000.png)
 
@@ -25,12 +27,12 @@ The below processes will be imported into your workspace, together with others (
 
 ## **Step 1: Setting up the database, Archbee and Chat GPT connections**
 
-To begin, we need to ensure that we have Archbee and Chat GP&#x54;**&#x20;credentials** properly configured.
+To begin, we need to ensure that we have Archbee and Chat GPT **credentials** properly configured.
 
 <Callout type="error">
 Go to **Credentials Manager** and update the following credential configurations with **your details**:
 
-`ChatBot Database`&#x20;
+`ChatBot Database`
 
 `ChatGPT`
 </Callout>
@@ -38,11 +40,11 @@ Go to **Credentials Manager** and update the following credential configurations
 
 
 <Callout type="info">
-It is now time to run the SQL scripts to create and update your database:&#x20;
+It is now time to run the SQL scripts to create and update your database:
 
 **Chat create all DB objects.sql:** [https://drive.google.com/file/d/1X9VKL3X1bBpmLGLDh3AO5IyoTvEXT7Ur/view](https://drive.google.com/file/d/1X9VKL3X1bBpmLGLDh3AO5IyoTvEXT7Ur/view)
 
-**Useful selects.sql:&#x20;**[https://drive.google.com/file/d/1YuX6ISJPNI\_ZoZiOkiEiMNmdWHQYuHG7/view](https://drive.google.com/file/d/1YuX6ISJPNI_ZoZiOkiEiMNmdWHQYuHG7/view)
+**Useful selects.sql:** [https://drive.google.com/file/d/1YuX6ISJPNI\_ZoZiOkiEiMNmdWHQYuHG7/view](https://drive.google.com/file/d/1YuX6ISJPNI_ZoZiOkiEiMNmdWHQYuHG7/view)
 </Callout>
 
 The "**Chat create all DB objects.sql**" file contains the scripts that need to be executed in the database to create the necessary objects. This file is essential for setting up the database structure correctly.
@@ -59,7 +61,7 @@ Next, we establish the connection between Archbee and Chat GPT. Archbee allows u
 
 To make this, go to process `Chatbot/1. Call GPTChat` and select the `Call GPT API` action
 
-In its setting, make sure you add your `OpenAI Organization` in Headers.&#x20;
+In its setting, make sure you add your `OpenAI Organization` in Headers.
 
 ![](/images/docs/dwOpT5efVtAv1zdj1iPVL_screenshot-2023-06-06-at-112438.png)
 
@@ -73,7 +75,7 @@ Next, go to `Chatbot/1. ArchBee get articles by SearchTerm` process. If you also
 
 ![](/images/docs/WxNB3nF1lRHAZok7y_OpV_screenshot-2023-06-06-at-113807.png)
 
-To get a `docSpaceId` you can go to document info and copy the Doc Space Id value:&#x20;
+To get a `docSpaceId` you can go to document info and copy the Doc Space Id value:
 
 ![](/images/docs/lpqRh7rRC2jmdu7Y67pDh_screenshot-2023-06-06-at-114443.png)
 
