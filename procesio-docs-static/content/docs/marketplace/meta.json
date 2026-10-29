@@ -1,0 +1,13 @@
+{
+  "title": "Marketplace",
+  "icon": "🛒",
+  "root": true,
+  "pages": [
+    "index",
+    "meeting-booking-page",
+    "audio-to-text-using-openai-s-whisper",
+    "build-a-conversational-chatbot-with-archbee-and-chat-gpt",
+    "how-to-track-read-emails",
+    "run-a-process-with-files-via-call-api"
+  ]
+}
