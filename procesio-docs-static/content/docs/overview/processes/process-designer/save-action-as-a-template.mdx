@@ -1,12 +1,14 @@
 ---
 title: "Save action as a template"
 icon: "💾"
-description: "If you need to repeatedly use the same actions with the same configurations, you can save it as a template in your Toolbar."
+description: "If you need to repeatedly use the same actions with the same configurations, you can save it as a template in your Toolbar. You can also disable an action you do not want to run, without deleting it."
 ---
 
 If you need to repeatedly use the same actions with the same configurations, you can save it as a template in your **Toolbar**.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZIvnEf3aftM" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/de-HrWfXfGY" title="Reuse and switch off: action templates and disabled actions" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+The video covers everything described on this page: saving an action as a template, using it, deleting it, and disabling an action you do not want to run.
 
 ### How to save an action as a template
 
@@ -65,3 +67,19 @@ You can save a template based on another action template, and it will be saved a
 You can delete the action template in Toolbar. They will have a contextual menu available:
 
 ![](/images/docs/NWm6a4tMsXEbfFYIPtFPe_deletetemplate.png)
+
+### Disabling an action
+
+If you want to keep an action in the process but stop it from running, you can disable it instead of deleting it.
+
+**Step 1**. Right-click on the action and select "Toggle disabled state". The option is only listed for actions that can be disabled.
+
+**Step 2**. The action is shown faded on the canvas. Right-click it and select "Toggle disabled state" again to switch it back on.
+
+**Step 3**. Save the process, so that the next run picks up the change.
+
+<Callout type="info">
+A disabled action is skipped on every path it sits on, including the Error path of another action. The variables it would have written keep the values they had before, and in the process instance view the action is greyed out and marked as "skipped".
+</Callout>
+
+A disabled action is also left out of validation: if its configuration is incomplete, it will not raise errors in the Errors Panel.
