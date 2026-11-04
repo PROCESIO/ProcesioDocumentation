@@ -36,7 +36,50 @@ JSON Example:
 
 ![](/images/docs/wcbUSSaLOh0UOm_b5uzB7_spawner.gif)
 
+### **Copying and pasting actions**
+
+Instead of configuring the same action twice, copy the one you already set up — the copy keeps its whole configuration.
+
+1. **Click** the action on the canvas to select it. Hold **CTRL** and click to select several.
+2. Press **CTRL + C** (**CMD + C** on a Mac).
+3. **Click** where you want the copy to land, then press **CTRL + V** (**CMD + V** on a Mac).
+
+<Callout type="info">
+  **The canvas needs the keyboard focus**, so click an empty part of it first. Straight after typing in a properties panel or in the toolbox search box the focus is still there, and copy and paste do nothing — nothing is lost, just click the canvas and press them again.
+</Callout>
+
+A few details worth knowing:
+
+- **The copy lands where you last clicked**, not on top of the original. Pasting several at once keeps their positions relative to each other.
+- **The copy's name gets a number**, so a copy of *Format name* becomes *Format name (1)*, then *(2)*, and so on. Rename it to something meaningful.
+- **Not every action can be copied.** A [custom action](/docs/custom-actions/what-is-a-custom-action) declares whether it may be, with `CanDuplicate`. **Duplicate** in the action's right-click menu does the same thing in one step.
+- **Shapes are not copied this way.** Drag another one from the toolbar instead — see [Canvas shapes](/canvas-shapes).
+
+### **The right-click menu on an action**
+
+Right-click any action on the canvas:
+
+| Entry                           | What it does                                                                                      |
+| ------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Duplicate**                   | Drops a configured copy of the action on the canvas.                                               |
+| **Save action as a template**   | Keeps this configuration in the Toolbar to reuse later — see [Save action as a template](/save-action-as-a-template). |
+| **Toggle breakpoint**           | Marks the action so a debug run pauses there — see [Debug a process](/debug-a-process).            |
+| **Toggle disabled state**       | Keeps the action in the process but stops it running — see [Disabling an action](/save-action-as-a-template#disabling-an-action). |
+| **Delete**                      | Removes the action and its connections.                                                            |
+
+<Callout type="info">
+  **An entry only appears when that action supports it.** **Start** and **Stop**, for example, offer neither a breakpoint nor a disabled state, so those entries are simply not in their menu.
+</Callout>
+
 ### **Create and assign a variable in one step**
+
+You do not have to create a variable first and then come back to use it. Create it from the field that needs it, and it is assigned there straight away.
+
+1. In the action's field, open the **variables selector** (**CTRL + I**, or **CMD + I** on a Mac).
+2. Type the name you want to give the variable in the search box.
+3. Click **+** (**Create variable**).
+
+The dialog opens **already filled in for that field**: the name you typed, the **data type the field expects**, and whether it expects a **list**. Confirm it, and the new variable is created and assigned to the field in one step.
 
 ![](/images/docs/p4AVGBlbBxjbqeai-53yj_auto-assign.gif)
 
@@ -46,6 +89,16 @@ JSON Example:
 2. Use the **ESC&#x20;**&#x6B;ey to toggle the full-screen on and off.
 
 ![](/images/docs/wKycHFNX2KANp2zhJVsNl_fullscreener.gif)
+
+<Callout type="info">
+  **SHIFT + ALT + F** reformats and re-indents what is in the editor — handy on a block of JSON or code that arrived as one long line. **Format Document** in the editor's own right-click menu does the same thing.
+</Callout>
+
+### **Saving with the keyboard**
+
+- Press **CTRL + S** (**CMD + S** on a Mac) to save the process, instead of reaching for the **Save** button.
+
+All of these combinations can be changed to ones you prefer — see [Keyboard shortcuts](/keyboard-shortcuts) for the full list and how to edit them.
 
 ### **Editing process properties faster**
 
@@ -58,3 +111,15 @@ JSON Example:
 - Use <span style={{color:'#2166ae'}}>Group</span><span style={{color:'#fcb900'}}>/</span><span style={{color:'#3b9f0f'}}>Name</span> pattern when naming your processes to group them.
 
 ![](/images/docs/OaqfOT2yiE_JOtmTQRdnt_group-process.gif)
+
+### **Duplicating a whole process**
+
+**Duplicate** in a process row's contextual menu copies the entire process — every action, with its configuration.
+
+<Callout type="warn">
+  **The copy is created inactive.** It will not be triggered by its webhook or started by its schedules until you switch it on with the activation toggle. That is deliberate: it stops a half-edited copy from running on the original's triggers.
+</Callout>
+
+- The copy is named after the original with **(Copy)** on the end, so *Orders/Daily report* becomes *Orders/Daily report (Copy)* — which keeps it in the same group.
+- If the original has a **webhook** assigned, you are warned first: the copy is assigned the same webhook.
+- Rename the copy before you activate it, so the two are easy to tell apart.

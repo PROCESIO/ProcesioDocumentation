@@ -1,0 +1,134 @@
+---
+title: "Debug a process"
+icon: "🐞"
+description: "Pause a running process on an action you choose, look at the variable values it has produced, change them, and let the run continue one action at a time."
+---
+
+Debug mode runs your process and **pauses it** on the actions you mark, so you can
+see the values it has produced so far, change them, and then step on. It is the
+fastest way to answer "why did this action get that value?" without adding
+log actions to the flow.
+
+<Callout type="info">
+  Verified on 4 November 2026. Debug mode works on a normal run of a saved process —
+  there is no separate "debug" copy of your process and no extra setup.
+</Callout>
+
+## When to use it [#when-to-use-it]
+
+| You want to…                                                             | Use                                         |
+| ------------------------------------------------------------------------ | ------------------------------------------- |
+| Try **one action** on values you type in, without running the process     | [Test an action](/test-an-action)           |
+| Watch a **whole run** stop where you choose and inspect its variables     | **Debug mode**                              |
+| Keep an action in the process but stop it from running at all             | [Toggle disabled state](/save-action-as-a-template#disabling-an-action) |
+
+## Step 1 — Set a breakpoint [#set-a-breakpoint]
+
+A **breakpoint** marks an action where the run should pause. Set one in either place:
+
+- **Right-click the action** on the canvas and choose **Toggle breakpoint**.
+- **Click the action** to open its properties panel, then click the **breakpoint
+  dot** at the top of the panel. A filled dot means the breakpoint is on, a crossed
+  circle means it is off; the tooltip says which.
+
+Set as many breakpoints as you like. Right-click and choose **Toggle breakpoint**
+again, or click the dot again, to remove one.
+
+<Callout type="warn">
+  **Save the process after changing a breakpoint.** A breakpoint is part of the
+  process, so it only takes effect once saved — and the **Run** button stays
+  disabled until the process is both saved and valid.
+</Callout>
+
+### Actions that cannot take a breakpoint [#actions-without-breakpoints]
+
+**Toggle breakpoint** is listed only for actions that support it, and the dot only
+appears in the properties panel for those actions. **Start**, **Stop** and the
+flow-control **Join** never take one, because they do no work of their own, and a
+handful of other actions do not offer it either. If you do not see the entry, the
+action cannot hold a breakpoint — put the breakpoint on the action before or after
+it instead.
+
+A [custom action](/docs/custom-actions/what-is-a-custom-action) declares for itself
+whether it can hold a breakpoint.
+
+## Step 2 — Run in debug mode [#run-in-debug-mode]
+
+Open the arrow next to the **Run** button in the topbar and choose **Run in debug
+mode**. If the process has Input variables you are asked for their values first,
+exactly as on a normal run.
+
+A normal **Run** ignores breakpoints completely. Only **Run in debug mode** stops
+on them, so you can leave breakpoints in a process without affecting how it runs in
+production.
+
+## Step 3 — Read the paused run [#read-the-paused-run]
+
+Open the run — **Check instances** in the notification, or **View Instances** from
+the process's contextual menu — and click **Show details**.
+
+The run's status reads **debugger paused**, and a **Debug mode** bar appears with
+two buttons:
+
+| Button                         | What it does                                                        |
+| ------------------------------ | ------------------------------------------------------------------- |
+| **Go to next action** (arrow)  | Runs the next single action, then pauses again.                      |
+| **Resume process execution** (play) | Lets the run continue until the next breakpoint, or to the end. |
+
+Click any action in the instance view to see its status and the values of its
+input and output variables at this moment in the run.
+
+### Where exactly the run pauses [#where-the-run-pauses]
+
+<Callout type="warn">
+  A breakpoint pauses the run **after** the marked action has finished — not before
+  it starts. The marked action shows a green check and its output variable is
+  already filled in.
+</Callout>
+
+This is deliberate, but it is the opposite of most code debuggers, which stop
+*before* the marked line. The practical consequence:
+
+- To **inspect what an action produced**, put the breakpoint on that action.
+- To **change what goes into an action**, put the breakpoint on the action
+  **before** it, then edit the variable while the run is paused (next step).
+
+## Step 4 — Change a variable while the run is paused [#edit-a-variable]
+
+While the run is paused you can edit the process variables, and the rest of the run
+uses the new values. This is how you try a different input without starting over.
+
+1. Open the **Variables** tab of the paused run.
+2. Click the **pencil** next to the variable you want to change.
+3. Type the new value and confirm it. For a **File** variable, use **Update file**
+   and upload the replacement.
+4. Step or resume. Every action from here on reads the value you set.
+
+<Callout type="info">
+  Editing a variable changes **this run only**. It does not change the process, its
+  default values, or any other run.
+</Callout>
+
+## Stopping a paused run [#stopping-a-paused-run]
+
+A run paused in the debugger is still a live run — it is waiting for you, not
+finished. Use **Stop instance** in the instance view to end it; its status becomes
+**stopped**. Do not leave a paused run behind when you are done with it.
+
+## Disabled actions in debug mode [#disabled-actions]
+
+An action you have switched off with **Toggle disabled state** is skipped in debug
+mode exactly as in a normal run: stepping passes straight over it, and the instance
+view greys it out and marks it **skipped** with no check mark. A breakpoint on a
+disabled action never fires, because the action never runs. See
+[Disabling an action](/save-action-as-a-template#disabling-an-action).
+
+## Things worth knowing [#things-worth-knowing]
+
+- **Breakpoints are saved with the process**, so a colleague opening the same
+  process sees them, and a scheduled or webhook-triggered run is unaffected — those
+  are normal runs and ignore breakpoints.
+- **Debug mode is for building, not for production.** A breakpoint only ever pauses
+  a run started with **Run in debug mode**, so leaving one in place is safe — but a
+  debug run that nobody is watching stays paused until someone steps it on or stops
+  it.
