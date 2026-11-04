@@ -1,0 +1,89 @@
+---
+title: "Data retention"
+icon: "🧹"
+description: "Have a process delete the data a run produced once the run is over, so sensitive values are not kept longer than you need them."
+---
+
+**Data retention** tells a process to delete the data a run produced once the run
+is over. You set it per process, and separately for runs that **succeed**, runs that
+**end with an error**, and runs that a **user stopped**.
+
+It exists for privacy: regulations such as **GDPR** and **HIPAA** expect personal
+data to be kept no longer than it is needed. If a process handles ID numbers,
+medical data, bank details or anything else you would rather not keep, this is the
+setting that disposes of it without anyone having to remember to.
+
+<Callout type="info">
+  Verified on 4 November 2026.
+</Callout>
+
+## Set it for a process [#set-it-for-a-process]
+
+1. Open the process in the **Process Designer**.
+2. Open **Data retention** in the canvas sidebar.
+3. Choose what should happen for each of the three outcomes.
+4. **Save** the process.
+
+There are three choices, and each of the three outcomes takes its own:
+
+| Option                | What it means                                                                      |
+| --------------------- | ---------------------------------------------------------------------------------- |
+| **Never**             | Keep the run's data. Nothing is deleted automatically.                              |
+| **At end of runtime** | Delete the data as soon as the run finishes.                                        |
+| **At move to history**| Keep the data while the run is recent, and delete it when the run moves to history. |
+
+### Which outcome is which [#which-outcome-is-which]
+
+- **On success** — the run finished normally.
+- **On error** — the run stopped because an action failed.
+- **On stopped** — someone ended the run with **Stop instance**.
+
+They are separate on purpose. Keeping the data of a failed run while discarding the
+data of a successful one is the common setup: the failures are the ones you still
+need to look at.
+
+<Callout type="warn">
+  **A new process is created with all three set to "At move to history", not to
+  "Never".** If you need a run's data to stay available indefinitely — for an audit
+  trail, say — set the outcomes you care about to **Never** yourself.
+</Callout>
+
+## Delete one run's data by hand [#delete-one-runs-data]
+
+A single run can also be cleared on its own, whatever the process's setting says.
+
+1. Open the run and go to its **Data retention** tab.
+2. Choose **Delete data of the instance**.
+
+Use this when one particular run picked up something it should not have kept.
+
+<Callout type="error">
+  Deleting a run's data cannot be undone. The run itself stays in the list with its
+  status and timings; the values it carried are gone.
+</Callout>
+
+## What is deleted, and when [#what-is-deleted]
+
+| Option                 | What you see afterwards                                                                                                                                             |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Never**              | Everything stays, including after the run moves to history. Output files remain downloadable.                                                                        |
+| **At end of runtime**  | The variable values — **output files included** — are already empty by the time the run ends. Even the response of a synchronous run comes back without them.         |
+| **At move to history** | The values stay readable while the run is recent, and are emptied when it moves to history. After that, a download of one of its output files is refused.            |
+
+In every case the **run itself remains** in the Instances list, with its status, its
+timings and the number of actions it consumed. Data retention removes the run's
+*data*, not the record that the run happened — and it never changes what the process
+does on its next run.
+
+<Callout type="info">
+  **"At move to history" is not immediate.** A finished run stays in the recent list
+  for a few minutes first, and the deletion happens at the move — around five
+  minutes after the run ended, in the runs we measured, not at a time you can set.
+  If you need the data gone the moment the run ends, choose **At end of runtime**.
+</Callout>
+
+## Related [#related]
+
+- [Running a process](/running-a-process) — where runs and instances come from.
+- [Stop a running process](/stop-a-running-process) — what the "stopped" outcome means.
+- [Debug a process](/debug-a-process) — inspecting a run's values while it is still going.
