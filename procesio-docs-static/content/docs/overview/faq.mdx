@@ -166,8 +166,10 @@ description: "1. Do you have a plan to add a template library for automation?&x2
 
 ## Network
 
-1. **Test Action never returns, and live status in a run stops updating. Why?**
-   Both of those arrive over PROCESIO's **push channel** rather than on the request that started them, so they are the first things to break when that channel cannot be reached. The usual cause is a corporate proxy or firewall blocking the notifications host it does not recognise — `notifications.procesio.app` on procesio.app. Ask whoever manages your network to allow it. See [Test an action](/test-an-action#if-a-test-never-finishes).
+1. **Test Action never returns. Why?**
+   Its result arrives over PROCESIO's **push channel** rather than on the request that started the test, so it is the first thing to break when that channel cannot be reached. The usual cause is a corporate proxy or firewall blocking the notifications host it does not recognise — `notifications.procesio.app` on procesio.app. Ask whoever manages your network to allow it. See [Test an action](/test-an-action#if-a-test-never-finishes).
+
+   The same channel also carries **debug-mode updates**, so stepping through a paused run stops responding when it is blocked. An ordinary run's instance view is not affected: it does not refresh by itself in any case — reopen it or reload to see the current state.
 
 ## Documentation, tutorials, and academy
 

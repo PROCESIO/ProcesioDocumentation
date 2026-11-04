@@ -43,9 +43,16 @@ data of a successful one is the common setup: the failures are the ones you stil
 need to look at.
 
 <Callout type="warn">
-  **A new process is created with all three set to "At move to history", not to
-  "Never".** If you need a run's data to stay available indefinitely — for an audit
-  trail, say — set the outcomes you care about to **Never** yourself.
+  **A process you create in the designer starts with all three set to "At move to
+  history", not to "Never".** If you need a run's data to stay available indefinitely
+  — for an audit trail, say — set the outcomes you care about to **Never** yourself.
+</Callout>
+
+<Callout type="info">
+  **A process created over the API has no retention setting of its own** and follows
+  the **workspace** setting instead. So the default above is the designer's, not the
+  platform's: if you build processes through the API, the workspace setting is the one
+  that decides what happens to their data.
 </Callout>
 
 ## Delete one run's data by hand [#delete-one-runs-data]
@@ -77,8 +84,8 @@ does on its next run.
 
 <Callout type="info">
   **"At move to history" is not immediate.** A finished run stays in the recent list
-  for a few minutes first, and the deletion happens at the move — around five
-  minutes after the run ended, in the runs we measured, not at a time you can set.
+  first, and the deletion happens when it moves to history. **There is no fixed
+  period** — how long it takes depends on the run, and it is not a time you can set.
   If you need the data gone the moment the run ends, choose **At end of runtime**.
 </Callout>
 
