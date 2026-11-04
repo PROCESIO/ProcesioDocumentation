@@ -1,0 +1,44 @@
+---
+title: "Multi-country e-invoicing hub"
+icon: "🧾"
+description: "One place that knows the state of every invoice, in every country your group invoices from."
+---
+
+**For:** groups with legal entities in several EU countries, and the finance and tax teams who run their invoicing.
+
+## The problem today
+
+Each EU country is bringing in its own e-invoicing mandate, with its own format, its own network and its own timetable. A group with entities in Belgium, Poland, France and Germany ends up with a different provider or ERP module per country. Nobody can see in one place which invoices were accepted and which are stuck.
+
+| Country | Status in November 2026 |
+| --- | --- |
+| Belgium | Domestic B2B e-invoicing mandatory since 1 January 2026, over Peppol |
+| Poland | Receiving through KSeF mandatory since 1 February 2026. Issuing mandatory from 1 February 2026 for taxpayers whose 2024 sales exceeded PLN 200 million, and from 1 April 2026 for the rest; those invoicing no more than PLN 10,000 a month have until 1 January 2027 |
+| France | Every company must be able to receive from 1 September 2026; large and mid-sized companies issue from that date, smaller ones from 1 September 2027 |
+| Germany | Receiving mandatory since 1 January 2025. Issuing mandatory from 1 January 2027 for companies whose prior-year turnover exceeded €800,000, and for everyone from 1 January 2028 |
+| Romania | Every invoice, B2B and B2C, goes to RO e-Factura within 5 working days of issue (since 1 January 2026) |
+| EU (ViDA) | Digital reporting for intra-EU B2B transactions from 1 July 2030 |
+
+<Callout type="warn">
+Check every date against the official source before you plan around it. Mandates are amended often, and thresholds differ by country.
+</Callout>
+
+## The step ordinary tools miss
+
+Sending an invoice is the easy part. Knowing what happened to it is the hard part. Each invoice moves through sent, accepted, rejected, corrected and resent, and a rejection has to be fixed inside a legal window. A task-based tool sees every send as a separate run, keeps no memory of where an invoice stands, and charges you again for every invoice, every month.
+
+## How it works in PROCESIO
+
+1. Your ERP hands over invoices through a [Webhook](/webhooks), or a [Schedule](/schedules) collects them at intervals.
+2. A [Decisional](/how-to/decisional) routes each invoice by country to a [subprocess](/how-to/call-subprocess) for that jurisdiction. Each country's format and network live in their own subprocess, so adding a country means adding one subprocess and leaving the others alone.
+3. A [Data Store](/data-store) keeps the state of every invoice. [Query Store](/query-store) answers questions such as "which invoices from last week are still not accepted?"
+4. Rejections take the [Error Path](/error-path) into a correction queue. [Delay](/how-to/delay) and scheduled retries keep trying while the legal window is still open.
+5. The final status is written back to the ERP, so finance sees it where they already work.
+6. A [form](/forms-tasks-designer) with a [Data Table](/data-table) gives the tax team one view across all countries, with the rejection reason next to each invoice.
+
+## What you get
+
+- One place that knows the state of every invoice in every country.
+- A correction queue with the network's own rejection message, instead of a search through inboxes.
+- A structure that takes the next mandate as one more branch of the same process.
+- A cost that follows processing time, however many invoices you send.

@@ -1,0 +1,43 @@
+---
+title: "Incident reporting on a regulatory clock"
+icon: "⏱️"
+description: "Keep the reporting deadline running while the team fixes the incident, and keep a record of every decision."
+---
+
+**For:** financial entities in scope of DORA, and operators of essential and important services in scope of NIS2.
+
+| Regulation | What the clock asks for |
+| --- | --- |
+| DORA | Applies since 17 January 2025. Initial notification within 4 hours of classifying an ICT-related incident as major, and no later than 24 hours after becoming aware of it. Intermediate report within 72 hours of the initial notification, final report within one month of the latest intermediate report (Delegated Regulation (EU) 2025/301). |
+| NIS2 | Early warning within 24 hours of becoming aware of a significant incident, incident notification within 72 hours, final report within one month of that notification (Directive (EU) 2022/2555, Article 23). |
+
+<Callout type="warn">
+Deadlines and templates depend on your national competent authority. Confirm them against the rules that apply to you.
+</Callout>
+
+## The problem today
+
+Incident response happens in chat and on calls. The reporting deadline starts running while the people who know the facts are busy fixing the problem. The report gets written from memory, late, and nobody can say afterwards exactly when the incident was classified or by whom.
+
+## The step ordinary tools miss
+
+The clock. A countdown that starts at a specific decision, wakes up before each deadline, escalates when a report hasn't gone out, and records who decided what and when. Holding all of that takes a process with state and time in it.
+
+## How it works in PROCESIO
+
+1. **The incident is logged once.** Through a [form](/forms-tasks-designer), or automatically from your monitoring through a [Webhook](/webhooks).
+2. **Classification is a recorded decision.** A classification form with your criteria, and an [Approval](/approval) by the responsible person. The decision and its exact time are kept.
+3. **The process works out the deadlines.** From the time the incident was detected and the time it was classified, it calculates when each report is due, and a [Delay](/how-to/delay) wakes it up ahead of each one.
+4. **Nobody has to remember.** If a report hasn't been submitted when the process wakes up, it escalates to the next person on your list.
+5. **The report is drafted from what was collected.** [Generate Document](/how-to/generate-document) fills your report template with the data already in the incident record.
+6. **Everything stays on file.** A [Data Store](/data-store) holds the incident log, and every run of the process is recorded step by step.
+
+Waiting for a person or a timer isn't billed, so a process that runs alongside an incident for a month costs only the moments it is actually working.
+
+Entities that can't put incident data in an external cloud can run the whole process self-hosted.
+
+## What you get
+
+- Deadlines calculated from the recorded moment of classification.
+- Escalation that happens on its own.
+- A timeline of who decided what and when, ready for the authority and for your own review afterwards.
