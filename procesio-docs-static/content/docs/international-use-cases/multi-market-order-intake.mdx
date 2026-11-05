@@ -1,0 +1,29 @@
+---
+title: "Order intake across markets"
+icon: "📦"
+description: "Take orders in whatever format and language each market sends them, and post only checked lines to the ERP."
+---
+
+**For:** distributors and manufacturers that receive orders from customers in several countries.
+
+## The problem today
+
+Orders arrive as PDFs, as spreadsheets laid out differently by every customer, as XML exports from portals, and as free-text emails in several languages. Someone in customer service retypes them into the ERP. Errors show up as wrong shipments, and volume grows faster than the team.
+
+## The step ordinary tools miss
+
+The input is messy, and a wrong line costs a shipment. Every customer has its own format. AI reads free text well, but it can still misread a quantity or a product code, and nothing in a simple integration catches that before the order is posted.
+
+## How it works in PROCESIO
+
+1. **Orders are picked up where they arrive.** [Read Mailbox](/how-to/read-mailbox) watches the order inbox. Files dropped by portals or partners are picked up on a [Schedule](/schedules).
+2. **Structured formats are read directly.** [Get File Data](/how-to/get-file-data) for Excel and CSV, [XPath](/how-to/xpath) for XML, and [Extract Text](/how-to/extract-text) with [Area Mapper](/how-to/area-mapper) for PDFs with a fixed layout.
+3. **Free text goes to a model, with your key.** Emails without a structure are sent to the AI model you choose through [Call API](/how-to/call-api), and [AI Decisional](/how-to/ai-decisional) routes them by intent: a new order, a change, a complaint.
+4. **Every line is checked by rules you wrote.** Product codes, units, quantities and prices are validated against your catalogue and price lists, held in the ERP or in a [Data Store](/data-store). The model never decides what gets posted.
+5. **Only exceptions reach a person.** Lines that fail a check go to an exception [form](/forms-tasks-designer) with the reason shown. Everything else is posted to the ERP.
+
+## What you get
+
+- Customer service only sees the exceptions.
+- A new customer format means adding one parsing branch.
+- AI where it helps, on reading, and rules where you need certainty, on what gets posted.

@@ -1,0 +1,31 @@
+---
+title: "Third-party onboarding and re-screening"
+icon: "🤝"
+description: "Onboard suppliers and customers across countries, re-check them on a schedule, and keep the record an auditor will ask for."
+---
+
+**For:** procurement, compliance and finance teams that onboard suppliers or customers in several countries, and financial entities that must keep a register of their ICT third-party providers under DORA.
+
+## The problem today
+
+Checks happen once, by hand, when the third party is created, and in a different register for every country. Documents arrive by email and live in someone's inbox. Nobody checks again until something goes wrong, and when the auditor asks when a supplier was last screened, the answer is a search.
+
+## The step ordinary tools miss
+
+This process lasts months. It waits for the supplier to upload documents, waits for an approver, and has to come back a year later to check again, with a dated record of every check along the way. A tool that runs one request and forgets can't hold that.
+
+Waiting is also where task-based pricing becomes awkward. In PROCESIO, waiting for a person or a timer isn't billed, so a process that waits three weeks for a supplier's documents costs nothing while it waits.
+
+## How it works in PROCESIO
+
+1. **The third party fills in a form.** A [form](/forms-tasks-designer) collects company details and documents through [File Upload](/file-upload). The link goes to the supplier's contact as a task.
+2. **The checks run on their own.** The EU VAT number is checked in VIES (see [Validate EU VAT numbers](/docs/international-use-cases/eu-vat-number-validation)), and national business registers and sanctions lists are queried through [Call API](/how-to/call-api).
+3. **Everything is kept per third party.** Results, documents and dates go into a [Data Store](/data-store). [Generate Document](/how-to/generate-document) produces the onboarding summary.
+4. **What doesn't pass goes to a person.** Anything a check can't settle opens an [Approval](/approval) with the reason attached, assigned through [task assignees](/task-assignees-and-approvals).
+5. **It comes back on its own.** A [Schedule](/schedules) re-screens existing third parties at the interval you choose, and reminds suppliers whose certificates are about to expire.
+
+## What you get
+
+- One record per third party, with every check, its result and its date.
+- Re-screening that runs on a schedule, whether or not anyone remembers it.
+- For financial entities, the information DORA expects in the register of ICT third-party arrangements builds up as a by-product of onboarding, instead of living in a separate spreadsheet.

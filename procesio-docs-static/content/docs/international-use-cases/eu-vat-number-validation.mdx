@@ -1,0 +1,85 @@
+---
+title: "Validate EU VAT numbers at the point of entry"
+icon: "🔎"
+description: "Check an EU VAT number against VIES when a customer is created, and tell \"invalid\" apart from \"the service didn't answer\"."
+---
+
+**For:** any company selling B2B across EU borders. Treating a supply to another member state as zero-rated depends on the customer holding a valid VAT number, so the check belongs at the moment the customer is created. Audit time is too late.
+
+## The problem today
+
+Someone checks the number by hand on the VIES website, or nobody does. A mistyped number then sits in the ERP for months, and the first person to notice is an auditor.
+
+## The step ordinary tools miss
+
+VIES passes each check on to the system of the member state that issued the number, and those national systems go offline, limit how many requests they accept, and in some cases don't return the company name or address at all. A simple integration reads "the service didn't answer" as "the number is invalid", or the other way round. Both are wrong, and both end up in your customer master data.
+
+## Build it
+
+This process was built on PROCESIO and tested against the live VIES REST service, both through a direct run and through its webhook: valid and unregistered numbers, VIES errors, a missing field and a malformed request each end where this page says they do. A full run takes about four seconds, nearly all of it waiting for VIES.
+
+### 1. Create the credential
+
+Create a [REST API credential](/rest-api-credential) with the base URL `https://ec.europa.eu` and no authentication.
+
+### 2. Add the variables
+
+| Name | Type | Direction |
+| --- | --- | --- |
+| `request` | JSON | Input |
+| `countryCode` | String | Process |
+| `vatNumber` | String | Process |
+| `viesResponse` | JSON | Output |
+| `isValid` | String | Output |
+| `companyName` | String | Output |
+
+The whole incoming request arrives in `request`, and the process reads the two fields out of it (step 3). Make `viesResponse` a JSON variable, not a String. The extraction steps expect JSON, and the platform flags the mismatch before you can save.
+
+### 3. Read the request
+
+Add two [Extract Object](/how-to/extract-object) actions on `request`: query `countryCode` into `countryCode`, and `vatNumber` into `vatNumber`. A field the caller leaves out comes through empty, and VIES then answers with one of its own errors, which step 6 routes.
+
+### 4. Call VIES
+
+Add a [Call API](/how-to/call-api) action with:
+
+- **Credential:** the one from step 1
+- **Method:** `POST`
+- **Endpoint:** `/taxation_customs/vies/rest-api/check-vat-number`
+- **Header:** `Content-Type: application/json`
+- **Body (raw JSON):** `{"countryCode": "<countryCode>", "vatNumber": "<vatNumber>"}`, with both values mapped from the input variables
+- **Response body:** saved into `viesResponse`
+
+### 5. Extract the two fields you need
+
+Add two [Extract Object](/how-to/extract-object) actions on `viesResponse`: query `valid` into `isValid`, and query `name` into `companyName`.
+
+### 6. Give each kind of failure its own route
+
+A VAT check can fail in two different ways, and they reach the process differently.
+
+- **The call itself fails:** a timeout, a network error, an HTTP error status. Connect the Call API's [Error Path](/error-path) to a Stop of its own. Don't route it into the Stop the normal path uses, because a Stop accepts one incoming connection.
+- **VIES answers, but with its own error.** VIES returns these inside a normal HTTP 200 response, as `{"actionSucceed": false, "errorWrappers": [{"error": "INVALID_INPUT"}]}`, so they never reach the Error Path. The response then has no `valid` field, and `isValid` stays empty. Add a [Decisional](/how-to/decisional) after the extraction: when `isValid` is empty, send the run to a third Stop for VIES errors.
+
+Either way the run ends on an error Stop with the reason kept, and the process never reports a number as valid or invalid by guesswork.
+
+### 7. Trigger it
+
+Attach a [Webhook](/webhooks) and bind it to `request`, from the body. Bind one variable only: a webhook doesn't map individual fields, and every variable you bind receives the whole body. That's why the process takes the request as JSON and reads the fields itself. Anything else the caller sends is ignored.
+
+Your CRM or ERP calls the webhook when a customer is created, or when its VAT number changes. The webhook answers as soon as the run is accepted, without the result. If the caller needs the answer in the same request, set up a [Process Custom Response](/process-custom-response); otherwise have the process write the result back to the CRM.
+
+### 8. Test it
+
+Send `{"countryCode": "..", "vatNumber": ".."}` with a VAT number you know is valid, to the webhook or as the `request` input of a manual run. A successful run ends on the normal Stop with `isValid` set to `true` and `companyName` set to the name as registered.
+
+## Make it production-ready
+
+- **Retry, don't conclude.** Some VIES errors mean "try again later": `MS_UNAVAILABLE` (the member state's system isn't replying) and `MS_MAX_CONCURRENT_REQ` (too many requests to that state right now). Send those through a [Delay](/how-to/delay) and retry, and only pass the case to a person after repeated failures. `INVALID_INPUT` means the request itself is wrong, so retrying won't help.
+- **Decide on `valid`, never on the name.** VIES returns `---` as the name and address when a member state chooses not to disclose them, and also for a number that doesn't exist. Treat `---` as "not provided".
+- **Keep the evidence.** If you add your own country code and VAT number to the request as the requester (`requesterMemberStateCode`, `requesterNumber`), VIES returns a consultation number in `requestIdentifier`. Store it with the date of the check in a [Data Store](/data-store) as proof that you verified the customer.
+- **Check again later, but not too often.** A number that is valid today can be deregistered next year. A [Schedule](/schedules) that re-checks existing customers once a quarter catches that before your next filing. Don't check the same number repeatedly on the same day: VIES can treat that as abuse and block the caller.
+
+## Where this fits
+
+The same check is the first step of [Third-party onboarding and re-screening](/docs/international-use-cases/third-party-onboarding), and it protects the [Multi-country e-invoicing hub](/docs/international-use-cases/multi-country-e-invoicing) from invoices addressed to a number that doesn't exist.
