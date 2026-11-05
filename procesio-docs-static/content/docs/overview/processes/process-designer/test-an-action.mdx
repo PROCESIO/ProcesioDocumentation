@@ -69,8 +69,9 @@ and no result appears.
   **Your network has to allow the PROCESIO notifications host**
   (`notifications.procesio.app` on procesio.app). Corporate proxies and firewalls
   often block push or websocket hosts they do not recognise. When it is blocked,
-  Test Action cannot receive its result, and live status in the instance view stops
-  updating too.
+  Test Action cannot receive its result, and **debug mode** stops responding when you
+  step through a paused run. An ordinary run's instance view is unaffected — it does
+  not refresh by itself in any case.
 </Callout>
 
 So if a test sits on **"We are sending the request."** and never shows a result:
