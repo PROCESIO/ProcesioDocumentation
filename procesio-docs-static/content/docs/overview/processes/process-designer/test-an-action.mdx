@@ -18,9 +18,12 @@ straight away, instead of running the whole flow to find out.
 1. Click the action on the canvas to open its **properties panel**.
 2. Click the vertical **Test Action** tab on the left edge of the panel.
 3. Fill in a value for each input the action needs.
-4. Click **Test action**.
+4. Map each output you want to see to a variable: click **+** on the output field, then **+** in the list, give the variable a name and click **Create variable**.
+5. Click **Test action**.
 
-**Test output** then shows the test's status and the value of each output.
+**Test output** then shows the test's status and the value of each output variable. An output that is not mapped to a variable is not shown.
+
+![Testing the Round action: add it from the toolbox, type 3.14159 and 2, map Result to a new variable, open Test Action and run it — the test finishes with 3.14](/images/docs/actions/_common/test-action.gif)
 
 <Callout type="warn">
   **Test Action really runs the action.** It sends the real request, writes the real
