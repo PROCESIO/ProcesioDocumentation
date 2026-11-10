@@ -1,49 +1,34 @@
 ---
 title: "List Variance"
 icon: "⭐"
-description: "This action computes the variance, which measures the amount of variation or dispersation in a sample of data points."
+description: "Computes the population variance of a list of numbers."
 ---
 
-This action computes the variance, which measures the amount of variation or dispersation in a sample of data points.
+**List Variance** measures how spread out a list of numbers is: the average of the squared differences from the mean. Use it with [List Standard Deviation](/how-to/list-standard-deviation) to analyse amounts, durations or scores.
 
-![](/images/docs/H3yM3Nbz62nrf9o85LRJD_image.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Community-Made** and pick **List Variance** (or type *List Variance* in the search box).
 
-## Inputs & Outputs
+![The List Variance action properties: List of numbers and Variance](/images/docs/actions/community-made-list-variance/panel.png)
 
-- **\[ I ] List of numbers**: <span style={{color:'#368b10'}}>Double (List)</span> representing data points for computing the variance.
-- **\[ O ] Variance**: <span style={{color:'#368b10'}}>Double (Single Value)</span> representing the statistical measure of variability in the data set obtained from the input list.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List of numbers** | Input | List of Number (decimal) | Yes | The numbers. Map a list variable. |
+| **Variance** | Output | Number (decimal) | Yes | The variance. |
 
-![](/images/docs/ovvXYwhrMkRVJaMzU-aBM_image.png)
+## Example [#example]
+| List of numbers | Variance |
+| --- | --- |
+| `[2, 4, 4, 4, 5, 5, 7, 9]` | `4` |
+| `[]` | step fails: `Input Error: The list of numbers can't be empty !` |
 
-<Callout type="info">
-The List Variance action uses the Sample Variance formula:
+## Good to know [#good-to-know]
+- This is the **population** variance: the sum of squared differences is divided by the number of values (*n*), not by *n − 1*. For the sample variance (as in Excel `VAR.S`), multiply the result by n / (n − 1).
+- The variance is in squared units (for amounts in EUR, the variance is in EUR²). Use [List Standard Deviation](/how-to/list-standard-deviation) for a value in the original unit.
 
-![](/images/docs/943VKSLqgQDUEVylgYuaJ_image.png)
-</Callout>
+## Related actions [#related-actions]
+- [List Standard Deviation](/how-to/list-standard-deviation), [List Correlation](/how-to/list-correlation)
 
-## Example Usage
-
-- Drag the List Variance action from the Community-Made folder to the canvas.
-
-![](/images/docs/vdGUODHmzqoQAlbWJEAFm_image.png)
-
-- Declare the variables to be used with the List Variance action.
-
-![](/images/docs/X9fqa3sVaOzCfHssOzutr_image.png)
-
-- Assign the newly created variables.
-- Save & Run the process and then Check Instance to see the output.
-
-![](/images/docs/JRSnwEMxFHrB5z2-e8D8U_image.png)
-
-## Use Cases
-
-- In market research, you may use the List Variance action to analyze survey data related to consumer preferences or behavior. By understanding the variation in responses, you can tailor your marketing strategies and product offerings to specific target audiences, making informed decisions to improve your business performance.
-
-## Tips
-
-- If you have a sample of data from a larger population, you should use the [List Variance](/docs/platform-actions/call-api/list-variance) action to correct for the bias introduced by using a smaller sample, this action is best used when dealing with a limited set of data. If you are dealing with a full population (i.e., you have data for every member of the population), you should NOT use the List Variance action.&#x20;
-
-## Creator
-
-- **Franck -&#x20;**[The Productivity Lab](https://theproductivitylab.io/)
+## Creator [#creator]
+Franck, [The Productivity Lab](https://theproductivitylab.io/)

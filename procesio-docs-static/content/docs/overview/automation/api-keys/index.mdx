@@ -1,49 +1,77 @@
 ---
 title: "API Keys"
 icon: "🔑"
-description: "You can use an API key to access PROCESIO API to perform a wide range of authenticated operations. You can run a process, add, update, delete…"
+description: "Create, name, rename and revoke the API keys that let other apps call the PROCESIO API, and learn the 25-key limit and the workspace rule."
 ---
 
-You can use an API key to access PROCESIO API to perform a wide range of authenticated operations.  You can run a process, add, update, delete processes & access process related resources directly through the API. View our API documentation [here](/docs/developers-guide/procesio-api-documentation/procesio-api-documentation) and test via Swagger [here](https://webapi.procesio.app/swagger/index.html).
+An API key lets another app or script call the PROCESIO API without your password. With a key you can run a process, manage processes and work with the other resources the API offers. The key has the same permissions you have in the workspace.
 
-<Callout type="info">
-Generating API key for the PROCESIO account allows you to authenticate to PROCESIO from other apps and services through REST APIs.
+To see what you can call, read [PROCESIO API Documentation](/docs/developers-guide/procesio-api-documentation). To run a process with a key, see [Running a process with API Keys](/running-a-process-with-api-keys).
+
+## Open the API Key page [#open-the-page]
+
+In the left menu, open **Automation** and click **API Key**.
+
+{/* SCREENSHOT: api-key-list.png — the API Key page with the Create API Key button and the table with KEY HANDLE, NAME, CREATED ON, CREATED BY, KEY VALUE and LAST ACCESSED columns, at least one named key */}
+
+The table has one row per key:
+
+| Column | What it shows |
+| --- | --- |
+| **Key handle** | The key's identifier, created by PROCESIO. You send it in the `key` header. It never changes, even when you rename the key. Click the copy icon to copy it. |
+| **Name** | The name you gave the key, or **—** if it has none. |
+| **Created on** | When the key was created. |
+| **Created by** | Who created the key. |
+| **Key value** | The secret part of the key. You see it only right after you create the key. After that it shows as asterisks. |
+| **Last accessed** | When the key was last used, or **Never accessed** if it has not been used yet. |
+
+## Create an API key [#create]
+
+1. Click **Create API Key**.
+2. In the **Create API key** window, type a **Name** that says what the key is for, for example the app and the environment that use it. The name is optional, but it helps you tell your keys apart later.
+3. Click **Create**.
+
+The new key appears in the table with its **Key value** visible.
+
+<Callout type="warn">
+Copy the key value now and store it somewhere safe, like a password. PROCESIO shows it only once: after you leave the page, it is hidden for good and cannot be recovered. If you lose it, create a new key and update the apps that used the old one.
 </Callout>
 
-You will need an API Key to access PROCESIO API.  Your API keys are associated with your credentials and are specific to you.
+A name can be up to 255 characters long. Two keys cannot have the same name: if the name is taken, the window shows *"A key with this name already exists."*
 
-<Callout type="info">
-Make sure you store your API Keys somewhere safe. If you lose an API Key, you'll need to create a new key and update any scripts or applications where the key is used. Your old API key becomes invalid.
-</Callout>
+## Rename an API key [#rename]
 
-**Generating a PROCESIO API Key**
+1. Click the edit icon at the end of the key's row.
+2. In the **Rename API key** window, change the **Name**.
+3. Click **Save**.
 
-**Step 1**: Go to the **API Key** page.
+Renaming changes only the **Name**. The key handle and the key value stay the same, so apps that use the key keep working.
 
-![](/images/docs/yzU1QqEQoRfFWh7E7VTkI_screenshot-2022-06-02-at-224013.png)
+## Revoke an API key [#revoke]
 
-**Step 2**: Press **Create API Key.**
+1. Click the delete icon at the end of the key's row.
+2. In the **Revoke API key?** window, click **Revoke**.
 
-**Step 3**: A new line will be displayed in the table containing:
+The key stops working at once. Any app that still uses it is refused. Revoking cannot be undone.
 
-- auto-generated key name
-- auto-generated key value
+## Limits and rules [#limits]
 
-**Step 4:**  Copy and save your keys set somewhere safe. You cannot recover this key if you lose it.
+- **25 keys per workspace.** You can hold up to 25 keys at a time in each workspace. When you reach 25, **Create API Key** is turned off, and the API refuses a new key with *"The maximum number of Api keys has been reached."* Revoke a key you no longer need to make room.
+- **A key works only in the workspace where you created it.** It does not work in your other workspaces, and a key created in a shared workspace does not work in your personal workspace. Create a separate key in each workspace you want to reach.
+- **Each key belongs to the user who created it.** You see and manage your own keys. In an enterprise account, the owner and co-owners of the master workspace also see the keys of every user in a workspace, with the user in **Created by**, and can rename them.
+- **A key cannot manage keys.** To create, rename or revoke keys you must be signed in to PROCESIO.
+- **The key has your permissions.** A call made with the key can do only what you can do in that workspace.
 
-![](/images/docs/aFhpmMdqk9shpaoDY_yD9_image.png)
+## Use a key in a request [#use-a-key]
 
-**Note:**
+Send the key in these request headers:
 
-- for security reasons, after navigating off the page, the key value will be encrypted. 
-- you must copy and store the key value in a safe place for security reasons, just like for any other password.
-- you can only create a maximum of 3 keys at a time.
+| Header | Value |
+| --- | --- |
+| `key` | The key handle. |
+| `value` | The key value. |
+| `workspaceId` | The ID of the workspace where you created the key. Leave it out for a key you created in your personal workspace. |
 
-Once you generate keys, you can delete them from the API Key page:
+If your request also sends an `x-version` header, its value must be `1.19`. Requests without the `x-version` header work as before.
 
-- using the inline delete icon 
-- all at once, using the **Revoke all API Keys** button
-
-<Callout type="info">
-The API Key provides access to PROCESIO resources based on the permissions you have.
-</Callout>
+For the full list of endpoints and an example, see [PROCESIO API Documentation](/docs/developers-guide/procesio-api-documentation).

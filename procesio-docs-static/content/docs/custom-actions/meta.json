@@ -6,6 +6,7 @@
     "what-is-a-custom-action",
     "prerequisites-and-environment-setup",
     "your-first-custom-action",
+    "action-designer",
     "custom-action-decorators",
     "frontend-decorator",
     "frontend-select-decorator-guide",

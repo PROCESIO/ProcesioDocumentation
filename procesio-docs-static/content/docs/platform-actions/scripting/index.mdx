@@ -1,7 +1,19 @@
 ---
 title: "Scripting"
 icon: "📁"
-description: "Run your own code inside a process when no ready-made action fits."
+description: "Run your own code, or a curl command, inside a process when no ready-made action fits."
 ---
 
-Write snippets in **Node**, **Python** or **Ruby**, pass process variables in, and map the script output back into the flow.
+The actions in the **Scripting** folder of the Process Designer toolbox run code that you write. Pass process variables into the code, then map the outputs back into the process.
+
+| Action | What it does |
+| --- | --- |
+| [Node](/how-to/node) | Runs JavaScript on Node.js, with libraries loaded by `require`. Outputs: Single Result, List Result, Stdout, Error. |
+| [Python](/how-to/python) | Runs Python code, with libraries such as pandas and NumPy. Outputs: Single Result, List Result, Stdout, Error. |
+| [Ruby](/how-to/ruby) | Runs Ruby code, with gems such as Nokogiri and Liquid. Outputs: Single Result, List Result, Stdout, Error. |
+| [Javascript](/how-to/javascript) | Runs JavaScript and returns the value passed to `setOutput` in a single Output. |
+| [CURL](/how-to/curl) | Runs a curl command and returns the HTTP status, the response body and any curl error. |
+
+<Callout type="info">
+In Node, Python and Ruby, an error in your code does not stop the process: the step finishes and the **Error** output holds the message. Check **Error** with a [Decisional](/how-to/decisional) before you use the result.
+</Callout>

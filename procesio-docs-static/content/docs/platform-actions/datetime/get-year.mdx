@@ -1,35 +1,32 @@
 ---
 title: "Get Year"
 icon: "📕"
-description: "This action extracts the year from a DateTime."
+description: "Returns the year of a date as a number."
 ---
 
-This action extracts the year from a <span style={{color:'#ff9307'}}>DateTime</span>.
+**Get Year** returns the year of a date, for example `2024`. Use it to build yearly folder names, file names or report periods.
 
-![](/images/docs/zSia8DuW2l9-MUUip0k49_tdy.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Get Year** (or type *Get Year* in the search box).
 
-## Inputs & Outputs
+![The Get Year action properties: Date and Year](/images/docs/actions/datetime-get-year/panel.png)
 
-- **\[ I ] Date**: <span style={{color:'#ff9307'}}>DateTime</span> to extract year from.
-- **\[ O ] Year**: <span style={{color:'#0039e3'}}>Integer</span> representing the extracted year.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Date** | Input | Date and time | Yes | The date and time to read the year from. |
+| **Year** | Output | Integer | Yes | The year. |
 
-![](/images/docs/DPyLojlVoqeup16jrVBuJ_tdy.png)
+## Example [#example]
+| Date | Year |
+| --- | --- |
+| `2024-02-29T23:30:00` | `2024` |
+| `2024-12-31T23:30:00Z` | `2024` |
+| `2025-01-01T01:00:00+02:00` | `2024` (the value is 2024-12-31 23:00 in UTC) |
 
-## Example Usage
+## Good to know [#good-to-know]
+- **Time zone:** a value that carries a UTC offset (for example `2025-01-01T01:00:00+02:00`) is first converted to UTC, and the part is read from the UTC value. A value without an offset, or ending in `Z`, is used as it is.
+- An empty or invalid **Date** (for example `2023-02-29` or `not a date`) stops the step with an error.
 
-- Drag action onto canvas to get familiarized with it.
-
-![](/images/docs/vxs7ZlGYHJxjcLN1nizMY_tdy.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/rygVEb7aZgmbfCmkpYdmA_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/LmmnxjkOnFD6bft6Md80c_tdy.png)
-
-## Use Cases
-
-- Extracting the year from a date.
+## Related actions [#related-actions]
+- [Get Month](/how-to/get-month), [Get Day](/how-to/get-day), [Format DateTime](/how-to/format-datetime)

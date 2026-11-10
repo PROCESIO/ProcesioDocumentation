@@ -2,11 +2,13 @@
   "title": "Numerical",
   "icon": "📁",
   "pages": [
+    "add",
     "substract",
     "modulo",
     "divide",
     "multiply",
     "round-up",
+    "round",
     "round-down",
     "parse-number"
   ]

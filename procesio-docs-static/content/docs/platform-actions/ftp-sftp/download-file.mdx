@@ -1,64 +1,37 @@
 ---
 title: "Download File"
 icon: "📕"
-description: "The action Download file allows you to download files with a size up to 100 MB from your FTP/ sFTP server."
+description: "Downloads one file from an SFTP or FTP server into a File variable."
 ---
 
-![](/images/docs/Or9bv9IuI0kh8-Rj2x2ay_image.png)
+**Download File** fetches one file from your SFTP or FTP server and puts it in a File variable, so the next steps can read it, attach it to an email, convert it or upload it somewhere else.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Zfh9FCKG_AA" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential).
 
-The action **Download file** allows you to download files with a size up to 100 MB from your FTP/ sFTP server.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Download File** (or type *Download File* in the search box).
 
-For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+![The Download File action properties: Select SFTP credentials, Source Folder, File Name and Result](/images/docs/actions/sftp-download-file/panel.png)
 
-&#x20; **Step 1**:    Go to the **Credentials Manager** section and click **Add New**.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select SFTP credentials** | Input | FTP credential | Yes | The credential of the server to read from. |
+| **Source Folder** | Input | Text | Yes | The folder that holds the file, relative to the credential's **Directory path**, for example `inbox`. |
+| **File Name** | Input | Text | Yes | The name of the file, with its extension, for example `invoice-001.pdf`. |
+| **Result** | Output | File | Yes | The downloaded file. |
 
-&#x20; **Step 2**:    Give your credential a **Name\*** and **Description** (optional) and click **Next step**.
+## Example [#example]
+**Source Folder** `inbox`, **File Name** `invoice-001.pdf` → **Result** is a File variable holding `invoice-001.pdf`.
 
-![](/images/docs/Wy8fMVvwsNaQ9A9E0N9vM_image.png)
+## Good to know [#good-to-know]
+- Files up to 100 MB are supported.
+- Paths are relative to the **Directory path** set in the credential. Don't repeat that path in **Source Folder**.
+- File and folder names are case-sensitive on most SFTP servers.
+- If the file can't be downloaded (wrong name, no access, server unreachable), the step fails with *"Error while trying to download file from folder."*
+- An empty (0-byte) file comes back as an empty **Result**, without an error. Check the variable before you use it if empty files can occur.
+- To download several files in one step, use [Download Bulk](/how-to/sftp-download-bulk).
 
-**Step 3**:    Configure the FTP / sFTP connection as needed:
-
-- **Port number\*** - the port number used by the server.
-- **Protocol type** - the protocol used depending on the encryption.
-- **Directory path** - the entry point of the server.
-- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
-
-![](/images/docs/RIzPCXs7_9w9b2cgtsyX__image.png)
-
-&#x20; **Step 4**:    Click **Test connection** and if successful click **Save**.
-
-### **Create the process**
-
-&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
-
-&#x20; **Step 2**:    Give you process a name.
-
-&#x20; **Step 3**:    Drag the action **Download File&#x20;**&#x6F;n the canvas and link the action inside you process.
-
-![](/images/docs/xor1FGNoPwHvIhMbUUzYe_image.png)
-
-
-
-**&#x20;  Step 4**:    Create the <span style={{color:'#2166ae'}}>&lt;%download%&gt;</span> JSon variable of type list.
-
-![](/images/docs/llTUF0ffvUqUGkhPru_tT_image.png)
-
-&#x20;  **Step 5:**    Click the **Download File&#x20;**&#x61;ction to access its configurations.
-
-- **Node name\*** - gives you the option to change the actions name.
-- **Select ftp server\*** - here we will select the connection created in the previous section.
-- **Source folder\*** - the path to the file that you wish to download.
-- **File name\*** - path to file and the name of the file.
-- **Result\*** - here we will add the variable created at Step 4.
-
-![](/images/docs/hs_rA_FeDBVVHcKAlQT9q_image.png)
-
-&#x20; **Step 6**:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-&#x20; **Step 7**:    Click **Check Instance**.
-
-&#x20; **Step 8**:    Here you have the ability to check the data saved in our variable by clicking it, or to download the data in the form of a file.
-
-![](/images/docs/vqpTIzx6Dlu9ySVEFrHNg_image.png)
+## Related actions [#related-actions]
+- [Download Bulk](/how-to/sftp-download-bulk), [Get File List](/how-to/get-file-list), [Upload File](/how-to/upload-file)

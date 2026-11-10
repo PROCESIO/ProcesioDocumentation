@@ -1,0 +1,39 @@
+---
+title: "Take From Left"
+icon: "📕"
+description: "Returns the first characters of a text, as many as you choose."
+---
+
+**Take From Left** returns the first characters of a text, for example the first 3 characters of a product code or the year at the start of a date text.
+
+<Callout type="info">
+Take From Left was previously called **String Left**.
+</Callout>
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **Take From Left** (or type *Take From Left* in the search box).
+
+![The Take From Left action properties: Input String, Number of characters and Result](/images/docs/actions/string-take-from-left/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input String** | Input | Text | Yes | The text to take characters from. |
+| **Number of characters** | Input | Integer | Yes | How many characters to return, counted from the left. |
+| **Result** | Output | Text | Yes | The first characters of the text. |
+
+## Example [#example]
+| Input String | Number of characters | Result |
+| --- | --- | --- |
+| `Hello world` | `5` | `Hello` |
+| `Hello` | `50` | `Hello` |
+| `Hello` | `0` | *(empty text)* |
+| `Hello` | `-2` | *(empty text)* |
+
+## Good to know [#good-to-know]
+- **Asking for more characters than the text has is safe**: you get the whole text.
+- A number of `0` or less gives an empty text. The step does not fail.
+- An empty input gives an empty result.
+
+## Related actions [#related-actions]
+- [Take From Right](/how-to/take-from-right), [Take From Middle](/how-to/take-from-middle), [Starts With](/how-to/starts-with)

@@ -1,0 +1,56 @@
+---
+title: "Export To XLSX"
+icon: "📕"
+description: "Exports a list of values or objects to a new Excel (.xlsx) file."
+---
+
+**Export To XLSX** turns a list into an Excel workbook: one row per item, one column per field, on a sheet named `Sheet1`. Use it to give users a report they open directly in Excel.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MCUeMkwGduw" title="Export to XLSX video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Export To XLSX** (or type *Export To XLSX* in the search box).
+
+![The Export To XLSX action properties: Object to export, Export header, File name, Column order and Output file](/images/docs/actions/excel-export-to-xlsx/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Object to export** | Input | List of Object (JSON), list of a data model, or list of simple values | Yes | The rows to export. |
+| **Export header** | Input | Boolean (true/false) | No | Ticked by default: row 1 holds the column names. |
+| **File name** | Input | Text | Yes | The file name. `.xlsx` is added if you leave it out. |
+| **Column order** | Input | Text (one column name per line) | No | The columns to put first, in this order. The other columns follow in their original order. |
+| **Output file** | Output | File | Yes | The `.xlsx` file. |
+
+## Example [#example]
+Object to export:
+
+```json
+[
+  { "id": 1, "name": "Ana", "joined": "2024-01-05" },
+  { "id": 2, "name": "Bob, Jr.", "joined": "2024-02-10" }
+]
+```
+
+File name `people`, header on, Column order `name` then `id` → **Output file** `people.xlsx`, sheet `Sheet1`:
+
+| | A | B | C |
+| --- | --- | --- | --- |
+| 1 | name | id | joined |
+| 2 | Ana | 1 | 2024-01-05 (a date cell) |
+| 3 | Bob, Jr. | 2 | 2024-02-10 (a date cell) |
+
+## Good to know [#good-to-know]
+<Callout type="warn">
+Every text that can be read as a date is turned into a date, including short decimal texts: the text `"1.2"` was saved as the date 2 January 2026. Send numbers as numbers (not as quoted text) to keep them numeric.
+</Callout>
+
+- Numbers and true/false values become number and Boolean cells. A text that looks like a date becomes a date cell.
+- Nested objects are **not** supported: an item with an object inside (for example `"address": {"city": "Cluj"}`) makes the step fail with "Cannot cast Newtonsoft.Json.Linq.JObject to Newtonsoft.Json.Linq.JToken.". Flatten the data first, or use [Export To CSV](/how-to/export-to-csv), which flattens it for you.
+- The header comes from the **first** item. Give every item the same fields.
+- A list of simple values gives a single column named `Column`.
+- An empty list makes the step fail with "Input list is null. Please add items to it.".
+- To add sheets or formulas to the file later, use [Insert Sheet](/how-to/insert-sheet) and [Apply Formula](/how-to/apply-formula).
+
+## Related actions [#related-actions]
+- [Export To CSV](/how-to/export-to-csv), [Read Range](/how-to/read-range), [Insert Sheet](/how-to/insert-sheet)

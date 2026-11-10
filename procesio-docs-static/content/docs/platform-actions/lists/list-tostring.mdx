@@ -1,71 +1,34 @@
 ---
-title: "List ToString"
+title: "List To String"
 icon: "📕"
-description: "List ToString&x20;&x77;ill allow you to create a string from a list that can contain different data types and can be created with the aid of a data model."
+description: "Converts a list of any type (numbers, text, objects, data models) into its JSON text."
 ---
 
-![](/images/docs/02o76EyTNsVU4-ebcFSVH_image.png)
+The **List To String** action turns a list into a single text value: the list written as JSON. Use it to put a list in an email body, a log message, a file or an API body that expects text.
 
-**List ToString&#x20;**&#x77;ill allow you to create a string from a list that can contain different data types and can be created with the aid of a [data model](/docs/overview/processes/data-model-designer/working-with-data-models).
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **List To String** (or type *List To String* in the search box).
 
-**How to**
+![The List To String action properties: Input list and Result](/images/docs/actions/list-list-to-string/panel.png)
 
-The example requires a process with just the **List ToString** action with the following configuration.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input list** | Input | List of any type | Yes | The list to convert. It can be a simple list or a list of data models. |
+| **Result** | Output | Text | Yes | The list as compact JSON text. |
 
-**&#x20;  Step 1.   &#x20;**[Create a new process](/docs/overview/processes/process-designer/your-first-process) and give it a name.
+## Example [#example]
+| Input list | Result |
+| --- | --- |
+| `[1,"a",true,null]` | `[1,"a",true,null]` |
+| `[{"book":"Wings of Fire","year":2012},{"book":"The Hidden Kingdom","year":2013}]` | `[{"book":"Wings of Fire","year":2012},{"book":"The Hidden Kingdom","year":2013}]` |
+| `["2024-01-05T10:00:00Z",1.5]` | `["2024-01-05T10:00:00Z",1.5]` |
+| `[]` | `[]` |
 
-**&#x20;  Step 2.   &#x20;**&#x44;rag the **List ToString&#x20;**&#x61;ction action to the canvas and link it to the other actions.&#x20;
+## Good to know [#good-to-know]
+- The text is compact JSON: no spaces or line breaks, text values in double quotes, numbers and true/false without quotes.
+- An empty list, or a list variable with no value, gives the text `[]`.
+- To join text values with a separator instead (for example `a, b, c`), use the String **Join** action.
 
-![](/images/docs/0I21XAnGwQOtzQprJcZLO_image.png)
-
-**&#x20;  Step 3.   &#x20;**&#x43;reate the [data model](/docs/overview/processes/data-model-designer/working-with-data-models).
-
-![](/images/docs/vYoz01edO3YtvI_Qgsd-A_image.png)
-
-<Callout type="info">
-We can use different data types for our attributes, depending on your requirements.
-</Callout>
-
-**&#x20;  Step 4.   &#x20;**[Add the needed variables](/docs/overview/processes/process-designer/working-with-process-variables).
-
-![](/images/docs/EFPJPJmTpf4BvfjvmiEJL_image.png)
-
-- ****<span style={{color:'#2166ae'}}>&lt;%inputList%&gt;</span>**&#x20;-&#x20;**&#x74;he input variable of type list, created with the data model **book&#x20;**&#x63;reated at the previous step.&#x20;
-- ****<span style={{color:'#2166ae'}}>&lt;%Result%&gt;</span>**&#x20;-&#x20;**&#x74;he output string variable that will hold the result of the **List Totring** action.
-
-<Callout type="info">
-The input list variable can be created without the aid of a data model, but it will only use one data type inside the list.
-</Callout>
-
-**&#x20;  Step 5.  &#x20;**&#x20;Click the **List ToString&#x20;**&#x61;ction to access its configurations.
-
-![](/images/docs/oBcUfYS7HpliVXo27HVMP_image.png)
-
-**&#x20;  Step 5.    Save** and **Validate&#x20;**&#x61;n&#x64;**&#x20;Run&#x20;**&#x74;he process.
-
-&#x20;**&#x20; Step 6.   &#x20;**&#x45;ach time you will run the process you are expected to add the list you wish to process, if you entered a default value you can edit it at this point and clic&#x6B;**&#x20;Run**.
-
-![](/images/docs/4rHLhZVbFcM5SPBjGqBcA_image.png)
-
-```json
-[
-    {
-        "book": "Wings of Fire",
-        "author": "A. P. J. Abdul Kalam and Arun Tiwari",
-		"year": 2012,
-        "email": "author1@gmail.com"
-    },
-	    {
-        "book": "The Hidden Kingdom",
-        "author": "Tui T. Sutherland",
-		"year": 2013,
-        "email": "author2@gmail.com"
-    }
-]
-```
-
-**&#x20;       Step 7.   &#x20;**&#x43;lick **Check instance** to see the result in the outputted variable.
-
-![](/images/docs/8-sozELWTTn4V9wDQYiIl_image.png)
-
-As you can see the single value variable of type String will contain the input data.
+## Related actions [#related-actions]
+- [Concatenate](/how-to/concatenate), [Length](/how-to/length)

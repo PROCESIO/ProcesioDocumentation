@@ -1,125 +1,66 @@
 ---
-title: "String to DateTime"
+title: "String To DateTime"
 icon: "📕"
-description: "This action parses a DateTime value from a String, based on a custom format specification."
+description: "Reads a date and time from text, using the format and language you give."
 ---
 
-This action parses a <span style={{color:'#fcb900'}}>DateTime</span> value from a <span style={{color:'#6889c1'}}>String</span>, based on a custom format specification.
+**String To DateTime** turns text such as `15/06/2024 13:45` or `15 iunie 2024` into a Date and time value that the other DateTime actions can work with. You tell it how the text is written (the **Format**) and which language month and day names are in. Use it for dates that arrive as text: from an API, an email, a CSV or Excel file, or a form.
 
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **String To DateTime** (or type *String To DateTime* in the search box).
 
+![The String To DateTime action properties: String, Language, Format, Format List, Datetime and Exact Format Parsing](/images/docs/actions/datetime-string-to-datetime/panel.png)
 
-![](/images/docs/RSLBLTKh3pBJkpvGasJp6_image.png)
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **String** | Input | Text | Yes | The text that contains the date. |
+| **Language** | Input | Option list | Yes | The language of month and day names in the text, and the default date order. Options: Română (RO), English (UK), English (US), Ελληνικά (GR), Español (ES), 中国人 (CN), Pусский (RU), Deutsch (DE), हिन्दी (IN), عربي (UAE), Français (FR). Default English (US). |
+| **Format** | Input | Text | No* | How the text is written, for example `dd/MM/yyyy HH:mm`. |
+| **Format List** | Input | List of Text | No* | Several formats to try, when the text can come in more than one shape. Map a list variable here. |
+| **Datetime** | Output | Date and time | Yes | The date and time read from the text. |
+| **Exact Format Parsing** | Output | Boolean (true/false) | No | `true` when the text matched your **Format** or one of the **Format List** entries. `false` when it did not match and the action read it in the language's usual way instead (see *Good to know*). |
 
-## Inputs & Outputs
+\* Fill in **Format** or **Format List**. If both are empty, the step stops with `Format Error: Please provide a non-empty Format !`. When **Format List** has at least one entry, **Format** is ignored.
 
-**Inputs**
+## Format codes [#format-codes]
+The most used codes (they are case-sensitive):
 
-- **<span style={{color:'#6889c1'}}>String</span>** — <span style={{color:'#6889c1'}}>String</span> value to parse from.
-- **Language** — Language used in the Input string for month names and days of the week.
-  - Drop-down with multiple languages.
-- **Format** — <span style={{color:'#6889c1'}}>String</span> containing the <span style={{color:'#fcb900'}}>DateTime</span> format specification.
-- **Format List** — A list of formats (array of strings) that the input can match against.
-  - When a **Format List** is provided, it **overrides** the single *Format* value.
-  - This gives more flexibility when the input may match more than one potential format.
+| Code | Meaning | Example |
+| --- | --- | --- |
+| `yyyy` | Year, 4 digits | `2024` |
+| `MM` / `M` | Month, 2 digits / 1–2 digits | `06` / `6` |
+| `MMM` / `MMMM` | Month name, short / full, in the chosen **Language** | `Jun` / `June`, `iunie` |
+| `dd` / `d` | Day of the month | `05` / `5` |
+| `HH` | Hour, 24-hour clock | `13` |
+| `hh` + `tt` | Hour, 12-hour clock, with AM/PM | `01 PM` |
+| `mm` | Minutes | `45` |
+| `ss` | Seconds | `30` |
+| `zzz` | UTC offset | `+03:00` |
+| `'text'` | Fixed text, copied as it is | `'Generated on '` |
 
-**Outputs**
+The full list is in Microsoft's [custom date and time format strings](https://learn.microsoft.com/dotnet/standard/base-types/custom-date-and-time-format-strings).
 
-- **Date** — Parsed <span style={{color:'#fcb900'}}>DateTime</span> value.
-- **Exact format parsing** — Boolean output that returns:
-  - **TRUE** when the output was parsed using an **exact format** from either *Format* or *Format List*.
-  - **FALSE** when a flexible or culture-based parse was used as a fallback.
+## Example [#example]
+| String | Language | Format / Format List | Datetime | Exact Format Parsing |
+| --- | --- | --- | --- | --- |
+| `15/06/2024 13:45` | English (UK) | `dd/MM/yyyy HH:mm` | `2024-06-15T13:45:00` | `true` |
+| `15 iunie 2024` | Română (RO) | `dd MMMM yyyy` | `2024-06-15T00:00:00` | `true` |
+| `06/15/2024 01:45 PM` | English (US) | `MM/dd/yyyy hh:mm tt` | `2024-06-15T13:45:00` | `true` |
+| `Generated on 2026-02-11 14:35.` | English (US) | `'Generated on 'yyyy-MM-dd HH:mm'.'` | `2026-02-11T14:35:00` | `true` |
+| `2024.06.15` | English (US) | Format List `["dd/MM/yyyy", "yyyy.MM.dd"]` | `2024-06-15T00:00:00` | `true` |
+| `2024-06-15 13:45 +03:00` | English (US) | `yyyy-MM-dd HH:mm zzz` | `2024-06-15T10:45:00+00:00` | `true` |
+| `2024-06-15 13:45` | English (US) | `dd/MM/yyyy` (does not match) | `2024-06-15T13:45:00` | `false` |
+| `15 iunie 2024` | English (US) | `dd MMMM yyyy` | step fails: `Parsing Error: Wrong format / Wrong language, unable to parse => 15 iunie 2024` | |
+| `31/02/2024` | English (UK) | `dd/MM/yyyy` | step fails: no 31 February | |
 
-![](/images/docs/p5Q1tP_oiteqS4Wd7uR6X_image.png)
+## Good to know [#good-to-know]
+- **Fallback when the format does not match.** If the text does not match your format, the action still tries to read it the usual way for the chosen **Language**. If that works, you get a date and **Exact Format Parsing** is `false`. Check that output when the order of day and month matters: with the fallback, `05/10/2010` is read as 10 May 2010 in English (US) and as 5 October 2010 in English (UK). If the fallback fails too, the step stops with the *Parsing Error* above.
+- **Invalid dates are refused**: `31/02/2024` or `29/02/2023` stop the step. An empty **String** stops it too.
+- **Fixed text must be in single quotes.** Letters such as `d`, `M`, `y`, `h`, `m`, `s`, `t` are format codes. Write words that are part of the text inside `'…'`, as in the *Generated on* example.
+- **Hours:** use `HH` for 0–23 and `hh` with `tt` for 1–12 with AM/PM. Mixing them up gives wrong times or a parsing error.
+- **Time zone:** text with an offset (`+03:00`) is converted to UTC. Text without an offset is kept as it is, with no time zone.
+- With **Format List**, the text only has to match one of the formats.
 
-If you don't understand how **Format** or **Format list** should look, check the [Helpers](./#-helpers) section
-
-****
-
-**Behavior Notes**
-
-- If neither *Format* nor *Format List* contains a matching format for the input string, the action will attempt to parse using the closest reasonable format based on the specified language/culture.
-
-## Example Usage
-
-- Drag action onto the canvas to get familiarized with it.
-
-![](/images/docs/qbKbZ8kE-0rw0SGLYy_xV_image.png)
-
-- Configure the inputs:
-  - Set the **<span style={{color:'#6889c1'}}>String</span>** you want to parse.
-  - Choose **Language**.
-  - Provide either a **Format** or a **Format List** (better for multiple possible formats). If you don't understand how it should look like, check the #helpers **Helpers**.
-- Declare some variables to be used with the action.&#x20;
-
-
-
-![](/images/docs/DO8NAFqkRa47YlafsF4Q5_image.png)
-
-- Assign the newly created variables.
-
-
-
-![](/images/docs/9kvooJfTSUBlKyjS_RHPZ_image.png)
-
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-
-
-![](/images/docs/O0S2vhIdiC_vnyfZTK_DO_image.png)
-
-## Use Cases
-
-- Extracting <span style={{color:'#fcb900'}}>DateTime</span> values from bodies of text coming from any source.
-- Translating month names or days of the week from one language to another using the *<span style={{color:'#6889c1'}}>String</span> To <span style={{color:'#fcb900'}}>DateTime</span>* and *Format <span style={{color:'#fcb900'}}>DateTime</span>* actions together.
-- Handling inputs that may come in several different date formats reliably using *Format List*.
-
-## Tips
-
-- The *Format* and *Format List* fields use standard .NET format specifiers which are documented here: [https://learn.microsoft.com/dotnet/standard/base-types/custom-date-and-time-format-strings](https://learn.microsoft.com/dotnet/standard/base-types/custom-date-and-time-format-strings)
-- The *Language* selector determines which language to use when the desired format contains:
-  - Month names: June (UK) | Iunie (RO) | Juin (FR)
-  - Days of the week: Monday (UK) | Luni (RO) | Lundi (FR)
-- Make sure to escape letters used as format specifiers using quotes; otherwise those letters may be treated as placeholders for <span style={{color:'#fcb900'}}>DateTime</span> fields and the action will fail to parse.
-
-# 📝 Helpers
-
-- Using Format List with Literal Text
-
-When your input string contains fixed text before or after the <span style={{color:'#fcb900'}}>DateTime</span> value, you must wrap the literal parts in **single quotes ' '** inside the format string.
-
-### Correct Example (based on your input)
-
-Input:
-
-> The report was generated on 2026-02-11 14:35 and successfully uploaded to the system.
-
-Correct **Format List**:
-
-> \[
-> "'The report was generated on 'yyyy-MM-dd HH\:mm' and successfully uploaded to the system.'",
-> "'The report was generated on 'yyyy-MM-dd HH\:mm\:ss' and successfully uploaded to the system.'"
-> ]
-
-### Why This Works
-
-- Everything wrapped in single quotes ' ' is treated as **literal text**&#x20;
-- yyyy-MM-dd HH\:mm and yyyy-MM-dd HH\:mm\:ss represent the <span style={{color:'#fcb900'}}>DateTime</span> format patterns&#x20;
-- The entire input string must match the format exactly&#x20;
-
-⚠️ If the literal text is not wrapped in single quotes, parsing will fail because letters like T, r, e, etc., are interpreted as <span style={{color:'#fcb900'}}>DateTime</span> format specifiers.
-
-## Hour Format Specifiers
-
-Use the correct hour token depending on your time format:
-
-- **HH** → 24-hour format (00–23)&#x20;
-- **hh** → 12-hour format (01–12)&#x20;
-
-When using hh, you should also include tt to support AM/PM.
-
-### Examples
-
-- HH\:mm → 14:30&#x20;
-- hh\:mm tt → 02:30 PM&#x20;
-
-Using the wrong hour specifier may result in incorrect parsing or unexpected time values.
+## Related actions [#related-actions]
+- [Format DateTime](/how-to/format-datetime) (the opposite direction: Date and time to text), [DateTime To String](/how-to/datetime-to-string), [Timezone Converter](/how-to/timezone-converter)

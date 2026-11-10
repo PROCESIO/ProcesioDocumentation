@@ -1,0 +1,41 @@
+---
+title: "Upload Bulk"
+icon: "📕"
+description: "Uploads a list of files to a folder on an SFTP or FTP server in one step, over up to 20 parallel connections."
+---
+
+**Upload Bulk** uploads several files to one folder on your SFTP or FTP server in a single step. Files that fail don't stop the others: each failure is reported in the **Errors** list. Use it instead of a For Each with [Upload File](/how-to/upload-file) when you have many files to deliver.
+
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential).
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Upload Bulk** (or type *Upload Bulk* in the search box).
+
+![The Upload Bulk action properties: Select FTP Server, Files, Target Folder, SFTP Connections and Errors](/images/docs/actions/sftp-upload-bulk/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select FTP Server** | Input | FTP credential | Yes | The credential of the server to write to. |
+| **Files** | Input | List of File | Yes | The files to upload. Each file keeps its name. |
+| **Target Folder** | Input | Text | No | The folder to upload into, relative to the credential's **Directory path**. Leave empty for the root folder. |
+| **SFTP Connections** | Input | Integer | No | How many files are uploaded in parallel, from `1` (default) to `20`. |
+| **Errors** | Output | List of Text | Yes | One message for each file that could not be uploaded. Empty when every file was uploaded. |
+
+## Example [#example]
+**Files** holding `invoice-1.pdf`, `invoice-2.pdf` and `invoice-3.pdf`, **Target Folder** `outbox`, **SFTP Connections** `3` → the three files are in `outbox` and **Errors** is `[]`.
+
+If the server refuses two of the files, the step still finishes and **Errors** holds two messages, each naming the file and the reason given by the server (for example *Access denied*).
+
+## Good to know [#good-to-know]
+- **The target folder must exist.** If it doesn't, nothing is created and every file gets an entry in **Errors**. Create it first with [Create Folder](/how-to/create-folder).
+- **Existing files are replaced.** A file with the same name in the target folder is overwritten.
+- **Give every file a unique name.** If two files in the list have the same name, only one of them ends up on the server, and the other one is reported in **Errors**.
+- **An empty Files list makes the step fail** with *"Invalid input Files! …"*. If your list is built dynamically and can be empty, check its length first (for example with a decisional step) and skip Upload Bulk when there is nothing to upload.
+- Values outside 1–20 in **SFTP Connections** are brought back to the nearest limit.
+- Check **Errors** after the step: a finished step doesn't mean every file was uploaded.
+- If the connection itself fails, the step fails with *"Error while trying to upload files to folder."*
+
+## Related actions [#related-actions]
+- [Upload File](/how-to/upload-file), [Download Bulk](/how-to/sftp-download-bulk), [Move Bulk](/how-to/move-bulk), [Create Folder](/how-to/create-folder)

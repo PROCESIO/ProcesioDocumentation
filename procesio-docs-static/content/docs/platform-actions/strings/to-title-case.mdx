@@ -1,37 +1,36 @@
 ---
 title: "To Title Case"
 icon: "📕"
-description: "Use this action to capitalize each word in the sentence."
+description: "Capitalizes the first letter of every word in a text."
 ---
 
-### Overview
+**To Title Case** makes the first letter of every word uppercase, for example to tidy up names or headings typed in lowercase.
 
-Use this action to capitalize each word in the sentence.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **To Title Case** (or type *To Title Case* in the search box).
 
-### How to configure the To Title Case action?
+![The To Title Case action properties: Input String and Result](/images/docs/actions/string-to-title-case/panel.png)
 
-Step 1. Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input String** | Input | Text | Yes | The text to convert. |
+| **Result** | Output | Text | Yes | The text with every word capitalized. |
 
-Step 2. Drag the **To Title Case** action to the canvas and link it to the other actions.
+## Example [#example]
+| Input String | Result |
+| --- | --- |
+| `the QUICK brown fox from new york` | `The QUICK Brown Fox From New York` |
+| `ana maria POPESCU` | `Ana Maria POPESCU` |
+| `hELLO of and` | `Hello Of And` |
+| `ștefan cel mare` | `Ștefan Cel Mare` |
+| `o'neil's well-known e-mail` | `O'neil's Well-Known E-Mail` |
 
-![](/images/docs/NEvj_tIkUSiLXITKhJe2s_screenshot-2022-09-21-at-163043.png)
+## Good to know [#good-to-know]
+- **Words written entirely in uppercase stay in uppercase** (they are treated as acronyms). To capitalize them too, run the text through [To Lower](/how-to/to-lower) first.
+- The other letters of a word are made lowercase: `hELLO` becomes `Hello`.
+- A letter after a hyphen starts a new word; a letter after an apostrophe does not.
+- Short words such as `of` or `and` are capitalized too.
 
-Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/7GlbHXK0bUo_wnO2WGCY6_screenshot-2022-09-21-at-163139.png)
-
-**Input** **string**: you need to input a string variable that contains the value of the string you want to capitalize
-
-**Result**: the output contains the returned capitalized string
-
-
-
-Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-Step 5. You will be prompted to add the string for the input variable. Click **Run**.
-
-Step 6. To verify the process click **Check instance**.
-
-Step 7. In the **Output&#x20;**&#x73;ection, you can see the resulting string.
-
-![](/images/docs/edAplZzwYZUqRX3HXljlf_screenshot-2022-09-21-at-164023.png)
+## Related actions [#related-actions]
+- [To Sentence Case](/how-to/to-sentence-case), [To Upper](/how-to/to-upper), [To Lower](/how-to/to-lower)

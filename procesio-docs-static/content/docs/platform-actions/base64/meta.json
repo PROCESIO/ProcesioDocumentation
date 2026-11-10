@@ -1,0 +1,10 @@
+{
+  "title": "Base64",
+  "icon": "📁",
+  "pages": [
+    "file-to-base64",
+    "base64-to-file",
+    "from-base-64",
+    "to-base-64"
+  ]
+}

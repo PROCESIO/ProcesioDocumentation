@@ -1,114 +1,138 @@
 ---
 title: "Working with Credentials"
 icon: "📘"
-description: "PROCESIO allows you to connect to other platforms in a No-Code way by using configurable credentials.&x20;"
+description: "Create, test and use credentials in the Credential Manager, so your processes can connect to APIs, mail servers, file servers and databases without storing secrets in the process."
 ---
 
-**PROCESIO** allows you to connect to other platforms in a No-Code way by using configurable credentials.&#x20;
-
-These credentials can be used with various actions such as **Call API&#x20;**&#x6F;r **Send Email** to connect to **REST APIs**, **SMTP servers**, **FTP servers**, and even **SQL Server&#x20;**&#x64;atabases.
+A **credential** holds the connection details for another system: a URL and an API key, a user name and password, an OAuth sign-in, a server address. You set it up once in the **Credential Manager** and then select it in every action that needs it, such as **Call API**, **Send Email** or a database action. The secret stays in the credential and never appears in the process.
 
 <Callout type="info">
-For example, if you want to connect to the **GitHub** **API**, you should configure the authentication only once in the **Credentials Manager**. Afterwards, simply select the credentials configuration in every **Call API** action that you plan to use while working with the API.
+For example, to work with the GitHub API, configure the authentication once in the **Credential Manager**. Then select that credential in every **Call API** action that calls GitHub.
 </Callout>
 
-## Creating a credential
+Credentials belong to a workspace. Everyone in the workspace who may use credentials can select them in their processes.
 
-We will use [Dictionary API](https://dictionaryapi.dev/) to search for the meaning of an English word in an online dictionary.
+## Open the Credential Manager [#open-the-credential-manager]
 
-**To create the credential:**
+In the sidebar, open **Processes** → **Credential Manager**. The list shows every credential in the workspace with its **NAME**, **TYPE** and **STATUS**, plus who created and last updated it and when. Use **Search by name** to find one.
 
-- Click the **Credential Manager** section from the main menu.
+**STATUS** reads `validated` once the credential passed **Test connection**, and `not validated` until then.
+
+You can also open the Credential Manager from inside the Process Designer, from the sidebar menu of the canvas, to create or check a credential without leaving your process.
+
+## Credential types [#credential-types]
+
+The **Credential Type** list is grouped. A group opens when you click it, and holds:
+
+- **ready-made templates** for that type, for example the OAuth 2 providers or **Prelude** under **REST API**, with the address and settings already filled in;
+- a **Create new … config** entry (for example **Create new REST API config**), which starts an empty credential of that type that you fill in yourself.
+
+Type a few letters in the search box at the top of the list to filter it. Groups that contain a match open by themselves.
+
+{/* SCREENSHOT: credentials/credential-type-groups.png — the Create credential panel with the Credential Type list open and the REST API group expanded, showing Prelude and "Create new REST API config" */}
+
+| Credential | What it connects to | Used by |
+| --- | --- | --- |
+| [REST API](/rest-api-credential) | Any HTTP API: no authentication, Basic, API key or OAuth 2 | **Call API**, connectors |
+| OAuth2 (REST API) providers | Google, Microsoft, GitHub, YouTube and other services, with the OAuth 2 sign-in prepared for you. See [below](#predefined-oauth2-providers). | **Call API**, connectors |
+| [SMTP Server](/smtp-server-credential) | An outgoing mail server | **Send Email** |
+| [SMTP Inbound](/smtp-inbound-credential) | An incoming mail server (IMAP or POP3) | [Read Mailbox](/how-to/read-mailbox), [Read Mailbox V2](/how-to/read-mailbox-v2) |
+| [FTP](/ftp-credential) | An FTP or SFTP server | the FTP and SFTP actions |
+| [SQL](/sql-credential) | A database server | the database actions |
+| [Azure Storage Account](/azure-storage-account-credential) | An Azure storage account, with a shared key or a service principal | [Azure Storage](/how-to/azure-storage) |
+| **HashMac Key** | A secret key for keyed hashes | [Hash Mac](/how-to/hash-mac) |
+
+## Create a credential [#create-a-credential]
+
+1. In the Credential Manager, click **Create credential**.
+2. Fill in **Credential name**. It is required and can have up to 50 characters.
+3. Pick the **Credential Type**: a ready-made template inside a group, or **Create new … config** for an empty credential of that type.
+4. Optionally, add a **Description**, so others know what the credential is for.
+5. Optionally, fill in **Label** (up to 50 characters). A connector that declares a connector type lists only the credentials labelled with it.
+6. Click **Next step** and fill in the connection details. The fields depend on the type; each type's page lists them.
+7. Click **Test connection** to check the details. The result shows as a status next to the button, and the server's answer appears below it.
+8. Click **Save**.
+
+<Callout type="info">
+**Back** returns to the first step and keeps what you typed. If you close the panel from the connection details, PROCESIO asks you to confirm, because the details you entered are lost.
+</Callout>
+
+## Predefined OAuth2 providers [#predefined-oauth2-providers]
+
+The **OAuth2 (REST API)** group holds one template per supported service, for example Google Drive, Google Sheets, Google Calendar, Microsoft Teams, Outlook Mail, Sharepoint, Microsoft Graph, GitHub and YouTube Data. With a template you do not need to look up the provider's addresses:
+
+- **URL** is filled in for you and cannot be changed.
+- **Scopes** lists the permissions PROCESIO asks for. Remove the ones you do not need, add others, or restore the default list with the refresh icon. The panel links to the provider's documentation for scopes and endpoints.
+- **Test endpoint** and its method are filled in, so you can test the credential right away. **Test parameters configuration (optional)** lets you add keys and values to the test request's header or query.
+
+To connect, click **Save and authorize** (for Google services, the **Sign in with Google** button). PROCESIO saves the credential first, then opens the provider's sign-in window, where you sign in and allow access. If you click **Save** without signing in, the credential is saved as `not validated`.
+
+In the list, these credentials show the type **OAuth2 (REST API) / \<provider\>**.
+
+For a service that has no template, pick **Create new OAuth2 config** at the end of the group and enter the provider's details yourself. See [REST API Credential](/rest-api-credential).
+
+## Prelude [#prelude]
+
+The [Prelude](/how-to/prelude) connector sends and checks phone verification codes. Create its credential under **REST API** → **Prelude** and enter your Prelude API key.
+
+## Custom credential types [#custom-credential-types]
+
+Some credential types are custom types rather than one of the built-in ones. They have no **Test connection** step, and the list shows no status for them.
+
+## Example: a credential for a dictionary API [#example]
+
+This example creates a credential for the free [Dictionary API](https://dictionaryapi.dev/), which looks up the meaning of an English word, and uses it in a process.
+
+- In the Credential Manager, click **Create credential**.
 
 ![](/images/docs/ZgLh-3imP9HENu-Frorr0_tdy.png)
 
-- Hit the **Create new** button to start configuring.
-
-![](/images/docs/lncj44FecloR5rwrkwRGR_tdy.png)
-
-- Fill in a name, description and choose the credential type from the drop-down.&#x20;
-
-<Callout type="info">
-Even though the **description** field is optional, we suggest that you provide a description for each and every credential you create, just to make it easier for others to understand how something works or the purpose of a credential.&#x20;
-</Callout>
-
-- Then click **Next step.**
+- Fill in a name and a description, pick **Create new REST API config** in the **REST API** group, then click **Next step**.
 
 ![](/images/docs/ZiFGwuz0YWMb70l_7-l_f_tdy.png)
 
-- For now, let's add the **URL** of the Dictionary API that we found in its [documentation](https://dictionaryapi.dev/) and select **No authentication** for the authentication method since there is none.
+- Enter the **URL** of the Dictionary API from its [documentation](https://dictionaryapi.dev/) and select **No authentication**, since the API has none.
 
 ![](/images/docs/UJVjx8vunl4Ai8iAPT3Dr_tdy.png)
 
-- Clic&#x6B;**&#x20;Save** and there you have it.
+- Click **Save**.
 
-## Testing a credential
+### Test the credential later [#test-later]
 
-If you check the **Credential Manager**, you will see that your new credential just showed up.
-
-As you can see, the credential is <span style={{color:'#eb144c'}}>not validated</span> (we skipped that part on purpose when creating it 😈)
+The new credential shows in the list as `not validated`, because the example skipped **Test connection**.
 
 ![](/images/docs/2QECbiEF7s4Z63GXeT_oQ_tdy.png)
 
-To validate it you have two options:
+To test it now:
 
-- Validate the credential by pressing **Test connection** when creating it. (*like we should have done*)
-- Validate it after creation. (*also good*)
-
-Since the credential is already here, we'll go for the second option.&#x20;
-
-**Let's validate it now:**
-
-- Click **Edit** to review the credential configuration
-
-![](/images/docs/TZwMcL4Kdji1p81Iwe-kV_tdy.png)
-
-- Click **Next step** to reach the validation view
+- Open the credential to edit it, and click **Next step** to reach the connection details.
 
 ![](/images/docs/9hmY2vgoil85wDy2_t8Xw_tdy.png)
 
-- Fill in the **Test endpoint** and choose the required **HTTP method**
-
-We want **GET** the meaning of "automation" so we will use `/automation` as the **Test endpoint**.
+- Fill in the **Test endpoint** and choose the HTTP method. To look up the meaning of "automation" with **GET**, use `/automation` as the test endpoint.
 
 ![](/images/docs/jXmQAX2GzKAhTrQhNlmpa_tdy.png)
 
-- Hit **Test connection**, check the output, and then **Save** if everything went OK
+- Click **Test connection**, check the answer, then **Save**.
 
 ![](/images/docs/KHsbrfS1ex-y24oXui50f_empty.png)
 
-- After saving, you'll notice the credential has been updated
+The credential now shows as `validated`.
 
 ![](/images/docs/xjVHFCuqoM-AqTqIj6DA7_tdy.png)
 
-As you can see, the credential is validated so we're all set for now.
+### Use the credential in a process [#use-the-credential]
 
-## Using a credential
+Each action that needs a credential has a field where you select it. A **REST API** credential is used by **Call API**. The page of each action and of each credential type says which goes with which.
 
-**REST API** credentials can be used only with **Call API** at the moment.&#x20;
-
-<Callout type="info">
-To check which credential can be used with what action, you can either check the documentation for that specific action or check the documentation for the credential type.
-</Callout>
-
-&#x20;We'll build a very basic process that will output the meaning of a word.
-
-**Let's get going:**
-
-- We start by creating a new process and some variables.
+- Create a process and its variables.
 
 ![](/images/docs/lCBq66vQpiFVvxqsKjfIk_tdy.png)
 
-- Now let's assign the **Dictionary API** credential to the **Call API** action.
+- Add a **Call API** action and select the **Dictionary API** credential.
 
 ![](/images/docs/Ph_PyKNUHHeaai4I9F8IZ_tdy.png)
 
-- **Save & Run** and then **Check Instance** to see the result.
+- Save and run the process, then open the run to see the result.
 
 ![](/images/docs/dkSZc_-6EROCgJZs-S1ry_tdy.png)
-
-<Callout type="info">
-You can also create and manage credentials right inside the canvas by using the sidebar menu.
-</Callout>
-
-![](/images/docs/kclLYS5C6H1yujQ_I9qtE_tdy.png)

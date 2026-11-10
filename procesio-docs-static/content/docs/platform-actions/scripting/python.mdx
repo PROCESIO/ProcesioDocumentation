@@ -1,198 +1,93 @@
 ---
 title: "Python"
 icon: "📕"
-description: "In this article, we will explore the power of Python scripting actions in PROCESIO. Discover how Python scripting action can enhance your automation…"
+description: "Runs your own Python code inside a process and returns its result, its printed output and any error."
 ---
 
-In this article, we will explore the power of Python scripting actions in PROCESIO. Discover how Python scripting action can enhance your automation workflows and enable you to perform complex tasks with ease. From data manipulation to advanced calculations, Python action in PROCESIO opens up a world of possibilities. Dive into the world of Python scripting and unleash the full potential of PROCESIO's automation capabilities.
+The **Python** action runs a piece of Python code that you write, as one step of your process. Use it for calculations, data clean-up or text processing that no ready-made action covers. The value your code returns becomes an output you can use in the next steps.
 
-Would you like to learn how to use this powerful action? Dive into this article where each step of using Python action is explained in an incremental order of complexity. It starts with printing "Hello world" and covers topics such as working with files in Python scripts.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Scripting** and pick **Python** (or type *Python* in the search box).
 
-### **How to configure the Python action?**
+![The Python action properties: Code, Timeout, Single Result, List Result, Stdout and Error](/images/docs/actions/scripting-python/panel.png)
 
-Go to the Process Designers section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas. 
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Code** | Input | Text (Python code) | Yes | Your Python code. Use `return` to send a value back to the process. |
+| **Timeout** | Input | Integer | No | How many seconds the code may run, from `10` to `180`. Default `60`. |
+| **Single Result** | Output | Any | No | The value your code returns, when it is not a list: a number, text, true/false or an object (a Python `dict` becomes a JSON object). |
+| **List Result** | Output | List of any | No | The value your code returns, when it is a list. |
+| **Stdout** | Output | Text | No | Everything your code printed with `print()`. |
+| **Error** | Output | Text | No | The error message when your code fails or runs too long. Empty when the code worked. |
 
-**Step 1**: Drag the Python action from Toolbar (Scripting folder) and drop it on the canvas; click on the action to open the Properties Panel.
+## How your code is run [#how-your-code-is-run]
+Your code runs as the body of a function:
+- `return <value>` ends the code and sends the value to **Single Result**, or to **List Result** when the value is a list. Only one of the two is filled.
+- `print()` does not set a result. What you print goes to **Stdout**, which is useful for checking what your code did.
+- Code that ends without `return` leaves both results empty.
 
-![](/images/docs/vg9eOJfJqEelw78sa9Vz7_image.png)
+## Examples [#examples]
+| Code | Output |
+| --- | --- |
+| `return 1 + 2` | **Single Result** `3` |
+| `return [1, 2, 3]` | **List Result** `[1, 2, 3]` |
+| `return {"name": "Ana", "age": 30}` | **Single Result** `{"name": "Ana", "age": 30}` |
+| `print("Hello world")` | **Stdout** `Hello world`, both results empty |
+| `raise ValueError("bad value")` | **Error** `ValueError: bad value (line 1)` |
 
-**Step 2**: You can edit the action name. Link it to other actions:
-
-![](/images/docs/LZwCcxbczn5474kjPgCaN_image.png)
-
-**Step 3:&#x20;**&#x20;Create the variables needed for the configuration of the action, and then add them to the configuration panel in **Output**:&#x20;
-
-![](/images/docs/YqL8vjwbaYHwguAfEcVCR_screenshot-2023-07-19-at-205711.png)
-
-<Callout type="warn">
-The output of the Python action is always **a JSON&#x20;**&#x68;aving the following structure:
-
-`{`
-
-`"result": ``result (JSON/JSON Array/Object)`
-
-`}`
-
-Read below how you can extract only the JSON/Json Array/Object you need 💡
-</Callout>
-
-
-
-**Step 4:&#x20;**&#x54;his is why we will also add a JSON Mapper action to the process. The JSON Mapper action will extract only the object needed from the Python response (json).
-
-
-
-![](/images/docs/SGUFxm1iUM8mBqKSjEP8t_screenshot-2023-07-19-at-210103.png)
-
-For JSON Mapper configuration:
-
-- **input JSON** - is the output variable from Python action (PythonResult variable)
-- **query**:   $.result
-- **Output**: a new variable of type object that will fetch only the desired object from the actual Python output
-
-![](/images/docs/iydLXgRQYcJHtd0vxlii0_screenshot-2023-07-19-at-210214.png)
-
-**Step 5:** Let's add the script to the Python action!
-
-To clearly understand what we have done in step 4, let's run the process, and check the outputs of the 2 actions.&#x20;
-
-For this simple demonstration, keep the default script as is `print("Hello world"). `
-
-You can see how with JSON Mapper action we have extracted the object from the Python output:
-
-![](/images/docs/OHn19Vusrkypw1XFlDSxV_screenshot-2023-07-19-at-210825.png)
-
-**Step 6:&#x20;**&#x4C;et's do a more complicated scenario.&#x20;
-
-<Callout type="info">
-Python action has a list of available libraries to be used: JSON, Base64.&#x20;
-</Callout>
-
-Add this script to your Python action:&#x20;
+You can define functions and call them:
 
 ```python
-import json
+def add(a, b):
+    return a + b
 
-def create_json_object():
-    # Create a dictionary representing the JSON object
-    json_object = {
-        "name": "John Doe",
-        "age": 30,
-        "email": "johndoe@example.com"
-    }
-
-    return json_object
-
-# Create the JSON object
-json_object = create_json_object()
-
-# Print the JSON object
-print(json.dumps(json_object, indent=4))
+print('adding')
+return add(2, 3)
 ```
 
-Check out the result:&#x20;
+Result: **Single Result** `5`, **Stdout** `adding`.
 
-![](/images/docs/CGV80ihKrXbhCoKKPyIxa_screenshot-2023-07-19-at-211546.png)
-
-**Step 7**: Let's use variables in Python action!
-
-<Callout type="info">
-How do variables work in a Python action? Prior to processing the script in Python action, PROCESIO replaces the variable with the value of the variable and then utilizes it within the code.
-</Callout>
-
-Try out this script:
+A library example:
 
 ```python
-def add_numbers(num1, num2):
-    # Calculate the sum of the two numbers
-    result = num1 + num2
-
-    return result
-
-# Input numbers
-number1 = <%number1%>
-number2 = <%number2%>
-
-# Add the numbers and get the result
-result = add_numbers(number1, number2)
-
-# Print the result
-print(result)
+import pandas as pd
+return int(pd.Series([1, 2, 3]).sum())
 ```
 
+Result: **Single Result** `6`.
 
+## Use process variables in the code [#use-process-variables-in-the-code]
+You can insert process variables into the code. Before the code runs, PROCESIO replaces each variable with its value, as plain text. So:
+- a number variable can be used as it is: `total = <your number variable> * 2`;
+- a text variable needs quotes around it in your code: `name = "<your text variable>"`.
 
-<Callout type="error">
-**number1** and **number2** are process variables that you need to create upfront, like this:
-</Callout>
+## Good to know [#good-to-know]
+- **A failing script does not stop the process.** When your code raises an error or runs longer than **Timeout**, the step still finishes: **Error** holds the message (`TimeoutError` for a timeout) and both results are empty. Add a [Decisional](/how-to/decisional) after the action that checks whether **Error** is empty.
+- The code runs in a sandbox. It cannot read or write files (`open` is not available) and some modules cannot be imported, for example `os` or `requests`; the error then says `import of '…' is not allowed in this sandbox`. To call a web API, use [Call API](/how-to/call-api) or [CURL](/how-to/curl) and pass the response to the script.
+- **Files:** a script cannot take a file directly. Convert the file to text with [File To Base64](/how-to/file-to-base64), pass the text to the script and decode it there with `base64`. To create a file from a script, return Base64 text and convert it with [Base64 To File](/how-to/base64-to-file).
+- Heavy libraries such as `pandas` take a few seconds to load. Keep **Timeout** well above the time your code needs.
 
+## Available libraries [#available-libraries]
+Besides the standard modules such as `json`, `base64`, `math`, `re` and `datetime`, these libraries are installed:
 
-
-![](/images/docs/E7w9xnhCH6ym-auf_v5_Q_screenshot-2023-07-19-at-213012.png)
-
-We assign to those integers some default values (3 and 6), thus the result is 9:&#x20;
-
-![](/images/docs/c92lLTOPZqLDR5DyajABq_screenshot-2023-07-19-at-213143.png)
-
-<Callout type="warn">
-Files cannot be added in Python script. Read below steps to discover how you can still achieve this! 💡
-</Callout>
-
-
-
-**Step 8:&#x20;**&#x50;ython script does not process files, however, it does process strings. So how can we use this information? PROCESIO has a **File to BASE64&#x20;**&#x61;ction, that converts the file into a string. And this result can be used in Python action.
-
-Add a **File to BASE64** action in your process:
-
-![](/images/docs/75EX9eR3-M61j4DtHxRQN_screenshot-2023-07-19-at-214800.png)
-
-Create variables for the file and Base64 content and them to the configuration like this:
-
-![](/images/docs/YIPyTlqJTsFa6NKRklqgz_screenshot-2023-07-19-at-214850.png)
-
-Go to Python action.&#x20;
-
-Create a variable of type string (we named it `Fisier_Base64`) and add the following script:
-
-```python
-import base64
-
-def get_file_length(base64_data):
-    file_data = base64.b64decode(base64_data)
-    return len(file_data)
-
-# Example usage
-base64_variable = "<%Fisier_Base64%>"  # Replace with your actual Base64 variable
-file_length = get_file_length(base64_variable)
-print("File length:", file_length)
-```
-
-Run the process, give it a file for input and check instances.
-
-You will see the string created in **File to Base64** action to be processed by **the Python** action:
-
-![](/images/docs/y2kFF-sGGewnQZv_G4Sas_screenshot-2023-07-19-at-215243.png)
-
-Python action read the string and returned the file length:
-
-![](/images/docs/AnDnzFwI2TgNSTbrStsf4_screenshot-2023-07-19-at-215351.png)
+| Library | Import as |
+| --- | --- |
+| pandas | `import pandas` |
+| NumPy | `import numpy` |
+| SciPy | `import scipy` |
+| Matplotlib | `import matplotlib` |
+| Beautiful Soup | `from bs4 import BeautifulSoup` |
+| PyPDF2 | `import PyPDF2` |
+| pdfplumber | `import pdfplumber` |
+| spaCy | `import spacy` |
+| staticmap | `import staticmap` |
+| Pillow | `from PIL import Image` |
 
 <Callout type="info">
-If you want to **output&#x20;**&#x66;iles from Python action, use **Base64 to File** action, using the same conversion principles.
+**Python (Old)** is the previous version of this action. It has a single **Output** instead of the separate result, Stdout and Error outputs. It still works in existing processes; use **Python** for new ones. See [Actions to be decommissioned](/how-to/actions-to-be-decommissioned).
 </Callout>
 
-## Available Python Libraries
-
-The following libraries are preinstalled and can be used inside the **Python Action**:
-
-| Library        | Version |
-| -------------- | ------- |
-| matplotlib     | 3.7.0   |
-| beautifulsoup4 | 4.12.0  |
-| scipy          | 1.10.1  |
-| PyPDF2         | 3.0.1   |
-| pandas         | 2.0.3   |
-| pdfplumber     | 0.11.4  |
-| spacy          | 3.8.4   |
-| staticmap      | 0.5.7   |
-| pillow         | 12.1.1  |
+## Related actions [#related-actions]
+- [Node](/how-to/node), [Ruby](/how-to/ruby), [Javascript](/how-to/javascript), [CURL](/how-to/curl)
+- [File To Base64](/how-to/file-to-base64), [Base64 To File](/how-to/base64-to-file)

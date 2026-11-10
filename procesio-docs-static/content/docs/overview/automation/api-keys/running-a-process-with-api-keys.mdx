@@ -1,59 +1,45 @@
 ---
 title: "Running a process with API Keys"
 icon: "📘"
-description: "To run the process using a API Key we will require:"
+description: "Start a PROCESIO process from another tool, such as Postman, with an API key, the process ID and the workspace ID."
 ---
 
-### Prerequisites
+You can start a process from outside PROCESIO by calling the PROCESIO API with an [API key](/api-keys). This page shows how, using [Postman](https://www.postman.com/downloads/) as the example.
 
-To run the process using a API Key we will require:
+## What you need [#what-you-need]
 
-- Generate a API Key in PROCESIO.
-- PROCESIO API endpoints can be found here. Additionally we also provide [Swagger for our Web API](https://webapi.procesio.app/swagger/index.html) endpoints which can be tested here.
-- [Postman](https://www.postman.com/downloads/) for sending the request.
+- **An API key**, with its key handle and key value. Create it on the **API Key** page of the workspace that holds the process, and copy the value right away: it is shown only once. See [API Keys](/api-keys).
+- **The process ID.** Open the process, then **Edit process properties**, and copy the **ID** (see [Process settings](/process-settings)). You can also copy it from the process list.
+- **The workspace ID**, for a process in a shared workspace. It is shown under the title of the workspace's **Dashboard**, as **Workspace ID**, with a copy icon. You don't need it for a process in your personal workspace.
 
-### Running a process from PROCESIO using API keys
+## Send the request [#send-the-request]
 
-**&#x20; Step 1.   &#x20;**&#x41;fter generating the PROCESIO API key, you need to copy and save the key name & key value. Key value will be hashed after navigating off the page.
+1. Create a `POST` request to `https://webapi.procesio.app/api/Projects/<process ID>/run`.
+2. Under **Headers**, add:
 
-**&#x20; Step 2.   &#x20;**&#x46;rom the PROCESIO API documentation, we will be looking for the POST method for running a process.
+   | Header | Value |
+   | --- | --- |
+   | `key` | The key handle. |
+   | `value` | The key value. |
+   | `workspaceId` | The workspace ID. Leave it out for a key you created in your personal workspace. |
 
-![](/images/docs/Cuswz2Iu9N_ylGrpJfnu6_swagger.png)
+   If you also send an `x-version` header, its value must be `1.19`.
 
-As observed in Swagger, the endpoint **/api/Projects/\&#123;id&#125;/run** requires three parameters:
-
-- **Process ID** (the process ID, needs to be mentioned in the URL)
-- **Workspace&#x20;**(needs to be mentioned in Headers)
-- **Request body** (JSON, you are required to use the one provided below)
+3. Under **Body**, choose **raw** and **JSON**, and send the values of the process's **Input** variables in `payload`.
 
 ```json
 {
-  "connectionId": "string"
+  "payload": {
+    "inputVariableExample": 2.03
+  },
+  "connectionId": null
 }
 ```
 
-**&#x20; Step 3.   &#x20;**&#x46;rom within your PROCESIO Workspace, in the process listing tab, obtain the process ID for the process that you intend to run (hit the copy to clipboard button).
+4. Click **Send**. The process starts, and the run appears on the process's **Instances** page. See [Process runs and history](/running-a-process).
 
-Additionally we will need the name of the Workspace under which the process was created. In the example below the name of the Workspace is: "Demo".
+<Callout type="info">
+The key works only in the workspace where you created it, and it can do only what you can do in that workspace.
+</Callout>
 
-![](/images/docs/wO-xQyjyN0vxLHMqD6mqU_demo.png)
-
-### Running a process from Postman using API keys
-
-- Select Post Method mention the base URL and the endpoint
-  - **Base URL**: https\://webApi.procesio.app
-  - **Endpoint**: /api/Projects/e6bb2d64-2f96-4e43-a84b-b25a08c0764d/run (includes the Process ID)
-- In Postman from Headers
-  - **include key** & **key name**
-  - **value** & **key value**
-  - **workspace** & **workspace name** (example above "Demo")
-
-![](/images/docs/Tx5QwCtrJ8199TWCAEhXs_postman.png)
-
-- In Postman from Body, raw
-  - include: **\&#123;  "connectionId": "string"&#125;**
-  - Select **JSON**
-
-![](/images/docs/eBrEDB-JcCzSNuinh0oal_postman2.png)
-
-5\) From Postman hit the **Send&#x20;**&#x62;utton in order to trigger the process for which you configured the request.
+For all the endpoints, see [PROCESIO API Documentation](/docs/developers-guide/procesio-api-documentation) and the [API reference (Swagger)](https://webapi.procesio.app/swagger/index.html).

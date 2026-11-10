@@ -1,18 +1,30 @@
 ---
 title: "Trim Start"
 icon: "📕"
-description: "The Trim Start action removes whitespaces from the beginning of a string."
+description: "Removes spaces, tabs and line breaks from the start of a text."
 ---
 
-## Overview
+**Trim Start** removes the white space (spaces, tabs, line breaks) at the start of a text. The end of the text and the spaces inside it stay as they are.
 
-The `Trim Start` action removes whitespaces from the beginning of a string.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **Trim Start** (or type *Trim Start* in the search box).
 
-![](/images/docs/qW4J3AUaDblCuBkKN3qKK_image.png)
+![The Trim Start action properties: Input String and Result](/images/docs/actions/string-trim-start/panel.png)
 
-## Inputs & Outputs
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input String** | Input | Text | Yes | The text to clean. |
+| **Result** | Output | Text | Yes | The text without leading white space. |
 
-- **\[ I ] Input string:** <span style={{color:'#1c417e'}}>String</span> to be trimmed.
-- **\[ O ] Result**: <span style={{color:'#1c417e'}}>String</span> representing the input after trimming whitespaces from the start.
+## Example [#example]
+| Input String | Result |
+| --- | --- |
+| `   hello world   ` | `hello world   ` (trailing spaces kept) |
+| two non-breaking spaces + `x` | `x` |
 
-&#x20;
+## Good to know [#good-to-know]
+- White space means spaces, tabs, new lines, carriage returns and other Unicode spaces such as the non-breaking space.
+
+## Related actions [#related-actions]
+- [Trim](/how-to/trim), [Trim End](/how-to/trim-end)

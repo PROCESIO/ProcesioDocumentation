@@ -1,21 +1,34 @@
 ---
 title: "Arithmetic Mean"
 icon: "📕"
-description: "This Arithmetic Mean action calculates the arithmetic mean of the numbers in the provided list."
+description: "Returns the average (arithmetic mean) of the numbers in a list."
 ---
 
-## Overview
+The **Arithmetic Mean** action returns the average of the numbers in a list: their sum divided by how many there are.
 
-This `Arithmetic Mean` action calculates the arithmetic mean of the numbers in the provided list.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List**, then **Numeric**, and pick **Arithmetic Mean** (or type *Arithmetic Mean* in the search box).
 
-![](/images/docs/JWV_bEmNQOiFitmVubgG8_image.png)
+![The Arithmetic Mean action properties: Input a list of numbers and Result](/images/docs/actions/list-numeric-arithmetic-mean/panel.png)
 
-### Parameters
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input a list of numbers** | Input | List of numbers | Yes | The numbers to average, for example `[2,4,6]`. |
+| **Result** | Output | Number | Yes | The average. A whole number when the average is whole, otherwise a decimal number. |
 
-### Inputs
+## Example [#example]
+| Input a list of numbers | Result |
+| --- | --- |
+| `[2,4,6]` | `4` |
+| `[1,2]` | `1.5` |
+| `[1,2,2]` | `1.6666666666666667` (not rounded) |
+| `[]` (empty list) | `NaN` — the step does **not** fail |
 
-- **input a** **list of numbers** (`list<object>`). The list must consist of primitive data types such as integers, doubles, etc.
+## Good to know [#good-to-know]
+- The result is not rounded. Use [Round](/how-to/round) afterwards if you need a fixed number of decimals.
+- An empty list does not fail the step: **Result** is `NaN` ("not a number"). If the list can be empty, check it first with [Has Elements](/how-to/has-elements) or [Length](/how-to/length).
+- Numbers stored as text (`"3"`) are accepted; any other text makes the step fail with *The input was not a number. Please try again.*
 
-### Outputs
-
-- **result&#x20;**(`object`): The arithmetic mean of the input numbers.
+## Related actions [#related-actions]
+- [Median](/how-to/median), [Sum](/how-to/sum), [Max](/how-to/max), [Min](/how-to/min)

@@ -1,47 +1,40 @@
 ---
 title: "Object To File"
 icon: "📕"
-description: "Use this action to write any object to a File that you can download in any format that you need."
+description: "Writes a text or an object into a new file, with the encoding and line endings you choose."
 ---
 
-### **Overview**
+**Object To File** writes a value into a new file. Use it to save a JSON object as a `.json` file, a text as a `.txt` or `.csv` file, or any generated content that another system expects as a file.
 
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Documents** and pick **Object To File** (or type *Object To File* in the search box).
 
+![The Object To File action properties: Object, Filename, Encoding, Line Ending and File](/images/docs/actions/documents-object-to-file/panel.png)
 
-Use this action to write any object to a File that you can download in any format that you need.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Object** | Input | Object (JSON) or Text | Yes | The value to write. |
+| **Filename** | Input | Text | Yes | The file name **with an extension**, for example `customer.json`. |
+| **Encoding** | Input | Option | Yes | The character set of the file. Default **UTF8**. Also: UTF32, ASCII, Unicode (UTF-16), BigEndianUnicode, Latin1 and Windows code pages 1250–1258. |
+| **Line Ending** | Input | Option | Yes | **Windows (CRLF)** (default), **Unix (LF)** or **Mac (CR)**. |
+| **File** | Output | File | Yes | The new file. |
 
-### How to configure the **Object** to file action?
+## Example [#example]
+| Object | Filename | Encoding / Line Ending | Content of **File** |
+| --- | --- | --- | --- |
+| `{"name":"Ana","tags":["a","b"]}` | `ana.json` | UTF8 / Unix (LF) | The JSON, indented on several lines |
+| `line one` + new line + `line two` | `note.txt` | UTF8 / Windows (CRLF) | `line one` and `line two` separated by CRLF |
+| `ăîș café` | `a.txt` | ASCII | `??? caf?` |
+| `x` | `noext` | — | The step fails: "Input error: File name must contain a valid extension." |
 
-&#x20; 1\.   Create a process and give it a name.
+## Good to know [#good-to-know]
+- An object is written as indented JSON. A text is written as it is.
+- **Line Ending** converts the line breaks inside the value to the style you pick.
+- Pick an encoding that can hold your characters. ASCII and the Windows code pages replace the characters they do not have with `?`.
+- UTF8 files are written without a byte order mark (BOM).
+- An empty **Object** makes the step fail with "Input error: Input object is null.".
+- To write a list, use [List To File](/how-to/list-to-file). To read a file back into a text, use [File To String](/how-to/read-file).
 
-&#x20; 2\.    Drag the **Object to file** action to the canvas and link it to the other actions.
-
-![](/images/docs/btqZ6DAVXlWdzOmg1wVvn_image.png)
-
-3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/vZU4X3ZG4jrbMshHfiuYe_screenshot-2022-09-21-at-131453.png)
-
-**Object:** you need to input the object type variable which will be written to file
-
-**Filename:** you need to input the name of the file in which the input object will be written.&#x20;
-
-<Callout type="info">
-You need the add the extension that your file will have (ex. myFile.**txt**)
-</Callout>
-
-**&#x20;File:&#x20;**&#x74;his is the output file data type that you can download from instances.
-
-
-
-4\. Save, Validate and Run the process.
-
-5\. Click **Check Instance&#x20;**&#x74;o view the results. Check output variables.
-
-Result: A file with the name and extension you defined will be downloaded. 💪🏼
-
-![](/images/docs/N99fE9q_Gzsv_gwcycThr_screenshot-2022-09-21-at-131936.png)
-
-![](/images/docs/cPJli6CS9i01AMPMGJx7L_screenshot-2022-09-21-at-131946.png)
-
-Result: A file with the name and extension you defined will be downloaded. 💪🏼
+## Related actions [#related-actions]
+- [List To File](/how-to/list-to-file), [File To String](/how-to/read-file), [Export To CSV](/how-to/export-to-csv)

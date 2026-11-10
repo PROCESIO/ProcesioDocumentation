@@ -1,69 +1,34 @@
 ---
 title: "Zip"
 icon: "📕"
-description: "Use this action for zipping files easily."
+description: "Compresses a list of files into one .zip archive."
 ---
 
-Use this action for zipping files easily.
+**Zip** packs a list of files into a single `.zip` archive. Use it to send several files as one attachment, or to make a large export smaller before you upload it.
 
-ZIP action gets a list of files as input and compresses them as a ZIP archive.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Documents › Archive** and pick **Zip** (or type *Zip* in the search box).
 
+![The Zip action properties: File List, Archive Name and Archive](/images/docs/actions/documents-archive-zip/panel.png)
 
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **File List** | Input | List of File | Yes | The files to put in the archive. |
+| **Archive Name** | Input | Text | Yes | The archive name **without** the extension, for example `invoices`. |
+| **Archive** | Output | File | Yes | The `.zip` file that holds all the files. |
 
-### How to configure the ZIP action?
+## Example [#example]
+| File List | Archive Name | Archive |
+| --- | --- | --- |
+| `hello.txt`, `data.json` | `bundle` | `bundle.zip` with both files at its root |
+| `hello.txt` | `bundle.zip` | `bundle.zip.zip` |
 
-1\.   Create a process and give it a name.
+## Good to know [#good-to-know]
+- The action always adds `.zip` to **Archive Name**. Do not type the extension yourself, or you get a name such as `bundle.zip.zip`.
+- Every file goes to the root of the archive under its own name. The archive has no folders.
+- An empty or missing list makes the step fail with "Input error: Input list of files is null or empty.".
+- The archive has no password. To extract an archive, use [Unzip](/how-to/unzip).
 
-2\.    Drag the **ZIP&#x20;**&#x61;ction to the canvas and link it to the other actions.
-
-![](/images/docs/_bTqQEDqXmNubRPpQMsbt_screenshot-2022-08-25-at-151220.png)
-
-3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/fzaj0DHvS-A2CC_Nn9sz7_screenshot-2022-08-25-at-151319.png)
-
-4\. Fill in configuration details:
-
-### File list
-
-Files to zip
-
-- add variable (File type, list) that will carry the files to compress
-- **Required:** Yes
-
-### Archive name
-
-Name of the output zip file.
-
-- **Required:** Yes
-
-### Archive
-
-Compressed files output
-
-- add variable (File type) that will carry the zip archive
-- **Required:** Yes
-
-
-
-<Callout type="info">
-There is no limitation to # of files added to be compressed.
-</Callout>
-
-5\. Save, Validate and Run the process.
-
-6\. The process will ask for input files.
-
-7\.  Click **Run.**
-
-8\. Click **Check Instance&#x20;**&#x74;o view the results.
-
-![](/images/docs/VJmb-9uD8FgxesWvM6JHc_screenshot-2022-08-25-at-152247.png)
-
-Click on the download icon next t&#x6F;**&#x20;Output:**
-
-![](/images/docs/CmJAMInRiV9K5-vCwS4ua_screenshot-2022-08-25-at-152255.png)
-
-And a zip file will be saved with the name given in the action configuration:
-
-![](/images/docs/VU6P7Ydp_RSPcayZ3vDsA_screenshot-2022-08-25-at-152315.png)
+## Related actions [#related-actions]
+- [Unzip](/how-to/unzip), [Untar](/how-to/untar), [Unrar](/how-to/unrar)

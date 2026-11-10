@@ -1,91 +1,85 @@
 ---
 title: "Simple Filter"
 icon: "📕"
-description: "The Simple Filter action allows you to filter simple lists, particularly those comprised of primitive types, used within your process."
+description: "Filters a simple list (text or numbers) with one rule written in a JSON configuration: exact, contains, similar, fuzzy, sound-alike, word match or regular expression."
 ---
 
-# Overview
+The **Simple Filter** action keeps (or drops) the elements of a simple list — a list of text or numbers — that match one rule. You describe the rule in a small JSON configuration. To filter a list of data models or JSON objects by their fields, use [Filter](/how-to/filter).
 
-The **Simple Filter** action allows you to filter simple lists, particularly those comprised of primitive types, used within your process.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Simple Filter** (or type *Simple Filter* in the search box). Then click **Configure** to open the configuration panel.
 
-# Parameters
+![The Simple Filter action properties with the Configure button](/images/docs/actions/list-simple-filter/panel.png)
 
-- **Input (required):** List to filter (`list<object>`)
-- **Filter JSON Configuration (required):** Configuration for filtering criteria in JSON format
-- **Output (required):** Filtered list (`list<object>`)
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List to filter** | Input | List of text or numbers | Yes | The list to filter, for example `["Apple","apple pie","Banana"]`. |
+| **Filter JSON configuration** | Input | Text (JSON) | Yes | The rule, see below. |
+| **Filtered list** | Output | List of text | Yes | The elements that passed the rule, in their original order. |
 
-# Filter JSON Configuration
-
-The JSON Configuration consists of several parameters:
-
+## The JSON configuration [#the-json-configuration]
 ```json
 {
-	"MatchType":"Exact",
-	"FilterExpression":"(RegEx)expression",
-	"FuzzyAlgorithm":"Levenstein",
-	"FuzzyThreshold":0.7,
-	"SoundexDistance":4,
-	"SimilarFirstNwords":1,
-	"SimilarLastNwords":1,
-	"KeepIfTrue":true
+  "MatchType": "Contains",
+  "FilterExpression": "apple",
+  "KeepIfTrue": true
 }
 ```
 
-## MatchType Types
+| Key | Required | Meaning |
+| --- | --- | --- |
+| `MatchType` | Yes | How each element is compared with `FilterExpression`: `Exact`, `Contains`, `Similar`, `Fuzzy`, `Soundex`, `SimilarWordMatch` or `RegEx` (not case-sensitive). |
+| `KeepIfTrue` | Yes | `true` keeps the elements that match; `false` keeps the elements that do **not** match. |
+| `FilterExpression` | Yes in practice | The value (or regular expression) to compare with. |
+| `FuzzyAlgorithm`, `FuzzyThreshold` | Only for `Fuzzy` | The similarity algorithm and the minimum score from `0` to `1`. See [Fuzzy](#fuzzy). |
+| `SoundexDistance` | Only for `Soundex` | `0` to `4`; `4` (the default) means "sounds the same". |
+| `SimilarFirstNwords`, `SimilarLastNwords` | Only for `SimilarWordMatch` | How many first / last words must be equal. |
 
-### Exact
+### Match types [#match-types]
+Before comparing, each list element is converted to lower case, double spaces are reduced to one and accents are removed (`București` becomes `bucuresti`).
 
-An exact match requires validation (**=**) against the specified `FilterExpression`.
+| MatchType | An element matches when… | Example with `FilterExpression` |
+| --- | --- | --- |
+| `Exact` | It equals the expression, ignoring case. | `apple` matches `Apple`, not `apple pie`. |
+| `Contains` | It contains the expression, **or** the expression contains it (ignoring case). | `apple` matches `Apple`, `apple pie`, `pineapple`. `I like cherry juice` matches `Cherry`. |
+| `Similar` | It matches after removing spaces, dashes, punctuation, `www`, `http(s)` and `@`; then one contains the other. Two phone numbers match when the digits of one contain the digits of the other. | `apple-pie` matches `Apple` and `apple pie`. `376-323-1111` matches `323-1111`. |
+| `Fuzzy` | Its similarity score with the expression is at least `FuzzyThreshold`. | `aple` with `Levenstein` and `0.7` matches `Apple`. |
+| `Soundex` | It sounds like the expression in English. Numbers only match numbers and e-mails only match e-mails. | `Jon` matches `Jon` and `John`. |
+| `SimilarWordMatch` | Its first N words (or last N words) are the same as those of the expression. | `apple tart` with `SimilarFirstNwords: 1` matches `Apple` and `apple pie`. |
+| `RegEx` | The regular expression finds a match in it. Always case-insensitive. | `^[0-9]+$` keeps only the elements made of digits. |
 
-### Similar
+### Fuzzy [#fuzzy]
+`FuzzyAlgorithm` takes one of these names, written exactly like this (without spaces): `BlockDistance`, `ChapmanLengthDeviation`, `ChapmanMeanLength`, `CosineSimilarity`, `EuclideanDistance`, `JaccardSimilarity`, `DiceSimilarity`, `Jaro`, `JaroWinkler`, `MatchingCoefficient`, `MongeElkan`, `Levenstein`, `NeedlemanWunch`, `OverlapCoefficient`, `QGramsDistance`, `SmithWaterman`, `SmithWatermanGotoh`, `SmithWatermanGotohWindowedAffine`. An unknown name falls back to `Levenstein`. `FuzzyThreshold` is a number from `0` (anything matches) to `1` (identical); `0.7`–`0.9` is a good starting range. The algorithms are the same as in [Similarity Search](/how-to/similarity-search).
 
-- Compares against `FilterExpression` considering:
-  - Special characters: For example, "John-Doe" and "John Doe" are considered a match after removing special characters.
-  - Phone numbers: e.g., "376-323-1111" and "323-1111" are considered a match.
-  - Domain/URL: Ignores prefixes like "WWW" or "HTTP(s)://".
-  - Email format: Matches emails with various representations like "@" or "\[at]".
+## Example [#example]
+List to filter: `["Apple","apple pie","Banana","Cherry","pineapple","Jon","John","10","25","3"]`
 
-### Fuzzy
+| Filter JSON configuration | Filtered list |
+| --- | --- |
+| `{"MatchType":"Exact","FilterExpression":"apple","KeepIfTrue":true}` | `["Apple"]` |
+| `{"MatchType":"Exact","FilterExpression":"apple","KeepIfTrue":false}` | every element except `Apple` |
+| `{"MatchType":"Contains","FilterExpression":"apple","KeepIfTrue":true}` | `["Apple","apple pie","pineapple"]` |
+| `{"MatchType":"Fuzzy","FilterExpression":"aple","FuzzyAlgorithm":"Levenstein","FuzzyThreshold":0.7,"KeepIfTrue":true}` | `["Apple"]` |
+| `{"MatchType":"Soundex","FilterExpression":"Jon","SoundexDistance":4,"KeepIfTrue":true}` | `["Jon","John"]` |
 
-Utilizes algorithms from **Similarity Search** to compare fields against `FilterExpression`. More details [here](/docs/platform-actions/call-api/similarity-search).
+With the list `["Apple","10","25","a1","Bob Smith"]`:
 
-### Contains
+| Filter JSON configuration | Filtered list |
+| --- | --- |
+| `{"MatchType":"RegEx","FilterExpression":"^\\d+$","KeepIfTrue":true}` | `["10","25"]` |
+| `{"MatchType":"RegEx","FilterExpression":"^\\D+$","KeepIfTrue":true}` | `["Apple","Bob Smith"]` |
+| `{"MatchType":"RegEx","FilterExpression":"^[A-Z]","KeepIfTrue":true}` | `["Apple","a1","Bob Smith"]` (case-insensitive) |
 
-Checks if `FilterExpression` contains the field or vice versa.
+With the list `[10,25,3.5]` and `{"MatchType":"Exact","FilterExpression":"25","KeepIfTrue":true}` the result is `["25"]`: numbers come back as text.
 
-### Soundex
+## Good to know [#good-to-know]
+- **Write the `FilterExpression` without accents.** List elements lose their accents before comparison, but the expression does not, so `București` never matches; use `Bucuresti`.
+- **Backslashes in regular expressions must be doubled** inside the JSON: write `"^\\d+$"` for the pattern `^\d+$`. A single backslash makes the configuration invalid JSON and the step fails with *The filter JSON configuration setting is not a valid JSON!*
+- The result is always a list of **text**, even when the input list holds numbers.
+- An unknown `MatchType` does not fail the step: nothing matches, so the result is empty with `"KeepIfTrue": true` (and the whole list with `false`).
+- With `SimilarWordMatch`, set at least one of `SimilarFirstNwords` / `SimilarLastNwords` above `0`; if both are `0`, every element matches.
+- The step fails when: the list is empty (*The input list does not have any element!*), the list contains data models (*The input list is a Data Model! This action can only use simple lists.*), or `MatchType` / `KeepIfTrue` is missing.
 
-Evaluates if two words are similar when spoken, based on a scale from 0 to 4.
-
-### SimilarWordMatch
-
-Compares the first or last N words in the field with those in `FilterExpression`.
-
-### RegEx
-
-Validates if the field matches the pattern specified in `FilterExpression`. The RegEx pattern must be JSON safe/encoded (e.g. by using [test json\_encode online - general PHP functions - functions-online](https://www.functions-online.com/json_encode.html)).
-
-## Properties
-
-### FuzzyAlgorithm & FuzzyThreshold
-
-- Only used when `MatchType` = `Fuzzy`. If `MatchType` is something else, those properties will be ignored so, they can be null or can even not be present.
-- `FuzzyAlgorithm` needs to be one from this [here](/docs/platform-actions/call-api/similarity-search), written exactly as in the link provided.
-- `FuzzyThreshold` is a double between 0 and 1, where 0 means any match is accepted and 1 requires 100% confidence.
-
-### SoundexDistance
-
-- Used only when the `MatchType` = `Soundex` and it can be set to 0, 1, 2, 3, or 4, where 4 means the words are very similar when spoken.&#x20;
-
-### SimilarFirstNwords & SimilarLastNwords
-
-- Only used when `MatchType` = `SimilarWordMatch` in which case at least one should be >0. If both are =0 then the `SimilarWordMatch` will not be executed at all since it does not make sense. If MatchType is something else, those properties will be ignored, so, they can have any value or can even not be present.
-
-### KeepIfTrue
-
-- Determines if the record should be kept based on the match criteria. If set to **true**, the record will be retained.
-
-# Important Notes
-
-- Matching algorithms operate only on primitive field types, not data structures.
-- A row match is TRUE only if all matches are TRUE
+## Related actions [#related-actions]
+- [Filter](/how-to/filter) (lists of data models), [Contains](/how-to/list-contains), [Remove](/how-to/remove), [DeDuplicate](/how-to/deduplicate), [Similarity Search](/how-to/similarity-search)

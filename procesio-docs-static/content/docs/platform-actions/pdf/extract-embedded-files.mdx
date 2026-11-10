@@ -1,32 +1,32 @@
 ---
 title: "Extract Embedded Files"
 icon: "📕"
-description: "The Extract Embedded Files action extracts embedded files from a .pdf."
+description: "Returns the files attached inside a PDF, such as the XML of an e-invoice."
 ---
 
-The **Extract Embedded Files** action extracts embedded files from a .pdf.
+The **Extract Embedded Files** action returns the files that are attached inside a PDF. A common case is an electronic invoice (for example ZUGFeRD or Factur-X) that carries its XML data inside the PDF: extract the XML, then read it with the XML actions.
 
-![](/images/docs/boPU9zfNHyfieXhYqS5Dl_image.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **PDF** and pick **Extract Embedded Files** (or type *Embedded* in the search box).
 
-### How to configure the Extract Embedded Files action?
+![The Extract Embedded Files action properties: Pdf file and Embedded files](/images/docs/actions/pdf-extract-embedded-files/panel.png)
 
-&#x20;    1\. Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Pdf file** | Input | File | Yes | The PDF to read. |
+| **Embedded files** | Output | List of files | Yes | Every attached file, under its attachment name. |
 
-&#x20;    2\. Drag the **Extract Embedded Files** action to the canvas and link it to the other actions.
+## Example [#example]
+| Pdf file | Embedded files |
+| --- | --- |
+| `with-attachment.pdf`, which carries an attachment `data.csv` | one file: `data.csv` |
+| `annex.pdf`, with no attachment | empty |
 
-&#x20;    3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:&#x20;
+## Good to know [#good-to-know]
+- A PDF without attachments does not fail the step; the output is simply empty. Check it before looping over it.
+- Files are named as they were attached. Use [For Each](/how-to/for-each) to handle each file, or pick one by name.
+- The input must have the `.pdf` extension, otherwise the step fails with `Pdf file extension should be '.pdf', found => …`.
 
-### Inputs & Outputs
-
-- **\[ I ]** **Pdf file**: Filerepresenting the input pdf file that contains embedded files.
-- **\[ O ] Embedded files**: **List\&lt;**<span style={{color:'#0671d6'}}>File</span>**>** representing the list of the embedded files extracted from the input pdf.
-
-![](/images/docs/BlICZK7qdn1KPePSCYY9f_image.png)
-
-&#x20;    4\. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-&#x20;    5\. You will be prompted to add the file for the input variable. **Drag** or **upload&#x20;**&#x74;he file and click **Run**.
-
-&#x20;    6\. To verify the process click **Check Instances**.
-
-&#x20;    7\. In the **Output&#x20;**&#x73;ection, you will see the details of the embedded files. **Download&#x20;**&#x74;o access each file.
+## Related actions [#related-actions]
+- [Mapper](/how-to/mapper), [XML To JSON](/how-to/xml-to-json), [Extract Text](/how-to/extract-text), [PDF Is Valid](/how-to/pdf-is-valid)

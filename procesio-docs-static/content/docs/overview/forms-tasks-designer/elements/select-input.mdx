@@ -1,54 +1,85 @@
 ---
 title: "Select Input"
-description: "The Textarea element provides a multi-line text input area, ideal for collecting longer or unstructured content — such as notes, comments,…"
+description: "The Select Input element shows a drop-down list of options, and the person filling the form picks one option or, if you allow it, several."
 ---
 
-The Textarea element provides a multi-line text input area, ideal for collecting longer or unstructured content — such as notes, comments, descriptions, reasons for rejection, or any narrative input that would be impractical to fit in a single-line field.
+The Select Input element shows a drop-down list of options. The person filling the form opens the list and picks one option, or several options if you turn on **Multiple**. Use it when the answer must be one of a known set of values, for example a country, a department or a priority.
 
-Unlike the Text Input, which is optimized for concise values, the Textarea is designed for paragraphs and blocks of text. The visible row height is configurable (rows), allowing you to match the input size to the expected content length. It supports the same validation, default values, and runtime control features as other input elements.
+Each option has a **label**, which people see in the list, and a **value**, which is what the form submits. Only the value reaches your process and the submission. The label is never sent.
 
-## Key Use Cases
+## Add the element [#add-the-element]
 
-•        Collecting comments, feedback, rejection reasons, or approval notes
+In the Form Designer toolbar, open the **Fields** tab and drag **Select input** onto the canvas. Click the element to open its settings on the right.
 
-•        Displaying multi-line process outputs or computed summaries in read-only mode
+## General settings [#general-settings]
 
-•        Adjusting visible rows dynamically to match expected content length
+| Setting | What it does |
+| --- | --- |
+| **Label** | The title shown above the list. |
+| **Placeholder** | The text shown in the field while nothing is selected. |
+| **Tooltip** | Help text next to the label. It shows only when the element has a label. |
+| **Info text** | Extra text shown with the field. |
+| **Searchable** | On by default. Adds a search box inside the open list. Typing filters the options by their label. The match is not case-sensitive and finds the text anywhere in the label, so `bl` finds *Blueberry* and *Blackberry*. |
+| **Clearable** | Off by default. Adds a clear icon to the field, so a person can remove the selection and leave the field empty. |
+| **Multiple** | Off by default. Lets a person pick several options. The list stays open between picks, and each picked option shows as a tag with its own remove icon. |
+| **Readonly** | The field shows its value but can't be changed. |
+| **Visible** | Turn it off to hide the element. |
+| **Name** | The element's name. Scripts, mappings and processes use it to find the element, and the form's data model uses it. |
+| **ID** | The element's ID. |
 
-•        Pre-filling a textarea with a template or boilerplate text via defaultvalue on load
+## Options (Data Source) [#options-data-source]
 
-## Runtime API — Attributes in Procesio Forms
+Open the **Data Source** group to choose where the options come from. Pick the **Source type** first, then fill in the **Source value**.
 
-*All attributes below are accessible and modifiable at runtime via the element's data model in Procesio Forms — on any available event such as onLoad, onChange, or custom triggers.*
+| Source type | How to give the options |
+| --- | --- |
+| **Static list** | Type the options in a table with a **Label** column and a **Value** column. Give every option a unique value. |
+| **JSON** | Paste a JSON array. Each item needs a `label` (or `name`) and a `value`. |
+| **URL** | Enter the address of a JSON file that returns the same kind of array. |
 
+A JSON source looks like this:
 
+```json
+[
+  { "label": "Yes", "value": "yes" },
+  { "label": "No", "value": "no" }
+]
+```
 
-| **API Name**     | **Description**                                      | **Type**     | **Default** | **Notes** |
-| ---------------- | ---------------------------------------------------- | ------------ | ----------- | --------- |
-| **label**        | Display label above the textarea                     | string       | —           | —         |
-| **placeholder**  | Hint text shown inside the empty textarea            | string       | —           | —         |
-| **tooltip**      | Help text shown alongside the label                  | string       | —           | —         |
-| **infotext**     | Supplementary info displayed below the input         | string       | —           | —         |
-| **rows**         | Number of visible text rows (controls height)        | number       | 4           | —         |
-| **defaultvalue** | Initial value when the form loads                    | string       | —           | —         |
-| **value**        | Current runtime value — read or set programmatically | string       | —           | —         |
-| **readonly**     | View-only mode — user cannot edit                    | boolean      | false       | —         |
-| **disabled**     | Fully non-interactive                                | boolean      | false       | —         |
-| **visible**      | Controls element visibility                          | boolean      | true        | —         |
-| **name**         | Unique element name                                  | string       | —           | —         |
-| **id**           | Unique element ID                                    | string       | —           | —         |
-| **required**     | Marks the field as mandatory on submit               | boolean      | false       | —         |
-| **regex**        | Regex validation pattern                             | string\|null | —           | —         |
+### Options from a URL [#options-from-a-url]
 
-### JSON source type example
+With the **URL** source type, the browser of the person filling the form downloads the options when the form opens. Keep these points in mind:
 
-> \[
-> &#x20;   \&#123;
-> &#x20;     \&quot;label\&quot;: \&quot;dollar\&quot;,
-> &#x20;     \&quot;value\&quot;: \&quot;$\&quot;
-> &#x20;   &#125;
-> ]
+- The address must be reachable from that person's browser, and the server must allow the request from the form's page (CORS).
+- The response must be a JSON array of `{ "label": ..., "value": ... }` items. Any other response, such as a JSON object or an error page, gives an empty list. The rest of the form still works.
+- The options are downloaded once per address while the page is open. Another element that uses the same address reuses them.
 
+For a quick test you can use `https://procesio-email-hosting.fra1.cdn.digitaloceanspaces.com/test.json`.
 
+### Default value [#default-value]
+
+**Default value** lists the options you defined. Pick one to have it selected when the form opens. If the person does not change it, the form submits that option's value.
+
+## Validation [#validation]
+
+Turn on **Required** in the **Validation** group to make a selection mandatory. A required field shows an asterisk next to its label, and the form can't be submitted while the field is empty.
+
+## What the form submits [#what-the-form-submits]
+
+| Situation | Submitted value |
+| --- | --- |
+| One option picked | The option's value, for example `"val-b"`. A number value stays a number, for example `2`. |
+| **Multiple** is on | A list of the picked values, in the order the options appear in the list, not the order they were picked. For example `["val-a", "val-c"]`. |
+| Nothing picked | No value. |
+
+## Events [#events]
+
+The **Events** group has an **onInput** event. It runs each time the selection changes, and it receives the new value. It does not run when the value is set by a default, a script, a mapping or a process. See [Trigger events for form and elements](/trigger-events-for-form-and-elements).
+
+## Change the options while the form runs [#change-the-options-while-the-form-runs]
+
+A process started by the form can replace the options. Map a process output that holds a JSON list of `{ "label": ..., "value": ... }` items to the element's **Source value**. The same mapping works for the element's other settings, such as **Visible**, **Required** and **Readonly**. A script can also read and change the element through `ProcesioForm.data.fields`. See [Trigger JavaScript](/trigger-javascript).
+
+The [Radio Button](/radio-button) element uses the same three source types.
 
 For support, please join our [Discord community](https://discord.com/invite/CEBuKgJefv) for further assistance and support.

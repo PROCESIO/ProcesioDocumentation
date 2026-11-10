@@ -1,34 +1,72 @@
 ---
-title: "How to create a workspace in a master-workspace?"
+title: "Create and configure a sub-workspace"
 icon: "📘"
-description: "A master workspace is created for administration purposes of an enterprise account.&x20;"
+description: "Create a sub-workspace in your master workspace and set its name, process execution, default permissions, data retention and resource tracking."
 ---
 
-A master workspace is created for **administration purposes** of an enterprise account.&#x20;
+An enterprise account has a **master workspace**. You use it to administer the account: create and manage **sub-workspaces**, manage users, and see the account's usage. Your teams build and run their processes in the sub-workspaces.
 
-Here you can create, delete or update:
+## Create a sub-workspace [#create]
 
-- Workspaces
-- Users
+1. Switch to the master workspace.
+2. Click **Create workspace** on its **Dashboard**, or open **Workspaces** in the left menu and click **Create workspace** on the **Workspace Management** page.
+3. In the **Create Workspace** panel, fill in the **General** tab (see below). You can also set the **Permissions** and **Data Retention** tabs now, or later.
+4. Click **Create**.
 
-Use the dashboard to see in one place the usage consumption at the master workspace level in "Plan usage", and also at the workspace level in "Workspace usage":
+The new sub-workspace is added to the list. Click the **Go to workspace** icon on its row to open it in a new tab.
 
-![](/images/docs/5AzvzfmD1qQByu794JKO4_screenshot-2023-03-23-at-161651.png)
+{/* SCREENSHOT: workspace-management.png — the Workspace Management page with the sub-workspace counter next to the title and the Create workspace button */}
 
-To create a new workspace in your master, you can:
+## The sub-workspace limit [#limit]
 
-1. Hit the "Create workspace" button in the Dashboard&#x20;
+A master workspace can hold a limited number of sub-workspaces. Next to the **Workspace Management** title you see how many you have and the limit, for example *"12 of 22 sub-workspaces"*. The counter changes colour as you get close to the limit. When you reach it, the counter reads, for example, *"22 of 22 - limit reached"*, and **Create workspace** is turned off, with a tooltip that says the master workspace has reached its limit. To create a new one, delete a sub-workspace you no longer need.
 
-![](/images/docs/414TegCDfskHusGxOc9Xf_screenshot-2023-03-23-at-165028.png)
+## Edit a sub-workspace [#edit]
 
-&#x20;       2\. Go to the "Workspaces" page using the left-side menu.
+On the **Workspace Management** page, click a sub-workspace's name or its **Edit** button. The **Update Workspace** panel has the same tabs as when you create one. Click **Save** to keep your changes.
 
-Press "Create workspace". Give it a name and set the process execution setting for the new workspace. Hit "Create" and the new workspace is created and added to the workspaces list.
+### General [#general]
 
-![](/images/docs/4DlGo_6yXgYPDMlYV8jVH_ezcom-maker-3.gif)
+- **Workspace name**: required. The name follows the same rules as when you rename a workspace: at most 100 characters, no `/`, and unique among the sub-workspaces of the master workspace (letter case is ignored). See [Name rules](/rename-a-workspace#name-rules).
+- **Process execution settings**: decides what happens when the account runs out of processing time.
+  - *Suspend process execution on workspace when Company workspace resources reach soft limit to avoid extra cost generated.*
+  - *Do not suspend process execution on workspace when Company workspace resources reach soft limit.* Processes keep running until the account's hard limit is reached, and the extra processing time is charged according to your plan.
 
-Click the open in new tab icon to access the workspace:
+  The **soft limit** is the processing time of your current plan. The **hard limit** is 30% more processing time on top of it. See [Processing time and usage](/processing-time-and-usage).
 
-![](/images/docs/txDIJOm9ml1Fxluv32xhe_screenshot-2023-03-23-at-162808.png)
+  If your account is licensed by threads instead, this setting is **Max threads**: the number of threads the sub-workspace may use.
 
-Now you have successfully accessed the workspace you created. Here you can create processes automation, and integrations to solve all your business needs! 🚀
+<Callout type="info">
+A new sub-workspace uses processing time from the resources of the company (master) workspace. Process execution is suspended when the company workspace reaches the hard limit.
+</Callout>
+
+### Permissions [#permissions]
+
+Here you edit the sub-workspace's **Default Permissions**: the user type and permissions that new members get when they are invited to it. See [Users](/users) and [User Permissions and Roles Management](/user-permissions-and-roles-management).
+
+### Data Retention [#data-retention]
+
+Here you set the sub-workspace's **Process data retention**: whether the data of finished runs is deleted, and when. A process uses this setting when it has no data retention setting of its own. See [Data retention](/data-retention).
+
+### Resource Tracking [#resource-tracking]
+
+The **Record time analytics** switch decides whether time analytics are recorded for the sub-workspace. The change applies as soon as you switch it. The tab also shows the **Time analytics end date** and the **Time analytics storage limit**, or *Not set*.
+
+<Callout type="info">
+**Analytics is off by default for new sub-workspaces.** Turn on **Record time analytics** if you want to see the sub-workspace's processing time in [Analytics](/resource-tracking). While it is off, the analytics screens tell you that analytics is disabled for the workspace.
+</Callout>
+
+The **Resource Tracking** tab is shown when you edit an existing sub-workspace, to Owners, Co-Owners and Admins.
+
+## Other actions on the Workspace Management page [#other-actions]
+
+- **Copy** the ID of a sub-workspace with the copy icon next to its name.
+- Click the number in the **USERS** column to see and invite the sub-workspace's users. See [Users](/users).
+- **Delete** a sub-workspace with the delete icon. To confirm, type the workspace name exactly (the field is case-sensitive).
+
+<Callout type="warn">
+Deleting a sub-workspace deletes all the resources it contains. This can't be undone.
+</Callout>
+
+- **Enable 2FA Enforcement** makes two-factor authentication required in the account's workspaces. See [Two-factor authentication](/two-factor-authentication).
+- Rename the master workspace with the pencil next to its name. See [Rename a workspace](/rename-a-workspace).

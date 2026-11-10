@@ -1,72 +1,59 @@
 ---
-title: "Extract Object"
+title: "Extract Objects"
 icon: "📕"
-description: "The Extract Object action is one of the actions at your disposal to work with Json data. Extract Object enables you to extract a value from a JSON or…"
+description: "Extracts one value, or a list of values, from a JSON object or array with a JSONPath query."
 ---
 
-![](/images/docs/LXBvHmV7N4Z_M0Off3a42_image.png)
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/RW3cRYng1Bg" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-
-<Callout type="warn">
-Extract Object was previously called Json Mapper.
-</Callout>
-
-
-
-The **Extract Object** action is one of the actions at your disposal to work with Json data. Extract Object enables you to extract a value from a JSON or a JSON array.
-
-The action will be able to query/extract data from a JSON input using a [JSONPath expression](https://goessner.net/articles/JsonPath/) and save it to a variable.
+The **Extract Objects** action reads a JSON object, a JSON array or a data model and pulls out the values that match a [JSONPath](https://goessner.net/articles/JsonPath/) query. You get both the first match and the full list of matches, so one action covers "give me this field" and "give me every item that…".
 
 <Callout type="info">
-**You can use this&#x20;**[website](https://www.jsonquerytool.com/)**&#x20;to test your JPath queries.**
+Extract Objects was previously called **JSON Mapper**. It replaces the older **Extract List** action, which is being decommissioned: the **Result List** output gives you the same list.
 </Callout>
 
-### **Overview**
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **JSON** and pick **Extract Objects** (or type *Extract Objects* in the search box).
 
-The action is used to filter the Json data that we will import in our process for future use.
+![The Extract Objects action properties: Input JSON, Query, Result and Result List](/images/docs/actions/json-extract-objects/panel.png)
 
-Input Field 1: “Input JSON” - Input your JSON object / Array or a data model.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input JSON** | Input | JSON | Yes | The JSON object, JSON array or data model to read. You can type it or use a variable. |
+| **Query** | Input | Text | Yes | A JSONPath expression, for example `$.store.book[*].title`. |
+| **Result** | Output | Any type | No | The first value that matches the query. Empty when nothing matches. |
+| **Result List** | Output | List of any type | No | Every value that matches the query. An empty list when nothing matches. |
 
-Input Field 2:  “Query” - The Input Jquery expression for obtaining the desired key value of your Json input.
-
-Output Field1: “Result” ( JSON Object value corresponding to the query)
-
-### How to
-
-&#x20; 1\.    [Create a new process](/docs/overview/processes/process-designer/your-first-process) and give it a name.
-
-&#x20; 2\.    Drag the **Extract Object** action to the canvas and link it to the other actions.
-
-![](/images/docs/zQwckpp_j8tufSmTpN8ey_image.png)
-
-&#x20; 3\.    [Add the needed variables](/docs/overview/processes/process-designer/working-with-process-variables).
-
-![](/images/docs/3-mR2l3PRJjqdm2f1OqXi_image.png)
-
-- ****<span style={{color:'#2166ae'}}>&lt;%input%&gt;</span> will contain the JSon data, the default will use
+## Example [#example]
+**Input JSON**:
 
 ```json
-
-[ { "name": "Eric", "invoicenumber": "INV99901", "duedate": "2021-08-30T07:00:00.000Z", "amount": 122.45, "phonenumber": "0700000000", "emailaddress": "employee@procesio.com" }, { "name": "Chris", "invoicenumber": "INV99902", "duedate": "2021-08-03T07:00:00.000Z", "amount": 144.99, "phonenumber": "0711111111", "emailaddress": "otheremployee@procesio.com" }, { "name": "Diana", "invoicenumber": "INV99903", "duedate": "2021-08-30T07:00:00.000Z", "amount": 99.99, "phonenumber": "0722222222", "emailaddress": "employee@procesio.com" } ]
-
+{
+  "store": {
+    "book": [
+      { "title": "Sapiens", "price": 8.5 },
+      { "title": "Dune", "price": 12, "isbn": "0-441" }
+    ],
+    "bicycle": { "color": "red" }
+  }
+}
 ```
 
-- ****<span style={{color:'#2166ae'}}>&lt;%filter%&gt;</span> will contain the JQuerry expression that we will use on our data. In this exaplte the <span style={{color:'#2166ae'}}>&lt;%filter%&gt;</span> will be `..name`
-- ****<span style={{color:'#2166ae'}}>&lt;%result%&gt;</span> will be our actions output.
+| Query | Result | Result List |
+| --- | --- | --- |
+| `$.store.bicycle.color` | `red` | `["red"]` |
+| `$.store.book[*].title` | `Sapiens` | `["Sapiens", "Dune"]` |
+| `$..book[?(@.price < 10)]` | `{"price": 8.5, "title": "Sapiens"}` | `[{"price": 8.5, "title": "Sapiens"}]` |
+| `$.store.car` (no match) | empty | `[]` |
 
-&#x20; 4\.    Click the **Extract Object** action to access its configurations and add the variables created at the previous space.
+With a JSON array as input, for example `[{"name":"Eric","amount":122.45},{"name":"Chris","amount":144.99}]`, the query `$..name` returns **Result** `Eric` and **Result List** `["Eric", "Chris"]`.
 
-![](/images/docs/o7gAqx-oFPzIsbeM2owPR_image.png)
+## Good to know [#good-to-know]
+- **Result** always holds the *first* match, even when the query matches several values. Use **Result List** when you need all of them.
+- A query that matches nothing does not fail the step: **Result** stays empty and **Result List** is `[]`.
+- If **Input JSON** is not a JSON object or array, the step fails with `The input is not a valid JSON/JArray`.
+- If the query is not valid JSONPath (for example `$[[`), the step fails with the JSONPath parser's message.
+- Matched values keep their JSON type: a number stays a number and an object stays an object. Map **Result** to a variable of the type you expect.
 
-&#x20; 5\.    **Save**, **Validate** and **Run** the process.&#x20;
-
-&#x20; 6\.    The process will ask for the inputs, w could leave the defaults as is for now.
-
-![](/images/docs/WN0-II6eysTBlPPBdlqGy_image.png)
-
-&#x20; 7\.    Click **Run**.
-
-&#x20; 8\.  Click **Check Instance&#x20;**&#x74;o view the results. We will se that the first name from the json was saved in the variable. Keep in mind that the action will extract only one value from a JSON or a JSON array.&#x20;
-
-![](/images/docs/NIPC4Cp8vy8TJBnuSj1I7_image.png)
+## Related actions [#related-actions]
+- [String To JSON](/how-to/parse-json), [Key Value](/how-to/key-value), [JSON Is Valid](/how-to/json-is-valid)
+- [Mapper](/how-to/mapper), the same idea for XML with XPath

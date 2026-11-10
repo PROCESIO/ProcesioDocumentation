@@ -1,40 +1,37 @@
 ---
 title: "List Intersection"
 icon: "⭐"
-description: "This action computes the intersection between two simple lists."
+description: "Returns the items that appear in both of two lists."
 ---
 
-This action computes the intersection between two simple lists.
+**List Intersection** compares two lists and returns the items they have in common. Use it to find customers present in two systems, products that are both ordered and in stock, or ids that appear in two exports.
 
-![](/images/docs/KOEr70n4XpDdXw_RKGKPn_tmp.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Community-Made** and pick **List Intersection** (or type *List Intersection* in the search box).
 
-## Inputs & Outputs
+![The List Intersection action properties: First List, Second List and Intersection](/images/docs/actions/community-made-list-intersection/panel.png)
 
-- **\[ I ] First list:** **List\&lt;**<span style={{color:'#be241f'}}>Object</span>**>** representing the first list (A)
-- **\[ I ] Second list:** **List\&lt;**<span style={{color:'#be241f'}}>Object</span>**>** representing the second list (B)
-- **\[O] Intersection**: **List\&lt;**<span style={{color:'#be241f'}}>Object</span>**>** representing the intersection (&#x41;**∩**&#x42;)
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **First List** | Input | List (any type) | Yes | The first list. Map a list variable. |
+| **Second List** | Input | List (any type) | Yes | The second list. Map a list variable. |
+| **Intersection** | Output | List (any type) | Yes | The items found in both lists, each one once, in the order of **First List**. |
 
-![](/images/docs/CHzKRIXehk3uWa6IXlj-K_tmp.png)
+## Example [#example]
+| First List | Second List | Intersection |
+| --- | --- | --- |
+| `[1, 2, 3, 4, 4]` | `[3, 4, 5]` | `[3, 4]` |
+| `["apple", "Banana", "cherry"]` | `["banana", "cherry"]` | `["cherry"]` |
+| `[1, 2]` | `[]` | `[]` |
 
-## Example Usage
+## Good to know [#good-to-know]
+- **Duplicates are removed**: `4` appears twice in the first list but once in the result.
+- **Text is compared exactly**, case included: `Banana` and `banana` are different items. Make both lists the same case first if needed.
+- An empty list gives an empty result. A list that is not set stops the step with `Input Error: The first list can't be null !` (or *second*).
 
-- Drag action onto the canvas to get familiarized with it.
+## Related actions [#related-actions]
+- [List Difference](/how-to/list-difference), [List Mode](/how-to/list-mode)
 
-![](/images/docs/nQzjIQt2-JmWqYJ_8cb2Q_tmp.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/oXrBZm5W1MPePE8xew-Xi_tmp.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/rp8WZEXJ5r63vPTvvvGgT_tmp.png)
-
-## Use Cases
-
-- Computing the intersection between two simple lists.
-
-## Creator
-
-- **Franck -&#x20;**[The Productivity Lab](https://theproductivitylab.io/)
+## Creator [#creator]
+Franck, [The Productivity Lab](https://theproductivitylab.io/)

@@ -1,23 +1,33 @@
 ---
 title: "Number Input"
-description: "Like the Text Input, it supports regex-based validation, default values, read-only and disabled modes, and full runtime manipulation via the Procesio…"
+description: "The Number Input element collects a number, whole or decimal, and keeps the form from being submitted while the field holds anything else."
 ---
 
-### The Number Input element is purpose-built for capturing numeric data from users. Whether collecting quantities, prices, scores, percentages, or any other numeric value, it enforces numeric input at the browser level while remaining flexible enough to accept both integer and decimal values.
+The Number Input element is built for numeric data: quantities, prices, scores, percentages or any other number. It accepts whole numbers and decimals.
 
-Like the Text Input, it supports regex-based validation, default values, read-only and disabled modes, and full runtime manipulation via the Procesio Forms data model. Use it wherever numeric precision matters and you want to prevent non-numeric entries without writing custom validation logic.
+Like the Text Input, it supports regex-based validation, default values, read-only and disabled modes, and full runtime manipulation via the Procesio Forms data model.
+
+## Entering a number [#entering-a-number]
+
+The field accepts whatever the person types, and checks it as they type:
+
+- A whole number such as `42`, a negative number such as `-8`, or a decimal with a dot, such as `1234.5`, is a number.
+- On phones and tablets the field opens a keyboard for numbers.
+- While the field holds text that is not a number, such as `abc`, the form's **Submit** button is disabled and nothing is sent. Hover the disabled **Submit** button to see the reason: *"Enter a number, for example 1234.5."* As soon as the field holds a number again, **Submit** is enabled.
+
+An empty field does not block **Submit**. Turn on **Required** to make a value mandatory.
 
 ## Key Use Cases
 
-•        Quantity fields, pricing inputs, age or score collection
+•        Quantity fields, pricing inputs, age or score collection
 
-•        Dynamically updating a total or calculated field at runtime by setting value
+•        Dynamically updating a total or calculated field at runtime by setting value
 
-•        Setting min/max constraints via regex or external form logic
+•        Setting min/max constraints via regex or external form logic
 
-•        Locking a numeric field after a process step by toggling readonly at runtime
+•        Locking a numeric field after a process step by toggling readonly at runtime
 
-•        Pre-filling budget, quota, or threshold values from process variables on form load
+•        Pre-filling budget, quota, or threshold values from process variables on form load
 
 ## Runtime API — Attributes in Procesio Forms
 

@@ -2,8 +2,10 @@
   "title": "Scripting",
   "icon": "📁",
   "pages": [
+    "javascript",
+    "python",
     "node",
     "ruby",
-    "python"
+    "curl"
   ]
 }

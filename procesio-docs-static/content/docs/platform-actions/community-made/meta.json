@@ -3,12 +3,12 @@
   "icon": "❤️",
   "pages": [
     "timezone-converter",
-    "list-correlation",
-    "list-standard-deviation",
-    "list-variance",
-    "list-mode",
     "temperature-converter",
     "list-intersection",
-    "list-difference"
+    "list-difference",
+    "list-mode",
+    "list-standard-deviation",
+    "list-variance",
+    "list-correlation"
   ]
 }

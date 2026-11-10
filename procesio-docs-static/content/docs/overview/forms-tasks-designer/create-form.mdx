@@ -69,11 +69,23 @@ In the form settings panel, you can configure your form's details, including its
 
 ### Technical Customization with Code
 
-For advanced users, there's an option to **switch to code** view, allowing you to add extra rules, and events using JavaScript and additional styling with CSS, using controls' IDs. You can easily switch back to the drag-and-drop builder when needed.
-
-The sky is the limit!&#x20;
+For advanced users, the form settings have a **Switch to code** button. It opens a code view with a **CSS** tab and a **Javascript** tab, where you add your own styling and a script that runs when the form opens. **Switch to Builder** takes you back to the drag-and-drop view. See [Custom code (JavaScript and CSS)](/custom-code).
 
 ![](/images/docs/TgFNLXlUDsfhGzLWNh5fZ_form-code-builder.gif)
+
+### Side tabs [#side-tabs]
+
+The icons on the right edge of the Form Designer open panels with settings for the whole form. Hover an icon to see its name.
+
+| Side tab | What you set there |
+| --- | --- |
+| **Form variables** | Variables the form can use in scripts and mappings, besides its fields. |
+| **Dashboard app settings** | Show the form as an application card on the workspace Dashboard. See [Form applications](/form-applications). |
+| **Form notifications** | Send an e-mail when the form is submitted, or when a submission fails. See [Form notifications](/form-notifications). |
+| **Flow settings** | Choose form fields to show as extra columns in the form's **Chains** list. See [Form chains](/form-chains). |
+| **Custom URL** | Give the form a readable address of your own. It appears after the form is first saved, in workspaces where custom URLs are set up. See [Custom URLs](/custom-urls). |
+
+**Form notifications** and **Flow settings** are saved with the form: after you change them, save the form and publish it again. **Dashboard app settings** and **Custom URL** are saved as soon as you click **Save** in their panel.
 
 ### The Toolbar
 
@@ -87,41 +99,42 @@ The controls are categorized under 2 tabs:
 
 **Fields:**
 
-1. [Text Input](&lt;../spaces/SPACES/Overview/Text Input.md>)
-2. [Number Input](&lt;../spaces/SPACES/Overview/Number Input.md>)
-3. [Date-time Input](&lt;../spaces/SPACES/Overview/Date-time Input.md>)
-4. [Textarea](../spaces/SPACES/Overview/Textarea.md)
-5. [Select Input](&lt;../spaces/SPACES/Overview/Select Input.md>)
-6. [Checkbox](../spaces/SPACES/Overview/Checkbox.md)
-7. [Radio Button](&lt;../spaces/SPACES/Overview/Radio Button.md>)
-8. [Button](../spaces/SPACES/Overview/Button.md)
-9. [Dropdown](../spaces/SPACES/Overview/Dropdown.md)
-10. [File Upload](&lt;../spaces/SPACES/Overview/File Upload.md>)
-11. [Signature Pad](&lt;../spaces/SPACES/Overview/Signature Pad.md>)
-12. [Approval](../spaces/SPACES/Overview/Approval.md)
-13. [Dynamic Assignee across forms](&lt;../spaces/SPACES/Overview/Dynamic Assignee across forms.md>)
-14. [Chat](../spaces/SPACES/Overview/Chat.md) &#x20;
+1. [Text Input](/text-input)
+2. [Number Input](/number-input)
+3. [Date-time Input](/date-time-input)
+4. [Textarea](/textarea)
+5. [Select Input](/select-input)
+6. [Checkbox](/checkbox)
+7. [Radio Button](/radio-button)
+8. [Button](/button)
+9. [Dropdown](/dropdown)
+10. [File Upload](/file-upload)
+11. [Signature Pad](/signature-pad)
+12. [Document Signing](/document-signing)
+13. [Approval](/approval)
+14. [Dynamic Assignee across forms](/dynamic-assignee-across-forms)
+15. [Chat](/chat)
 
 **Structure**:
 
-1. [Section](../spaces/SPACES/Overview/Section.md)
-2. [List](../spaces/SPACES/Overview/List.md)
-3. [Columns](../spaces/SPACES/Overview/Columns.md)
-4. [Stepper](../spaces/SPACES/Overview/Stepper.md)
-5. [Divider](../spaces/SPACES/Overview/Divider.md)
-6. [Tabs](../spaces/SPACES/Overview/Tabs.md)
-7. [Side Panel](&lt;../spaces/SPACES/Overview/Side Panel.md>)
-8. [Heading](../spaces/SPACES/Overview/Heading.md)
-9. [Paragraph](../spaces/SPACES/Overview/Paragraph.md)
-10. [Image](../spaces/SPACES/Overview/Image.md)
-11. [File Viewer](&lt;../spaces/SPACES/Overview/File Viewer.md>)
-12. [Icon](../spaces/SPACES/Overview/Icon.md)
+1. [Section](/section)
+2. [List](/list)
+3. [Columns](/columns)
+4. [Stepper](/stepper)
+5. [Divider](/divider)
+6. [Tabs](/tabs)
+7. [Side Panel](/side-panel)
+8. [Heading](/heading)
+9. [Paragraph](/paragraph)
+10. [Image](/image)
+11. [File Viewer](/file-viewer)
+12. [Icon](/icon)
 
 **Table**:
 
-1. [Data Table](&lt;../spaces/SPACES/Overview/Data Table.md>)
-2. [Static Table Row](&lt;../spaces/SPACES/Overview/Static Table Row.md>)
-3. [Dynamic Table Row](&lt;../spaces/SPACES/Overview/Dynamic Table Row.md>)
+1. [Data Table](/data-table)
+2. [Static Table Row](/static-table-row)
+3. [Dynamic Table Row](/dynamic-table-row)
 
 You can easily find and add any field to your form. Drag fields from the panel on the left to your main view, to the place where you want them to be. You can reposition them afterward. Each element comes with a **Settings panel** that lets you control its appearance and behavior.&#x20;
 
@@ -159,7 +172,7 @@ The Text input field can be used for short and general text input.
 
 ### Number input
 
-The Number input field permits input of numeric values, restricting non-numeric characters.
+The Number input field collects whole numbers and decimals. The form can't be submitted while the field holds text that is not a number. See [Number Input](/number-input).
 
 ### Date-time input
 

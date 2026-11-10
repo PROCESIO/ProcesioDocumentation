@@ -1,47 +1,59 @@
 ---
 title: "Format DateTime"
 icon: "📕"
-description: "&x20; This action transform a DateTime to String, using a custom format specification."
+description: "Turns a date and time into text, in exactly the format and language you write."
 ---
 
-&#x20; This action transform a <span style={{color:'#ff9307'}}>DateTime</span> to <span style={{color:'#1c417e'}}>String</span>, using a custom format specification.
+**Format DateTime** writes a Date and time value as text, in a format you write yourself, for example `Saturday, 15 June 2024` or `2024-06-15_1345`. Use it for file names, email subjects, documents and API fields that expect a specific date shape. If one of the standard shapes is enough, [DateTime To String](/how-to/datetime-to-string) lets you pick it from a list.
 
-![](/images/docs/2dWHH022kJdZQikkfM2HR_tdy.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Format DateTime** (or type *Format DateTime* in the search box).
 
-## Inputs & Outputs
+![The Format DateTime action properties: Datetime, Language, Format and Formatted Datetime](/images/docs/actions/datetime-format-datetime/panel.png)
 
-- **\[ I ] Datetime:** <span style={{color:'#ff9307'}}>DateTime</span> to be transformed.
-- **\[ I ] Language**: Language to be used for month names and days of the week when formatting.
-  - <span style={{color:'#00ced1'}}>Drop-down</span> with **multiple languages.**
-- **\[ I ] Format**: <span style={{color:'#1c417e'}}>String</span> representing the wanted format.
-- **\[O] Formatted datetime**: <span style={{color:'#1c417e'}}>String</span> representing the formatted date.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Datetime** | Input | Date and time | Yes | The date and time to format. |
+| **Language** | Input | Option list | Yes | The language for month and day names. Options: Română (RO), English (UK), English (US), Ελληνικά (GR), Español (ES), 中国人 (CN), Pусский (RU), Deutsch (DE), हिन्दी (IN), عربي (UAE), Français (FR). Default English (US). |
+| **Format** | Input | Text | Yes | The format to write, built from the codes below. |
+| **Formatted Datetime** | Output | Text | Yes | The date as text. |
 
-![](/images/docs/BQLI_tTHTZV2H0NOpe20l_tdy.png)
+## Format codes [#format-codes]
+| Code | Meaning | Example (15 June 2024, 13:45:30) |
+| --- | --- | --- |
+| `yyyy` / `yy` | Year | `2024` / `24` |
+| `MM` / `M` | Month number | `06` / `6` |
+| `MMM` / `MMMM` | Month name, short / full | `Jun` / `June` |
+| `dd` / `d` | Day of the month | `15` |
+| `ddd` / `dddd` | Day name, short / full | `Sat` / `Saturday` |
+| `HH` | Hour, 24-hour clock | `13` |
+| `hh` + `tt` | Hour, 12-hour clock, with AM/PM | `01 PM` |
+| `mm` | Minutes | `45` |
+| `ss` | Seconds | `30` |
+| `zzz` | UTC offset | `+00:00` |
+| `'text'` | Fixed text, copied as it is | `'Report of'` |
 
-## Example Usage
+The full list is in Microsoft's [custom date and time format strings](https://learn.microsoft.com/dotnet/standard/base-types/custom-date-and-time-format-strings).
 
-- Drag action onto the canvas to get familiarized with it.
+## Example [#example]
+All rows use the **Datetime** `2024-06-15T13:45:30`.
 
-![](/images/docs/2GB_tZ6EzBSC-G8vCYsjL_tdy.png)
+| Language | Format | Formatted Datetime |
+| --- | --- | --- |
+| English (US) | `dddd, dd MMMM yyyy HH:mm` | `Saturday, 15 June 2024 13:45` |
+| Română (RO) | `dddd, dd MMMM yyyy HH:mm` | `sâmbătă, 15 iunie 2024 13:45` |
+| Français (FR) | `dd MMM yyyy` | `15 juin 2024` |
+| English (US) | `hh:mm tt` | `01:45 PM` |
+| English (US) | `yyyy-MM-ddTHH:mm:ss` | `2024-06-15T13:45:30` |
+| English (US) | `'Report of' d MMM` | `Report of 15 Jun` |
+| English (US) | `d` | `6/15/2024` |
 
-- Declare some variables to be used with the action.
+## Good to know [#good-to-know]
+- **One letter alone is a standard format**, not a code: `d` gives the short date (`6/15/2024`), not the day `15`. To get only the day number, use [Get Day](/how-to/get-day).
+- **Words in the format need single quotes**, otherwise their letters are read as codes: write `'Report of' d MMM`, not `Report of d MMM`.
+- **Time zone:** a value with a UTC offset is converted to UTC first. `2024-06-15T13:45:30+03:00` with `yyyy-MM-dd HH:mm zzz` gives `2024-06-15 10:45 +00:00`. To show local time, convert it first with [Timezone Converter](/how-to/timezone-converter).
+- An empty **Format** stops the step with `Format Error: Please provide a non-empty Format !`. A format that is not valid (for example `%` alone) stops it with `Input string was not in a correct format.`
 
-![](/images/docs/jUg5IdRlbLNfNbOmzS21X_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/opV49FzkT8-SfTezIoow4_tdy.png)
-
-## Use Cases
-
-- Formatting <span style={{color:'#ff9307'}}>DateTime</span> values into a more human readable format.
-- Translating month names or days of the week from one language to another using the [Parse <span style={{color:'#ff9307'}}>DateTime</span>](/docs/platform-actions/call-api/parse-datetime) and **Format <span style={{color:'#ff9307'}}>DateTime</span>** actions together.
-
-## Tips
-
-- The **Format** field uses standard .NET format specifiers which are documented [here](https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings).
-- The **Language** selector picks which language should be used when the wanted format contains :
-  - **Month names**: June (UK) 🆚 Iunie (RO) 🆚 Juin (FR)
-  - **Days of the week**: Monday (UK) 🆚 Luni (RO) 🆚 Lundi (FR)
-  - **Abbreviations**&#x20;
+## Related actions [#related-actions]
+- [DateTime To String](/how-to/datetime-to-string), [String To DateTime](/how-to/string-to-datetime), [Timezone Converter](/how-to/timezone-converter)

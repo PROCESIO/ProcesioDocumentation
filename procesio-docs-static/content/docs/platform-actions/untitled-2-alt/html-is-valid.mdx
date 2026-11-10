@@ -1,0 +1,38 @@
+---
+title: "HTML Is Valid"
+icon: "📕"
+description: "Checks that every tag in an HTML text is properly closed and nested. The step fails when it is not."
+---
+
+The **Is Valid** action in the **HTML** folder checks that the tags of an HTML text are properly closed and correctly nested, for example before you send the HTML as an email body or convert it to PDF. It has no output: the step **succeeds** when the HTML is valid and **fails** when it is not, with the line and column of each problem.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **HTML** and pick **Is Valid**. The JSON, XML and PDF folders each have an action with the same name, so check the folder.
+
+![The HTML Is Valid action properties: HTML input](/images/docs/actions/html-is-valid/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **HTML input** | Input | Text | Yes | The HTML text to check. |
+
+The action has no output. The result is the step status.
+
+## What happens [#what-happens]
+| HTML input | Step result |
+| --- | --- |
+| `<div><p>Hello</p><br></div>` | Succeeds |
+| `<p>Line<br>Next</p><img src="a.png">` | Succeeds (empty elements such as `<br>` and `<img>` need no closing tag) |
+| `plain text` | Succeeds |
+| `<div><p>Hello</div>` | Fails: `HTML is not valid. Validation Errors: Error at Line 1, Column 5 - End tag </p> was not found` |
+| `<div><p>Hello` | Fails and lists both problems: `End tag </div> was not found` and `End tag </p> was not found` |
+| empty | Fails: `HTML input is null.` |
+
+## Good to know [#good-to-know]
+- The check covers closing and nesting of tags only. It does not check attribute names, required elements such as `<html>` or `<title>`, or accessibility.
+- Connect the action's error port if invalid HTML should not stop the process.
+- [HTML To JSON](/how-to/html-to-json) runs the same check before converting.
+
+## Related actions [#related-actions]
+- [Sanitizer](/how-to/html-sanitizer), [HTML Manipulation](/how-to/html-manipulation), [HTML To PDF](/how-to/html-to-pdf)
+- [JSON Is Valid](/how-to/json-is-valid), [XML Is Valid](/how-to/xml-is-valid), [PDF Is Valid](/how-to/pdf-is-valid)

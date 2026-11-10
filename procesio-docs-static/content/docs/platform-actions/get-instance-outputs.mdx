@@ -1,0 +1,39 @@
+---
+title: "Get Instance Outputs"
+icon: "📕"
+description: "Reads the output variables of a finished run of another process, by its run ID, into variables of the current process."
+---
+
+**Get Instance Outputs** reads the output variables of a run (instance) of another process and copies them into variables of the current process. You give it the run ID; it does not start anything. Use it together with [Trigger Subprocess](/how-to/trigger-subprocess), which starts a run without waiting for it, to collect that run's results later.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, pick **Get Instance Outputs** (or type *Instance Outputs* in the search box).
+
+![The Get Instance Outputs action properties: Select Process, InstanceId and the Process Configuration card](/images/docs/actions/get-instance-outputs/panel.png)
+
+1. In **Select Process**, pick the process the run belongs to. This tells the action which output variables exist.
+2. In **InstanceId**, put the ID of the run, usually from a variable (for example the **Subprocess Instance Id** of a Trigger Subprocess, or an `Id` from [Get Recent Instances](/how-to/get-recent-instances)).
+3. Click the **Process Configuration** card. Under **Output Variables**, map each output variable of the selected process (left) to a variable of the current process (right).
+
+![The Process Configuration panel: Output Variables mapping with + Add process output](/images/docs/actions/get-instance-outputs/configuration.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select Process** | Input | Process | Yes | The process the run belongs to. |
+| **InstanceId** | Input | Text (ID) | Yes | The ID of the run to read. It must be a run of the current workspace. |
+| **Output Variables** | Output | Mapping | Yes | Which output variables of that run go into which variables of the current process. |
+
+## Example [#example]
+A main process starts *Calculate quote* with [Trigger Subprocess](/how-to/trigger-subprocess) and stores the **Subprocess Instance Id** in `quoteRunId`. Later in the main process, **Get Instance Outputs** with **Select Process** *Calculate quote*, **InstanceId** `quoteRunId`, maps the subprocess's output `totalPrice` to the main process's variable `quoteTotal`.
+
+## Good to know [#good-to-know]
+- **The run must have finished successfully.** If it is still running or waiting, the step fails with *"The child flow status should not be: …"*. Check the status first with [Get Recent Instances](/how-to/get-recent-instances), or wait with a [Delay](/how-to/delay).
+- **If the run failed**, the step fails with the error message of the action that failed in that run.
+- **If the run was stopped by a user**, the step fails with *"The child flow was stopped by user."*
+- **The run must belong to your workspace.** A run from another workspace is refused with *"Unauthorized access of a FlowInstance from a different workspace."*; an unknown ID fails with *"Couldn't find the flow instance …"*.
+- Only the output variables you map are copied. A mapping row without a source variable makes the step fail with *"One of the output variables of the subprocess flow is null or empty!"*.
+
+## Related actions [#related-actions]
+- [Trigger Subprocess](/how-to/trigger-subprocess), [Call Subprocess](/how-to/call-subprocess)
+- [Get Recent Instances](/how-to/get-recent-instances), [Count Recent Instances](/how-to/count-recent-instances)

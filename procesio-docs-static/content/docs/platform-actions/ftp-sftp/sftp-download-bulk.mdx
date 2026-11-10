@@ -1,7 +1,37 @@
 ---
-title: "SFTP Download Bulk"
+title: "Download Bulk"
 icon: "📕"
-description: "Downloads several files from an SFTP server in one step."
+description: "Downloads a list of files from an SFTP or FTP server in one step, over up to 20 parallel connections."
 ---
 
-🔜coming soon🔜
+**Download Bulk** downloads several files from your SFTP or FTP server in a single step and returns them as a list of files. It takes the list produced by [Get File List](/how-to/get-file-list), so a typical process is *Get File List → (filter) → Download Bulk*. Files that fail don't stop the others: each failure is reported in **Errors**.
+
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential).
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Download Bulk** (or type *Download Bulk* in the search box).
+
+![The Download Bulk action properties: From SFTP credentials, Files, SFTP Connections, Result and Errors](/images/docs/actions/sftp-download-bulk/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **From SFTP credentials** | Input | FTP credential | Yes | The credential of the server to read from. |
+| **Files** | Input | List of SFTPFilesInformation | Yes | The files to download, usually the **Output** of [Get File List](/how-to/get-file-list). Each entry needs its `path`. |
+| **SFTP Connections** | Input | Integer | No | How many files are downloaded in parallel, from `1` (default) to `20`. |
+| **Result** | Output | List of File | Yes | The files that were downloaded. |
+| **Errors** | Output | List of Text | Yes | One message for each file that could not be downloaded. |
+
+## Example [#example]
+**Files** is the list returned by Get File List for the folder `inbox` (three files), **SFTP Connections** `3` → **Result** holds the three files, ready to loop over with a For Each or to pass to another action.
+
+## Good to know [#good-to-know]
+- **Some files are skipped without an error.** Before downloading, the action leaves out entries without a `path`, files whose extension isn't allowed on your PROCESIO platform, and files larger than the platform's file size limit. It also stops adding files once the total reaches 1 GB (calculated from the `size` values in the list). Skipped files are not in **Result** and not in **Errors**, so compare the number of files in **Result** with the number you sent if it matters.
+- An empty **Files** list is accepted: the step finishes and returns nothing.
+- Values outside 1–20 in **SFTP Connections** are brought back to the nearest limit.
+- If the connection itself fails, the step fails with *"Error while trying to download files from folder."*
+- To download a single file by name, use [Download File](/how-to/download-file).
+
+## Related actions [#related-actions]
+- [Get File List](/how-to/get-file-list), [Download File](/how-to/download-file), [Move Bulk](/how-to/move-bulk), [Delete Bulk](/how-to/sftp-delete-bulk)

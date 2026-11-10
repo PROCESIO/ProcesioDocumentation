@@ -1,28 +1,39 @@
 ---
 title: "Acroform Insert Image"
 icon: "📕"
-description: "The Acroform Insert Image action inserts an image into a PDF file to a location where a marker of type Acroform Field Name is set. The image will be…"
+description: "Places an image, such as a signature or a stamp, where a named form field sits in a PDF."
 ---
 
-## Overview
+The **Acroform Insert Image** action puts an image into a PDF at the place of a form field (an *AcroForm* field). Prepare the PDF once with an empty field where the signature, stamp or logo should go; the action then fills that spot with the image you give it.
 
-The `Acroform Insert Image` action inserts an image into a PDF file to a location where a marker of type Acroform Field Name is set. The image will be inserted in the boundaries of the Acroform Field.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **PDF** and pick **Acroform Insert Image** (or type *Acroform* in the search box).
 
-![](/images/docs/A5hAfxm3G6ITSxj0hYsrL_image.png)
+![The Acroform Insert Image action properties: Pdf In, Marker Name, Image, Pdf Out and Debug](/images/docs/actions/pdf-acroform-insert-image/panel.png)
 
-### Parameters
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Pdf In** | Input | File | Yes | The PDF that contains the form field. |
+| **Marker Name** | Input | Text | Yes | The name of the form field that marks where the image goes, for example `signature`. |
+| **Image** | Input | File | Yes | The image: `.jpg`, `.jpeg`, `.png` or `.gif`. |
+| **Pdf Out** | Output | File | Yes | The PDF with the image in place. It keeps the input file's name. |
+| **Debug** | Output | JSON | No | What happened to the field: `{"Key": …, "State": …}`. |
 
-### Inputs
+## Example [#example]
+**Pdf In** `form.pdf` (one text field named `signature`), **Image** `stamp.png`:
 
-- **PDF in** (`file`). The input PDF. It must contain an Acroform Field.
-- **Marker name** (`string`). The name of the Acroform Field.
-- **Image** (`file`). The image to be added where the Acroform Field is defined.
+| Marker Name | Debug |
+| --- | --- |
+| `signature` | `{"Key":"signature","State":"Found on page 1 and updated successfully."}` |
+| `nothere` | `{"Key":"nothere","State":"Not found in PDF."}` |
 
-### Outputs
+## Good to know [#good-to-know]
+- The image is scaled to fit inside the field's box, keeping its proportions, and centred in it. The field itself is removed from the page.
+- If the field appears on several pages, the image is placed on each of them, and **Debug** lists the pages.
+- A field name that does not exist does **not** fail the step: **Pdf Out** is returned without the image. Check **Debug** (`Not found in PDF.`) if the image must be there.
+- Other image types fail the step with `Input error: Image extension should be one of '.jpg', '.png', '.gif' or '.jpeg' !`
+- When you insert several images into the same PDF with consecutive actions, chain them starting with the highest-numbered marker, for example `supplier.signature.3`, then `supplier.signature.2`, then `supplier.signature.1`.
 
-- **PDF in** (`file`): The output.
-
-## Important Notes
-
-- Chaining multiple actions is possible only by starting with the highest number marker before others.
-  - Example: `supplier.signature.3``  →  ``supplier.signature.2``  →  ``supplier.signature.1`
+## Related actions [#related-actions]
+- [Merge Files](/how-to/merge-files), [PDF Is Valid](/how-to/pdf-is-valid), [HTML To PDF](/how-to/html-to-pdf)

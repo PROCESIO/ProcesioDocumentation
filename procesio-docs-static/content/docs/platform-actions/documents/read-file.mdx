@@ -1,0 +1,37 @@
+---
+title: "File To String"
+icon: "📕"
+description: "Reads the whole content of a text file into a text variable."
+---
+
+**File To String** reads a file and gives you its content as text. Use it to read a `.txt`, `.csv`, `.json`, `.xml` or `.html` file that a user uploaded or that another action produced, so that you can parse it or send it further.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Documents** and pick **File To String** (or type *File To String* in the search box).
+
+![The File To String action properties: File, Encoding and Content](/images/docs/actions/documents-file-to-string/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **File** | Input | File | Yes | The file to read. |
+| **Encoding** | Input | Option | Yes | The character set the file was saved in. Default **UTF8**. Also: UTF32, ASCII, Unicode (UTF-16), BigEndianUnicode, Latin1 and Windows code pages 1250–1258. |
+| **Content** | Output | Text | Yes | The content of the file. |
+
+## Example [#example]
+A file `hello.txt` saved as UTF-8 with the lines `Hello, PROCESIO!` and `Second line ăîș`:
+
+| Encoding | Content |
+| --- | --- |
+| UTF8 | `Hello, PROCESIO!` and `Second line ăîș` on two lines |
+| Latin1 | `Hello, PROCESIO!` is right, but each letter with a diacritic turns into two other characters (`î` becomes `Ã®`) |
+
+## Good to know [#good-to-know]
+- Pick the encoding the file was saved in. A wrong choice does not fail the step; it only gives wrong characters.
+- A byte order mark (BOM) at the start of the file is recognised and not included in **Content**.
+- Line breaks are kept as they are in the file.
+- The action is meant for text. A binary file (PDF, image, Excel, zip) gives unreadable text; use [File To Base64](/how-to/file-to-base64) to carry such a file as text.
+- To turn the text into an object, follow with a JSON action. To read several files at once, use [Read Files Content](/how-to/read-files-content).
+
+## Related actions [#related-actions]
+- [Read Files Content](/how-to/read-files-content), [Object To File](/how-to/object-to-file), [File To Base64](/how-to/file-to-base64)

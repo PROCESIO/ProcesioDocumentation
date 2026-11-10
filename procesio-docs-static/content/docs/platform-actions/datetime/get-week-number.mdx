@@ -1,48 +1,43 @@
 ---
 title: "Get Week Number"
 icon: "📕"
-description: "This action returns the week number for a DateTime.&x20;"
+description: "Returns the week of the year a date falls in, using the week rules you choose."
 ---
 
-This action returns the week number for a <span style={{color:'#ff9307'}}>DateTime</span>.&#x20;
+**Get Week Number** returns the number of the week of the year that a date falls in, for example `46`. Use it for weekly reports, weekly folders or to group records by week. You choose which day starts the week and how the first week of the year is counted.
 
-**Obs:** The week number indicates where the week falls numerically within a year.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Get Week Number** (or type *Get Week Number* in the search box).
 
+![The Get Week Number action properties: Date, First Week Rule, First Day Of Week and Week Number](/images/docs/actions/datetime-get-week-number/panel.png)
 
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Date** | Input | Date and time | Yes | The date to get the week number for. |
+| **First Week Rule** | Input | Option list | Yes | How week 1 of the year is chosen. See the options below. |
+| **First Day Of Week** | Input | Option list | Yes | **Sunday** or **Monday**: the day each week starts on. |
+| **Week Number** | Output | Integer | Yes | The week of the year, from `1` to `53` (`54` in rare cases with **FirstDay**). |
 
-![](/images/docs/vEicfs6FML4ql8QOLhXTy_image.png)
+**First Week Rule** options:
+- **FirstDay**: week 1 is the week that contains 1 January, however few days of it are in the new year.
+- **FirstFullWeek**: week 1 starts on the first **First Day Of Week** of the year. Days before it belong to the last week of the previous year.
+- **FirstFourDayWeek**: week 1 is the first week that has at least four days in the new year.
 
-## Inputs & Outputs
+## Example [#example]
+| Date | First Week Rule | First Day Of Week | Week Number |
+| --- | --- | --- | --- |
+| `2026-11-10` | FirstDay | Sunday | `46` |
+| `2026-11-10` | FirstFourDayWeek | Monday | `46` |
+| `2027-01-01` (a Friday) | FirstDay | Monday | `1` |
+| `2027-01-01` | FirstFullWeek | Monday | `52` |
+| `2027-01-01` | FirstFourDayWeek | Monday | `53` |
+| `2024-12-30` (a Monday) | FirstFourDayWeek | Monday | `53` |
 
-- **\[ I ] Date**: <span style={{color:'#ff9307'}}>DateTime</span> for which to get the week number.
-- **\[ I ] First week rule:** <span style={{color:'#00ced1'}}>Drop-down</span>
-  - **First Day** ➜ Indicates that the first week of the year starts on the first day of the
-    &#x20;year and ends before the following designated first day of the week.
-  - **First Full Week** ➜ Indicates that the first week of the year is the first week with four or more days before the designated first day of the week.
-  - **First Four Day Week&#x20;**➜ Indicates that the first week of the year begins on the first occurrence
-    &#x20;of the designated first day of the week on or after the first day of the year.
-- **\[ I ] First day of week:** <span style={{color:'#00ced1'}}>Drop-down</span>
-  - **Sunday&#x20;**➜ Uses Sunday as first day of the week.
-  - **Monday&#x20;**➜ Used Monday as first day of the week.
-- **\[ O ] Week number**: <span style={{color:'#0039e3'}}>Integer</span> representing the extracted week number.
+## Good to know [#good-to-know]
+- The result is always counted inside the calendar year of the date. Early-January and late-December dates can get `52` or `53`.
+- **FirstFourDayWeek** with **Monday** is close to the ISO 8601 week, but not the same at the end of the year: ISO puts `2024-12-30` in week 1 of 2025, this action returns `53`. Check the last days of December if you need strict ISO weeks.
+- A date with a UTC offset is first converted to UTC. An empty **Date** stops the step with an error.
 
-![](/images/docs/d4PXzv3pHLokG5Cf6MJjX_tdy.png)
-
-## Example Usage
-
-- Drag action onto canvas to get familiarized with it.
-
-![](/images/docs/F_UPAxpyhZQO669Tu0J8g_tdy.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/prqK4m6pZAcSH3ypKErpj_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/scZ82wRvHqYAY6S9rAemL_tdy.png)
-
-## Use Cases
-
-- Determining the week number for a given date.
+## Related actions [#related-actions]
+- [Get Day Of Week](/how-to/get-day-of-week), [Format DateTime](/how-to/format-datetime)

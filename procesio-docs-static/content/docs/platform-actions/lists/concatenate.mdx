@@ -1,0 +1,41 @@
+---
+title: "Concatenate"
+icon: "📕"
+description: "Joins two lists into one new list: the elements of the first list followed by those of the second."
+---
+
+The **Concatenate** action (List) creates a new list that contains all elements of the first list followed by all elements of the second list. It works with simple lists and with lists of data models. The two input lists are not changed.
+
+<Callout type="info">
+This action was previously called **Concatenate Lists**. To join two pieces of text, use the String **Concatenate** action instead.
+</Callout>
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Concatenate** (or type *Concatenate* in the search box — make sure you pick the one in the **List** folder).
+
+![The List Concatenate action properties: First list, Second list and Concatenated list](/images/docs/actions/list-concatenate/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **First list** | Input | List of any type | Yes | The elements that come first. |
+| **Second list** | Input | List of any type | Yes | The elements appended after the first list. |
+| **Concatenated list** | Output | List | Yes | The combined list. |
+
+## Example [#example]
+| First list | Second list | Concatenated list |
+| --- | --- | --- |
+| `[1,2]` | `[2,3]` | `[1,2,2,3]` (duplicates are kept) |
+| `[{"id":1}]` | `[{"id":2}]` | `[{"id":1},{"id":2}]` |
+| `["a"]` | `[1,{"id":2}]` | `["a",1,{"id":2}]` |
+| `[]` | `[1]` | `[1]` |
+| `[]` | `[]` | `[]` |
+
+## Good to know [#good-to-know]
+- Order is preserved: first-list elements, then second-list elements.
+- Duplicates are not removed. Use [DeDuplicate](/how-to/deduplicate) or [Find Duplicates](/how-to/find-duplicates) afterwards if you need unique values.
+- An empty list (or a list variable with no value) on either side simply contributes no elements.
+- To merge more than two lists, chain several Concatenate actions. To add a single element, use [Add](/how-to/list-add).
+
+## Related actions [#related-actions]
+- [Add](/how-to/list-add), [DeDuplicate](/how-to/deduplicate), [Sublist](/how-to/sublist), [List To String](/how-to/list-tostring)

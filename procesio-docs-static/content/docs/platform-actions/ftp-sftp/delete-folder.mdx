@@ -1,61 +1,37 @@
 ---
 title: "Delete Folder"
 icon: "📕"
-description: "Delete Folder, enables you to delete a folder within the specified location. All files & folders under the folder being deleted will also be removed."
+description: "Deletes a folder, and everything in it, from an SFTP or FTP server."
 ---
 
-![](/images/docs/M0eJCtGf-p_t3dROXxrqv_image.png)
+**Delete Folder** removes a folder from your SFTP or FTP server, together with all the files and subfolders inside it.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/HPnUWFNmISk" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential).
 
-Delete Folder, enables you to delete a folder within the specified location. All files & folders under the folder being deleted will also be removed.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Delete Folder** (or type *Delete Folder* in the search box).
 
-### **FTP connection****&#xFEFF;**
+![The Delete Folder action properties: Select SFTP credentials, Source Folder, Folder Name and Result](/images/docs/actions/sftp-delete-folder/panel.png)
 
-For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select SFTP credentials** | Input | FTP credential | Yes | The credential of the server. |
+| **Source Folder** | Input | Text | No | The folder that contains the folder to delete, relative to the credential's **Directory path**. Leave empty for the root folder. |
+| **Folder Name** | Input | Text | Yes | The name of the folder to delete. |
+| **Result** | Output | Boolean | Yes | `true` if the folder was removed, `false` if not. |
 
-&#x20; Step 1:    Go to the **Credentials Manager** section and click **Add New**.
+## Example [#example]
+**Source Folder** `archive`, **Folder Name** `2024` → `archive/2024` and everything inside it are removed, and **Result** is `true`.
 
-&#x20; Step 2:    Give your credential a **Name\*** and **Description&#x20;**(optional) and click **Next step**.
+<Callout type="warn">
+Everything under the folder is deleted, and this can't be undone. Check the values, especially when they come from variables.
+</Callout>
 
+## Good to know [#good-to-know]
+- Names are case-sensitive on most SFTP servers.
+- If the server returns an error, the step fails with *"Error while trying to delete folder"*.
 
-![](/images/docs/dgFaPs73JJzkVlV4Rrcy1_image.png)
-
-&#x20; **Step 3**:    Configure the FTP / sFTP connection as needed:
-
-- **Port number\*** - the port number used by the server.
-- **Protocol type** - the protocol used depending on the encryption.
-- **Directory path** - the entry point of the server.
-- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
-
-![](/images/docs/0vb5-R6DkOrnXaj13SU55_image.png)
-
-&#x20; Step 4:    Click **Test connection&#x20;**&#x61;nd if successful click **Save**.
-
-### **Create the process****&#xFEFF;**
-
-&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
-
-&#x20; **Step 2**:    Give you process a name.
-
-&#x20; **Step 3**:    Drag the action **Delete Folder** on the canvas and link the action inside you process.
-
-![](/images/docs/bgEZ9CdLl_XG_E0WPIzWj_image.png)
-
-&#x20; **Step 4**:    Create the <span style={{color:'#2166ae'}}>&lt;%result%&gt;</span> Boolean variable of type output.
-
-![](/images/docs/FsZRoX6ESKI8oMnLlBncL_image.png)
-
-&#x20; **Step 5**:    Click the **Delete Folder&#x20;**&#x61;ction to access its configurations.
-
-- **Node name\*** - gives you the option to change the actions name.
-- **Choose server type\*** - here we will select the connection created in the previous section.
-- **Source folder** - allows you to select the path to the folder you wish to create.
-- **Folder name** - the name of the new folder that will be deleted.
-- **Result\*** - here we will add the variable created at Step 4.
-
-![](/images/docs/wLmc0_BcQwWo-hdUCCWHP_image.png)
-
-&#x20; **Step 6**:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-&#x20; **Step 7**:    Click **Check Instance**.
+## Related actions [#related-actions]
+- [Create Folder](/how-to/create-folder), [Delete File](/how-to/delete-file), [Delete Bulk](/how-to/sftp-delete-bulk)

@@ -1,33 +1,30 @@
 ---
 title: "Rename Sheet"
 icon: "📕"
-description: "Use this action to rename a sheet from an existing workbook."
+description: "Renames a sheet in an existing Excel workbook."
 ---
 
-### Overview
+**Rename Sheet** changes the name of one sheet in a workbook.
 
-Use this action to rename a sheet from an existing workbook.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Rename Sheet** (or type *Rename Sheet* in the search box).
 
-### How to configure the Rename Sheet action?
+![The Rename Sheet action properties: Excel workbook, Old name and New name](/images/docs/actions/excel-rename-sheet/panel.png)
 
-Step 1. Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Excel workbook** | Input and output | File | Yes | The workbook to change. Pick a File variable: after the step it holds the changed workbook. |
+| **Old name** | Input | Text | Yes | The current name of the sheet. |
+| **New name** | Input | Text | Yes | The new name. |
 
-Step 2. Drag the **Rename Sheet** action to the canvas and link it to the other actions.
+## Example [#example]
+`orders.xlsx` with the sheets *Orders* and *Empty*, Old name `Empty`, New name `Notes` → the workbook now has *Orders* and *Notes*.
 
-![](/images/docs/IpnWvHWNmg56MM1xImhny_image.png)
+## Good to know [#good-to-know]
+- If no sheet has the old name, the step fails with "Excel error: Could not find any sheet named '…' in the current workbook.".
+- If another sheet already has the new name, the step fails with "Excel error: A sheet named '…' already exists in the current workbook.".
+- **Excel workbook** is both the input and the output; the file keeps its name. Only `.xlsx` and `.xlsm` files are accepted.
 
-Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/xTsduvgRkxGOJzmgg9KKv_screenshot-2022-09-22-at-124400.png)
-
-- **Excel workbook**: you need to input the file with the workbook where you want to rename a sheet
-- **Old name**: you need to input a string with the Old name of the sheet (basically the sheet which you want to rename)
-- **New name**: you need to input a string with the new name which will replace the old one
-
-Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-Step 5. You will be prompted to add the file for the input variable. Click **Run**.
-
-Step 6. To verify the process click **Check instance**.
-
-Step 7. The file contains the renamed sheet.
+## Related actions [#related-actions]
+- [Insert Sheet](/how-to/insert-sheet), [Delete Sheet](/how-to/delete-sheet), [Get Sheet Names](/how-to/get-sheet-names)

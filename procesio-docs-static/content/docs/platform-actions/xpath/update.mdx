@@ -1,91 +1,59 @@
 ---
 title: "Update"
 icon: "📕"
-description: "Th&x65;&x20;Update action is one of the actions at your disposal to work with XML data.&x20;"
+description: "Updates the value of an XML tag, or inserts the tag when it does not exist, under the nodes an XPath selects."
 ---
 
-![](/images/docs/jTwwyV1cgPdjzQmB3SGL7_image.png)
+The **Update** action in the **XML** folder changes an XML document. Under every node the XPath expression selects, it looks for the tag you name: if the tag exists, its value is replaced; if it does not, a new tag with that value is added. You get the new XML both as text and as an `.xml` file.
 
-Th&#x65;**&#x20;Update** action is one of the actions at your disposal to work with XML data.&#x20;
-
-&#x20;Update enables you to **update** an XML input, if the input tag exists, or to **insert** the input tag, if it doesn't exist, using XPath.
-
-The action will be able to update data from an XML input using an [XPath expression](https://www.w3schools.com/xml/xpath_syntax.asp).
-
-<Callout type="warn">
-Update was previously called XML Update.
+<Callout type="info">
+Update was previously called **XML Update**.
 </Callout>
 
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **XML** and pick **Update** (or type *Update* in the search box).
 
+![The Update action properties: Input XML string, Input XML file, XPath expression, XML tag, New value, File name, String result and File result](/images/docs/actions/xml-update/panel.png)
 
-### **Overview**
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input XML string** | Input | Text | No* | The XML as text. |
+| **Input XML file** | Input | File | No* | An XML file. Used only when **Input XML string** is empty. |
+| **XPath expression** | Input | Text | Yes | Selects the node(s) to work under, for example `/bookstore/book[1]`. |
+| **XML tag** | Input | Text | Yes | The tag to update or insert, for example `title`. |
+| **New value** | Input | Text | Yes | The new value of the tag. |
+| **File name** | Input | Text | No | Name of the output file. `.xml` is added for you. Empty: `Document_Generated_by_PROCESIO.xml`. |
+| **String result** | Output | Text | No | The updated XML as text. |
+| **File result** | Output | File | No | The updated XML as an `.xml` file. |
 
-The action is used to update the XML data that we will import into our process for future use.
+\* Fill one of the two: **Input XML string** or **Input XML file**.
 
-Input xml string - Input your XML schema in a process variable of type string
-
-Input xml file - Input your XML file in a process variable of type file
-
-Xpath expression - Input XPath expression for obtaining the key value(s) for your XML input
-
-Xml tag - Input XML tag you want to update or insert
-
-New value - Input new value to update the XML node
-
-File name - input file name if you want to store the new XML in a file. The .xml extensions will be automatically added.
-
-String result - returns the new XML as a string
-
-File result - returns the new XML as a file
-
-
-
-### How to configure the Update action?
-
-&#x20; 1\.   Create a process and give it a name.
-
-&#x20; 2\.    Drag th&#x65;**&#x20;update** action to the canvas and link it to the other actions.
-
-![](/images/docs/L0vtP2Z6Fj10C_dyVKmCm_image.png)
-
-3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/tXj7jjEaa8Dph1lBiX5Fo_screenshot-2022-08-24-at-144655.png)
-
-In New Value we added "Great Gatsby" which will be updating the title of book\[1],. i.e. "Harry Potter".
-
-4\. Save, Validate and Run the process.
-
-5\. The process will ask for inputs: (see values with example purposes below)
-
-xmlString:&#x20;
+## Example [#example]
+**Input XML string**:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-
 <bookstore>
-
-<book>
-  <title lang="en">Harry Potter</title>
-  <price>29.99</price>
-</book>
-
-<book>
-  <title lang="en">Learning XML</title>
-  <price>39.95</price>
-</book>
-
+  <book><title lang="en">Harry Potter</title><price>29.99</price></book>
+  <book><title lang="en">Learning XML</title><price>39.95</price></book>
 </bookstore>
 ```
 
-xPath:&#x20;
+| XPath expression | XML tag | New value | String result (changed part) |
+| --- | --- | --- | --- |
+| `/bookstore/book[1]` | `title` | `The Great Gatsby` | first book: `<title lang="en">The Great Gatsby</title>` (the tag exists, so it is updated) |
+| `/bookstore/book[1]` | `author` | `J. K. Rowling` | first book: `…<price>29.99</price><author>J. K. Rowling</author>` (the tag is new, so it is added last) |
+| `//book` | `price` | `10` | both books: `<price>10</price>` |
+| `//magazine` (no match) | `price` | `10` | empty, and **File result** is empty too |
 
-```xml
-/bookstore/book[1]	
-```
+With **File name** `books`, **File result** is `books.xml`.
 
-6\. Click **Run**.
+## Good to know [#good-to-know]
+- The tag is searched among the selected node **and all its descendants**, and every matching tag is updated. Only tags that hold a value (no child elements) are updated.
+- A new tag is added as the **last child** of each selected node. Attributes are kept when a value is updated.
+- When the XPath matches nothing, the step still succeeds but both outputs are empty.
+- XML that is not well-formed, or an invalid XPath, fails the step with `Input XML or XPath was not valid.`
+- To add or update many tags in one step, use [XML Processor](/how-to/xml-processor).
 
-&#x20; 7\.  Click **Check Instance&#x20;**&#x74;o view the results. You will see the new XML string saved in the `result` variable. The title of book\[1] is updated to "Great Gatbsy".
-
-![](/images/docs/tQ_dM6bRI1OgMixfYTSPN_screenshot-2022-08-24-at-150023.png)
+## Related actions [#related-actions]
+- [Mapper](/how-to/mapper), [XML Processor](/how-to/xml-processor), [Builder](/how-to/builder), [XML Is Valid](/how-to/xml-is-valid)

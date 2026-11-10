@@ -1,28 +1,43 @@
 ---
-title: "Get object"
+title: "Get Object"
 icon: "📕"
-description: "The 'Get Object' action in PROCESIO enables users to retrieve a file from a specified AZURE storage container using the provided account name,…"
+description: "Downloads an object from an Amazon S3 bucket into a File variable."
 ---
 
-The "Get Object" action in PROCESIO enables users to retrieve a file from a specified AZURE storage container using the provided account name, account key, container name, and key (file name).
+**Get Object** downloads an object from an Amazon S3 bucket and puts it in a File variable, so the next steps can read it, attach it to an email or upload it somewhere else.
 
-![](/images/docs/3Kru41GpXF-fth1kLbdYl_image.png)
+## Before you start [#before-you-start]
+The AWS S3 actions don't use a stored credential. Each action has the same four connection fields:
 
-**Parameters:**
+| Field | Type | Required | What to put |
+| --- | --- | --- | --- |
+| **Access Key** | Text | Yes | The access key ID of an AWS IAM user, for example `AKIA…`. |
+| **Secret Key** | Text | Yes | The secret access key that belongs to that access key. |
+| **Region** | Text | Yes | The AWS region of the bucket, as its code, for example `eu-central-1`. |
+| **Bucket** | Text | Yes | The bucket name, for example `my-company-invoices`. |
 
-1. **Account Name:**
-   - &#x20;The name of the storage account where the file is located.
-2. **Account Key:**
-   - &#x20;The access key associated with the storage account provides authentication and authorization.
-3. **Container Name:**
-   - &#x20;The name of the container where the file is stored.
-4. **Key (File Name):**
-   - &#x20;The unique identifier or name of the file to be retrieved from the specified container.
-5. **File:**
-   - &#x20;The file type variable that will store the downloaded file.
+The IAM user needs S3 permissions on the bucket for the operation you run. The values you type are visible to everyone who can edit the process, so prefer an IAM user limited to the buckets the process needs.
 
-**Note:**
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **AWS S3** and pick **Get Object** (or type *Get Object* in the search box).
 
-- Ensure that the provided account name, account key, container name, and key parameters are accurate and have the necessary permissions to access the specified file in the storage container.
-- It is recommended to securely manage and store access keys, avoiding exposure to unauthorized users.
-- Error handling mechanisms should be implemented to manage scenarios where the specified file is not found or access to the storage account is denied.
+![The Get Object action properties: Access Key, Secret Key, Region, Bucket, Object Key and Output File](/images/docs/actions/aws-s3-get-object/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Access Key**, **Secret Key**, **Region**, **Bucket** | Input | Text | Yes | The connection fields described above. |
+| **Object Key** | Input | Text | Yes | The full key of the object, including every prefix, for example `invoices/2026/inv-001.pdf`. |
+| **Output File** | Output | File | Yes | The downloaded object. |
+
+## Example [#example]
+**Object Key** `invoices/2026/inv-001.pdf` → **Output File** is a file named `inv-001.pdf`.
+
+## Good to know [#good-to-know]
+- The file is named after the last part of the key: `invoices/2026/inv-001.pdf` gives `inv-001.pdf`.
+- If the object doesn't exist, the step fails with *"Object not found! Ensure the bucket and object key are correct."*
+- If a connection field is empty, the step fails with *"Invalid connection details."*
+- Common errors from S3: *"Access forbidden! Ensure the connection details are valid."* (wrong keys or missing permission), *"Unable to connect! Ensure the provided region matches the bucket one."* (wrong **Region**), and *"Unrecognized Amazon Region: …"* (a region code that doesn't exist).
+
+## Related actions [#related-actions]
+- [Put Object](/how-to/put-object), [Object Exists](/how-to/object-exists), [List Keys](/how-to/list-keys)

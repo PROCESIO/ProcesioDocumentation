@@ -1,37 +1,69 @@
 ---
 title: "Assigned to me"
 icon: "👤"
-description: "The assigned to me section displays the currently assigned and completed forms tasks for the user. For more information regarding task check Task…"
+description: "Assigned to me lists the form tasks that wait for you and the ones you have already submitted, and opens a task so you can complete it."
 ---
 
-## Assigned to me&#x20;
+**Assigned to me** is your task list for forms. It shows the form steps that wait for you, for example a section you must fill in or a request you must approve, and the forms you have already submitted. To learn how tasks are given to people, see [Task Assignees and Approvals](/task-assignees-and-approvals).
 
-The assigned to me section displays the currently assigned and completed forms tasks for the user. For more information regarding task check [Task Assignees and Approvals](/docs/overview/forms-tasks-designer/task-assignees-and-approvals).
+Go to **Forms & Tasks** > **Assigned to me**. The list shows the tasks of the workspace you are working in, so switch workspace to see the tasks of another one.
 
-This area is designed for team members to claim ownership of tasks they are responsible for. Assigning tasks helps streamline project management, ensures clear accountability, and fosters collaboration within the team.
+![The Assigned to me list](/images/docs/BKQvR_wqE-OPX14Rgz4wI_image.png)
 
-**Check Task Details:**
+## Open and Completed [#open-and-completed]
 
-Tasks are displayed in the Open tab:
+The switch at the top of the list has two views:
 
-![](/images/docs/BKQvR_wqE-OPX14Rgz4wI_image.png)
+- **Open**: the steps where you are an assignee or an approver and your action is still needed.
+- **Completed**: the forms you have submitted.
 
-**Collaborate with the Team:**
+The same form can appear in both views, for example when you submitted the first step and a later step is assigned to you again.
 
-- If a task requires collaboration, communicate with relevant team members to coordinate efforts.&#x20;
+When a step is assigned to several people, any one of them can complete it. As soon as one person submits it, the step is done for everyone.
 
-**Complete Tasks:**
+## The columns [#the-columns]
 
-- From the "Open" tasks section click on "Review" to view and complete a task. Once that is done, the task moves in the completed section.
+| Column | What it shows |
+| --- | --- |
+| **SUBMISSION DATE** | When the form was submitted. |
+| **SUBMITTER(S)** | Who submitted it. |
+| **FORM NAME** | The form. |
+| **STAGE** | *pending action* while a step is still waiting, *completed* when the form is done. |
+| **ASSIGNED TO** | The people assigned to the next step. |
+| **STEP NAME** | The name of the step that waits. |
 
+The list is sorted by the last change, newest first. A form that was edited or moved to a new step comes to the top, so its **SUBMISSION DATE** can be older than the rows below it.
 
+## Complete a task [#complete-a-task]
 
-**Clear Accountability:** Assigning tasks helps clarify who is responsible for each aspect of the project, reducing confusion and promoting accountability.
+1. In **Open**, click **Review** on the row.
+2. The form opens. The steps before yours are read-only, and the part assigned to you can be filled in, or approved and rejected.
+3. Submit your step (or click **Approve** or **Reject**).
 
-**Efficient Workflow:** Team members can focus on tasks they are responsible for, streamlining the workflow and improving overall project efficiency.
+The task leaves your **Open** list. If the form has another step, it moves to the people assigned to that step.
 
-**Improved Communication:** Assigning tasks facilitates communication by providing a clear point of contact for each task. Team members know who to reach out to for updates or collaboration.
+## Sign a document [#sign-a-document]
 
-By using the "Assign to Me" section effectively, we can ensure a smooth and organized workflow. If you have any questions or need assistance, feel free to reach out to the project manager or the relevant team members.
+When a form contains a [Document Signing](/document-signing) element, the signers get the document in **Assigned to me** when it is their turn:
+
+- The **STAGE** column shows *pending signature*.
+- The **STEP NAME** is the name of the document.
+- The row's button is **Sign** instead of **Review**.
+
+To sign:
+
+1. In **Open**, click **Sign** on the row. The form opens with the document, and your signature spots are highlighted.
+2. Click **Sign document**, then draw, upload or type your signature and click **Sign**.
+3. Submit the form. Your signature is applied when you submit.
+
+If declining is allowed, **Decline** lets you refuse to sign, with an optional reason. It is also sent when you submit the form.
+
+When signers sign one after the other, the document appears in your list only once the signers before you have signed. See [What the signer sees](/document-signing#signer-view).
+
+## See a completed form [#see-a-completed-form]
+
+In **Completed**, users with admin rights on form submissions see **Show Details** on each row. It shows the details of the submitted form.
+
+When nothing is assigned to you, the list shows *"You have no assignments yet!"*
 
 For support, please join our [Discord community](https://discord.com/invite/CEBuKgJefv) for further assistance and support.

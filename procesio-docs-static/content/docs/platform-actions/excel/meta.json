@@ -2,6 +2,11 @@
   "title": "Excel",
   "icon": "📁",
   "pages": [
+    "export-to-csv",
+    "export-to-xlsx",
+    "read-range-from-csv",
+    "split-workbook-to-csv",
+    "xls-to-xlsx",
     "create-workbook",
     "get-sheet-names",
     "insert-sheet",
@@ -13,7 +18,6 @@
     "read-range",
     "get-last-used-row",
     "parse-ole-date",
-    "split-workbook",
-    "xls-to-xlsx"
+    "split-workbook"
   ]
 }

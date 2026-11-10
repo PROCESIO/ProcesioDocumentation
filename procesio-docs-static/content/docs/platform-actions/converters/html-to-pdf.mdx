@@ -1,0 +1,39 @@
+---
+title: "HTML to PDF"
+icon: "📕"
+description: "Renders an HTML text as a PDF file. Scripts are removed before rendering; styles are kept."
+---
+
+The **HTML To PDF** action renders HTML as a PDF file, for example to turn an HTML template filled with process data into an invoice, a report or a confirmation you can email or store.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9-1t-WFD1NU" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Converters** and pick **HTML To PDF** (or type *HTML To PDF* in the search box). Then click **Configure** on the action to open its settings.
+
+![The HTML To PDF action properties with the Configure button](/images/docs/actions/converters-html-to-pdf/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+All three fields are in the **Configure** panel.
+
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **HTML string** | Input | Text | Yes | The HTML to render. You can type it in the editor or use a variable. |
+| **File Name** | Input | Text | No | The PDF's file name. `.pdf` is added when missing. Empty: `Document_Generated_by_PROCESIO.pdf`. |
+| **File Output** | Output | File | No | The generated PDF. |
+
+## Example [#example]
+| HTML string | File Name | File Output |
+| --- | --- | --- |
+| `<h1>Page one</h1><p>First</p><script>alert(1)</script>` | `report` | `report.pdf` |
+| `<p>Annex</p>` | `annex.pdf` | `annex.pdf` |
+| `<p>x</p>` | (empty) | `Document_Generated_by_PROCESIO.pdf` |
+
+## Good to know [#good-to-know]
+- **Scripts and other unsafe content are removed** before rendering (see [Sanitizer](/how-to/html-sanitizer)). The PDF never runs JavaScript, so build the final HTML before this step.
+- `<style>` blocks and inline `style` attributes are kept, so you can control fonts, colours, tables and page breaks with CSS. Text is rendered as UTF-8, so accented and non-Latin characters are kept.
+- To fill a template with data first, build the HTML with text actions or [HTML Manipulation](/how-to/html-manipulation), then pass it here.
+- If rendering fails, the step fails with `Error while trying to generate pdf.`
+
+## Related actions [#related-actions]
+- [Sanitizer](/how-to/html-sanitizer), [HTML Is Valid](/how-to/html-is-valid), [Merge Files](/how-to/merge-files), [JSON To HTML](/how-to/json-to-html)

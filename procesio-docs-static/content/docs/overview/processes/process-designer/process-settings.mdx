@@ -1,0 +1,42 @@
+---
+title: "Process settings"
+icon: "⚙️"
+description: "Set a process's name, description and timeout in the Process properties panel, and copy its ID."
+---
+
+Each process has a few settings of its own: its name, a description, its ID and a timeout. You find them in the **Process properties** panel.
+
+## Open the Process properties panel [#open-the-panel]
+
+1. Open the process in the **Process Designer**.
+2. Click the arrow next to the process name in the topbar and choose **Edit process properties**. If you can only view the process, the entry reads **View process properties**.
+
+You can also double-click the process name in the topbar.
+
+{/* SCREENSHOT: process-properties.png — the Process properties panel with Name, Description, ID and Timeout (sec) */}
+
+## The settings [#the-settings]
+
+| Field | What it does |
+| --- | --- |
+| **Name** | The process name. It is required and can be up to 64 characters. Use `/` to group processes, for example `Finance/Monthly report`. |
+| **Description** | Optional text that explains what the process does. |
+| **ID** | The process's unique ID, read-only. Click the copy icon to copy it, for example to start the process [with an API key](/running-a-process-with-api-keys). The ID appears once the process has been saved. |
+| **Timeout (sec)** | The longest a run of this process may take, in seconds (see below). |
+
+Save the process to keep your changes.
+
+## Timeout [#timeout]
+
+**Timeout (sec)** accepts:
+
+- `0` (or an empty field), which means the process has **no timeout**;
+- any whole number from `10` (10 seconds) to `2678400` (31 days).
+
+A value outside this range shows *"Timeout value is not valid."* under the field. The process keeps its last valid timeout until you enter a valid one; an invalid value never removes the timeout.
+
+## Related [#related]
+
+- [Process Designer basics](/process-designer-basics)
+- [Process runs and history](/running-a-process)
+- [Data retention](/data-retention)
