@@ -125,6 +125,8 @@ Some examples:
 
 As you type, PROCESIO checks the expression. A valid expression shows a short description and a list of the **next 5 occurrences**, in the schedule's time zone. An invalid one shows what is wrong. If the expression is valid but never runs, for example `0 0 30 2 *` (30 February), or the end date is already in the past, you see *"No upcoming runs"*. You can't save the schedule while the expression is invalid, still being checked, or has no upcoming runs. Open **Syntax help** above the boxes for the format, the operators and these examples.
 
+![The Create Schedule panel with Crontab selected: the expression 0 8 * * 1-5 split into the Minute, Hour, Day, Month and Weekday boxes, the description "At 08:00 AM, Monday through Friday" and the next 5 occurrences](/images/docs/schedules/crontab-recurrence.png)
+
 **Time zone.** A new crontab schedule uses the time zone of your browser, shown above the occurrence list. When you edit a schedule that was created in another time zone, a message tells you so, and the schedule keeps its original time zone when you save it.
 
 The **Start on** date and **Date to end schedule** also apply to a crontab schedule: no run happens before the start or after the end.

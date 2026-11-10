@@ -1,55 +1,58 @@
 ---
 title: "Set process notifications"
 icon: "📘"
-description: "Process automation is an essential part of business operations, and with PROCESIO, you can easily create and automate processes.&x20;"
+description: "Get an email when a process run succeeds or fails, for every run or only for the runs started by one schedule."
 ---
 
-Process automation is an essential part of business operations, and with PROCESIO, you can easily create and automate processes.&#x20;
+Process notifications send an email when a run of your process ends. You choose who receives it and whether to send it when the run succeeds, when it fails, or both.
 
-Once a process has been created, it's essential to know **its status after it runs.** PROCESIO offers you the ability to receive notifications via email about the state of your processes. These notifications provide valuable information about the success of the process, or if errors are encountered.&#x20;
+There are two kinds:
 
-Setting Process Notifications can be done in two ways:
+- **General Process Notification**: an email for every run of the process, whatever started it (a user, a schedule or an external source such as a webhook or an API call).
+- **Scheduled Notifications**: an email only for the runs started by one schedule of the process. Each schedule has its own settings.
 
-1. **From the Processes List**
+## Open the notification settings [#open]
 
-![](/images/docs/m4oD54wGsRMnPMJ6GZeHV_group-674.png)
+You can open them in two places:
 
-In the processes list, you can easily spot if any notifications are set or not for a specific process by checking the notifications icon:
+- **From the processes list.** In the process row, click the email icon, or open the row's menu and click **Set process notifications**. The icon's tooltip tells you whether notifications are set: *"Notifications are set"* or *"Notifications not set"*.
+- **From the Process Designer.** In the right-side tabs, click the email icon (**Process notifications**).
 
-![](/images/docs/3r-RhlgYtBt288x-733bt_screenshot-2023-04-19-at-123000.png)
+The **Set Process Notifications** panel opens.
 
-&#x20;    2\. **Within the process** by clicking on the Process Notifications icon
+You need permission to edit the process to change its notifications. Otherwise the settings are read-only.
 
+## Set the general notification [#general]
 
-![](/images/docs/lM7Xp2mh1MQZtI2cmeDzY_group-673.png)
+1. Expand **General Process Notification**.
+2. Turn on **Set email notifications**.
+3. In **Email addresses**, type one or more addresses. Separate them with a semicolon, for example `ana@example.com;ion@example.com`.
+4. Under **Notification type**, check one or both:
+   - **Notify when run is success**
+   - **Notify when run is failed**
 
-Once you accessed the notifications panel, to activate notifications for your process, follow these simple steps:
+   If you clear both, the panel shows *"You need to select a type from above in order to complete the notification configuration."*
+5. Close the panel.
 
-1. Toggle the notifications "on" by clicking the switch button.
-2. Add the email addresses of the recipients you want to receive notifications.&#x20;
+There is no **Save** button: your changes are saved as you make them. An address that is not valid is marked in red under the field.
+
+![The Set Process Notifications panel: General Process Notification expanded with Set email notifications on, two addresses in Email addresses and both Notification type options checked, and Scheduled Notifications below](/images/docs/process-notifications/panel.png)
+
+## Set notifications for one schedule [#schedule]
+
+If the process has schedules, **Scheduled Notifications** lists them, each with **Notification set** or **Notification not set**. If it has none, you see *"You don’t have any schedule set for this process."*
+
+1. Expand **Scheduled Notifications** and click a schedule.
+2. The panel shows whether the schedule is **Enabled** or **Disabled** and how often it runs.
+3. Set **Set email notifications**, **Email addresses** and **Notification type** the same way as above.
+4. Click the schedule name at the top (or **Back**) to return to the list.
+
+These settings apply only to that schedule and do not change the general notification. You can also set a schedule's notifications when you create or edit it. See [Schedules](/schedules).
 
 <Callout type="info">
-You can add one or multiple email addresses separated by a semicolon (;)
+The general notification covers every run, including the runs started by a schedule. Turn it on only if you want an email for all runs.
 </Callout>
 
-&#x20;    3\. Choose notifications type: when the process ends with success, failure, or both.
+## What the email contains [#email]
 
-&#x20;    4\. Close the panel, and the configuration is saved.&#x20;
-
-![](/images/docs/hh3rYOAeJrtY4SIHRsEkO_process-notifications.gif)
-
-That's it! You have now successfully set up notifications for your process. You will receive an email notification about the state of your process after it runs based on your notification settings.
-
-![](/images/docs/oqOtBHUTlzLNNSXPolfcQ_screenshot-2023-04-19-at-123344.png)
-
-In addition to general process notifications, **you can also view any active schedules for your processes in the same panel**. This feature allows users to keep track of when their processes are scheduled to run, providing them with greater visibility and control over their processes.
-
-
-
-![](/images/docs/SBpaO0I7BtPuuQzuVv6pF_screenshot-2023-04-19-at-122225.png)
-
-![](/images/docs/vq9avA4UhYBnaXULwmQ_m_screenshot-2023-04-19-at-122256.png)
-
-In conclusion, notifications after a process run are a critical aspect of process automation. With PROCESIO's process notifications feature, users can stay informed about their processes' status, take immediate action when necessary, and optimize their processes for maximum efficiency.&#x20;
-
-By utilizing this feature, users can streamline their processes, reduce errors, and save time, ultimately leading to increased productivity and business success.
+The email tells you how the run ended and includes the ID of the workspace the process belongs to, so you can tell runs from different workspaces apart.

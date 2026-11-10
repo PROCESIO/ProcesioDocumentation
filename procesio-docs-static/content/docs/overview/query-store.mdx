@@ -271,7 +271,7 @@ Click **Save**, **Validate** and **Run**. If the process has inputs, a dialog as
 
 *The process's inputs appear in the Run dialog.*
 
-When the run finishes, click **Check instance** (it opens in a new tab), or open the process's instances and choose **History → Show details**. On the **Variables** tab, the query's outputs are listed under **Output**.
+When the run finishes, click **Check Instance** (it opens in a new tab), or open the process's instances and choose **History → Show details**. On the **Variables** tab, the query's outputs are listed under **Output**.
 
 ![Instance details, Variables tab, with the query results](/images/docs/query-store/results-variables.png)
 
@@ -394,6 +394,7 @@ You always get one of these messages, never a raw database error.
 | Executable comments (/*! ... */) are not allowed in queries.                                                                  | Nothing ran.                                                                                                                                               |
 | The query does not contain an executable statement.                                                                           | A query that holds only a comment, or only `;`. Nothing ran.                                                                                               |
 | The query contains invalid SQL syntax.                                                                                        | A database syntax error, including `DECLARE`, an empty statement between two others, or a variable named like a parameter. Statements before it have run. |
+| The query could not be executed.                                                                                              | Any other database error. Statements before it have run.                                                                                                   |
 | The query did not finish within the configured time limit.                                                                    | The Time Out was reached. Statements that finished before it are kept.                                                                                     |
 | The query did not finish within N seconds and was stopped. Narrow the query, or raise its Time Out.                          | No answer within the Time Out plus 30 seconds.                                                                                                             |
 | The specified database does not exist. Create a Data Store first.                                                             | The workspace has no Data Store yet.                                                                                                                       |

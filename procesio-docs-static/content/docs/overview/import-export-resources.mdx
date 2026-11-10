@@ -1,73 +1,67 @@
 ---
 title: "Import / Export resources"
 icon: "🔃"
-description: "Importing and exporting resources can be a useful tool when you want to reuse work from one workspace in another workspace. With PROCESIO, you can…"
+description: "Export processes, data models, Data Stores, credentials, documents and forms to a .procesio file and import them into another workspace."
 ---
 
-Importing and exporting resources can be a useful tool when you want to reuse work from one workspace in another workspace. With PROCESIO, you can export a large number of resources, like processes, credentials, data models, etc., and import them into a new workspace.
+Use **Import / Export** to copy your work from one workspace to another. You export the resources you want into a file with the `.procesio` extension, then import that file in the other workspace.
 
+You can export and import:
 
+- **Processes**
+- **Data Models**
+- **Data Stores**
+- **Credentials**
+- **Documents**
+- **Forms**
+- **Webhooks** (export only, see [Good to know](#good-to-know))
+
+## Before you start [#before-you-start]
+
+- You need the **Admin** permission on the workspace. Without it, the **Import / Export** button is not shown.
+- **Import / Export** is not available in a master workspace. Open the sub-workspace you want to export from or import into.
+- In your personal workspace you can export, but not import. The **Import** option shows *"Import not available on Personal plan."*
+- You see only the resource types you are allowed to change in the workspace. If there is none, the dialog says *"You do not have any available resources to Export. Please contact workspace's administrator."* (or *Import*).
+
+## Open Import / Export [#open]
+
+At the bottom of the left menu, click **Import / Export**. The **Select action** dialog opens with two options: **Export** and **Import**.
+
+![The Select action dialog with the Export and Import buttons](/images/docs/import-export/select-action.png)
+
+## Export resources [#export]
+
+1. Click **Export**.
+2. In **Export File Name**, type a name for the file. The default is `export`. The `.procesio` extension is added for you.
+3. Under **Select resources to export:**, choose what to export:
+   - Turn on **Export all** to export every resource in the workspace, or
+   - check the resource types you want. For each checked type, pick **All** (every resource of that type) or **Select items** (only the ones you choose).
+4. If you checked **Credentials**, you can also check **Export with sensitive data** to include the credentials' sensitive values in the file.
+5. If you picked **Select items** for a type, click **Next** to move through a tab for each type, for example **Processes (0)**. Check the resources to include. Use **Search by name** to find them. The number in the tab shows how many you selected.
+6. Click **Export**. The `.procesio` file downloads to your computer, and the button changes to **Close**.
+
+![The Export dialog: Export file name, Select resources to export with the Export all toggle, Processes and Credentials checked with All | Select items, and Export with sensitive data checked](/images/docs/import-export/export-details.png)
 
 <Callout type="warn">
-Import is not available in Personal workspaces.
+A file exported with sensitive data holds your credentials' secrets. Store and share it as carefully as the credentials themselves.
 </Callout>
 
-<Callout type="info">
-You must have an Admin role to access Export/Import functionality in a workspace.
-</Callout>
+## Import resources [#import]
 
+1. Open the workspace you want to import into, click **Import / Export**, then **Import**.
+2. Under **Import data:**, drag your `.procesio` file into the box, or click **Choose File**. Only `.procesio` files are accepted; any other file shows *"File format not supported."*
+3. Under **Import rules:**, choose whether to turn on **Override data**:
+   - **On**: a resource in the file replaces the resource in the workspace that has the **same ID**.
+   - **Off** (default): resources whose ID already exists in the workspace are skipped.
 
-Here's a simple step-by-step guide on how to import and export resources in PROCESIO:
+   Resources are matched by ID, not by name. A resource with the same name but a different ID is not replaced.
+4. Under **Select resources to import:**, turn on **Import all**, or check the resource types you want to import from the file.
+5. Click **Import**. When it finishes, you see *"Import completed"*, and the button changes to **Close**.
 
-First, open your PROCESIO workspace and click on the "Import/Export" button.&#x20;
+![The Import dialog: the Import data upload box, the Override data toggle under Import rules, and Select resources to import with the Import all toggle](/images/docs/import-export/import-details.png)
 
-![](/images/docs/elZYnKJofKLE9wfAjQOkv_group-673.png)
+## Good to know [#good-to-know]
 
-## Export
-
-1. To export resources, select **Export&#x20;**&#x61;ction.
-
-![](/images/docs/GaujJoMA6jFw5vWgADGx3_screenshot-2023-04-19-at-132720.png)
-
-2\. Give a name to your export file. Else, it will have a default name, i.e. `export.procesio`
-
-3\. Next, select the type of resources you want to export.&#x20;
-
-<Callout type="info">
-You can select to export all resources by choosing **Export all**.
-</Callout>
-
-![](/images/docs/PVN93kfW7eN5sdt7mHbkH_screenshot-2023-04-19-at-133257.png)
-
-4\. Click the **Export** button and a file with a "*.procesio*" extension will automatically start to download.
-
-5\. Press **Close** to close the panel.
-
-
-
-## Import
-
-1. To import resources, select **Import&#x20;**&#x61;ction.
-
-![](/images/docs/GaujJoMA6jFw5vWgADGx3_screenshot-2023-04-19-at-132720.png)
-
-2\. To import resources, you'll need to upload a file with the "*.procesio*" extension by clicking on the "Upload file" button.
-
-3\. Once the file is uploaded, you can set the import rules:
-
-![](/images/docs/WT8ZL4lWhjJMtIcXtASLT_screenshot-2023-04-19-at-154957.png)
-
-- override data - will override resources with the same Id (if resources have the same name, but different Id, will not override)
-- do not override data - will skip resources with the same Id
-
-See below an example of 2 resources having the same name but different IDs:
-
-![](/images/docs/2HpNM4Als0Ewqv5viPnIy_group-673.png)
-
-![](/images/docs/6-k702xnhoCJLKGHPXPRF_screenshot-2023-04-19-at-153359.png)
-
-4\. You can choose to import all resources included in the file or select only certain resources to import.
-
-5\. Click on the **Import** button, and the resources will start to import. Once the import is complete, a confirmation message will pop up saying "Import completed."
-
-That's it! You've successfully imported or exported resources in PROCESIO. This tool can be especially helpful when you want to transfer resources from one workspace to another, allowing you to quickly replicate processes and data models, and other types of resources without having to recreate them from scratch.
+- Webhooks can be selected when you export, but the import has no **Webhooks** option and does not create webhooks. Create them again in the target workspace and assign them to their processes. See [Webhooks](/webhooks).
+- Exporting and importing also send messages to your [Notification center](/notification-center), for example *"Export completed"* and *"Import completed"*.
+- If the import fails, you see *"Import was failed"* and nothing is imported. Check that the file is a `.procesio` file exported from PROCESIO and that you are in a workspace where import is available.
