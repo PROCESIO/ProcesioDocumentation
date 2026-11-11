@@ -1,7 +1,35 @@
 ---
-title: "Substract"
+title: "Subtract"
 icon: "📕"
-description: "Subtracts one number from another."
+description: "Subtracts one number from another, whole or decimal."
 ---
 
-Coming soon 🔜
+**Subtract** takes the second number away from the first and gives you the difference. It works with whole numbers and decimals alike. Use it for balances, remaining stock, or to count down.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Numerical** and pick **Subtract** (or type *Subtract* in the search box).
+
+![The Subtract action properties: First number, Second number and Result](/images/docs/actions/numerical-subtract/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **First number** | Input | Number (whole or decimal) | Yes | The number to subtract from. |
+| **Second number** | Input | Number (whole or decimal) | Yes | The number to take away. |
+| **Result** | Output | Number (whole or decimal) | Yes | **First number** minus **Second number**. |
+
+## Example [#example]
+| First number | Second number | Result |
+| --- | --- | --- |
+| `10` | `4` | `6` |
+| `4` | `10.5` | `-6.5` |
+| `5.75` | `0.25` | `5.5` |
+
+## Good to know [#good-to-know]
+- Decimals are exact, with no rounding error.
+- When the difference is a whole number, you get a whole number, so you can map **Result** to an Integer variable.
+- **Use a dot for decimals.** A comma is read as a thousands separator and ignored (`1,5` counts as `15`).
+- Text that is not a number stops the step with `Invalid input.`; an empty input stops it with `Input was null. Please, fill it.`
+
+## Related actions [#related-actions]
+- [Add](/how-to/add), [Multiply](/how-to/multiply), [Divide](/how-to/divide), [Modulo](/how-to/modulo)

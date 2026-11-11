@@ -1,16 +1,32 @@
 ---
 title: "Null Or Empty"
 icon: "📕"
-description: "The Null Or Empty action checks if a string is null or empty."
+description: "Checks whether a text has no value or is empty, and returns true or false."
 ---
 
-## Overview
+**Null Or Empty** checks whether a text has no value at all or is an empty text. It returns `true` or `false`, so you can use it in a decision, for example to skip a step when an optional form field was left blank.
 
-The `Null Or Empty` action checks if a string is null or empty.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **Null Or Empty** (or type *Null Or Empty* in the search box).
 
-![](/images/docs/Sb11D_l6AcnPg-GjOb1Fu_image.png)
+![The Null Or Empty action properties: Input String and Result](/images/docs/actions/string-null-or-empty/panel.png)
 
-## Inputs & Outputs
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input String** | Input | Text | Yes | The text to check, usually a variable. |
+| **Result** | Output | Boolean (true/false) | Yes | `true` when the text has no value or is empty, otherwise `false`. |
 
-- **\[ I ] Input string:** <span style={{color:'#1c417e'}}>String</span> to check.
-- **\[ O ] Result**: <span style={{color:'#7239e3'}}>Boolean</span> representing the logic value of `Is the input string null or empty ?`
+## Example [#example]
+| Input String | Result |
+| --- | --- |
+| *(no value)* | `true` |
+| *(empty text)* | `true` |
+| `   ` (spaces only) | `false` |
+| `x` | `false` |
+
+## Good to know [#good-to-know]
+- **A text with only spaces is not empty.** To treat it as empty, run it through [Trim](/how-to/trim) first.
+
+## Related actions [#related-actions]
+- [Trim](/how-to/trim), [Length](/how-to/string-length)

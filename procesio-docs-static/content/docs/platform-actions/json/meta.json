@@ -1,10 +1,11 @@
 {
-  "title": "Json",
+  "title": "JSON",
   "icon": "📁",
   "pages": [
     "extract-object",
-    "extract-list",
+    "file-to-json",
     "key-value",
-    "parse-json"
+    "parse-json",
+    "json-is-valid"
   ]
 }

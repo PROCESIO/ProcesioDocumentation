@@ -1,45 +1,37 @@
 ---
 title: "Unzip"
 icon: "📕"
-description: "Use the Unzip action to extract compressed files from a zip file."
+description: "Extracts the files from a .zip archive, including password-protected ones."
 ---
 
-Use the **Unzip** action to extract compressed files from a zip file.
+**Unzip** opens a `.zip` archive and gives you the files inside it as a list. Use it when you receive a zipped export by email, from an SFTP server or from an API and need to process each file.
 
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Documents › Archive** and pick **Unzip** (or type *Unzip* in the search box).
 
+![The Unzip action properties: Archive, Password and File List](/images/docs/actions/documents-archive-unzip/panel.png)
 
-### How to configure the Unzip action?
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Archive** | Input | File | Yes | The `.zip` file to extract. |
+| **Password** | Input | Text | No | The archive password. Leave it empty for an archive without a password. |
+| **File List** | Output | List of File | Yes | The extracted files. |
 
-1\.   Create a process and give it a name.
+## Example [#example]
+An archive `bundle.zip` that holds `a.txt` and a folder `docs` with `b.txt`:
 
-2\.    Drag the **Unzip** action to the canvas and link it to the other actions.
+| Case | Result |
+| --- | --- |
+| Archive `bundle.zip` | **File List** `a.txt`, `docsb.txt` |
+| A password-protected archive, Password `secret` | The files are extracted |
+| A password-protected archive, Password empty | The step fails: "Zip extraction error : No password supplied for encrypted zip." |
+| Archive `bundle.tar` | The step fails: "Input error: Archive must have '.zip' extension." |
 
-![](/images/docs/wKlhTvU5Wk8mvxNeW-7kG_screenshot-2022-08-25-at-153414.png)
+## Good to know [#good-to-know]
+- The file name must end in `.zip`. A zip file with another extension is refused, even if its content is a valid zip.
+- Folders are not kept. A file in a sub-folder comes out at the top level, and its name is the folder name and the file name joined without a separator (`docs/b.txt` becomes `docsb.txt`). Empty folders are skipped.
+- Use a [For Each](/how-to/for-each) to work with the extracted files one by one.
 
-3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/O5JJedf3YxFpHvlQtouxG_screenshot-2022-08-25-at-154100.png)
-
-1. Fill in configuration details:
-
-**Archive:** the variable for zip file you want to decompress;&#x20;
-
-&#x20;                Mandatory: yes
-
-**File list:&#x20;**&#x74;he variables for the files that will result fro decompressing the archive
-
-&#x20;                Mandatory: yes
-
-2\. Save, Validate and Run the process.
-
-3\. The process will ask for an input file (the archive).
-
-4\. Click **Run**
-
-5\. Click **Check Instance&#x20;**&#x74;o view the results.
-
-![](/images/docs/7LECZfRRBh7s0ELe0ePqQ_screenshot-2022-08-25-at-154218.png)
-
-Click on the download icon next t&#x6F;**&#x20;Output&#x20;**&#x61;nd the files extracted from the zip archive will be downloaded.&#x20;
-
-###
+## Related actions [#related-actions]
+- [Zip](/how-to/zip), [Untar](/how-to/untar), [Unrar](/how-to/unrar)

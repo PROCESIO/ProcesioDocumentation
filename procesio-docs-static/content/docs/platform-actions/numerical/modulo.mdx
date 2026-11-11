@@ -1,7 +1,35 @@
 ---
 title: "Modulo"
 icon: "📕"
-description: "Returns the remainder left after dividing one number by another."
+description: "Returns the remainder of dividing one whole number by another."
 ---
 
-Coming soon 🔜
+**Modulo** divides the first whole number by the second and gives you what is left over. Use it to find even and odd numbers (remainder of dividing by `2`), to act on every N-th item in a loop, or to spread items across a fixed number of groups.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Numerical** and pick **Modulo** (or type *Modulo* in the search box).
+
+![The Modulo action properties: First number, Second number and Result](/images/docs/actions/numerical-modulo/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **First number** | Input | Integer | Yes | The number to divide. |
+| **Second number** | Input | Integer | Yes | The number to divide by. Cannot be `0`. |
+| **Result** | Output | Integer | Yes | The remainder. |
+
+## Example [#example]
+| First number | Second number | Result |
+| --- | --- | --- |
+| `17` | `5` | `2` |
+| `-17` | `5` | `-2` |
+| `17` | `-5` | `2` |
+| `17` | `0` | step fails: `Divisor cannot be 0.` |
+
+## Good to know [#good-to-know]
+- **Whole numbers only.** A decimal such as `17.5` stops the step with an error.
+- **The remainder takes the sign of the first number**: `-17` modulo `5` is `-2`, not `3`. If you need a result that is never negative, add the second number to a negative result.
+- A number is even when **Result** is `0` for a **Second number** of `2`.
+
+## Related actions [#related-actions]
+- [Divide](/how-to/divide), [Round Down](/how-to/round-down)

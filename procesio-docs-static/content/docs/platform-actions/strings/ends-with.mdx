@@ -1,17 +1,33 @@
 ---
 title: "Ends With"
 icon: "📕"
-description: "The Ends With action checks if a string ends with another string."
+description: "Checks whether a text ends with another text, and returns true or false."
 ---
 
-## Overview
+**Ends With** checks whether a text ends with a given value, for example whether a file name ends with `.pdf`. It returns `true` or `false`, so you can use the result in a decision.
 
-The `Ends With` action checks if a string ends with another string.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **Ends With** (or type *Ends With* in the search box).
 
-![](/images/docs/L0T_9gMFwUXd1zT_yG7JN_image.png)
+![The Ends With action properties: Input String, Input String - End and Result](/images/docs/actions/string-ends-with/panel.png)
 
-## Inputs & Outputs
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input String** | Input | Text | Yes | The text to check. |
+| **Input String - End** | Input | Text | Yes | The ending to look for. |
+| **Result** | Output | Boolean (true/false) | Yes | `true` if **Input String** ends with **Input String - End**, otherwise `false`. |
 
-- **\[ I ] Input string:** <span style={{color:'#1c417e'}}>String</span> to search in.
-- **\[ I ] Input string - end:** <span style={{color:'#1c417e'}}>String</span> to end with.
-- **\[ O ] Result**: <span style={{color:'#7239e3'}}>Boolean</span> representing the logic value of `Does the Input string end with the Input string - end value ?`
+## Example [#example]
+| Input String | Input String - End | Result |
+| --- | --- | --- |
+| `invoice_2024.pdf` | `.pdf` | `true` |
+| `invoice_2024.PDF` | `.pdf` | `false` |
+| `abc` | *(empty)* | `true` |
+
+## Good to know [#good-to-know]
+- **The check is case-sensitive.** To ignore case, run both values through [To Lower](/how-to/to-lower) first.
+- An empty ending always gives `true`.
+
+## Related actions [#related-actions]
+- [Starts With](/how-to/starts-with), [Contains](/how-to/string-contains), [RegEx Validate](/how-to/regex-validate)

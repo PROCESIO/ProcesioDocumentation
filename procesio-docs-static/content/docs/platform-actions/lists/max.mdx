@@ -1,25 +1,34 @@
 ---
 title: "Max"
 icon: "📕"
-description: "The Max action returns the maximum value from a list of numbers provided as input."
+description: "Returns the largest number in a list of numbers."
 ---
 
-## Overview
+The **Max** action returns the largest value in a list of numbers. Use it to find the highest price, score or quantity in a list.
 
-The `Max` action returns the maximum value from a list of numbers provided as input.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List**, then **Numeric**, and pick **Max** (or type *Max* in the search box).
 
-![](/images/docs/RSBBf8fjFv_aceb0s9p___image.png)
+![The Max action properties: Input a list of numbers and Result](/images/docs/actions/list-numeric-max/panel.png)
 
-### Parameters
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input a list of numbers** | Input | List of numbers | Yes | The numbers to compare, for example `[3,-7,12,5]`. |
+| **Result** | Output | Number | Yes | The largest number in the list. |
 
-### Inputs
+## Example [#example]
+| Input a list of numbers | Result |
+| --- | --- |
+| `[3,-7,12,5]` | `12` |
+| `[1.5,2.75,"3"]` | `3` |
+| `[]` (empty list) | The step fails: *The input was not valid, please revise it.* |
+| `["a","b"]` | The step fails: *The input was not a number. Please try again.* |
 
-- **input a list of numbers** (`list<object>`). The list must consist of primitive data types such as integers, doubles, etc.
+## Good to know [#good-to-know]
+- Numbers stored as text (`"3"`) are compared as numbers.
+- The step fails on an empty list. If the list can be empty, check it first with [Has Elements](/how-to/has-elements) or [Length](/how-to/length).
+- Any element that is not a number makes the step fail.
 
-### Outputs
-
-- **result&#x20;**(`object`): The maximum value from the input list.
-
-## Important Notes
-
-- Ensure that the input list contains only primitive data types such as integers, doubles, etc.
+## Related actions [#related-actions]
+- [Min](/how-to/min), [Sum](/how-to/sum), [Median](/how-to/median), [Arithmetic Mean](/how-to/arithmetic-mean), [Sort](/how-to/sort)

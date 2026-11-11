@@ -4,4 +4,20 @@ icon: "📁"
 description: "Actions for working with objects in Amazon S3 buckets."
 ---
 
-Read, write and organise files stored in S3 straight from a process: upload with **Put Object**, fetch with **Get Object**, check with **Object Exists** and **Get Metadata**, browse with **List Keys** and **List Objects**, and manage what is there with **Copy Object**, **Move Object** and the **Delete** actions.
+The **AWS S3** folder of the Process Designer toolbox holds the actions that read, write and organise objects (files) in Amazon S3 buckets. Every action takes the same connection fields, **Access Key**, **Secret Key**, **Region** and **Bucket**, typed into the action itself; there is no stored credential.
+
+| Action | What it does |
+| --- | --- |
+| [Object Exists](/how-to/object-exists) | Checks whether an object exists. |
+| [Get Metadata](/how-to/get-metadata) | Reads an object's size, content type, dates and custom metadata. |
+| [Get Object](/how-to/get-object) | Downloads an object into a File variable. |
+| [Put Object](/how-to/put-object) | Uploads a file as an object, optionally under a prefix. |
+| [Copy Object](/how-to/copy-object) | Copies an object to a new key or another bucket. |
+| [Move Object](/how-to/move-object) | Moves an object to a new key or another bucket. |
+| [Delete Object](/how-to/delete-object) | Deletes one object. |
+| [Delete by Prefix](/how-to/delete-by-prefix) | Deletes every object whose key starts with a prefix. |
+| [Delete by Keys](/how-to/delete-by-keys) | Deletes a list of objects. |
+| [List Keys](/how-to/list-keys) | Lists object keys, optionally under a prefix. |
+| [List Objects](/how-to/list-objects) | Lists objects with their details, optionally under a prefix. |
+
+S3 has no real folders: a key such as `invoices/2026/inv-001.pdf` is one object whose name contains `/`. Always give the full key, and use a prefix ending in `/` to work with one "folder".

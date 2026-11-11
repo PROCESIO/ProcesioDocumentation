@@ -1,83 +1,58 @@
 ---
 title: "Mapper"
 icon: "📕"
-description: "The Mapper action is one of the actions at your disposal to work with XML data. Mapper enables you to extract a value from aN XML string or an XML file."
+description: "Extracts a value or a list of values from an XML text or an XML file with an XPath expression."
 ---
 
-![](/images/docs/RXuOfjOYzPn5JPv_Iqp3N_image.png)
+The **Mapper** action in the **XML** folder reads an XML text or an XML file and returns what an [XPath expression](https://www.w3schools.com/xml/xpath_syntax.asp) selects. When the expression matches one node you get a single value; when it matches several you get a list. **Is List** tells you which one you got.
 
-The **Mapper** action is one of the actions at your disposal to work with XML data. Mapper enables you to extract a value from aN XML string or an XML file.
-
-The action will be able to query/extract data from an XML input using an [XPath expression](https://www.w3schools.com/xml/xpath_syntax.asp) and save it to a variable.
-
-<Callout type="warn">
-Mapper action was previously called XML Mapper.
+<Callout type="info">
+Mapper was previously called **XML Mapper**.
 </Callout>
 
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **XML** and pick **Mapper** (or type *Mapper* in the search box).
 
+![The Mapper action properties: Input XML, Input XML file, XPath Expression, Is List, The resulting value and The resulting list of values](/images/docs/actions/xml-mapper/panel.png)
 
-### **Overview**
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input XML** | Input | Text | No* | The XML as text. |
+| **Input XML file** | Input | File | No* | An XML file. Used only when **Input XML** is empty. |
+| **XPath Expression** | Input | Text | Yes | The XPath that selects what you need, for example `/bookstore/book[1]/title`. |
+| **Is List** | Output | Boolean (true/false) | Yes | `true` when the expression matched more than one node, `false` otherwise. |
+| **The resulting value** | Output | Any type | No | The content of the matched node, when exactly one node matched. |
+| **The resulting list of values** | Output | List of any type | No | The content of every matched node, when more than one node matched. |
 
-The action is used to filter the XML data that we will import into our process for future use.
+\* Fill one of the two: **Input XML** or **Input XML file**. With both empty, the step fails with `Input xml cannot be null or empty.`
 
-Input xml string - Input your XML schema in a process variable of type string
-
-Input xml file - Input your XML file in a process variable of type file
-
-Xpath expression - Input XPath expression for obtaining the key value(s) for your XML input
-
-IsList - returns TRUE if the XPath expression returns a list, FALSE otherwise; outputs will be set according to this.
-
-The resulting value - returns a value corresponding to the XPath expression
-
-The resulting list values - returns a list of values corresponding to the XPath expression
-
-
-
-### How to configure the Mapper action?
-
-&#x20; 1\.   Create a process and give it a name.
-
-&#x20; 2\.    Drag th&#x65;**&#x20;mapper** action to the canvas and link it to the other actions.
-
-![](/images/docs/ab0ZQmml9bf8DShBjdFs5_screenshot-2022-08-23-at-170129.png)
-
-3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/BEI95ig09m5x4-rh94CFy_screenshot-2022-08-23-at-170050.png)
-
-4\. Save, Validate and Run the process.
-
-5\. The process will ask for inputs: (see values with example purposes below)
-
-xmlString:&#x20;
+## Example [#example]
+**Input XML**:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-
 <bookstore>
-
-<book>
-  <title lang="en">Harry Potter</title>
-  <price>29.99</price>
-</book>
-
-<book>
-  <title lang="en">Learning XML</title>
-  <price>39.95</price>
-</book>
-
+  <book><title lang="en">Harry Potter</title><price>29.99</price></book>
+  <book><title lang="en">Learning XML</title><price>39.95</price></book>
 </bookstore>
 ```
 
-xPath:&#x20;
+| XPath Expression | Is List | The resulting value | The resulting list of values |
+| --- | --- | --- | --- |
+| `/bookstore/book[1]/title` | `false` | `Harry Potter` | empty |
+| `//title` | `true` | empty | `["Harry Potter", "Learning XML"]` |
+| `/bookstore/book[1]` | `false` | `<title lang="en">Harry Potter</title><price>29.99</price>` | empty |
+| `//title/@lang` | `true` | empty | `["en", "en"]` |
+| `//author` (no match) | `false` | empty | empty |
 
-```xml
-/bookstore/book[1]	
-```
+## Good to know [#good-to-know]
+- The value of a matched element is its **inner content**. For an element with children you get the child tags as text (see `/bookstore/book[1]` above).
+- Select the element (`//title`), not its text node (`//title/text()`): a text node comes back empty.
+- Only one of the two value outputs is filled. Check **Is List**, or map both outputs.
+- A match on nothing does not fail the step; all outputs stay empty and **Is List** is `false`.
+- The expression must select nodes. A function such as `count(//book)` fails the step with `Input XML or XPath was not valid.`, as does XML that is not well-formed.
+- **Namespaces.** For XML with a default namespace, such as `<Invoice xmlns="urn:test"><ID>INV-1</ID></Invoice>`, the path `/Invoice/ID` finds nothing. Use `local-name()`: `//*[local-name()='ID']` returns `INV-1`.
 
-6\. Click **Run**.
-
-&#x20; 7\.  Click **Check Instance&#x20;**&#x74;o view the results. You will see that it selects the first book element that is the child of the bookstore element, and it is saved in the `result` variable.&#x20;
-
-![](/images/docs/1r4QIwG26F9isCqlr7FHX_screenshot-2022-08-23-at-171028.png)
+## Related actions [#related-actions]
+- [Update](/how-to/update), [XML Processor](/how-to/xml-processor), [XML Is Valid](/how-to/xml-is-valid), [XML To JSON](/how-to/xml-to-json)
+- [Extract Objects](/how-to/extract-object), the same idea for JSON

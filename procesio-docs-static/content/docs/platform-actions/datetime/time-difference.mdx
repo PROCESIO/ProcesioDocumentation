@@ -1,45 +1,43 @@
 ---
 title: "Time Difference"
 icon: "📕"
-description: "This action computes the difference between two DateTime values. [hour, minute, second]"
+description: "Counts the hours, minutes or seconds between two dates and times."
 ---
 
-This action computes the difference between two **<span style={{color:'#ff9307'}}>DateTime</span>** values. **\[hour, minute, second]**
+**Time Difference** tells you how far apart two moments are, in hours, minutes or seconds. Use it to measure how long a step took, to check a response time against an SLA, or to see whether a token has expired. For days and longer, use [Date Difference](/how-to/date-difference).
 
-![](/images/docs/RawnYz2DwRIXXnND7AQoI_tdy.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Time Difference** (or type *Time Difference* in the search box).
 
-## Inputs & Outputs
+![The Time Difference action properties: Unit of Time, First Datetime, Second Datetime and Difference](/images/docs/actions/datetime-time-difference/panel.png)
 
-- **\[ I ] Unit of time**: <span style={{color:'#00ced1'}}>Drop-down</span> to choose which unit of time will be used for measuring the difference.
-  - **Hour**
-  - **Minute**
-  - **Second**
-- **\[ I ] First Datetime**: <span style={{color:'#ff9307'}}>DateTime</span> representing the minuend.
-- **\[ I ] Second Datetime**: <span style={{color:'#ff9307'}}>DateTime</span> representing the subtrahend.
-- **\[ O ] Difference**: <span style={{color:'#0039e3'}}>Integer</span> equal to the result of **First Datetime - Second Datetime** in **Unit of time**.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Unit of Time** | Input | Option list | Yes | **Second**, **Minute** or **Hour**. |
+| **First Datetime** | Input | Date and time | Yes | The start moment. |
+| **Second Datetime** | Input | Date and time | Yes | The end moment. |
+| **Difference** | Output | Integer | Yes | **Second Datetime** minus **First Datetime**, in whole units. Negative when the second moment is earlier. |
 
-![](/images/docs/jFmRi56eIgu52MNqvOqXQ_tdy.png)
+## Example [#example]
+| Unit of Time | First Datetime | Second Datetime | Difference |
+| --- | --- | --- | --- |
+| Second | `2024-01-01T13:25:10` | `2024-01-01T13:26:00` | `50` |
+| Minute | `2024-01-01T13:25:10` | `2024-01-01T14:25:09` | `59` (one second short of an hour) |
+| Hour | `2024-01-01T22:00:00` | `2024-01-03T01:30:00` | `27` |
+| Hour | `2024-01-01T22:00:00` | `2024-01-01T19:30:00` | `-2` |
+| Hour | `2024-01-01T12:00:00Z` | `2024-01-01T12:00:00+02:00` | `-2` |
+| Minute | `13:25:10` | `14:00:00` | `34` |
 
-## Example Usage
+## Good to know [#good-to-know]
+- The full date counts, not only the time: 22:00 on one day to 01:30 two days later is 27 hours.
+- Partial units are dropped, never rounded up: 59 minutes and 59 seconds is `59` minutes.
+- If you give only a time (`13:25:10`), both values are taken on the same day.
+- Offsets are respected: both values are converted to UTC before they are compared, so 12:00 UTC and 12:00 at +02:00 are 2 hours apart.
 
-- Drag action onto canvas to get familiarized with it.
+<Callout type="warn">
+The result must fit in a whole number of about ±2.1 billion. In **Second**, that is about 68 years. A longer span does not stop the step; it returns a wrong number (1950 to 2030 in seconds returned `-1770359296`). Use **Minute** or **Hour**, or [Date Difference](/how-to/date-difference), for long periods.
+</Callout>
 
-![](/images/docs/4p2tiPNtaaXaVhL1bDiD8_tdy.png)
-
-- Declare some variables to be used with the action
-
-![](/images/docs/3EHy4mvgUnf20N09bG7a6_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/YTFyi2PWeAv_1_5Bwup8w_tdy.png)
-
-## Use Cases
-
-- Computing the time difference between two <span style={{color:'#ff9307'}}>DateTime</span> values.
-
-## Tips
-
-- If **Second Datetime** is lesser than **First Datetime**, the **Difference** will be negative.
-- To compute date difference, consider using [Date Difference](/docs/platform-actions/call-api/date-difference).
+## Related actions [#related-actions]
+- [Date Difference](/how-to/date-difference), [UTC Now](/how-to/utc-now), [Update DateTime](/how-to/update-datetime)

@@ -1,35 +1,32 @@
 ---
 title: "Create Workbook"
 icon: "📕"
-description: "Use this action to create a new workbook with one sheet."
+description: "Creates a new, empty Excel workbook (.xlsx) with one sheet."
 ---
 
-### Overview
+**Create Workbook** makes a new, empty `.xlsx` file with one sheet. Use it as the starting point when your process builds an Excel file step by step with the other Excel actions.
 
-Use this action to create a new workbook with one sheet.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Create Workbook** (or type *Create Workbook* in the search box).
 
-### How to configure the Create Workbook action?
+![The Create Workbook action properties: Workbook name, Sheet name and Workbook](/images/docs/actions/excel-create-workbook/panel.png)
 
-Step 1. Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Workbook name** | Input | Text | Yes | The file name. `.xlsx` is added for you. |
+| **Sheet name** | Input | Text | Yes | The name of the first (and only) sheet. |
+| **Workbook** | Output | File | Yes | The new, empty workbook. |
 
-Step 2. Drag the **Create Workbook** action to the canvas and link it to the other actions.
+## Example [#example]
+| Workbook name | Sheet name | Workbook |
+| --- | --- | --- |
+| `report` | `Data` | `report.xlsx` with one empty sheet `Data` |
+| `report.xls` | `Data` | `report.xlsx` (the extension is replaced) |
 
-![](/images/docs/-1T7UObjkj5G6e7G-QW0U_image.png)
+## Good to know [#good-to-know]
+- Any extension other than `.xlsx` is replaced with `.xlsx`. Spaces at the start and end of the name are removed.
+- To add more sheets, use [Insert Sheet](/how-to/insert-sheet). To fill a workbook from a list in one go, [Export To XLSX](/how-to/export-to-xlsx) is simpler.
 
-Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/ieZhLWnrBkcpFZzYsWIyS_screenshot-2022-09-22-at-121223.png)
-
-- **Workbook name**: you must enter a string variable that represents the workbook name (.xlsx file extension is added automatically)
-- **Sheet name**: you must enter a string variable representing the name of the first sheet in the workbook
-- **Workbook**: file variable output which contains the workbook with your given name and given sheet name
-
-Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-Step 5. You will be prompted to add the file for our input variable (if the values are not already added as default values for each variable). Click **Run**.
-
-Step 6. To verify the process click **Check instance**.
-
-Step 7. In the **Output&#x20;**&#x73;ection, you can see the file variable with the .xls content as defined. You can download the file:
-
-![](/images/docs/6k_mRcZWYQR-4wx58o7-1_screenshot-2022-09-22-at-121816.png)
+## Related actions [#related-actions]
+- [Insert Sheet](/how-to/insert-sheet), [Export To XLSX](/how-to/export-to-xlsx), [Copy Paste](/how-to/copy-paste)

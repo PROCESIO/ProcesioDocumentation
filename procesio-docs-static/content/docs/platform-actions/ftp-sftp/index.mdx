@@ -1,7 +1,24 @@
 ---
 title: "FTP/SFTP"
 icon: "📁"
-description: "Actions for moving files to and from FTP and SFTP servers."
+description: "Actions for moving files to and from SFTP and FTP servers."
 ---
 
-Transfer files (**Upload File**, **Download File**, **SFTP Download Bulk**), organise the remote side (**Create Folder**, **Move File**, **Move Bulk**, **Rename File/Folder**), inspect it (**Get File List**), and clean up (**Delete File**, **Delete Folder**, **SFTP Delete Bulk**).
+The **SFTP** folder of the Process Designer toolbox holds the actions that work with files on an SFTP or FTP server. They all connect through an **FTP** credential that you create once in the Credential Manager: see [FTP Credential](/ftp-credential). Folder paths you type in these actions are relative to the **Directory path** set in that credential.
+
+| Action | What it does |
+| --- | --- |
+| [Get File List](/how-to/get-file-list) | Lists the files and/or folders in a folder, with name, path, type and size. |
+| [Download File](/how-to/download-file) | Downloads one file into a File variable. |
+| [Download Bulk](/how-to/sftp-download-bulk) | Downloads a list of files in one step. |
+| [Upload File](/how-to/upload-file) | Uploads one file to a folder. |
+| [Upload Bulk](/how-to/sftp-upload-bulk) | Uploads a list of files to a folder in one step. |
+| [Move File](/how-to/move-file) | Moves one file to another folder or another server. |
+| [Move Bulk](/how-to/move-bulk) | Moves a list of files to another folder or another server. |
+| [Rename File/Folder](/how-to/rename-file-folder) | Renames a file or a folder. |
+| [Create Folder](/how-to/create-folder) | Creates a folder, or a whole path of folders. |
+| [Delete File](/how-to/delete-file) | Deletes one file. |
+| [Delete Bulk](/how-to/sftp-delete-bulk) | Deletes a list of files in one step. |
+| [Delete Folder](/how-to/delete-folder) | Deletes a folder and everything in it. |
+
+The bulk actions take the list returned by **Get File List** (Upload Bulk takes a list of files) and report each file that failed in their **Errors** output, so check it after the step.

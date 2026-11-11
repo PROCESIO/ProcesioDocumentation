@@ -1,161 +1,90 @@
 ---
 title: "Filter"
 icon: "📕"
-description: "The Filter action filters complex lists (data models or complex JSON objects) based on multiple criteria. This documentation outlines the parameters,…"
+description: "Filters a list of data models or JSON objects by one or more field rules written in a JSON configuration."
 ---
 
-# Overview
+The **Filter** action keeps the elements of a list of data models (or JSON objects) whose fields match a set of rules. Each rule checks one field — for example *city equals Cluj* or *email ends with @example.com* — and an element is kept only when **all** rules pass. To filter a simple list of text or numbers, use [Simple Filter](/how-to/simple-filter).
 
-The **Filter** action filters complex lists (data models or complex JSON objects) based on multiple criteria. This documentation outlines the parameters, JSON configuration, and match types associated with the Filter action.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Filter** (or type *Filter* in the search box). Then click **Configure** to open the configuration panel.
 
-# Parameters
+![The Filter action properties with the Configure button](/images/docs/actions/list-filter/panel.png)
 
-The Filter action requires the following parameters:
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List to filter** | Input | List of data models / JSON objects | Yes | The list to filter. |
+| **Filter JSON configuration** | Input | Text (JSON) | Yes | The rules, see below. |
+| **Filtered list** | Output | List of data models / JSON objects | Yes | The elements that passed every rule, unchanged and in their original order. Use a variable of the same data model as the input. |
 
-- **Input (required):&#x20;**&#x4C;ist to filter (`list<object>`)
-- **Input (required):&#x20;**&#x46;ilter JSON Configuration - this entry will allow JSON
-- **Output (required):&#x20;**&#x46;iltered list (`list<object>`)
-
-# JSON Configuration
-
+## The JSON configuration [#the-json-configuration]
 ```json
 {
-	"FieldMatches":[
-		{
-			"FieldName":"Field1",
-			"MatchType":"Exact",
-			"FilterExpression":"expression",
-			"KeepIfTrue":true
-		},
-		{
-			"FieldName":"Field2",
-			"MatchType":"Similar",
-			"FilterExpression":"expression",
-			"KeepIfTrue":true
-		},
-		{
-			"FieldName":"Field3",
-			"MatchType":"Fuzzy",
-			"FilterExpression":"expression",
-			"FuzzyAlgorithm":"Levenstein",
-			"FuzzyThreshold":0.7,
-			"KeepIfTrue":true
-		},
-		{
-			"FieldName":"Field4",
-			"MatchType":"Contains",
-			"FilterExpression":"expression",
-			"KeepIfTrue":true
-		},
-		{
-			"FieldName":"Field5",
-			"MatchType":"Soundex",
-			"FilterExpression":"expression",
-			"SoundexDistance":4,
-			"KeepIfTrue":true
-		},
-		{
-			"FieldName":"Field6",
-			"MatchType":"SimilarWordMatch",
-			"FilterExpression":"expression",
-			"SimilarFirstNwords":1,
-			"SimilarLastNwords":1,
-			"KeepIfTrue":true
-		},
-		{
-			"FieldName":"Field7",
-			"MatchType":"RegEx",
-			"FilterExpression":"RegEx expression",
-			"KeepIfTrue":true
-		}
-	],
-	"AlternateFields":[
-		{
-			"FieldName":"Field1",
-			"FieldAlternateNames":["Field2","Field3"]
-		},
-		{
-			"FieldName":"Field3",
-			"FieldAlternateNames":["Field4","Field1","Field2"]
-		}
-	]
+  "FieldMatches": [
+    { "FieldName": "city", "MatchType": "Contains", "FilterExpression": "cluj", "KeepIfTrue": true },
+    { "FieldName": "name", "MatchType": "Contains", "FilterExpression": "maria", "KeepIfTrue": false }
+  ],
+  "AlternateFields": [
+    { "FieldName": "name", "FieldAlternateNames": ["email"] }
+  ]
 }
 ```
 
-The JSON configuration for the Filter action includes two main components: `FieldMatches` and `AlternateFields`.
+### FieldMatches [#fieldmatches]
+A list of rules (at least one). Every rule must pass for an element to be kept (AND).
 
-## &#x20;MatchType Types
+| Key | Required | Meaning |
+| --- | --- | --- |
+| `FieldName` | Yes | The field to check, as named in the data model (case-sensitive). Use a dot for a nested field, for example `address.city`. |
+| `MatchType` | Yes | `Exact`, `Contains`, `Similar`, `Fuzzy`, `Soundex`, `SimilarWordMatch` or `RegEx`. The match types work as in [Simple Filter](/how-to/simple-filter#match-types). |
+| `FilterExpression` | Yes in practice | The value (or regular expression) to compare the field with. |
+| `KeepIfTrue` | Recommended | `true`: the rule passes when the field matches. `false`: the rule passes when the field does **not** match. If you leave it out, it counts as `false`. |
+| `FuzzyAlgorithm`, `FuzzyThreshold` | Only for `Fuzzy` | Algorithm name and minimum score from `0` to `1`; see [Simple Filter](/how-to/simple-filter#fuzzy) for the names. |
+| `SoundexDistance` | Only for `Soundex` | `0` to `4`; `4` (default) means "sounds the same". |
+| `SimilarFirstNwords`, `SimilarLastNwords` | Only for `SimilarWordMatch` | How many first / last words must be equal. |
 
-### Exact
+### AlternateFields [#alternatefields]
+Optional. Lets a rule also look at other fields. For the rule on `FieldName`, the same check is run on each field in `FieldAlternateNames`:
+- with `"KeepIfTrue": true`, the rule passes if the main field **or any** alternate field matches;
+- with `"KeepIfTrue": false`, the rule passes only if **none** of them matches.
 
-An exact match requires validation (**=**) against the specified `FilterExpression`.
+Alternates work in one direction only: giving `name` the alternate `email` does not give `email` the alternate `name`.
 
-### Similar
+## Example [#example]
+List to filter:
+```json
+[
+  {"id":1,"name":"Ana Popescu","city":"Cluj","email":"ana@example.com","age":34},
+  {"id":2,"name":"Bogdan Ionescu","city":"București","email":"bogdan@example.com","age":19},
+  {"id":3,"name":"Ana-Maria Pop","city":"Cluj-Napoca","email":"ana.maria@example.com","age":41},
+  {"id":4,"name":"Dan Petrescu","city":"Iasi","email":"dan@test.org","age":27}
+]
+```
 
-- Compares against `FilterExpression` considering:
-  - Special characters: For example, "John-Doe" and "John Doe" are considered a match after removing special characters.
-  - Phone numbers: e.g., "376-323-1111" and "323-1111" are considered a match.
-  - Domain/URL: Ignores prefixes like "WWW" or "HTTP(s)://".
-  - Email format: Matches emails with various representations like "@" or "\[at]".
+| FieldMatches | Kept ids |
+| --- | --- |
+| `[{"FieldName":"city","MatchType":"Exact","FilterExpression":"cluj","KeepIfTrue":true}]` | `1` |
+| `[{"FieldName":"city","MatchType":"Contains","FilterExpression":"Cluj","KeepIfTrue":true}]` | `1`, `3` |
+| the two rules from the configuration above (city contains *cluj* AND name does not contain *maria*) | `1` |
+| `[{"FieldName":"age","MatchType":"RegEx","FilterExpression":"^[1-2][0-9]$","KeepIfTrue":true}]` | `2`, `4` |
+| `[{"FieldName":"name","MatchType":"Fuzzy","FilterExpression":"Dan Petrscu","FuzzyAlgorithm":"JaroWinkler","FuzzyThreshold":0.9,"KeepIfTrue":true}]` | `4` |
+| `[{"FieldName":"city","MatchType":"Exact","FilterExpression":"Bucuresti","KeepIfTrue":true}]` | `2` |
+| `[{"FieldName":"name","MatchType":"Contains","FilterExpression":"test","KeepIfTrue":true}]` with `AlternateFields` `[{"FieldName":"name","FieldAlternateNames":["email"]}]` | `4` (found in the email) |
 
-### Fuzzy
+A nested field also works: with the list `[{"id":1,"address":{"city":"Cluj"}},{"id":2,"address":{"city":"Iasi"}}]` and `"FieldName":"address.city"`, `"FilterExpression":"cluj"`, `Exact`, only `id` `1` is kept.
 
-Utilizes algorithms from **Similarity Search** to compare fields against `FilterExpression`. More details [here](/docs/platform-actions/call-api/similarity-search).
-
-### Contains
-
-Checks if `FilterExpression` contains the field or vice versa.
-
-### Soundex
-
-Evaluates if two words are similar when spoken, based on a scale from 0 to 4.
-
-### SimilarWordMatch
-
-Compares the first or last N words in the field with those in `FilterExpression`.
-
-### RegEx
-
-Validates if the field matches the pattern specified in `FilterExpression`. The RegEx pattern must be JSON safe/encoded (e.g. by using [test json\_encode online - general PHP functions - functions-online](https://www.functions-online.com/json_encode.html)).
-
-## Properties
-
-### FuzzyAlgorithm & FuzzyThreshold
-
-- Only used when `MatchType` = `Fuzzy`. If `MatchType` is something else, those properties will be ignored so, they can be null or can even not be present.
-- `FuzzyAlgorithm` needs to be one from this [here](/docs/platform-actions/call-api/similarity-search), written exactly as in the link provided.
-- `FuzzyThreshold` is a double between 0 and 1, where 0 means any match is accepted and 1 requires 100% confidence.
-
-### SoundexDistance
-
-- Used only when the `MatchType` = `Soundex` and it can be set to 0, 1, 2, 3, or 4, where 4 means the words are very similar when spoken.&#x20;
-
-### SimilarFirstNwords & SimilarLastNwords
-
-- Only used when `MatchType` = `SimilarWordMatch` in which case at least one should be >0. If both are =0 then the `SimilarWordMatch` will not be executed at all since it does not make sense. If `MatchType` is something else, those properties will be ignored, so, they can have any value or can even not be present.
-
-### KeepIfTrue
-
-- Determines if the record should be kept based on the match criteria. If set to **true**, the record will be retained.
-
-<Callout type="error">
-The matching algorithms work only on Fields that are of type primitive and not on data structures. A Row Match is TRUE only if all matches are TRUE, so the evaluation looks like this (pseudo-code for the JSON config from above):&#x20;
-</Callout>
-
+## Good to know [#good-to-know]
+- Field values are compared in lower case, with double spaces reduced and accents removed. **Write the `FilterExpression` without accents**: `București` finds nothing, `Bucuresti` finds the record.
 <Callout type="warn">
-**IMPORTANT:&#x20;**&#x49;f you have alternative fields for a match and the KeepIfTrue = **true**, then the match will be *true&#x20;*&#x69;f **ANY** (*at least one*) of the evaluations of the main **OR&#x20;**&#x74;he alternative fields is *true*.
-
-**IMPORTANT:&#x20;**&#x49;f you have alternative fields for a match and the KeepIfTrue = **false**, then the match will be *true&#x20;*&#x69;f **ALL&#x20;**&#x6F;f the evaluations of the main **AND** the alternative fields are *false*.
+The `FilterExpression` is converted to lower case before it is used. For `RegEx` rules this changes upper-case escape codes: `\D` (non-digit) becomes `\d` (digit), and the same for `\W`, `\S` and `\B`. For example `"^\\D+$"` keeps nothing instead of the names without digits. Use character classes instead, such as `"^[^0-9]+$"`. Matching is always case-insensitive.
 </Callout>
 
-## AlternateFields
+- Backslashes in a regular expression must be doubled in the JSON: `"@example\\.com$"`.
+- Numbers and true/false values are compared as text (`age` `19` is the text `19`).
+- Each element must have every field named in `FieldName` (and in its alternates). If one element misses a field, the whole step fails with *The data does not contain the field '…'!*
+- An unknown `MatchType` does not fail the step; that rule never matches.
+- The step also fails when the list is empty (*The input list does not have any element!*), when `FieldMatches` is missing or empty, when the JSON is invalid, or when the list holds simple values instead of objects.
 
-The `AlternateFields` section specifies alternate fields for matching. When evaluating a match for a certain field, the same match assessment will be executed for the alternate fields as well, and the result of all those alternate matches will be evaluated with OR to determine the result of the overall match.
-
-<Callout type="info">
-If Fields1 has the alternate fields Field2 & Field3 **does not mean** that Field2/Field3 has Field1 as an alternate field.
-</Callout>
-
-<Callout type="error">
-The matching algorithms work only on FieldName that are of type primitive and not on data structures. A Row Match is TRUE only if all matches are TRUE.
-</Callout>
+## Related actions [#related-actions]
+- [Simple Filter](/how-to/simple-filter), [Find Duplicates](/how-to/find-duplicates), [Sort Data Model](/how-to/sort-data-model), [Contains](/how-to/list-contains)

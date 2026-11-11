@@ -1,39 +1,32 @@
 ---
 title: "Is Weekday"
 icon: "📕"
-description: "This action checks if a date is on a weekday."
+description: "Checks whether a date falls on a working day, Monday to Friday."
 ---
 
-This action checks if a date is on a weekday.
+**Is Weekday** tells you whether a date is between Monday and Friday. Use it to run a step only on working days, for example to send invoices or to check that a due date does not fall on a weekend.
 
-![](/images/docs/hhtqRsNWW_s88GaZcnE-L_image.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Is Weekday** (or type *Is Weekday* in the search box).
 
-## Inputs & Outputs
+![The Is Weekday action properties: Date and Is it weekday?](/images/docs/actions/datetime-is-weekday/panel.png)
 
-- **\[ I ]** **Date**: <span style={{color:'#ff9307'}}>DateTime</span> representing the date to be checked.
-- **\[ O ] Is it weekday ?**: <span style={{color:'#7239e3'}}>Boolean</span> representing the logic value of `Is Date on a weekday ?`
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Date** | Input | Date and time | Yes | The date to check. |
+| **Is it weekday?** | Output | Boolean (true/false) | Yes | `true` for Monday to Friday, `false` for Saturday and Sunday. |
 
-![](/images/docs/KCdJPPkmLK6evHYWZ-nDo_tdy.png)
+## Example [#example]
+| Date | Is it weekday? |
+| --- | --- |
+| `2026-11-10` (Tuesday) | `true` |
+| `2026-11-07` (Saturday) | `false` |
 
-## Example Usage
+## Good to know [#good-to-know]
+- Monday to Friday always count as weekdays. Public holidays are not taken into account.
+- An empty **Date** stops the step with an error.
+- **Time zone:** a date that carries a UTC offset (for example `2024-03-01T00:30:00+02:00`) is first converted to UTC, and the result is read from the UTC value. A date without an offset, or ending in `Z`, is used as it is.
 
-- Drag action onto canvas to get familiarized with it.
-
-![](/images/docs/rshotUJ7BWaibRhsrtbEV_tdy.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/zKDLBUSekLBA0dSKj3Vcp_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/M9Hz6xts4NMmyo_7QNAv5_tdy.png)
-
-## Use Cases
-
-- Checking if a date is on a weekday or not.
-
-## Tips
-
-- To check if a date is on a weekend, consider using [Is Weekend](/docs/platform-actions/call-api/is-weekend).
+## Related actions [#related-actions]
+- [Is Weekend](/how-to/is-weekend), [Get Day Of Week](/how-to/get-day-of-week)

@@ -1,7 +1,49 @@
 ---
 title: "Move Object"
 icon: "📕"
-description: "Moves an S3 object to a different bucket or key."
+description: "Moves an object to a new key, in the same Amazon S3 bucket or in another bucket: copy, then delete the original."
 ---
 
-coming soon 🔜
+**Move Object** moves an object in Amazon S3 to a new key, in the same bucket or in another bucket. Use it to rename an object or to file it in an archive folder after processing. S3 has no real move: the action copies the object, then deletes the original.
+
+## Before you start [#before-you-start]
+The AWS S3 actions don't use a stored credential. Each action has the same four connection fields:
+
+| Field | Type | Required | What to put |
+| --- | --- | --- | --- |
+| **Access Key** | Text | Yes | The access key ID of an AWS IAM user, for example `AKIA…`. |
+| **Secret Key** | Text | Yes | The secret access key that belongs to that access key. |
+| **Region** | Text | Yes | The AWS region of the bucket, as its code, for example `eu-central-1`. |
+| **Bucket** | Text | Yes | The bucket name, for example `my-company-invoices`. |
+
+The IAM user needs S3 permissions on the bucket for the operation you run. The values you type are visible to everyone who can edit the process, so prefer an IAM user limited to the buckets the process needs.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **AWS S3** and pick **Move Object** (or type *Move Object* in the search box).
+
+![The Move Object action properties: Access Key, Secret Key, Region, Bucket, Source Key, Destination Key, Destination Bucket, Destination Region and Result](/images/docs/actions/aws-s3-move-object/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Access Key**, **Secret Key**, **Region**, **Bucket** | Input | Text | Yes | The connection fields described above. **Region** and **Bucket** are those of the source object. |
+| **Source Key** | Input | Text | Yes | The full key of the object to move, for example `inbox/order-17.csv`. |
+| **Destination Key** | Input | Text | Yes | The new full key, for example `archive/2026/order-17.csv`. Keep the file extension. |
+| **Destination Bucket** | Input | Text | No | The destination bucket. Leave empty to stay in the same bucket. |
+| **Destination Region** | Input | Text | No | The region of the destination bucket. Leave empty when it is the same region. |
+| **Result** | Output | Boolean | No | `true` if the object was moved, `false` if not. |
+
+## Example [#example]
+**Source Key** `inbox/order-17.csv`, **Destination Key** `archive/2026/order-17.csv`, the destination fields empty → the object now exists only as `archive/2026/order-17.csv` and **Result** is `true`.
+
+## Good to know [#good-to-know]
+- **An existing object at the destination key is replaced.**
+- If the copy doesn't succeed, the original is kept and **Result** is `false`.
+- If the original can't be deleted after the copy, the action removes the copy again and **Result** is `false`. If that also fails, the step fails with *"Moving operation encountered issues: Copy was created, but original object was not removed."*, and the object exists in both places.
+- Between two buckets the object is downloaded and uploaded again, so its content type is set from the extension of the **Destination Key** and custom metadata isn't carried over. The same keys are used for both buckets.
+- If **Source Key** or **Destination Key** is empty, the step fails with *"Missing object keys."*
+- If a connection field is empty, the step fails with *"Invalid connection details."*
+- Common errors from S3: *"Access forbidden! Ensure the connection details are valid."* (wrong keys or missing permission), *"Unable to connect! Ensure the provided region matches the bucket one."* (wrong **Region**), and *"Unrecognized Amazon Region: …"* (a region code that doesn't exist).
+
+## Related actions [#related-actions]
+- [Copy Object](/how-to/copy-object), [Delete Object](/how-to/delete-object), [List Keys](/how-to/list-keys)

@@ -1,34 +1,30 @@
 ---
 title: "Get Sheet Names"
 icon: "📕"
-description: "Use this action to capture all sheet names from an existing workbook."
+description: "Lists the names of all the sheets in an Excel workbook."
 ---
 
-### Overview
+**Get Sheet Names** gives you the names of every sheet in a workbook, in the order they appear in Excel. Use it to check that a sheet exists before you read it, or to loop over all sheets.
 
-Use this action to capture all sheet names from an existing workbook.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Get Sheet Names** (or type *Get Sheet Names* in the search box).
 
-### How to configure the Get Sheet Names action?
+![The Get Sheet Names action properties: Excel workbook and Sheet names](/images/docs/actions/excel-get-sheet-names/panel.png)
 
-Step 1. Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Excel workbook** | Input | File | Yes | An `.xlsx` or `.xlsm` workbook. |
+| **Sheet names** | Output | List of Text | Yes | The sheet names. |
 
-Step 2. Drag the **Get Sheet Names** action to the canvas and link it to the other actions.
+## Example [#example]
+| Excel workbook | Sheet names |
+| --- | --- |
+| `orders.xlsx` with the sheets *Orders* and *Empty* | `["Orders","Empty"]` |
+| `people.csv` | The step fails: "Input error: Excel file extension should be '.xlsx' or '.xlsm' [Excel 2007], found => .csv" |
 
-![](/images/docs/rqrhYKMWMdeV5NjN2wh8L_image.png)
+## Good to know [#good-to-know]
+- Only `.xlsx` and `.xlsm` files are accepted. Convert an old `.xls` file first with [XLS To XLSX](/how-to/xls-to-xlsx).
 
-Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/c3Oaz9AbqtRBZW9gbKHzz_screenshot-2022-09-22-at-122736.png)
-
-- **Excel workbook**: you need to enter the workbook file from which all the sheet names will be extracted
-- **Sheet names**: the output contains a variable of type  list\&lt;string> which will store the sheet names
-
-Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-Step 5. You will be prompted to add the excel file for the input variable. Click **Run**.
-
-Step 6. To verify the process click **Check instance**.
-
-Step 7. In the **Output&#x20;**&#x73;ection, you can see the list with sheet names:
-
-![](/images/docs/3aRgiaNnLZwPoJpEhiBbl_screenshot-2022-09-22-at-122944.png)
+## Related actions [#related-actions]
+- [Read Range](/how-to/read-range), [Insert Sheet](/how-to/insert-sheet), [Rename Sheet](/how-to/rename-sheet), [Delete Sheet](/how-to/delete-sheet)

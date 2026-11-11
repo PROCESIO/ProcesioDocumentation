@@ -12,7 +12,7 @@ Before you get started: by the end of the process creation, we will configure:
 
 - a configuration to an email server that will be used to send the email.
 - a configuration to a REST API of an web-to-sms service. 
-- the above requires the creation of 2 connection configurations in the [Credentials Manager](/docs/overview/processes/untitled/working-with-credentials).
+- the above requires the creation of 2 connection configurations in the [Credentials Manager](/working-with-credentials).
 
 ## Let's build this process! 
 
@@ -28,10 +28,10 @@ The process flow created will look like this:
 
 Click **Next step** to take you to the next step of the configuration, i.e. **Details**. 
 
-For this demo we have created a connection to a Gmail server, check the [GMail documentation](/docs/integrations-demos/integrations-2-alt/integrations).
+For this demo we have created a connection to a Gmail server, check the [GMail documentation](/docs/integrations-demos/integrations-2-alt/gmail-outgoing).
 
 <Callout type="info">
-You can also create and use a connection to any email server (check [Yahoo](/docs/integrations-demos/integrations-2-alt/integrations/yahoo) or [SendGrid](/docs/integrations-demos/integrations-2-alt/integrations/sendgrid) connection documentation).
+You can also create and use a connection to any email server (check [Yahoo](/docs/integrations-demos/integrations-2-alt/yahoo) or [SendGrid](/docs/integrations-demos/integrations-2-alt/sendgrid) connection documentation).
 </Callout>
 
 See below how the email server configuration for sending out emails from your Gmail account is configured (add your Gmail username & app password):
@@ -40,7 +40,7 @@ See below how the email server configuration for sending out emails from your Gm
 
 Click **Test connection** to see if you completed the settings correctly. If the test is successful, click **Save** to save this configuration. We will use this configuration in setting up the SendEmail action.
 
-&#x20; **Step 2.**    Create connection to the web-to-sms service provider you want to use. Similar to the email server config, go to Credentials Manager section to set it up. For this demo we used SMSO's API (check documentation for [SMSO connection](/docs/integrations-demos/integrations-2-alt/integrations/smso)).We will use this API configuration in CallAPI action.
+&#x20; **Step 2.**    Create connection to the web-to-sms service provider you want to use. Similar to the email server config, go to Credentials Manager section to set it up. For this demo we used SMSO's API (check documentation for [SMSO connection](/docs/integrations-demos/integrations-2-alt/smso)).We will use this API configuration in CallAPI action.
 
 ## &#x20; Create and configure the process
 

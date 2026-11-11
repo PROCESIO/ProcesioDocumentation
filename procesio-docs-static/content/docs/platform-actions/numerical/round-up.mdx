@@ -1,7 +1,38 @@
 ---
 title: "Round Up"
 icon: "📕"
-description: "Rounds a number up to the nearest integer."
+description: "Rounds a number up, towards the higher value, to the number of decimal places you choose."
 ---
 
-Coming soon 🔜
+**Round Up** rounds a number to the number of decimal places you choose, always towards the higher value. Use it when you must never fall short, for example the number of boxes needed for an order, or a price that must cover a cost.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Numerical** and pick **Round Up** (or type *Round Up* in the search box).
+
+![The Round Up action properties: Input number, Input number of digits and Result](/images/docs/actions/numerical-round-up/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input number** | Input | Number (decimal) | Yes | The number to round. |
+| **Input number of digits** | Input | Integer | Yes | How many decimal places to keep. `0` gives a whole number. A negative value rounds up to tens, hundreds… |
+| **Result** | Output | Number (decimal) | Yes | The number rounded up. |
+
+## Example [#example]
+| Input number | Input number of digits | Result |
+| --- | --- | --- |
+| `3.14159` | `2` | `3.15` |
+| `2.5` | `0` | `3` |
+| `1.25` | `1` | `1.3` |
+| `1.005` | `2` | `1.01` |
+| `1234.5` | `-2` | `1300` |
+| `7` | `2` | `7` |
+| `-2.567` | `1` | `-2.5` |
+| `-2.5` | `0` | `-2` |
+
+## Good to know [#good-to-know]
+- **Negative numbers go towards zero**, because that is the higher value: `-2.567` → `-2.5`, `-2.5` → `-2`.
+- A number that already has no more decimals than you asked for is not changed.
+
+## Related actions [#related-actions]
+- [Round](/how-to/round), [Round Down](/how-to/round-down)

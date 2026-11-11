@@ -1,61 +1,35 @@
 ---
 title: "Rename File/Folder"
 icon: "📕"
-description: "The action Rename File/Folder, enables you to rename a file from within a specified folder."
+description: "Renames a file or a folder on an SFTP or FTP server."
 ---
 
-![](/images/docs/lsUNIl3rcncCeX10nz3tp_image.png)
+**Rename File/Folder** gives a file or a folder on your SFTP or FTP server a new name, in the same location. Use it to mark a file as processed (`order.csv` → `order.done.csv`) or to give an uploaded file its final name.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6l0F1UhxsXQ" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential).
 
-The action **Rename File/Folder**, enables you to rename a file from within a specified folder.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Rename File/Folder** (or type *Rename* in the search box).
 
-### **FTP connection**
+![The Rename File/Folder action properties: Select SFTP credentials, Folder, File Current Name, File New Name and Result](/images/docs/actions/sftp-rename-file-folder/panel.png)
 
-For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select SFTP credentials** | Input | FTP credential | Yes | The credential of the server. |
+| **Folder** | Input | Text | No | The folder that holds the file or folder to rename, relative to the credential's **Directory path**. Leave empty for the root folder. |
+| **File Current Name** | Input | Text | Yes | The current name, for example `order.csv` or `reports`. |
+| **File New Name** | Input | Text | Yes | The new name, for example `order.done.csv`. Include the file extension. |
+| **Result** | Output | Boolean | Yes | `true` if the item was renamed, `false` if not. |
 
-&#x20; **Step 1:**    Go to the **Credentials Manager** section and click **Add New**.
+## Example [#example]
+**Folder** `inbox`, **File Current Name** `order.csv`, **File New Name** `order.done.csv` → the server now has `inbox/order.done.csv` and **Result** is `true`.
 
-&#x20; **Step 2**:    Give your credential a **Name\*** and **Description&#x20;**(optional) and click **Next step**.
+## Good to know [#good-to-know]
+- The item stays in the same folder. To move a file to another folder, use [Move File](/how-to/move-file).
+- Names are case-sensitive on most SFTP servers.
+- If the server returns an error (for example, the item doesn't exist), the step fails with *"Error while trying to rename file."*
 
-![](/images/docs/Gkgo-Dg5ygHfhM7JqEKE9_image.png)
-
-&#x20;  **Step 3**:    Configure the FTP / sFTP connection as needed:
-
-- **Port number\*** - the port number used by the server.
-- **Protocol type** - the protocol used depending on the encryption.
-- **Directory path** - the entry point of the server.
-- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
-
-![](/images/docs/XkrLpT5eurvsf94JwvhDN_image.png)
-
-&#x20;**&#x20;Step 4**:    Click **Test connection** and if successful click **Save**.
-
-### **Create the process**
-
-&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
-
-&#x20; **Step 2**:    Give you process a name.
-
-&#x20; **Step 3**:    Drag the action **Rename File/Folder** on the canvas and link the action inside you process.
-
-![](/images/docs/uc4A4MAayRLIa3zoYEiQa_image.png)
-
-**&#x20; Step 4**:    Create the <span style={{color:'#2166ae'}}>&lt;%result%&gt;</span> variable of type Boolean.
-
-![](/images/docs/ECR9ig6iIcyQCJOl_jaSZ_image.png)
-
-&#x20;  **Step 5**:    Click the **Rename File/Folder** action to access its configurations.
-
-- **Node name\*** - gives you the option to change the actions name.
-- **Choose server type\*** - here we will select the connection created in the previous section.
-- **Folder\*&#x20;**- allows you to select the path to the file you wish to rename.
-- **File current name\*** - the name of the file you wish to rename.
-- **File new name\*** - the new name of the file.
-- **Result** - here we will add the variable created at Step 4.
-
-![](/images/docs/EQAN4LPHiu-5XzCJHRmA4_image.png)
-
-&#x20; **Step 6**:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-&#x20; **Step 7**:    Click **Check Instance**.
+## Related actions [#related-actions]
+- [Move File](/how-to/move-file), [Get File List](/how-to/get-file-list)

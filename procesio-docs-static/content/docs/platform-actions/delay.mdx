@@ -1,46 +1,51 @@
 ---
 title: "Delay"
 icon: "📕"
-description: "Delay action suspends the execution of the process before continuing with the execution of the next action."
+description: "Pauses the process for a period of time, or until a date and time, before it continues with the next step."
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0ePjKxkbwnM" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-Delay action suspends the execution of the process before continuing with the execution of the next action. 
+**Delay** pauses the process and then continues with the next step. You can wait for a period of time (for example 30 minutes) or until a date and time (for example 3 December at 15:00 UTC). Use it to space out API calls, to send a reminder a few days later, or to start work at a given time.
 
-<Callout type="info">
-This action proves itself useful in processes that require timing.  
-</Callout>
+## Add the action [#add-the-action]
+In the Process Designer toolbox, pick **Delay** (or type *Delay* in the search box), then click the **Configure Action** card.
 
-This action can have 2 approaches of duration:
+![The Delay action properties with the Configure Action card](/images/docs/actions/delay/panel.png)
 
-- **Wait for** - if selected, it instructs the system to wait for a specific amount of time.
-  - e.g. suspends (pauses) process for 30 minutes
-- **Wait until** - if selected, instructs the system to wait until the specified date/time.
-  - e.g. suspends (pauses) process until 3 December 2021 at 3:00 p.m.
+In **Configure Action**, choose the **Delay Type**:
 
-**How to configure the Delay action?**
+- **Wait for a specific period of time**: set the amount and the unit in **Delay value**.
+- **Wait until**: set a date and time in **Delay value**. It is in **UTC**.
 
-Go to the Process Designers section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas.
+Below, you can optionally override that default with values computed while the process runs.
 
-**Step 1**: Drag the **Delay** action from Toolbar and drop it on canvas; click on the action to open the **Properties Panel**.
+![The Configure Action panel of Delay: Delay Type, Delay value, Runtime Amount, Runtime Interval and Wait until (UTC)](/images/docs/actions/delay/configuration.png)
 
-![](/images/docs/fb7Sjd41p64rR81PgUilR_image.png)
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Delay Type** | Input | Choice | Yes | **Wait for a specific period of time** (default) or **Wait until**. |
+| **Delay value** | Input | Amount + unit, or date and time | Yes | The default wait. For a period: a whole number and a unit: Second(s), Minute(s), Hour(s), Day(s), Week(s), Month(s) or Year(s). For *Wait until*: a date and time in UTC. |
+| **Runtime Amount** | Input | Integer | No | Replaces the amount of **Delay value** when it has a value. Period only. |
+| **Runtime Interval** | Input | Text | No | Replaces the unit of **Delay value** when it has a value. Period only. Accepted (any case): `second(s)`, `seconds`, `second`, `sec`, `s`, `minute(s)`, `minutes`, `minute`, `min`, `m`, `hour(s)`, `hours`, `hour`, `h`, `day(s)`, `days`, `day`, `d`, `week(s)`, `weeks`, `week`, `w`, `month(s)`, `months`, `month`, `year(s)`, `years`, `year`, `y`. |
+| **Wait until (UTC)** | Input | Date and time | No | Replaces the date of **Delay value** when it has a value. *Wait until* only. |
 
-**Step 2**: You can edit the Action Name.
+Delay has no outputs.
 
-**Step 3**: Click on Configure Action (not configured) card to go to the configurations steps.
+## Example [#example]
+- **Wait for a specific period of time**, **Delay value** `30` Minute(s) → the next step starts about 30 minutes later.
+- Same, with **Runtime Amount** mapped to a variable holding `2` and **Runtime Interval** to a variable holding `h` → the process waits 2 hours.
+- **Wait until**, **Delay value** `2026-12-03 15:00` → the process continues on 3 December 2026 at 15:00 UTC.
 
-![](/images/docs/Mu7WhQ69fGvfPrrHxTP7v_delay.png)
+## Good to know [#good-to-know]
+- **Fill in Delay value even when you use the runtime fields.** It is required, and the runtime fields only replace the parts they hold.
+- **`m` means minutes.** There is no short form for months; write `month` or `months`.
+- **Wait until is in UTC.** Convert local times first, for example with [Timezone Converter](/how-to/timezone-converter).
+- **A date in the past makes the step fail** with *"Invalid DateTime. Date was set in the past"*. Inside a [For Each](/how-to/for-each), a past date does not fail: the delay is simply skipped.
+- **An unknown Runtime Interval** fails with *"Invalid runtime period type."*
+- Delays of 30 seconds or less keep the process running while it waits. Longer delays put the run to sleep and resume it at the set time.
+- Delay cannot be run with **Test Action**; run the whole process to try it.
 
-**Step 4:** Select how the delay action works:
-
-![](/images/docs/uN2q8A_gIiH_r1jmb6E0b_delay2.png)
-
-**&#x20;     1. &#xA0;**&#x46;or **Wait for a specific period of time**, you must define the interval: 
-
-![**&#x20;     1. &#xA0;**](/images/docs/spA4jvDuYxaMP6witHKFe_delay3.png)
-
-**&#x20;     2. &#xA0;**&#x46;or **Wait until***,&#xA0;*&#x79;ou must define the date and time until the process will be suspended:
-
-![](/images/docs/Vxr3SkDS1m33S0p0YN_E9_delay4.png)
+## Related actions [#related-actions]
+- [For Each](/how-to/for-each), [Timezone Converter](/how-to/timezone-converter)

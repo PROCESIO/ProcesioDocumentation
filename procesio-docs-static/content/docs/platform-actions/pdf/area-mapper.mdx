@@ -1,143 +1,91 @@
 ---
 title: "Area Mapper"
 icon: "📕"
-description: "The Area Mapper action facilitates mapping values found in specific areas of a document to corresponding keys. It involves defining configurations to…"
+description: "Picks values out of the text extracted from a PDF by area, neighbouring words and patterns, and maps them to keys."
 ---
 
-## Overview
+The **Area Mapper** action reads the words that [Extract Text](/how-to/extract-text) found in a PDF and picks out the ones that sit in an area you describe: between coordinates, below or beside a label word, matching a pattern. Each area gets a key, such as `InvoiceNumber` or `Total`, so the result reads like a form. It works best on documents with a stable layout, such as invoices from the same supplier.
 
-The `Area Mapper` action facilitates mapping values found in specific areas of a document to corresponding keys. It involves defining configurations to specify the areas, keys, and filters for mapping.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **PDF** and pick **Area Mapper** (or type *Area Mapper* in the search box). Put an **Extract Text** action before it.
 
-![](/images/docs/qCHHF_SkRN8AifZ7g7Vdr_image.png)
+![The Area Mapper action properties: Extracted Words, Area Configuration and Mapped Areas](/images/docs/actions/pdf-area-mapper/panel.png)
 
-### Inputs & Outputs
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Extracted Words** | Input | List of any type | Yes | The **Extracted Text** output of the [Extract Text](/how-to/extract-text) action. |
+| **Area Configuration** | Input | JSON | Yes | A JSON list, one object per area to map (see below). |
+| **Mapped Areas** | Output | List of any type | Yes | One item per area **and** per page: `{"page": …, "key": …, "values": […]}`. |
 
-- \[I] **Extracted words** (`list<object>`): The output extracted from a PDF using the PDF `Extract Text` action.
-- \[I] **Area configuration** (`list<json>`): List of JSON objects containing configuration options for a set of areas.
-- \[O] **Mapped areas** (`list<object>`): Key-value list containing value maps for each area.
+## Area configuration [#area-configuration]
+Every property is optional except `MapToKey`.
 
-## Configuration Details
+| Property | Type | What it does |
+| --- | --- | --- |
+| `MapToKey` | Text | The key the values are returned under. |
+| `OnPages` | List of numbers | The pages to search, from 1. Empty or missing: every page. |
+| `BetweenXLeft`, `BetweenXRight` | Number | Left and right edge of the area. |
+| `BetweenYTop`, `BetweenYBottom` | Number | Top and bottom edge of the area. |
+| `IsOnTheRightOfWord` | Text | Use the right edge of this word as the left edge of the area. |
+| `IsOnTheLeftOfWord` | Text | Use the left edge of this word as the right edge of the area. |
+| `IsBelowWord` | Text | Use the bottom of this word as the top of the area. |
+| `IsAboveWord` | Text | Use the top of this word as the bottom of the area. |
+| `MaxNoOfRowsPerTarget` | Number | Join this many consecutive rows into one value, separated by a line break. Use it for values that span several lines, such as an address. |
+| `TakeFirstElements` | Number | Keep only the first N values. |
+| `TakeLastElements` | Number | Keep only the last N values. |
+| `RegExCaseSensitivePattern` | Text | Keep only the values that match this regular expression. |
+| `RegExCaseInsensitivePattern` | Text | The same, ignoring upper and lower case. |
 
-The `Area configuration` JSON structure comprises the following properties:
+Coordinates use the same system as [Extract Text](/how-to/extract-text): PDF points from the bottom-left corner of the page, `Y` growing upwards. Read the coordinates you need from the `Position` of the words that Extract Text returns.
 
-- **MapToKey** (mandatory)(`string`): Key that will be found in the output data under the `key` field.
-- **OnPages** (optional)(`list<int>`): Specify the pages in the document to search. If not specified or \&lt;=0, it searches all pages.
-- **BetweenXLeft&#x20;**(`int`), **BetweenXRight&#x20;**(`int`), **BetweenYTop&#x20;**(`int`), **BetweenYBottom&#x20;**(`int`), **IsBelowWord&#x20;**(`string`), **IsAboveWord&#x20;**(`string`), **IsOnTheRightOfWord&#x20;**(`string`), **IsOnTheLeftOfWord&#x20;**(`string`), **RegExCaseInsensitivePattern&#x20;**(`string`), **RegExCaseSensitivePattern&#x20;**(`string`) (all optional): These are all optional fields, but at least any 2 fields must be filled to extract text from the pdf.
-- **MaxNoOfRowsPerTarget** (mandatory) (`int`): Specifies how many rows identified should be considered as a result. Words identified on `MaxNoOfRowsPerTarget` are concatenated into a single text. E.g. If your data in the pdf is written on 2 rows of text and you want this information from both rows mapped to one key result, then you should set this parameter to 2.
-- **TakeFirstElements** (optional) (`int`): If null or \&lt;=0, it's considered to take all elements. This parameter specifies how many "instances" identified should be put on the output. It does not refer to how many words to consider, but how many "instances" are found. `TakeFirstElements` defines the maximum number of values to output for the MapToKey. Each "instance" can have 1 or more lines of text.
+The images below show how the limits frame an area on a page.
 
-The images below present the configuration parameters visually depicted to express the way they need to be used to extract data from a PDF.
+![How the area limits frame the values to extract, page 1](/images/docs/FcNhw-JmnqMa1xFmzkvUv_explicatiidrawio.png)
 
-![](/images/docs/FcNhw-JmnqMa1xFmzkvUv_explicatiidrawio.png)
+![How the area limits frame the values to extract, page 2](/images/docs/CeHNhbESZ7hSbU6kI_UGX_explicatii-pagina-2drawio.png)
 
-![](/images/docs/CeHNhbESZ7hSbU6kI_UGX_explicatii-pagina-2drawio.png)
+### How a value is built [#how-a-value-is-built]
+1. The words **strictly inside** the area are kept (a word must lie fully within the limits).
+2. They are grouped by row. Each row becomes one value: its words joined with spaces, left to right.
+3. `MaxNoOfRowsPerTarget` joins rows together.
+4. `TakeFirstElements`, then `TakeLastElements`, keep part of the values.
+5. Last, the two patterns filter what is left.
 
-### Area Configuration JSON Example 1
-
-```json
-[
-  {
-    "MapToKey": "VAT number",
-    "OnPages": [1],
-    "IsBelowWord": "C.I.F",
-    "BetweenXLeft": 320,
-    "BetweenXRight": 448,
-    "BetweenYTop": 714,
-    "BetweenYBottom": 696,
-    "RegExCaseSensitivePattern": "^(RO)?[0-9]+",
-    "MaxNoOfRowsPerTarget": 1,
-    "TakeFirstElements": null
-  },
-  {
-    "MapToKey": "IDFactura",
-    "OnPages": [1],
-    "IsBelowWord": "Numar",
-    "BetweenXLeft": 320,
-    "BetweenXRight": 448,
-    "BetweenYTop": 755,
-    "BetweenYBottom": 735,
-    "IsOnTheLeftOfWord": "Data:",
-    "MaxNoOfRowsPerTarget": 1
-  },
-  {
-    "MapToKey": "IssueDate",
-    "OnPages": [1],
-    "BetweenXLeft": 417,
-    "BetweenXRight": 505,
-    "BetweenYTop": 755,
-    "BetweenYBottom": 740,
-    "MaxNoOfRowsPerTarget": 1,
-    "RegExCaseSensitivePattern": "\\b\\d{2}\\.\\d{2}\\.\\d{4}\\b"
-  },
-  {
-    "MapToKey": "Bank",
-    "OnPages": [1],
-    "IsBelowWord": "Bank:",
-    "BetweenYTop": 43,
-    "BetweenXLeft": 283,
-    "BetweenXRight": 360,
-    "BetweenYBottom": 37,
-    "MaxNoOfRowsPerTarget": 1
-  },
-  {
-    "MapToKey": "BankAccount",
-    "OnPages": [1],
-    "IsBelowWord": "Konto:",
-    "BetweenYTop": 43,
-    "BetweenXLeft": 433,
-    "BetweenXRight": 529,
-    "BetweenYBottom": 37,
-    "MaxNoOfRowsPerTarget": 1
-  }
-]
-```
-
-### Mapped area output JSON Example 2
-
-
-The JSON below is an output example for the above `Area Configuration` JSON Example.
+## Example [#example]
+The first page of a PDF reads *Invoice INV-2026-001* / *Customer: ACME Ltd* / *Total 250 EUR*, the rows sitting at heights of about 780, 740 and 700 (from **Extract Text**). **Area Configuration**:
 
 ```json
 [
-    {
-        "page": 1,
-        "key": "VAT number",
-        "values": [
-            "12345"
-        ]
-    },
-    {
-        "page": 1,
-        "key": "IDFactura",
-        "values": [
-            "4444444444"
-        ]
-    },
-    {
-        "page": 1,
-        "key": "IssueDate",
-        "values": [
-            "14.09.2022"
-        ]
-    },
-    {
-        "page": 1,
-        "key": "Bank",
-        "values": [
-            "Bank Name FAKE"
-        ]
-    },
-    {
-        "page": 1,
-        "key": "BankAccount",
-        "values": [
-            "RO99 FAKE 0000 000X XX00 00000"
-        ]
-    }
+  { "MapToKey": "InvoiceNumber", "OnPages": [1],
+    "BetweenXLeft": 0, "BetweenXRight": 600, "BetweenYTop": 800, "BetweenYBottom": 690,
+    "RegExCaseSensitivePattern": "INV-\\d{4}-\\d{3}" },
+  { "MapToKey": "Total", "OnPages": [1],
+    "IsOnTheRightOfWord": "Total", "BetweenXRight": 600, "BetweenYTop": 720, "BetweenYBottom": 690 },
+  { "MapToKey": "AllRows", "OnPages": [1],
+    "BetweenXLeft": 0, "BetweenXRight": 600, "BetweenYTop": 800, "BetweenYBottom": 690,
+    "MaxNoOfRowsPerTarget": 2 }
 ]
 ```
 
-## Important Notes
+**Mapped Areas**:
 
-- Ensure that the necessary configurations accurately map the desired areas to keys.
-- Verify the output to ensure the expected values are correctly mapped.
+```json
+[
+  { "key": "InvoiceNumber", "page": 1, "values": ["Invoice INV-2026-001"] },
+  { "key": "Total", "page": 1, "values": ["250 EUR"] },
+  { "key": "AllRows", "page": 1, "values": ["Invoice INV-2026-001\nCustomer: ACME Ltd", "Total 250 EUR"] }
+]
+```
+
+A pattern keeps or drops a **whole row**; it does not cut the matching part out of it (`InvoiceNumber` above). To keep only the number, narrow the area with `IsOnTheRightOfWord`, or extract the part afterwards with a regex action.
+
+## Good to know [#good-to-know]
+- **Set all four sides.** A side you leave out defaults to the outermost word on the page, and since the limits are exclusive, the outermost words themselves are then left out. For example, an area with only `IsOnTheRightOfWord: "Total"` on the page above returns `ACME Ltd` from the middle row, not `250 EUR`: the top and bottom rows touch the default limits. Give explicit numbers (or a word) for every side.
+- **Patterns are applied last.** With `TakeFirstElements: 1` and the pattern `Total` on the area above, the result is empty: the first row (`Invoice INV-2026-001`) is kept first, then dropped by the pattern.
+- Word limits (`IsBelowWord` and the others) match a **single word, exactly** and with the same case, for example `Total` or `Customer:` (with the colon). When the word appears more than once on the page, the occurrence nearest the page edge is used: the highest one for `IsBelowWord`, the lowest for `IsAboveWord`, the leftmost for `IsOnTheRightOfWord`, the rightmost for `IsOnTheLeftOfWord`.
+- You get one item per area for **every page searched**, with an empty `values` list where nothing matched. Use `OnPages` to avoid empty entries.
+- In the JSON, a backslash in a pattern must be doubled: write `"\\d"` for the regex `\d`.
+
+## Related actions [#related-actions]
+- [Extract Text](/how-to/extract-text), [Extract Objects](/how-to/extract-object), [Select Pages](/how-to/select-pages)

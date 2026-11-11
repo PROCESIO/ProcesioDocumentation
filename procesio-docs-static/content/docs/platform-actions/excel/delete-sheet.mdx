@@ -1,32 +1,31 @@
 ---
 title: "Delete Sheet"
 icon: "📕"
-description: "Use this action to delete a sheet by name from an existing workbook."
+description: "Removes a sheet, with all its content, from an existing Excel workbook."
 ---
 
-### Overview
+**Delete Sheet** removes one sheet, and everything on it, from a workbook.
 
-Use this action to delete a sheet by name from an existing workbook.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Delete Sheet** (or type *Delete Sheet* in the search box).
 
-### How to configure the Delete Sheet action?
+![The Delete Sheet action properties: Excel workbook and Sheet name](/images/docs/actions/excel-delete-sheet/panel.png)
 
-Step 1. Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Excel workbook** | Input and output | File | Yes | The workbook to change. Pick a File variable: after the step it holds the changed workbook. |
+| **Sheet name** | Input | Text | Yes | The name of the sheet to delete. |
 
-Step 2. Drag the **Delete Sheet** action to the canvas and link it to the other actions.
+## Example [#example]
+| Excel workbook | Sheet name | Result |
+| --- | --- | --- |
+| `orders.xlsx` with *Orders* and *Empty* | `Empty` | The workbook now has only *Orders* |
+| the same workbook | `Missing` | The step fails: "Excel error: Could not find any sheet named 'Missing' in the current workbook." |
 
-![](/images/docs/KVjdxJI82kKpMdO8yAZDO_image.png)
+## Good to know [#good-to-know]
+- A workbook must keep at least one sheet. Deleting the last one fails with "Excel Error: Sheet count per workbook can't go lower than 1.".
+- **Excel workbook** is both the input and the output; the file keeps its name. Only `.xlsx` and `.xlsm` files are accepted.
 
-Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/J_xrbpMjpYGEWCj4w8lw-_screenshot-2022-09-22-at-125249.png)
-
-- **Excel workbook**: you need to input the file with the workbook where you want to delete the sheet
-- **Sheet name**: you need to input a string with the sheet name which you want to delete
-
-Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-Step 5. You will be prompted to add the file for the input variable. Click **Run**.
-
-Step 6. To verify the process click **Check instance**.
-
-Step 7. Open the file; it will no longer contain the deleted sheet.
+## Related actions [#related-actions]
+- [Insert Sheet](/how-to/insert-sheet), [Rename Sheet](/how-to/rename-sheet), [Get Sheet Names](/how-to/get-sheet-names)

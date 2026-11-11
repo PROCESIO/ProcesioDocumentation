@@ -12,3 +12,42 @@
 /integrations/build-a-conversational-chatbot-with-archbee-and-chat-gpt /docs/marketplace/build-a-conversational-chatbot-with-archbee-and-chat-gpt 301
 /integrations/how-to-track-read-emails /docs/marketplace/how-to-track-read-emails 301
 /integrations/run-a-process-with-files-via-call-api /docs/marketplace/run-a-process-with-files-via-call-api 301
+
+# Platform action pages: dead links used by the in-product "Learn more" buttons, and pages merged or renamed (2026-11)
+/how-to/1sTF-concatenate /how-to/string-concatenate 301
+/how-to/3gnW-length /how-to/string-length 301
+/how-to/5bef-contains /how-to/string-contains 301
+/how-to/HGto-get-object /how-to/azure-storage-legacy-actions 301
+/how-to/Y5mI-add /how-to/list-add 301
+/how-to/YmLn-put-object /how-to/azure-storage-legacy-actions 301
+/how-to/_O7b-contains /how-to/list-contains 301
+/how-to/add-2-alt /how-to/add 301
+/how-to/beta /how-to 301
+/how-to/coRg-sort-data-model /how-to/sort-data-model 301
+/how-to/concatenate-2-alt /how-to/concatenate 301
+/how-to/contains /how-to/list-contains 301
+/how-to/contains-2-alt /how-to/list-contains 301
+/how-to/fian-move-object /how-to/move-object 301
+/how-to/get-element-ai-generated /how-to/get-element 301
+/how-to/get-index-2-alt /how-to/join 301
+/how-to/is-valid-2-alt /how-to/pdf-is-valid 301
+/how-to/join-2-alt /how-to/join 301
+/how-to/lXfA-read-file /how-to/file-to-json 301
+/how-to/length-2-alt /how-to/string-length 301
+/how-to/parse-datetime /how-to/string-to-datetime 301
+/how-to/processor /how-to/xml-processor 301
+/how-to/read-file-2-alt /how-to/file-to-json 301
+/how-to/rename-filefolder /how-to/rename-file-folder 301
+/how-to/sort-data-model-2-alt /how-to/sort-data-model 301
+/how-to/string-similarity /how-to/similarity-search 301
+/how-to/take-form-leftmidright /how-to/take-form-left-mid-right 301
+/how-to/ubLU-get-index /how-to/string-get-index 301
+/how-to/untitled /how-to/area-mapper 301
+/how-to/vFD5-join /how-to/string-join 301
+/how-to/wrQY-is-valid /how-to/xml-is-valid 301
+/how-to/write-to-file /how-to/object-to-file 301
+/how-to/xls-to-xlsx-convertor /how-to/xls-to-xlsx 301
+
+# Pages moved into Announcements
+/docs/overview/june-23rd-2023-update /june-23rd-2023-update 301
+/docs/overview/updates /updates 301

@@ -1,49 +1,43 @@
 ---
 title: "Lists"
 icon: "📁"
-description: "The Lists folder contains actions that can be used when working with lists:"
+description: "Actions that create, read, change, sort, filter and summarise lists."
 ---
 
-The **Lists** folder contains actions that can be used when working with lists:
+The **List** folder of the Process Designer toolbox holds the actions that work on lists: simple lists of text, numbers or true/false values, and lists of data models (JSON objects). Lists are entered as JSON, for example `[1,2,3]` or `["a","b"]`. Unless a page says otherwise, positions (indexes) start at `0`.
 
-1\. **List Add** ➜ Add an object to a list.
+## Numeric [#numeric]
+| Action | What it does |
+| --- | --- |
+| [Sum](/how-to/sum) | Adds up all the numbers of a list. |
+| [Max](/how-to/max) | Returns the largest number. |
+| [Min](/how-to/min) | Returns the smallest number. |
+| [Median](/how-to/median) | Returns the middle value. |
+| [Arithmetic Mean](/how-to/arithmetic-mean) | Returns the average. |
 
-2\. **List Contains** ➜ Search in a list for a given object. Return true if found, otherwise false.
+## Read and change a list [#read-and-change-a-list]
+| Action | What it does |
+| --- | --- |
+| [Add](/how-to/list-add) | Appends an element to the end of a list. |
+| [Remove](/how-to/remove) | Removes the first occurrence of a value. |
+| [Contains](/how-to/list-contains) | Returns `true` if the list contains a value. |
+| [Get Index](/how-to/get-index) | Returns the position of a value, or `-1`. |
+| [Get Element](/how-to/get-element) | Returns the element at a position. |
+| [Has Elements](/how-to/has-elements) | Fails the step if the list is empty. |
+| [Length](/how-to/length) | Returns the number of elements. |
+| [Sublist](/how-to/sublist) | Returns a slice of the list. |
+| [First N Elements](/how-to/first-n-elements) | Returns the first N elements, optionally sorted. |
+| [Last N Elements](/how-to/last-n-elements) | Returns the last N elements, optionally sorted. |
+| [Concatenate](/how-to/concatenate) | Joins two lists into one. |
+| [List To String](/how-to/list-tostring) | Converts a list to JSON text. |
 
-3\. **List Index Of** ➜ Search in a list for a given object. If found return it's index, otherwise -1. 
-
-4\. **List Remove** ➜ Remove an object from a list.
-
-5\. **List Sort** ➜ [/docs/platform-actions/call-api/list-sort](/docs/platform-actions/call-api/list-sort)
-
-6\. **List Arithmetic Mean** ➜ Returns the arithmetic mean of the numbers in the list.
-
-7.**&#x20;List Sum Of Elements** ➜ Sums up all the numbers of a list.
-
-8\. **List Max Return** ➜ Returns the maximum value from a list of numbers.
-
-9\. **List Min Return** ➜ Returns the minimum value from a list of numbers.
-
-10\. **Return List Element Count** ➜ Returns the list's number of elements.
-
-11\. **List Median Value Return** ➜ Returns the median value from a list of numbers.
-
-12\. **Return Top N Elements&#x20;**➜ Returns the first N elements.
-
-13\. **Return Last N Elements** ➜ Returns the last N elements.
-
-14\. **Get X Element** ➜ [/docs/platform-actions/call-api/get-x-element](/docs/platform-actions/call-api/get-x-element)&#x20;
-
-15\. **Deduplicate identification** ➜ available in Beta [/docs/platform-actions/call-api/beta](/docs/platform-actions/call-api/beta)
-
-16\. **Deduplicate list** ➜ available in Beta [/docs/platform-actions/call-api/beta](/docs/platform-actions/call-api/beta)
-
-17\. **Concatenate lists&#x20;**➜ Concatenate the data from two lists into one
-
-18\. **List filter** ➜ [/docs/platform-actions/call-api/list-filter](/docs/platform-actions/call-api/list-filter)
-
-19\. **List filter simple&#x20;**➜ [/docs/platform-actions/call-api/list-filter-simple](/docs/platform-actions/call-api/list-filter-simple)
-
-20\. **Sort data model&#x20;**➜ Sorts a data model list based on multiple criteria
-
-21\. **List To String** ➜ [/docs/platform-actions/call-api/list-tostring](/docs/platform-actions/call-api/list-tostring)
+## Sort, filter and clean up [#sort-filter-and-clean-up]
+| Action | What it does |
+| --- | --- |
+| [Sort](/how-to/sort) | Sorts a simple list ascending or descending. |
+| [Sort Data Model](/how-to/sort-data-model) | Sorts a list of data models by one or more fields. |
+| [Simple Filter](/how-to/simple-filter) | Filters a simple list with one rule. |
+| [Filter](/how-to/filter) | Filters a list of data models with field rules. |
+| [DeDuplicate](/how-to/deduplicate) | Finds duplicates in a simple list. |
+| [Find Duplicates](/how-to/find-duplicates) | Finds duplicate records in a list of data models. |
+| [Similarity Search](/how-to/similarity-search) | Finds the values most similar to a text. |

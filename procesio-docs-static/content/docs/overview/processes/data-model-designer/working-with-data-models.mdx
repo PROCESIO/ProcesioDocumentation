@@ -1,7 +1,7 @@
 ---
 title: "Working with Data Models"
 icon: "📘"
-description: "Use the Data Model Designer to create your custom data type. It helps you define the relationships between the data elements (attributes) you have,…"
+description: "Create data models by hand or from JSON, duplicate them, make them public, delete them, and use them as the type of process variables."
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/vICVshScodQ" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
@@ -49,6 +49,46 @@ If you want to create several attributes at this point, check the **Add another*
 </Callout>
 
 **Step 8:** Press **Create** button to complete the attribute definition. It will be listed within the data model you created.
+
+### Creating a data model from JSON [#create-from-json]
+
+Instead of adding the attributes one by one, you can let PROCESIO build them from a JSON example.
+
+1. On the **Data Models** page, open the arrow next to **Create data model** and choose **Create from JSON**.
+2. Fill in **Display Name** and **Name**. Each can be up to 64 characters.
+3. Under **Select a source to add from:**, choose one:
+   - **Upload file**: a `.json` file of up to 10 MB.
+   - **URL link**: the address of a JSON document. It must be reachable without signing in; otherwise you see *"Invalid URL. Make sure there are no typos, or that the file is public, or if you are authorized to access it."*
+   - **Editor (JSON content)**: paste or type the JSON.
+4. Click **Preview Data Model**. The **Preview structure** step shows the attributes found in the JSON.
+5. Click **Create**, or **Back** to change the source.
+
+Nothing is saved until you click **Create**.
+
+![The Create Data Model panel with the three source options: Upload file, URL link and Editor (JSON content)](/images/docs/data-models/data-model-from-json.png)
+
+### Duplicating a data model [#duplicate]
+
+Open the **⋯** menu on a data model's row and choose **Duplicate**. The copy gets the same attributes and the name of the original followed by `_1`. **Duplicate** is offered only for data models that have at least one attribute.
+
+### Public and private data models [#public-and-private]
+
+The data models on the **Data Models** page are **public**: you can use them as the type of a process variable and as the type of an attribute in other data models.
+
+When you create a data model while choosing an attribute's type, it is a **private** data model: it belongs to that attribute only. On the attribute's row you can:
+
+- **Make public**: the data model becomes public, so other data models can use it too. All changes to a public data model affect every data model that uses it.
+- **Make public clone**: PROCESIO creates a public copy and leaves the private one as it is. The copy is not linked to the private data model.
+
+If a public data model is used as an attribute type in other data models, its page warns you that changes to its structure may affect those data models too, and lists them.
+
+### Deleting a data model [#delete]
+
+Open the **⋯** menu on a data model's row and choose **Delete**, then confirm.
+
+<Callout type="warn">
+PROCESIO lets you delete a data model even while processes use it. Processes that have variables of that type become invalid. Check where a data model is used before you delete it, and create a replacement first if you still need it.
+</Callout>
 
 ### Using a data model in a process
 

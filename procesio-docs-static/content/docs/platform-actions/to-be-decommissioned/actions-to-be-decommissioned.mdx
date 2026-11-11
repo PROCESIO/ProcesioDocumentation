@@ -1,0 +1,39 @@
+---
+title: "Actions to be decommissioned"
+icon: "📕"
+description: "Older action versions kept for existing processes, and the action to use instead in new processes."
+---
+
+The **To be decommissioned** folder in the Process Designer toolbox holds older versions of actions that have a newer replacement. **Your existing processes keep working**: you do not have to change them now. For **new processes, use the replacement** listed below, and plan to move existing processes to it when you next edit them.
+
+To move a step to the replacement, add the new action next to the old one, fill in its fields (most have the same names), connect it in place of the old one, then delete the old step.
+
+## Replacements [#replacements]
+| Old action (To be decommissioned) | Use instead | What is different |
+| --- | --- | --- |
+| **Call API v1** | [Call API](/how-to/call-api) | The request has the same parts (**Verb**, **Endpoint**, **Request Parameters**), but you set them up again in the new action, with a **REST API** credential. The outputs are **Response Status**, **Response Body**, **Response File** and **Response Headers**. **Call API** also adds a **Time Out**. |
+| **Call API v2** | [Call API](/how-to/call-api) | As for v1. **Call API** has no **Body type** or **Result is File** option: it has separate **Response Body** and **Response File** outputs. |
+| **Call API v3** | [Call API](/how-to/call-api) | Same request setup and the same **REST API** credentials (in **Call API** the credential is optional). **Call API** adds **Time Out** and **Response Headers**. The outputs are renamed: **Status Output** → **Response Status**, **Body Output** → **Response Body**, **File Output** → **Response File**. |
+| **Execute Query V1** | [Execute Query](/how-to/execute-query) (toolbox **Database › SQL**) | The credential field is **Select Database Server**. **Execute Query** adds **Time Out** and a parameters tab, so you can pass process values as query parameters. |
+| **Execute Query V2** | [Execute Query](/how-to/execute-query) (toolbox **Database › SQL**) | Same credential and query. **Execute Query** adds a parameters tab for query parameters. |
+| **Execute Command V1** | [Execute Command](/how-to/execute-command) (toolbox **Database › SQL**) | The credential field is **Select Database Server**. **Execute Command** adds a parameters tab for command parameters. The **Output** (number) is the same. |
+| **Python (Old)** | [Python](/how-to/python) | The old action has a single **Output** with the script's result as JSON. **Python** has a **Timeout** and four outputs: **Single Result**, **List Result**, **Stdout** and **Error**. Your code sends its result with `return` (what you `print` goes to **Stdout**), so review the script when you move it. |
+| **Extract List** | [Extract Objects](/how-to/extract-object) | Same **Input JSON** and **Query**. Map the **Result List** output of **Extract Objects** where you used **Result** of Extract List. |
+| **String To DateTime** (the one in this folder) | [String To DateTime](/how-to/parse-datetime) (toolbox **DateTime**) | Same **String**, **Language** and **Format**. The new action also accepts a **Format List** (several formats to try) and has an extra output, **Exact Format Parsing**. |
+| **Date from String** | [String To DateTime](/how-to/parse-datetime) (toolbox **DateTime**) | Instead of picking a format from a list (**Select Date Format**), you type the format, for example `dd/MM/yyyy`. **Input String** → **String**, **Select Language** → **Language**, **Output Date** → **Datetime**. |
+| **Get File List v1** | [Get File List](/how-to/get-file-list) (toolbox **SFTP**) | Same fields, plus a required **MaxFileNumber**: the maximum number of files to read. |
+| **Get File List** (the one in this folder) | [Get File List](/how-to/get-file-list) (toolbox **SFTP**) | Same fields, plus a required **MaxFileNumber**. |
+| **Create Folder v1** | [Create Folder](/how-to/create-folder) (toolbox **SFTP**) | Same fields. |
+| **Delete File v1** | [Delete File](/how-to/delete-file) (toolbox **SFTP**) | Same fields. To delete many files in one step, see **Delete Bulk** in the **SFTP** folder. |
+| **Delete Folder v1** | [Delete Folder](/how-to/delete-folder) (toolbox **SFTP**) | Same fields. |
+| **Download File v1** | [Download File](/how-to/download-file) (toolbox **SFTP**) | Same fields. To download many files in one step, see **Download Bulk** in the **SFTP** folder. |
+| **Move File v1** | [Move File](/how-to/move-file) (toolbox **SFTP**) | Same fields. To move many files in one step, see **Move Bulk** in the **SFTP** folder. |
+| **Rename File/Folder v1** | [Rename File/Folder](/how-to/rename-filefolder) (toolbox **SFTP**) | Same fields. |
+
+<Callout type="info">
+Two entries have the same name as their replacement: **Get File List** and **String To DateTime** appear both in the **To be decommissioned** folder and in their own folder (**SFTP** and **DateTime**). Always pick the one from **SFTP** or **DateTime** for new processes.
+</Callout>
+
+## Good to know [#good-to-know]
+- The old actions still run and still show their fields, so an existing process opens and runs as before.
+- The replacement is a separate action, so you swap the step yourself. Test the process after you swap a step, because output names and formats can differ (see the table).

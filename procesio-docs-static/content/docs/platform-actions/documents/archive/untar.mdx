@@ -1,7 +1,29 @@
 ---
 title: "Untar"
 icon: "📕"
-description: "Extracts the files from a TAR archive."
+description: "Extracts the files from a .tar archive (tarball)."
 ---
 
-Coming soon 🔜
+**Untar** opens a `.tar` archive (a tarball) and gives you the files inside it as a list. Tarballs are common for exports from Linux systems and backup tools.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Documents › Archive** and pick **Untar** (or type *Untar* in the search box).
+
+![The Untar action properties: Tar Archive and File List](/images/docs/actions/documents-archive-untar/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Tar Archive** | Input | File | Yes | The `.tar` file to extract. |
+| **File List** | Output | List of File | Yes | The extracted files. |
+
+## Example [#example]
+A tarball `bundle.tar` that holds `a.txt` and a folder `docs` with `b.txt` → **File List** `a.txt`, `docsb.txt`.
+
+## Good to know [#good-to-know]
+- The file name must end in `.tar`. Any other extension, including `.tar.gz` and `.tgz`, makes the step fail with "Input error: Archive must have '.tar' extension.".
+- Folders are not kept. A file in a sub-folder comes out at the top level, and its name is the folder name and the file name joined without a separator (`docs/b.txt` becomes `docsb.txt`). Empty folders are skipped.
+- If the content cannot be read as a tarball, the step fails with a message that starts with "Tar extraction error :".
+
+## Related actions [#related-actions]
+- [Unzip](/how-to/unzip), [Unrar](/how-to/unrar), [Zip](/how-to/zip)

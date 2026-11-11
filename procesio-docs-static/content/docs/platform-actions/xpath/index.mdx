@@ -1,7 +1,17 @@
 ---
-title: "XPath"
+title: "XML"
 icon: "📁"
-description: "Actions for querying and updating XML with XPath."
+description: "Actions for querying, updating, building and validating XML with XPath."
 ---
 
-**Builder** helps you construct XPath expressions, **Processor** runs them against a document, **Mapper** maps the results to variables, and **Update** writes new values back into the XML.
+The **XML** folder of the Process Designer toolbox holds the actions that read and change XML documents. Most of them locate nodes with an [XPath expression](https://www.w3schools.com/xml/xpath_syntax.asp).
+
+| Action | What it does |
+| --- | --- |
+| [Mapper](/how-to/mapper) | Extracts a value or a list of values from XML with an XPath. |
+| [Update](/how-to/update) | Updates a tag, or inserts it when missing, under the nodes an XPath selects. |
+| [Processor](/how-to/xml-processor) | Applies a list of update-or-insert instructions to a template XML. |
+| [Builder](/how-to/builder) | Adds tags, values and attributes to a template XML from a list of specs. |
+| [Is Valid](/how-to/xml-is-valid) | Checks that XML is well-formed and, optionally, valid against an XSD schema. |
+
+To convert between XML and JSON, see [XML To JSON](/how-to/xml-to-json) and [JSON To XML](/how-to/json-to-xml) in the **Converters** folder.

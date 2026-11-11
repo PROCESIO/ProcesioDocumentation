@@ -1,62 +1,39 @@
 ---
 title: "Move File"
 icon: "📕"
-description: "The action Move file, enables you to move a file from one folder to another, or from one FTP server to another."
+description: "Moves a file to another folder on the same SFTP or FTP server, or to another server."
 ---
 
-![](/images/docs/GjmHAeGhd5WFgnTXo_D-b_image.png)
+**Move File** moves one file from a folder to another folder. The destination can be on the same server or on a different server, so you can also use it to transfer a file between two SFTP or FTP servers.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/h6O2muPq6xA" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential). For a move between two servers, you need one credential for each.
 
-The action **Move file**, enables you to move a file from one folder to another, or from one FTP server to another.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Move File** (or type *Move File* in the search box).
 
-### **FTP connection****&#xFEFF;****&#xFEFF;****&#xFEFF;**
+![The Move File action properties: From SFTP credentials, From Folder, File Name, To SFTP credentials, To Folder and Result](/images/docs/actions/sftp-move-file/panel.png)
 
-For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **From SFTP credentials** | Input | FTP credential | Yes | The credential of the server where the file is now. |
+| **From Folder** | Input | Text | No | The folder that holds the file. Leave empty for the root folder. |
+| **File Name** | Input | Text | Yes | The name of the file to move, with its extension. |
+| **To SFTP credentials** | Input | FTP credential | No | The credential of the destination server. Leave empty to stay on the same server. |
+| **To Folder** | Input | Text | No | The destination folder. Leave empty for the root folder. |
+| **Result** | Output | Boolean | Yes | `true` if the file was moved, `false` if not. |
 
-&#x20; **Step 1**:    Go to the **Credentials Manager** section and click **Add New**.
+## Example [#example]
+**From Folder** `inbox`, **File Name** `order-17.csv`, **To Folder** `processed`, **To SFTP credentials** empty → the file is now `processed/order-17.csv` on the same server and **Result** is `true`.
 
-&#x20; **Step 2**:    Give your credential a **Name\*** and **Description&#x20;**(optional) and click **Next step**.
+## Good to know [#good-to-know]
+- The move works in three steps: download the file, upload it to the destination, then delete the original. The original is deleted only after the upload succeeded.
+- If the file can't be found, **Result** is `false` and nothing changes.
+- If the upload works but the original can't be deleted, the file exists in both places and **Result** is `false`.
+- The file keeps its name. To rename it, use [Rename File/Folder](/how-to/rename-file-folder) before or after.
+- Paths are relative to the **Directory path** of each credential.
+- An error from the server makes the step fail with *"Error while trying to move file."*
 
-![](/images/docs/PQ2tRh609R0DcOE95q7LU_image.png)
-
-&#x20;    **Step 3**:    Configure the FTP / sFTP connection as needed:
-
-- **Port number\*** - the port number used by the server.
-- **Protocol type** - the protocol used depending on the encryption.
-- **Directory path** - the entry point of the server.
-- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
-
-![](/images/docs/Lprp00FxIIb1N8ILJbZcJ_image.png)
-
-&#x20;   **Step 4**:    Click **Test connection** and if successful click **Save**.
-
-### **Create the process****&#xFEFF;****&#xFEFF;****&#xFEFF;**
-
-&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
-
-&#x20; **Step 2**:    Give you process a name.
-
-&#x20; **Step 3**:    Drag the action **Move File** on the canvas and link the action inside you process.
-
-![](/images/docs/6Hu1PyH5vYwwY0XQn8jNY_image.png)
-
-&#x20; **Step 4**:    Create the <span style={{color:'#2166ae'}}>&lt;%result%&gt;</span> Boolean variable of type output.
-
-![](/images/docs/mi1Maf84CLcn2qopzAxc8_image.png)
-
-&#x20;   **Step 5**:    Click the **Move File** action to access its configurations.
-
-- **Node name\*** - gives you the option to change the actions name.
-- **From FTP server\*** - here we will select the connection created in the previous section.
-- **From Folder** - folder path to the file.
-- **File name** - the name of the file that will be moved.
-- **To FTP server\*** - here we will select the connection to the server we wish to move the file to.
-- **To Folder** - new folder path to the file.
-- **Result\*** - here we will add the variable created at **Step 4**.
-
-![](/images/docs/Er0TsFnRgt4c8H0MxwsHt_image.png)
-
-&#x20;   **Step 6**:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-&#x20;   **Step 7**:    Click **Check Instance**.
+## Related actions [#related-actions]
+- [Move Bulk](/how-to/move-bulk), [Rename File/Folder](/how-to/rename-file-folder), [Get File List](/how-to/get-file-list)

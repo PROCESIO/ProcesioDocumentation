@@ -1,25 +1,43 @@
 ---
 title: "Object Exists"
 icon: "📕"
-description: "The Object Exists action checks if an S3 object is found in the specified Amazon S3 bucket."
+description: "Checks whether an object (file) exists in an Amazon S3 bucket."
 ---
 
-## Overview
+**Object Exists** checks whether an object is in an Amazon S3 bucket and returns `true` or `false`. Use it before **Get Object** or **Put Object** to decide what the process does next.
 
-The `Object Exists` action checks if an S3 object is found in the specified Amazon S3 bucket.
+## Before you start [#before-you-start]
+The AWS S3 actions don't use a stored credential. Each action has the same four connection fields:
 
-![](/images/docs/vHXnybvzLrjyQxj-amsvG_image.png)
+| Field | Type | Required | What to put |
+| --- | --- | --- | --- |
+| **Access Key** | Text | Yes | The access key ID of an AWS IAM user, for example `AKIA…`. |
+| **Secret Key** | Text | Yes | The secret access key that belongs to that access key. |
+| **Region** | Text | Yes | The AWS region of the bucket, as its code, for example `eu-central-1`. |
+| **Bucket** | Text | Yes | The bucket name, for example `my-company-invoices`. |
 
-## Inputs & Outputs
+The IAM user needs S3 permissions on the bucket for the operation you run. The values you type are visible to everyone who can edit the process, so prefer an IAM user limited to the buckets the process needs.
 
-**\[I]** Access key (`string`): The access key for the AWS account.
-**\[I]** Secret key (`string`): The secret key associated with the access key.
-**\[I]** Region (`string`): The AWS region where the S3 bucket is located.
-**\[I]** Bucket (`string`): The name of the Amazon S3 bucket to search in.
-**\[I]** Object key (`string`): This is a user-defined key that identifies the object in the bucket. Make sure to include all prefixes, split by the '/' character, since the full file path is needed for interrogation.
-**\[O]** Result (`boolean`): Returns `true` if the object was successfully found, `false` if not.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **AWS S3** and pick **Object Exists** (or type *Object Exists* in the search box).
 
-## Important Notes
+![The Object Exists action properties: Access Key, Secret Key, Region, Bucket, Object Key and Result](/images/docs/actions/aws-s3-object-exists/panel.png)
 
-- Ensure that the provided access key and secret key have the necessary permissions to access the specified S3 bucket.
-- Double-check the correctness of the region, bucket name, and object key to avoid errors in the search process.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Access Key**, **Secret Key**, **Region**, **Bucket** | Input | Text | Yes | The connection fields described above. |
+| **Object Key** | Input | Text | Yes | The full key of the object, including every prefix, for example `invoices/2026/inv-001.pdf`. |
+| **Result** | Output | Boolean | Yes | `true` if the object exists, `false` if it doesn't. |
+
+## Example [#example]
+**Bucket** `my-company-invoices`, **Object Key** `invoices/2026/inv-001.pdf` → **Result** `true` when that object is in the bucket, `false` otherwise.
+
+## Good to know [#good-to-know]
+- The key must be exact and complete: `inv-001.pdf` doesn't match `invoices/2026/inv-001.pdf`. Keys are case-sensitive.
+- A missing object returns `false`; it doesn't fail the step.
+- If a connection field is empty, the step fails with *"Invalid connection details."*
+- Common errors from S3: *"Access forbidden! Ensure the connection details are valid."* (wrong keys or missing permission), *"Unable to connect! Ensure the provided region matches the bucket one."* (wrong **Region**), and *"Unrecognized Amazon Region: …"* (a region code that doesn't exist).
+
+## Related actions [#related-actions]
+- [Get Metadata](/how-to/get-metadata), [Get Object](/how-to/get-object), [List Keys](/how-to/list-keys)

@@ -1,7 +1,38 @@
 ---
-title: "Xml To Json"
+title: "XML To JSON"
 icon: "📕"
-description: "Converts an XML document into its JSON equivalent."
+description: "Converts an XML text into JSON. Attributes become @-prefixed properties and repeated elements become lists."
 ---
 
-Coming soon 🔜
+The **XML To JSON** action converts an XML text into JSON, so you can work with it using the JSON actions (for example [Extract Objects](/how-to/extract-object)) or send it to a JSON API.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Converters** and pick **XML To JSON** (or type *XML To JSON* in the search box).
+
+![The XML To JSON action properties: Xml and Json](/images/docs/actions/converters-xml-to-json/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Xml** | Input | Text | Yes | The XML text to convert. |
+| **Json** | Output | JSON | Yes | The converted JSON. |
+
+## Example [#example]
+**Xml** `<person id="7"><name>Ana</name><tag>a</tag><tag>b</tag></person>` →
+**Json**:
+
+```json
+{ "person": { "@id": "7", "name": "Ana", "tag": ["a", "b"] } }
+```
+
+**Xml** `<person>` (not closed) → the step fails: `Input Error: Invalid XML => Unexpected end of file has occurred. The following elements are not closed: person. Line 1, position 9.`
+
+## Good to know [#good-to-know]
+- The root element becomes the top-level property (`person`).
+- Attributes become properties whose name starts with `@` (`"@id"`).
+- An element that appears several times becomes a list (`"tag": ["a","b"]`); an element that appears once is a single value. If the number of elements varies from one document to the next, the same path can be a value one time and a list the next. Plan your later steps for both.
+- Values come out as text (`"7"`, not `7`).
+- An empty **Xml** fails the step with `Input Error: Please provide non-empty values for all inputs !`
+
+## Related actions [#related-actions]
+- [JSON To XML](/how-to/json-to-xml), [Mapper](/how-to/mapper), [XML Is Valid](/how-to/xml-is-valid), [Extract Objects](/how-to/extract-object)

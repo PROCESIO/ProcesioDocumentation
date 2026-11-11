@@ -1,5 +1,5 @@
 {
-  "title": "Pdf",
+  "title": "PDF",
   "icon": "📁",
   "pages": [
     "merge-files",
@@ -8,6 +8,7 @@
     "extract-text",
     "area-mapper",
     "extract-embedded-files",
-    "acroform-insert-image"
+    "acroform-insert-image",
+    "pdf-is-valid"
   ]
 }

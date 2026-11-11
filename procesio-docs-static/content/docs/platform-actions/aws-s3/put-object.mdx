@@ -1,7 +1,50 @@
 ---
-title: "Put object"
+title: "Put Object"
 icon: "📕"
-description: "Uploads a file to an S3 bucket as a new object."
+description: "Uploads a file to an Amazon S3 bucket as an object, optionally under a prefix (folder)."
 ---
 
-coming soon 🔜
+**Put Object** uploads the file held in a File variable to an Amazon S3 bucket. The object is named after the file, with an optional prefix in front of it that works like a folder.
+
+## Before you start [#before-you-start]
+The AWS S3 actions don't use a stored credential. Each action has the same four connection fields:
+
+| Field | Type | Required | What to put |
+| --- | --- | --- | --- |
+| **Access Key** | Text | Yes | The access key ID of an AWS IAM user, for example `AKIA…`. |
+| **Secret Key** | Text | Yes | The secret access key that belongs to that access key. |
+| **Region** | Text | Yes | The AWS region of the bucket, as its code, for example `eu-central-1`. |
+| **Bucket** | Text | Yes | The bucket name, for example `my-company-invoices`. |
+
+The IAM user needs S3 permissions on the bucket for the operation you run. The values you type are visible to everyone who can edit the process, so prefer an IAM user limited to the buckets the process needs.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **AWS S3** and pick **Put Object** (or type *Put Object* in the search box).
+
+![The Put Object action properties: Access Key, Secret Key, Region, Bucket, Input File, Prefix and Result](/images/docs/actions/aws-s3-put-object/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Access Key**, **Secret Key**, **Region**, **Bucket** | Input | Text | Yes | The connection fields described above. |
+| **Input File** | Input | File | Yes | The File variable that holds the file to upload. |
+| **Prefix** | Input | Text | No | Text placed before the file name in the object key, for example `invoices/2026`. Leave empty to upload to the root of the bucket. |
+| **Result** | Output | Boolean | No | `true` if the file was uploaded, `false` if not. |
+
+## Example [#example]
+| Input File | Prefix | Object key created |
+| --- | --- | --- |
+| `inv-001.pdf` | `invoices/2026` | `invoices/2026/inv-001.pdf` |
+| `inv-001.pdf` | `invoices/2026/` | `invoices/2026/inv-001.pdf` |
+| `inv-001.pdf` | *(empty)* | `inv-001.pdf` |
+
+## Good to know [#good-to-know]
+- A `/` is added between the prefix and the file name when the prefix doesn't end with one.
+- An object with the same key is replaced. Check with [Object Exists](/how-to/object-exists) first if you must not overwrite.
+- The content type of the object is set from the file extension.
+- If **Input File** is empty, the step fails with *"Missing input file."*
+- If a connection field is empty, the step fails with *"Invalid connection details."*
+- Common errors from S3: *"Access forbidden! Ensure the connection details are valid."* (wrong keys or missing permission), *"Unable to connect! Ensure the provided region matches the bucket one."* (wrong **Region**), and *"Unrecognized Amazon Region: …"* (a region code that doesn't exist).
+
+## Related actions [#related-actions]
+- [Get Object](/how-to/get-object), [Object Exists](/how-to/object-exists), [Copy Object](/how-to/copy-object)

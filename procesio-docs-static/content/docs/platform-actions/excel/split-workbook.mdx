@@ -1,22 +1,41 @@
 ---
 title: "Split Workbook"
 icon: "📕"
-description: "The Split Workbook action divides an input workbook into multiple workbooks based on a given row number."
+description: "Splits one sheet of a workbook into several smaller workbooks with a fixed number of rows each."
 ---
 
-## Overview
+**Split Workbook** cuts one sheet into parts of a fixed number of rows and saves each part as its own `.xlsx` file. Use it when a target system accepts only files up to a certain size, or to process a very large sheet in batches.
 
-The `Split Workbook` action divides an input workbook into multiple workbooks based on a given row number.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Split Workbook** (or type *Split Workbook* in the search box).
 
-![](/images/docs/2w_Jv-C3R9jcpsfkYPZ70_image.png)
+![The Split Workbook action properties: Excel workbook, Sheet name, Rows number and Workbooks](/images/docs/actions/excel-split-workbook/panel.png)
 
-### Inputs & Outputs
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Excel workbook** | Input | File | Yes | The `.xlsx` or `.xlsm` workbook to split. |
+| **Sheet name** | Input | Text | Yes | The sheet to split (case-sensitive). |
+| **Rows number** | Input | Integer | Yes | How many rows go in each part, from 1 to 10000. |
+| **Workbooks** | Output | List of File | Yes | The parts, in order. |
 
-- \[I] **Excel workbook** (`file`): The original Excel workbook that will be split.
-- \[I] **Sheet name** (`string`): The name of the workbook sheet that will be split.
-- \[I] **Rows number** (`int`): The number of rows based on which the split is made. (Maximum 10000) For example, if you have a file with 8000 rows and 1000 inputs, you will split the Excel workbook into 8 files.
-- \[O] **Workbooks&#x20;**(`list<file>`): A list of workbook parts resulting from the split operation.
+## Example [#example]
+`orders.xlsx`, sheet *Orders* with a header row and three data rows (4 rows in all), Rows number `2` → **Workbooks**:
 
-## Important Notes
+| File | Content of its sheet *Orders* |
+| --- | --- |
+| `orders(Part1).xlsx` | The header row and *Pen* |
+| `orders(Part2).xlsx` | *Book* and *Mug* (no header) |
 
-- Ensure that the row number specified for splitting is within the limits of the workbook to avoid unexpected behavior.
+Sheet name `orders` (lower case) → the step fails: "Sheet not found: orders".
+
+## Good to know [#good-to-know]
+- The rows are counted from the first row of the sheet, header included. The header is **not** repeated in the later parts; add it yourself if the target system needs it.
+- Each part has one sheet with the same name as the original. The other sheets of the workbook are not included.
+- Formulas are copied as written, without shifting their references, so a formula can point to the wrong row in a later part. The last calculated values are kept.
+- The parts are named after the original file: `name(Part1).xlsx`, `name(Part2).xlsx`, …
+- **Rows number** `0` fails with "…please input a value greater than 0."; more than 10000 fails with "…please input small value.".
+- To get `.csv` parts instead, use [Split Workbook To CSV](/how-to/split-workbook-to-csv).
+
+## Related actions [#related-actions]
+- [Split Workbook To CSV](/how-to/split-workbook-to-csv), [Get Last Used Row](/how-to/get-last-used-row), [Read Range](/how-to/read-range)

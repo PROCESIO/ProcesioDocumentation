@@ -1,0 +1,71 @@
+---
+title: "XML Processor"
+icon: "📕"
+description: "Builds or updates an XML document node by node from a list of instructions (XPath, tag, value, attribute)."
+---
+
+The **Processor** action in the **XML** folder starts from a template XML and applies a list of instructions to it, one after the other. Each instruction says *where* (an XPath), *which tag* and *what value*. An existing tag is updated; a missing tag is added. Use it to fill an XML template, such as an invoice or an export file, from process data in a single step.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **XML** and pick **Processor** (or type *Processor* in the search box).
+
+![The XML Processor action properties: Input JSON, Input Prefix (if applicable), Input Template XML and Result](/images/docs/actions/xml-processor/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input JSON** | Input | Text (JSON) | Yes | The list of instructions, as a JSON array (see below). |
+| **Input Prefix (if applicable)** | Input | Text (JSON) | See note | Namespace prefixes as a JSON object, for example `{"cbc": "urn:…:CommonBasicComponents-2"}`. Put `{}` when you have none. |
+| **Input Template XML** | Input | Text | Yes | The XML to start from, for example `<Invoice></Invoice>`. |
+| **Result** | Output | Text | Yes | The resulting XML. |
+
+<Callout type="warn">
+Always fill **Input Prefix (if applicable)**, with `{}` when you use no namespaces. Left empty, the step fails with `Value cannot be null. (Parameter 's')`.
+</Callout>
+
+### The instructions [#the-instructions]
+**Input JSON** is a list of objects, applied in order:
+
+| Property | What it does |
+| --- | --- |
+| `xpath` | Required. Selects the node(s) to work under, for example `/Invoice/Location`. |
+| `xmlTag` | The tag to update or add, for example `City`. Write `prefix:Tag` to use a namespace prefix. |
+| `newValue` | The value to write. Use `""` to add an empty container tag. |
+| `attribute` | Optional, one attribute written as `name=value`, for example `currency=USD`. |
+
+Each instruction works like the [Update](/how-to/update) action: when `xmlTag` already exists under the selected node it is updated, otherwise it is added as the last child.
+
+## Example [#example]
+**Input Template XML** `<Invoice></Invoice>`, **Input Prefix (if applicable)** `{}`, **Input JSON**:
+
+```json
+[
+  { "xpath": "/Invoice", "xmlTag": "Name", "newValue": "John Doe" },
+  { "xpath": "/Invoice", "xmlTag": "Location", "newValue": "" },
+  { "xpath": "/Invoice/Location", "xmlTag": "Country", "newValue": "UK" },
+  { "xpath": "/Invoice/Location", "xmlTag": "City", "newValue": "London" }
+]
+```
+
+**Result**:
+
+```xml
+<Invoice><Name>John Doe</Name><Location><Country>UK</Country><City>London</City></Location></Invoice>
+```
+
+With an attribute, `[{"xpath":"/Invoice","xmlTag":"Total","newValue":"250","attribute":"currency=USD"}]`:
+
+| Input Template XML | Result |
+| --- | --- |
+| `<Invoice></Invoice>` | `<Invoice><Total currency="USD">250</Total></Invoice>` (added) |
+| `<Invoice><Total currency="EUR">100</Total></Invoice>` | `<Invoice><Total currency="USD">250</Total></Invoice>` (updated) |
+
+## Good to know [#good-to-know]
+- Instructions run in order, so a later instruction can use a tag an earlier one added (`Location`, then `Location/Country`).
+- When updating, `attribute` changes an attribute that already exists on the tag; it does not add a new one.
+- Every instruction needs `xpath`; one without it fails the step with `Input JSON has at least one element missing xpath property.`
+- If an instruction's `xpath` matches nothing, the XML is lost at that point: **Result** becomes empty, or a following instruction fails with `Input template xml cannot be null or empty.` Check your paths against the template.
+- To always *add* tags (never update), or to set several attributes on one tag, use [Builder](/how-to/builder).
+
+## Related actions [#related-actions]
+- [Builder](/how-to/builder), [Update](/how-to/update), [Mapper](/how-to/mapper), [XML Is Valid](/how-to/xml-is-valid)

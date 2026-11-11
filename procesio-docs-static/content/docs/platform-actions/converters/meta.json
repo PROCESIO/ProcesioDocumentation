@@ -2,14 +2,17 @@
   "title": "Converters",
   "icon": "📁",
   "pages": [
-    "hash-mac",
-    "hash",
-    "from-base-64",
-    "json-to-xml",
-    "to-base-64",
-    "to-string",
-    "xml-to-json",
+    "---Cryptographic---",
     "encrypt-to-aes256",
-    "decrypt-from-aes256"
+    "decrypt-from-aes256",
+    "hash",
+    "hash-mac",
+    "---Converters---",
+    "json-to-xml",
+    "xml-to-json",
+    "html-to-json",
+    "json-to-html",
+    "html-to-pdf",
+    "to-string"
   ]
 }

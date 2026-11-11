@@ -1,86 +1,71 @@
 ---
 title: "Read Mailbox"
 icon: "📬"
-description: "PROCESIO integrates Read Mailbox action with your email server configurations. This means that once you configure the Read Mailbox server to use…"
+description: "Reads emails from an IMAP or POP3 mailbox, with optional filters, and returns their details and attachments."
 ---
 
 <Callout type="warn">
 Read Mailbox was previously called Inbound Email.
 </Callout>
 
-PROCESIO integrates Read Mailbox action with your email server configurations. This means that once you configure the Read Mailbox server to use (check Working with Credentials Manager), you can start configuring the Read Mailbox action in any process. 
+**Read Mailbox** reads the emails of a mailbox (IMAP or POP3) and returns their details (sender, recipients, subject, body, date…) and their attachments. You can filter by sender, recipients, subject, body or date, and keep only unread emails or emails with attachments. Use it to process incoming orders, invoices or support requests sent by email.
 
-Use this action to filter your received emails as needed, by:
+The action needs an [SMTP Inbound credential](/smtp-inbound-credential) with your mailbox's server and account. For a Gmail example, see [Gmail incoming](/docs/integrations-demos/integrations-2-alt/gmail-incoming). If your mailbox requires OAuth sign-in, use [Read Mailbox V2](/how-to/read-mailbox-v2).
 
-- subject
-- from
-- body
-- to, bcc, cc
-- deliveredAfter (retrieves emails that were received after a certain date) 
-- deliveredBefore (retrieves emails that were received before a certain date)
-- deliveredOn (retrieves emails that were received on a certain date)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, pick **Read Mailbox** (or type *Read Mailbox* in the search box).
 
-<Callout type="info">
-You can also apply filters only for unread emails or those with attachments.&#x20;
-</Callout>
+![The Read Mailbox action properties: Select POP3/IMAP credentials, Filter, Unread, Has attachments, Result, Invalid Emails and Attachments](/images/docs/actions/read-mailbox/panel.png)
 
-<Callout type="warn">
-**Note**: For POP3, the unread filter will have no impact, because there is a limitation of the POP3 protocol.
-</Callout>
+1. In **Select POP3/IMAP credentials**, pick the mailbox credential. If it does not exist yet, the selector has a shortcut to create it in the Credentials Manager.
+2. Write your filters in **Filter** (see [Filter rules](#filter-rules)), and tick **Unread** or **Has attachments** if needed.
+3. Map **Result** to a process variable of the data model **InboundEmailInformation**, marked as a list.
 
-<Callout type="info">
-This action requires a credential of type '**SMTP Inbound configuration**'. Check [documentation](/docs/integrations-demos/integrations-2-alt/integrations/gmail-incoming).&#x20;
-</Callout>
+![Read Mailbox configured with a filter and the resultedEmails output variable](/images/docs/35j0Uke2qWiEcxjor3RbY_screenshot-2022-08-23-at-163833.png)
 
-### Filter Rules:
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select POP3/IMAP credentials** | Input | Credential | Yes | The SMTP Inbound credential of the mailbox. |
+| **Filter** | Input | Text | No | One filter per line. Empty = all emails. |
+| **Unread** | Input | Boolean (true/false) | No | Only unread emails. Has no effect on POP3. Default `false`. |
+| **Has attachments** | Input | Boolean (true/false) | No | Only emails with attachments. Default `false`. |
+| **Result** | Output | List of InboundEmailInformation | Yes | The emails read. |
+| **Invalid Emails** | Output | List of InboundEmailInformation | No | The emails that could not be processed. |
+| **Attachments** | Output | List of File | No | The attachments of the emails read. |
 
-- Multiple filters are allowed and every filter should be added on a new row
-- After each filter name, you can add a colon (**:**) or just white space
-- The names of the filters can be written in upper or lower case
+Each email in **Result** has the fields `id`, `subject`, `to`, `cc`, `bcc`, `sender`, `body`, `status`, `size`, `sendDate`, `importanceLevel` and `fileIndexes`. `fileIndexes` lists the positions, in **Attachments**, of that email's attachments.
 
-**&#x20;                    Example**: FROM/from/From are valid filters;
+## Filter rules [#filter-rules]
+You can filter by:
 
-- The date format for deliveredAfter/deliveredBefore/deliveredOn is: **YY/MM/DD&#x20;**&#x6F;r **MM/DD/YY**
-- If no filter is provided, all the emails will be retrieved.
+- `subject`, `from`, `body`
+- `to`, `cc`, `bcc`
+- `deliveredAfter`, `deliveredBefore`, `deliveredOn`: emails received after, before or on a date
 
-**Example**:&#x20;
+Rules:
 
-from: [name234@test.com]()
+- Put each filter on its own line.
+- After the filter name, write a colon (`:`) or a space: `from: name@example.com` and `from name@example.com` are the same.
+- Filter names are not case sensitive: `FROM`, `from` and `From` all work.
+- Date format for the date filters: `YY/MM/DD` or `MM/DD/YY`.
+- A part of a value is enough: `from: name234` matches `name234@test.com`.
+- With no filter, all emails are read.
 
-DeliveredAfter  2022-09-02 
+**Example**:
 
+```
+from: name234@test.com
+deliveredAfter 2022-09-02
 subject My subject
+```
 
-The filter will retrieve all the emails that were received after August 2, 2022, from "[name234@test.com]()" and where the subject contains "My subject". You can add only a part of the email address: **name234**.
+This reads the emails received after 2 September 2022, from `name234@test.com`, whose subject contains *My subject*.
 
-configure the  Email server to use (check Working with Credentials Manager), you can start configuring the Send Email action in any flow. 
+## Good to know [#good-to-know]
+- **Unread has no effect on POP3**: the POP3 protocol does not track read status.
+- If the credential is missing or invalid, the step fails with *"Invalid credentials."*
+- Use the `fileIndexes` of an email to find its files in **Attachments**, for example inside a [For Each](/how-to/for-each) over **Result**.
 
-### How to configure the Read Mailbox action?
-
-Go to the Process Designers section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas.
-
-![](/images/docs/rN-yiQRzkM5LLx7CLvOph_image.png)
-
-**Step 1**: Drag the Read Mailbox action from Toolbar and drop it on canvas; click on the action to open the Properties Panel.
-
-**Step 2**: You can edit the Action Name.
-
-**Step 3**: Select the **SMTP Inbound server&#x20;**&#x63;onfiguration in the properties panel. The  Read Mailbox server configuration may be created upfront in Credentials Manager or you can create one by pressing 'Create credential'.
-
-![](/images/docs/-QNzcItWRqwVcVflr0PdH_screenshot-2022-08-23-at-162405.png)
-
-<Callout type="info">
-If the desired email server configuration is not created upfront, you have a shortcut in the selector to proceed to the Credentials Manager page.
-</Callout>
-
-**Step 4**: Add your filters (see Filter Rules above) to the editor. You can apply filters only to unread emails or to those that have attachments by checking the corresponding box/es.
-
-**Step 5**: Create a process variable that will store the retrieved email information.
-
-<Callout type="info">
-Use the data type `InboundEmailInformation`when creating this output variable, and mark it as a list.&#x20;
-</Callout>
-
-![](/images/docs/35j0Uke2qWiEcxjor3RbY_screenshot-2022-08-23-at-163833.png)
-
-This configuration will retrieve my unread emails, received from JIRA on 08-11-2022, and will store the data in the `resultedEmails` process variable.
+## Related actions [#related-actions]
+- [Read Mailbox V2](/how-to/read-mailbox-v2), [Send Email](/how-to/send-email), [For Each](/how-to/for-each)

@@ -34,9 +34,9 @@ There are three choices, and each of the three outcomes takes its own:
 
 ### Which outcome is which [#which-outcome-is-which]
 
-- **On success** — the run finished normally.
-- **On error** — the run stopped because an action failed.
-- **On stopped** — someone ended the run with **Stop instance**.
+- **Delete data on process success** — the run finished normally.
+- **Delete data on process error** — the run stopped because an action failed.
+- **Delete data on process stopped by user** — someone ended the run with **Stop instance**.
 
 They are separate on purpose. Keeping the data of a failed run while discarding the
 data of a successful one is the common setup: the failures are the ones you still

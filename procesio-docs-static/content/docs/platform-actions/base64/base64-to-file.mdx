@@ -1,0 +1,35 @@
+---
+title: "Base64 To File"
+icon: "📕"
+description: "Turns a Base64 string into a file you can save, send or attach."
+---
+
+**Base64 To File** decodes a Base64 string and gives you the file it holds. Use it when an API returns a document, an image or an attachment as Base64 and you want to work with it as a real file in your process.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Base64** and pick **Base64 To File** (or type *Base64 To File* in the search box).
+
+![The Base64 To File action properties: Base64 String, File Name and File](/images/docs/actions/base64-base64-to-file/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Base64 String** | Input | Text | Yes | The Base64 content of the file. |
+| **File Name** | Input | Text | Yes | The name of the new file, **with an extension** that matches the content, for example `invoice.pdf`. |
+| **File** | Output | File | Yes | The decoded file. |
+
+## Example [#example]
+Base64 String `SGVsbG8sIFBST0NFU0lPIQ==`, File Name `hello.txt` → **File** `hello.txt` (16 bytes, type `text/plain`) that contains `Hello, PROCESIO!`.
+
+| Case | Result |
+| --- | --- |
+| File Name `noext` (no extension) | The step fails: "File noext has no extension." |
+| Base64 String `%%%` | The step fails: "Exception when converting -> The input is not a valid Base-64 string…" |
+
+## Good to know [#good-to-know]
+- The extension you give in **File Name** sets the file type that PROCESIO records for the file. The action does not check that it matches the content, so name a PDF `.pdf`, an image `.png`, and so on.
+- Send only the Base64 part. A prefix such as `data:application/pdf;base64,` is not Base64 and makes the step fail; remove it first with a string action.
+- To go the other way, use [File To Base64](/how-to/file-to-base64).
+
+## Related actions [#related-actions]
+- [File To Base64](/how-to/file-to-base64), [Base64 To String](/how-to/from-base-64), [String To Base64](/how-to/to-base-64)

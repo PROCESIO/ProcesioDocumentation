@@ -1,35 +1,34 @@
 ---
 title: "Get Day"
 icon: "📕"
-description: "This action extracts the day from a DateTime."
+description: "Returns the day of the month of a date, from 1 to 31."
 ---
 
-This action extracts the day from a <span style={{color:'#ff9307'}}>DateTime</span>.
+**Get Day** returns the day of the month of a date, from `1` to `31`. Use it, for example, to run a step only on the first day of the month.
 
-![](/images/docs/Mmmfm-dn44OIb2XO4_tNX_tdy.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Get Day** (or type *Get Day* in the search box).
 
-## Inputs & Outputs
+![The Get Day action properties: Date and Day](/images/docs/actions/datetime-get-day/panel.png)
 
-- **\[ I ] Date**: <span style={{color:'#ff9307'}}>DateTime</span> to extract day from.
-- **\[ O ] Day**: **Integer** representing the extracted day.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Date** | Input | Date and time | Yes | The date and time to read the day of the month from. |
+| **Day** | Output | Integer | Yes | The day of the month. |
 
-![](/images/docs/w2sEs5b0FKbLuwRQOtAm9_tdy.png)
+## Example [#example]
+| Date | Day |
+| --- | --- |
+| `2024-02-29` | `29` |
+| `05/10/2010` | `10` |
+| `2024-03-01T00:30:00+02:00` | `29` (the value is 2024-02-29 22:30 in UTC) |
 
-## Example Usage
+## Good to know [#good-to-know]
+- **Time zone:** a value that carries a UTC offset (for example `2025-01-01T01:00:00+02:00`) is first converted to UTC, and the part is read from the UTC value. A value without an offset, or ending in `Z`, is used as it is.
+- This is the day of the **month**. For the day of the **week** (Monday, Tuesday…), use [Get Day Of Week](/how-to/get-day-of-week).
+- A date written with slashes, like `05/10/2010`, is read month first (US order), so the day is `10`.
+- An empty or invalid **Date** (for example `2023-02-29` or `not a date`) stops the step with an error.
 
-- Drag action onto canvas to get familiarized with it.
-
-![](/images/docs/iL3vMwMI1E9v-FZFWfoWq_tdy.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/5QA0OEbR2zWsM5eK8Slo0_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/BI4jmk6ndMKhrcpOJzB3U_tdy.png)
-
-## Use Cases
-
-- Extracting the day from a date.
+## Related actions [#related-actions]
+- [Get Day Of Week](/how-to/get-day-of-week), [Get Month](/how-to/get-month), [Get Year](/how-to/get-year)

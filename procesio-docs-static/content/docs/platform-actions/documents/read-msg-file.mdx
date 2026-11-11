@@ -1,11 +1,50 @@
 ---
-title: "Read Msg File"
+title: "Read MSG File"
 icon: "📕"
-description: "Reads an Outlook .msg email file from a process."
+description: "Reads an Outlook .msg email file: subject, body, sender, recipients and attachments."
 ---
 
-![](/images/docs/lXhaXcY9B5p0eq8diN8JR_image.png)
+**Read MSG File** opens an Outlook `.msg` file (an email saved from Outlook) and gives you its subject, its body, its metadata and its attachments. Use it when users upload saved emails, or when a mailbox forwards emails as `.msg` attachments.
 
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Documents** and pick **Read MSG File** (or type *Read MSG File* in the search box).
 
+![The Read MSG File action properties: Message File, Subject, Body, Metadata and Attachments](/images/docs/actions/documents-read-msg-file/panel.png)
 
-Coming soon 🔜
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Message File** | Input | File | Yes | The `.msg` file to read. |
+| **Subject** | Output | Text | No | The email subject. |
+| **Body** | Output | Text | No | The email body as plain text. |
+| **Metadata** | Output | Object (JSON) | No | Sender, recipients, date and other details (see below). |
+| **Attachments** | Output | List of File | No | The files attached to the email. Empty when there are none. |
+
+### What Metadata contains [#metadata]
+| Key | What it holds |
+| --- | --- |
+| `sender` | An object with `email` and `displayName`. |
+| `recipients` | A list of objects with `email` and `displayName`, one per recipient. |
+| `recipientsTo` | The **To** recipients as one text. |
+| `recipientsCc` | The **Cc** recipients as one text. |
+| `sentOn` | When the email was sent, with its time zone offset. |
+| `receivedOn` | Currently the same value as `sentOn` (see Good to know). |
+| `topic` | The conversation topic. |
+| `importance` | The importance flag, for example `Normal`. |
+| `size` | The size of the message, when the file records it (it can be empty). |
+
+## Example [#example]
+A saved email with three attachments (two images and a PDF) → **Subject** and **Body** hold the email text, **Metadata** holds the keys above, and **Attachments** is a list of three files: two `image/png` files and one `application/pdf` file.
+
+| Case | Result |
+| --- | --- |
+| A file named `hello.txt` | The step fails: "Input file extension should be '.msg', found => .txt" |
+
+## Good to know [#good-to-know]
+- The file name must end in `.msg`. An `.eml` file is not supported.
+- **Body** is the plain-text body. Formatting is not kept.
+- `receivedOn` currently repeats `sentOn`. Do not rely on it for the time the email arrived.
+- Use a [For Each](/how-to/for-each) to work with the attachments one by one.
+
+## Related actions [#related-actions]
+- [Read Mailbox](/how-to/read-mailbox), [File To String](/how-to/read-file), [Unzip](/how-to/unzip)

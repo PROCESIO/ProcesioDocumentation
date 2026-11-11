@@ -1,7 +1,36 @@
 ---
 title: "Multiply"
 icon: "📕"
-description: "Multiplies two numbers."
+description: "Multiplies two numbers, whole or decimal."
 ---
 
-Coming soon 🔜
+**Multiply** multiplies two numbers and gives you the product. It works with whole numbers and decimals alike. Use it for line totals (quantity × unit price), VAT, or percentages.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Numerical** and pick **Multiply** (or type *Multiply* in the search box).
+
+![The Multiply action properties: First Number - Multiplicand, Second Number -Multiplier and Result](/images/docs/actions/numerical-multiply/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **First Number - Multiplicand** | Input | Number (whole or decimal) | Yes | The first number. |
+| **Second Number -Multiplier** | Input | Number (whole or decimal) | Yes | The number to multiply it by. |
+| **Result** | Output | Number (whole or decimal) | Yes | The product. |
+
+## Example [#example]
+| First Number - Multiplicand | Second Number -Multiplier | Result |
+| --- | --- | --- |
+| `6` | `7` | `42` |
+| `2.5` | `4` | `10` |
+| `-1.5` | `3` | `-4.5` |
+| `10000000000` | `10000000000` | `100000000000000000000` |
+
+## Good to know [#good-to-know]
+- Decimals are exact, with no rounding error. To keep a set number of decimals (for money, for example), pass the result through [Round](/how-to/round).
+- When the product is a whole number, you get a whole number (`2.5` × `4` gives `10`).
+- **Use a dot for decimals.** A comma is read as a thousands separator and ignored.
+- Text that is not a number stops the step with `Invalid input.`; an empty input stops it with an error.
+
+## Related actions [#related-actions]
+- [Divide](/how-to/divide), [Add](/how-to/add), [Round](/how-to/round)

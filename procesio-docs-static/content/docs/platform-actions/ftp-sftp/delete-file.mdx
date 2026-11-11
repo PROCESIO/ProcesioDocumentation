@@ -1,62 +1,35 @@
 ---
 title: "Delete File"
 icon: "📕"
-description: "The Delete File action, enables you to delete a file from within a specified folder."
+description: "Deletes one file from a folder on an SFTP or FTP server."
 ---
 
-![](/images/docs/MeyEu8YxRed3V37ON2oIX_image.png)
+**Delete File** removes one file from your SFTP or FTP server, for example after you have downloaded and processed it.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/8jq0kcmKs54" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential).
 
-The **Delete File** action, enables you to delete a file from within a specified folder.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Delete File** (or type *Delete File* in the search box).
 
-### **FTP connection****&#xFEFF;****&#xFEFF;**
+![The Delete File action properties: Select SFTP credentials, Folder Path, File Name and Result](/images/docs/actions/sftp-delete-file/panel.png)
 
-For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select SFTP credentials** | Input | FTP credential | Yes | The credential of the server. |
+| **Folder Path** | Input | Text | No | The folder that holds the file, relative to the credential's **Directory path**. Leave empty for the root folder. |
+| **File Name** | Input | Text | No | The name of the file to delete, with its extension. |
+| **Result** | Output | Boolean | Yes | `true` if the file was deleted, `false` if not. |
 
-&#x20;**&#x20;Step 1**:    Go to the **Credentials Manager** section and click **Add New**.
+## Example [#example]
+**Folder Path** `inbox`, **File Name** `order-17.csv` → `inbox/order-17.csv` is removed and **Result** is `true`.
 
-&#x20;**&#x20;Step 2**:    Give your credential a **Name\*** and **Description** (optional) and click **Next step**.
+## Good to know [#good-to-know]
+- The deletion can't be undone.
+- **File Name** isn't marked as required in the panel, but you need it: without a name there is nothing to delete.
+- If the server returns an error, the step fails with *"Error while trying to delete file"*.
+- To delete several files at once, use [Delete Bulk](/how-to/sftp-delete-bulk). To delete a folder with everything in it, use [Delete Folder](/how-to/delete-folder).
 
-
-![](/images/docs/K4Eu8eJsFsU6xW94GUWnA_image.png)
-
-&#x20;  **Step 3**:    Configure the FTP / sFTP connection as needed:
-
-- **Port number\*** - the port number used by the server.
-- **Protocol type** - the protocol used depending on the encryption.
-- **Directory path** - the entry point of the server.
-- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
-
-![](/images/docs/n5rDtA2-wOmc2zFIc-buX_image.png)
-
-&#x20;**&#x20;Step 4**:    Click **Test connection** and if successful click **Save**.
-
-### **Create the process****&#xFEFF;****&#xFEFF;**
-
-&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
-
-&#x20; **Step 2**:    Give you process a name.
-
-&#x20; **Step 3**:    Drag the action **Delete File&#x20;**&#x6F;n the canvas and link the action inside you process.
-
-![](/images/docs/C6zAiH7-fK4vVWlcCd8tN_image.png)
-
-&#x20;   **Step 4**:    Create the <span style={{color:'#2166ae'}}>&lt;%result%&gt;</span> Boolean variable of type output.
-
-![](/images/docs/HEOWINQImwcgNmDOgB8Nr_image.png)
-
-&#x20;   **Step 5**:    Click the **Delete File** action to access its configurations.
-
-- **Node name\*** - gives you the option to change the actions name.
-- **Choose server type\*** - here we will select the connection created in the previous section.
-- **Folder path** - base folder path.
-- **Folder name** - the name of the file that will be deleted.
-- **Result\*** - here we will add the variable created at Step 4.
-
-
-![](/images/docs/LeV-Nct2HUbvnFD7Wz2tS_image.png)
-
-&#x20; Step 6:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-&#x20; Step 7:    Click **Check Instance**.
+## Related actions [#related-actions]
+- [Delete Bulk](/how-to/sftp-delete-bulk), [Delete Folder](/how-to/delete-folder), [Get File List](/how-to/get-file-list)

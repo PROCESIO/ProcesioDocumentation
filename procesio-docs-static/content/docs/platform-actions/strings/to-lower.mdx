@@ -1,16 +1,30 @@
 ---
 title: "To Lower"
 icon: "📕"
-description: "The To Lower action converts a string to lowercase."
+description: "Converts every letter of a text to lowercase."
 ---
 
-## Overview
+**To Lower** returns a copy of a text with every letter in lowercase. Use it to normalise email addresses or user input before you compare them, because most text actions are case-sensitive.
 
-The `To Lower` action converts a string to lowercase.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **To Lower** (or type *To Lower* in the search box).
 
-![](/images/docs/h1KAxCyqQaof0i4SfHGhw_image.png)
+![The To Lower action properties: Input String and Result](/images/docs/actions/string-to-lower/panel.png)
 
-## Inputs & Outputs
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input String** | Input | Text | Yes | The text to convert. |
+| **Result** | Output | Text | Yes | The same text in lowercase. |
 
-- **\[ I ] Input string:** <span style={{color:'#1c417e'}}>String</span> to be converted.
-- **\[ O ] Result**: <span style={{color:'#1c417e'}}>String</span> representing the input after conversion to lowercase.
+## Example [#example]
+| Input String | Result |
+| --- | --- |
+| `Ana.Pop@Example.COM` | `ana.pop@example.com` |
+| `HELLO, ȘTEFAN! 123` | `hello, ștefan! 123` |
+
+## Good to know [#good-to-know]
+- Letters with diacritics keep them (`Ș` → `ș`). Digits and punctuation do not change.
+
+## Related actions [#related-actions]
+- [To Upper](/how-to/to-upper), [To Title Case](/how-to/to-title-case), [Normalize Diacritics](/how-to/normalize-diacritics)

@@ -1,9 +1,39 @@
 ---
-title: "Json To Xml"
+title: "JSON To XML"
 icon: "📕"
-description: "Converts a JSON structure into its XML equivalent."
+description: "Converts a JSON object to an XML text, or each item of a JSON array to its own XML text."
 ---
 
-![](/images/docs/Eu3SuhF7QFbYp7k20F5JN_image.png)
+The **JSON To XML** action converts JSON into XML, for example to send process data to a system that only accepts XML. A JSON object gives one XML text; a JSON array gives a list with one XML text per item.
 
-Coming soon 🔜
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Converters** and pick **JSON To XML** (or type *JSON To XML* in the search box).
+
+![The JSON To XML action properties: Json, Xml and List of Xml](/images/docs/actions/converters-json-to-xml/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Json** | Input | JSON | Yes | A variable holding a JSON object or a JSON array. |
+| **Xml** | Output | Text | No | The XML, when **Json** is an object. |
+| **List of Xml** | Output | List of text | No | One XML text per array item, when **Json** is an array. |
+
+## Example [#example]
+| Json | Xml | List of Xml |
+| --- | --- | --- |
+| `{"person":{"name":"Ana","age":30}}` | `<person><name>Ana</name><age>30</age></person>` | empty |
+| `{"name":"Ana","age":30}` | `<root><name>Ana</name><age>30</age></root>` | empty |
+| `{"tags":["a","b"]}` | `<root><tags>a</tags><tags>b</tags></root>` | empty |
+| `[{"id":1},{"item":{"id":2}}]` | empty | `["<id>1</id>", "<item><id>2</id></item>"]` |
+| `{}` | The step fails: `Input Error: Please provide a non-empty JSON !` | |
+
+The XML comes out indented, one element per line; it is shown on one line here.
+
+## Good to know [#good-to-know]
+- **The root element.** When the object has exactly one property whose value is not a list, that property becomes the root (`person` above). Otherwise everything is wrapped in a `<root>` element.
+- A list becomes repeated elements with the same name (`<tags>` above).
+- Pass the JSON through a **variable** of type JSON. JSON typed straight into the **Json** field is read as plain text and the step fails with `Input Error: Please provide a non-empty JSON !`
+- Property names that are not valid XML names are escaped rather than refused: `{"order":{"1st item":"x"}}` gives `<order><_x0031_st_x0020_item>x</_x0031_st_x0020_item></order>`. Rename such properties first if the receiving system needs readable tags.
+
+## Related actions [#related-actions]
+- [XML To JSON](/how-to/xml-to-json), [Builder](/how-to/builder), [XML Processor](/how-to/xml-processor), [String To JSON](/how-to/parse-json)

@@ -1,25 +1,29 @@
 ---
-title: "Generate Guid"
+title: "Generate GUID"
 icon: "📕"
-description: "Use Generate Guid action to generate GUIDs. You can use it as a unique reference number, when needed to identify information like ID hardware,…"
+description: "Creates a new, random, unique identifier (GUID)."
 ---
 
-Use **Generate Guid** action to generate GUIDs. You can use it as a unique reference number, when needed to identify information like ID hardware, software, accounts, documents and other items.
+**Generate GUID** creates a new GUID: a 36-character identifier such as `2efaa1e4-8e7a-44c9-81dc-9fc64d270bce` that is, in practice, never generated twice. Use it as a unique reference for a document, an order, a request or a record you create, for example the id of a new Data Store row or a correlation id to send to another system.
 
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Utilitary** and pick **Generate GUID** (or type *Generate GUID* in the search box).
 
+![The Generate GUID action properties: the Guid output](/images/docs/actions/utilitary-generate-guid/panel.png)
 
-### How to configure the Generate Guid action?
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Guid** | Output | GUID | Yes | Map a GUID variable here. It receives the new identifier. |
 
-1\.   Create a process and give it a name.
+The action has no inputs.
 
-2\.    Drag the **Generate Guid&#x20;**&#x61;ction to the canvas and link it to the other actions.
+## Example [#example]
+One run returned **Guid** `2efaa1e4-8e7a-44c9-81dc-9fc64d270bce`. Every run returns a different value.
 
-![](/images/docs/_EsB7O4NzHJOKvP-Y89em_screenshot-2022-08-25-at-162328.png)
+## Good to know [#good-to-know]
+- The GUID is random (version 4). It does not encode a date, an order or a sequence, so do not sort by it to find the newest record.
+- To get the GUID as text, or in the hex or Base64 forms a database needs, pass it to [GUID Converter](/how-to/guid-converter).
 
-3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/bXcbqOb5xn591aSDCbbgK_screenshot-2022-08-25-at-161857.png)
-
-4\. Once you run the process, you can check in instances the value of the generated guid in Output:&#x20;
-
-![](/images/docs/5lh7QKMcCT3bNrAfrd1V1_screenshot-2022-08-25-at-162534.png)
+## Related actions [#related-actions]
+- [GUID Converter](/how-to/guid-converter), [Generate String](/how-to/generate-string), [Generate Integer](/how-to/generate-integer)

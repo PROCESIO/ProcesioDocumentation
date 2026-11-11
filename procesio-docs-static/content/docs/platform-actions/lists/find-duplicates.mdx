@@ -1,166 +1,82 @@
 ---
 title: "Find Duplicates"
 icon: "📕"
-description: "You can utilize this action to identify duplicates within a list of complex JSON objects, based on specified criteria and return a new list…"
+description: "Finds duplicate records in a list of data models or JSON objects, using field rules from a JSON configuration, and returns the unique list, the duplicates and how they relate."
 ---
 
-## Overview
+The **Find Duplicates** action looks for duplicate records in a list of data models (or JSON objects), for example the same customer entered twice with a different spelling. You decide which fields must match and how (exact, fuzzy, sound-alike…). The action returns three lists: the records without duplicates, the duplicates it removed, and which record each duplicate belongs to. To find duplicates in a simple list of text or numbers, use [DeDuplicate](/how-to/deduplicate).
 
-You can utilize this action to identify duplicates within a list of complex JSON objects, based on specified criteria and return a new list containing only the unique values.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Find Duplicates** (or type *Find Duplicates* in the search box). Then click **Configure** to open the configuration panel.
 
-## Parameters
+![The Find Duplicates action properties with the Configure button](/images/docs/actions/list-find-duplicates/panel.png)
 
-### Input
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List to process** | Input | List of data models / JSON objects | Yes | The records to check. Each record needs a unique ID field. |
+| **Duplicate identification JSON configuration** | Input | Text (JSON) | Yes | The rules, see below. |
+| **Duplicates found** | Output | List of data models / JSON objects | No | The records identified as duplicates of an earlier record. |
+| **Duplicates correlation** | Output | List of objects | No | One entry per kept record that has duplicates: `{"MainID":"1","CorrelatedIDs":["3","4"]}` (IDs as text). |
+| **Deduplicate list** | Output | List of data models / JSON objects | Yes | The input list without the duplicates. The first record of each group is kept. |
 
-- **List to process**: The list containing objects to be analyzed for duplicates.
-
-This input is of type `list<object>` and the object needs to be of complex type, like a data model or a JSON structure.
-
-- **Duplicate Identification JSON Configuration**: This parameter utilizes a Monaco editor allowing JSON input.
-
-The JSON Configuration structure and guiding information are provided below, in the **JSON Configuration** section.
-
-### Output
-
-- **Duplicates found**: Output list containing duplicate objects found.
-- **Duplicates correlation**: Output list correlating duplicates with their original items.
-- **Deduplicate list**: Output list containing the initial list minus the duplicates.
-
-## JSON Configuration
-
-The JSON configuration for this action follows a structured format.
-
-In the below example, we have all the `MatchType` types presented with their relevant parameters.&#x20;
-
-The `IgnoredTerms` parameter is optional and can be used for all `MatchType` types.
-
+## The JSON configuration [#the-json-configuration]
 ```json
 {
-	"IdField":"id",
-	"FieldMatches":[
-		{
-			"FieldName":"Field1",
-			"MatchType":"Exact",
-			"IgnoredTerms":["ltd","usa"]
-		},
-		{
-			"FieldName":"Field2",
-			"MatchType":"Similar",
-			"IgnoredTerms":["ltd","usa"]
-		},
-		{
-			"FieldName":"Field3",
-			"MatchType":"Fuzzy",
-			"IgnoredTerms":["ltd","usa"],
-			"FuzzyAlgorithm":"Levenstein",
-			"FuzzyThreshold":0.7
-		},
-		{
-			"FieldName":"Field4",
-			"MatchType":"Contains",
-			"IgnoredTerms":["ltd","usa"]
-		},
-		{
-			"FieldName":"Field5",
-			"MatchType":"Soundex",
-			"IgnoredTerms":["ltd","usa"],
-			"SoundexDistance":4
-		},
-		{
-			"FieldName":"Field6",
-			"MatchType":"SimilarWordMatch",
-			"IgnoredTerms":["ltd","usa"],
-			"SimilarFirstNwords":1,
-			"SimilarLastNwords":1
-		}
-	],
-	"GeneralIgnoredTerms":["ltd","usa"],
-	"AlternateFields":[
-		{
-			"FieldName":"Field1",
-			"FieldAlternateNames":["Field2","Field3"]
-		},
-		{
-			"FieldName":"Field3",
-			"FieldAlternateNames":["Field4","Field1","Field2"]
-		}
-	],
-	"Sort":[
-		{"Field":"Field1","OrderType":"Asc"},
-		{"Field":"Field2","OrderType":"Desc"}
-	]
+  "IdField": "id",
+  "FieldMatches": [
+    { "FieldName": "name",  "MatchType": "Fuzzy", "FuzzyAlgorithm": "Levenstein", "FuzzyThreshold": 0.8 },
+    { "FieldName": "email", "MatchType": "Exact" }
+  ],
+  "GeneralIgnoredTerms": [" ltd", " srl"],
+  "AlternateFields": [
+    { "FieldName": "email", "FieldAlternateNames": ["secondaryEmail"] }
+  ],
+  "Sort": [
+    { "Field": "name", "OrderType": "Asc" }
+  ]
 }
 ```
 
-## MatchType Types
+| Key | Required | Meaning |
+| --- | --- | --- |
+| `IdField` | Yes | The field that identifies each record (for example `id`). Its values must be unique; they are used in **Duplicates correlation**. |
+| `FieldMatches` | Yes | The rules (at least one). Two records are duplicates only when **all** rules match (AND). Each rule has `FieldName`, `MatchType` and the options of that match type. |
+| `FieldMatches[].MatchType` | Yes | `Exact`, `Contains`, `Similar`, `Fuzzy`, `Soundex` or `SimilarWordMatch`. They work as described in [Simple Filter](/how-to/simple-filter#match-types), but compare one record's field with the other record's field. |
+| `FieldMatches[].IgnoredTerms` | No | Words or characters removed from this field before comparing, for example `[" ltd", ","]`. |
+| `GeneralIgnoredTerms` | No | Terms removed from **every** field before comparing; added to each rule's `IgnoredTerms`. |
+| `AlternateFields` | No | For a rule on `FieldName`, also compare the first record's field with these fields of the other record; the rule matches if any of them matches. One direction only. |
+| `Sort` | No | Sorts **Deduplicate list** and **Duplicates found**: a list of `{"Field": "...", "OrderType": "Asc"}` or `"Desc"`, applied in order. Without it, the original order is kept. |
 
-### Exact
+`Fuzzy` uses `FuzzyAlgorithm` and `FuzzyThreshold` (`0`–`1`); `Soundex` uses `SoundexDistance` (`0`–`4`, default `4`); `SimilarWordMatch` uses `SimilarFirstNwords` / `SimilarLastNwords`. The algorithm names are listed in [Simple Filter](/how-to/simple-filter#fuzzy).
 
-An exact match needs to be validated (=).
+## Example [#example]
+List to process:
+```json
+[
+  {"id":1,"name":"Leia Winnett","email":"lwinnett2@lycos.com","dept":"Support"},
+  {"id":2,"name":"Blair Streak","email":"bstreak4@yellowpages.com","dept":"R&D"},
+  {"id":3,"name":"leia winnett","email":"LWinnett2@lycos.com","dept":"Support"},
+  {"id":4,"name":"Leia Winnet","email":"other@x.com","dept":"Support"},
+  {"id":5,"name":"Blair Streak","email":"bstreak4@yellowpages.com","dept":"R&D"}
+]
+```
 
-### Similar
+| FieldMatches | Deduplicate list (ids) | Duplicates found (ids) | Duplicates correlation |
+| --- | --- | --- | --- |
+| `name` Exact and `email` Exact | `1`, `2`, `4` | `3`, `5` | `[{"MainID":"1","CorrelatedIDs":["3"]},{"MainID":"2","CorrelatedIDs":["5"]}]` |
+| `name` Fuzzy, `Levenstein`, `0.8` | `1`, `2` | `3`, `4`, `5` | `[{"MainID":"1","CorrelatedIDs":["3","4"]},{"MainID":"2","CorrelatedIDs":["5"]}]` |
 
-- Compares 2 elements to see:
-  - If special characters do not exist. For example, "John-Doe" and "John Doe" are a match (before comparing, special characters and space characters are replaced with an empty string).
-  - Phone numbers. For instance, "376-323-1111" and "323-1111" are a match (if after replacing special characters and spaces with an empty string, the string contains only numbers, a Field1 contains Field2 OR Field2 contains Field1 assessment is made).
-  - Regardless of whether "WWW", "HTTP(s)://", exist to enhance domain or URL comparison.
-  - If an email is written with "@" or " at " or "\[at]", it should be a match.
+Record `3` is an exact duplicate of `1` because the comparison ignores upper/lower case.
 
-### Fuzzy
+## Good to know [#good-to-know]
+- Values are compared in lower case, with double spaces reduced and accents removed. Numbers are compared as text.
+- **Ignored terms are removed exactly as written, spaces included.** With `"IgnoredTerms": ["ltd"]`, `Acme Ltd` becomes `acme ` (with a trailing space) and is **not** an `Exact` match for `Acme`. Write `" ltd"` (with the leading space), or use `Contains`.
+- `Sort` compares values as text, so `120` comes before `45`.
+- Records are compared in pairs, so the time grows quickly with the list size; on very large lists split the work or narrow the list with [Filter](/how-to/filter) first.
+- A list with one record is returned as it is, with no duplicates.
+- The step fails when the list is empty, when `IdField` or `FieldMatches` is missing, when the JSON is invalid, when the list holds simple values instead of records, or when a record lacks a field named in a rule (the error then reads *Object reference not set to an instance of an object.*).
 
-This utilizes the algorithms available in `Similarity Search` action to compare one string against the other. Read more details [here](/docs/platform-actions/call-api/similarity-search).
-
-### Contains
-
-Checks if Field1 contains Field2 OR Field2 contains Field1.
-
-### Soundex
-
-Checks if two words are similar when spoken. This matching algorithm evaluates the distance in “sounding” on a scale from 0 to 4, where 4 means the most similar “sounding” and 0 means that the words are very different.
-
-### SimilarWordMatch
-
-This checks if the first N words in a string are the same as the first N words in another string OR if the last N words in a string are the same as the last N words in another string.
-
-## Properties
-
-### IgnoredTerms
-
-- This parameter is of type `list<string>` and replaces the words in this property with an empty string before making the match assessment.
-
-### FuzzyAlgorithm & FuzzyThreshold
-
-- Only used when `MatchType` = `Fuzzy`. If `MatchType` is something else, those properties will be ignored so, they can be null or absent.
-- `FuzzyAlgorithm` needs to be one from this [here](/docs/platform-actions/call-api/similarity-search), written exactly as is written in the link provided.
-- `FuzzyThreshold` is a `double` between 0 and 1, where 0 means anything can pass and 1 means that it needs to have 100% confidence. From experimenting, we noticed 0.7 is a good threshold to experiment with.
-
-### SoundexDistance
-
-- Used only when the `MatchType` = `Soundex` and it can be set to 0, 1, 2, 3, or 4, where 4 means the words are very similar when spoken.
-
-### SimilarFirstNwords & SimilarLastNwords
-
-- Only used when `MatchType` = `SimilarWordMatch` in which case at least one should be >0. If both are =0 then the `SimilarWordMatch` will not be executed at all since it does not make sense. If MatchType is something else, those properties will be ignored, so, they can have any value or can even not be present.
-
-### GeneralIgnoredTerms
-
-- Used to add ignored terms for all Matches. If you set something in this property it is as if you have settled the same value for IgnoredTerms in all Matches. `GeneralIgnoredTerms` and `IgnoredTerms` can be used together, as the terms set in `GeneralIgnoredTerms` will be added on top of the words set in `IgnoredTerms` when evaluating the matches.
-
-### AlternateFields
-
-- This configuration describes if the data that normally resides in a certain field might be found in another field as well. The consequence of setting alternate fields for a particular field is that when evaluating a match for a certain field, the same match assessment will be executed for the alternate fields as well and the result of all those alternate matches will be evaluated with `OR` logical condition to determine the result of the overall match.
-- **IMPORTANT:&#x20;**&#x49;f `Fields1` has the alternate fields `Field2` & `Field3` i&#x74;**&#x20;does not mean** that `Field2` or `Field3` has `Field1` as an alternate field.
-
-### Sort
-
-- This configuration describes that after evaluating the matches, the output list should be sorted based on the cumulative rules described here. If no setting is present here, no sorting operation will be performed.
-
-### IdField
-
-- This represents a field within the data structure that represents a unique value throughout the entire data set (e.g. the row identifier)
-
-## Important Notes
-
-- The matching algorithms work only on Fields that are of type primitive and not on data structures. If the config gives a field that is another JObject/JArray, the Action will not work and will return an error.
-- The matching algorithm is executed row-by-row. For every row in the list, the algorithm is executed for the next rows until the end of the list. If a duplicate is found then the duplicate is removed from the list and added to the duplicates list. This means **the action will execute proportionally slower as the list is bigger**.
-- A row Match is TRUE only if all matches are TRUE.
+## Related actions [#related-actions]
+- [DeDuplicate](/how-to/deduplicate) (simple lists), [Filter](/how-to/filter), [Sort Data Model](/how-to/sort-data-model), [Similarity Search](/how-to/similarity-search)
+- Step-by-step tutorial with a video: [Duplicate identification](/how-to/duplicate-identification)

@@ -1,47 +1,45 @@
 ---
 title: "Date Difference"
 icon: "📕"
-description: "This action computes the difference between two DateTime values. [year, quarter, month, week, day]"
+description: "Counts the days, weeks, months, quarters or years between two dates."
 ---
 
-This action computes the difference between two **<span style={{color:'#ff9307'}}>DateTime</span>** values. **\[year, quarter, month, week, day]**
+**Date Difference** tells you how far apart two dates are, in days, weeks, months, quarters or years. Use it to check how old an invoice is, how many months a contract has run, or whether a deadline has passed. For hours, minutes and seconds, use [Time Difference](/how-to/time-difference).
 
-![](/images/docs/jeFjYaz26_CPub8asp0iK_tdy.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Date Difference** (or type *Date Difference* in the search box).
 
-## Inputs & Outputs
+![The Date Difference action properties: Unit of Time, First Datetime, Second Datetime and Difference](/images/docs/actions/datetime-date-difference/panel.png)
 
-- **\[ I ] Unit of time**: <span style={{color:'#00ced1'}}>Drop-down</span> to choose which unit of time will be used for measuring the difference.
-  - **Year**
-  - **Quarter**
-  - **Month**
-  - **Week**
-  - **Day**
-- **\[ I ] First Datetime**:**&#x20;&#x20;**<span style={{color:'#ff9307'}}>DateTime</span> representing the minuend.&#x20;
-- **\[ I ] Second Datetime**: <span style={{color:'#ff9307'}}>DateTime</span> representing the subtrahend.
-- **\[ O ] Difference:&#x20;**<span style={{color:'#1c417e'}}>Integer</span> equal to the result o&#x66;**&#x20;First Datetime - Second Datetime&#x20;**&#x69;&#x6E;**&#x20;Unit of time**.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Unit of Time** | Input | Option list | Yes | **Day**, **Week**, **Month**, **Quarter** or **Year**. |
+| **First Datetime** | Input | Date and time | Yes | The start date. |
+| **Second Datetime** | Input | Date and time | Yes | The end date. |
+| **Difference** | Output | Integer | Yes | **Second Datetime** minus **First Datetime**, in the unit you chose. Negative when the second date is earlier. |
 
-![](/images/docs/RHC4iYi1tqtbiyfQLeAUd_tdy.png)
+## How each unit is counted [#how-each-unit-is-counted]
+- **Day**: full 24-hour periods between the two moments. A remainder of less than a day is dropped, so the time of day matters.
+- **Week**: the number of week boundaries crossed, with weeks running Sunday to Saturday. Saturday to the next day, Sunday, already counts as `1`.
+- **Month**, **Quarter**, **Year**: the number of calendar months, quarters or years crossed. The day of the month is ignored, so 31 January to 1 February is `1` month.
 
-## Example Usage
+## Example [#example]
+| Unit of Time | First Datetime | Second Datetime | Difference |
+| --- | --- | --- | --- |
+| Day | `2024-01-01T00:00:00` | `2024-03-01T00:00:00` | `60` |
+| Day | `2024-03-01T00:00:00` | `2024-01-01T00:00:00` | `-60` |
+| Day | `2024-01-01T12:00:00` | `2024-01-02T11:00:00` | `0` (only 23 hours) |
+| Week | `2026-11-07` (Saturday) | `2026-11-08` (Sunday) | `1` |
+| Week | `2026-11-02` (Monday) | `2026-11-15` (Sunday) | `2` |
+| Month | `2024-01-31` | `2024-02-01` | `1` |
+| Quarter | `2024-03-31` | `2024-04-01` | `1` |
+| Year | `2024-12-31` | `2025-01-01` | `1` |
 
-- Drag action onto canvas to get familiarized with it.
+## Good to know [#good-to-know]
+- The order matters: put the earlier date in **First Datetime** to get a positive number.
+- For **Day**, the time of day counts. To count calendar days, give both dates the same time (for example `00:00:00`).
+- A date with a UTC offset is first converted to UTC. An empty date stops the step with an error.
 
-![](/images/docs/o4UhOFvgCBh9KTcfXp01X_tdy.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/cYnpQ34Gtn_tS_FQ2QoXs_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/Q1WnOx7gOBY5biYIaH3cO_tdy.png)
-
-## Use Cases
-
-- Computing the date difference between two <span style={{color:'#ff9307'}}>DateTime</span> values.
-
-## Tips
-
-- If **Second Datetime** is lesser than **First Datetime**, the **Difference** will be negative.
-- To compute time difference, consider using [Time Difference](/docs/platform-actions/call-api/time-difference).
+## Related actions [#related-actions]
+- [Time Difference](/how-to/time-difference), [Update DateTime](/how-to/update-datetime)

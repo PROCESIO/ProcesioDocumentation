@@ -1,7 +1,12 @@
 ---
 title: "Database"
 icon: "📁"
-description: "Actions for querying databases from a process."
+description: "Actions for querying and updating your own databases from a process."
 ---
 
-Database connectors available as actions. Today that means **SQL Server** — run queries and commands against your own database as part of a flow.
+The **Database › SQL** folder of the Process Designer toolbox runs SQL on your own database through a database credential (Microsoft SQL Server or MySQL).
+
+| Action | What it does |
+| --- | --- |
+| [Execute Query](/how-to/execute-query) | Runs a query and returns the rows as a list of objects. |
+| [Execute Command](/how-to/execute-command) | Runs an `INSERT`, `UPDATE`, `DELETE` or other command and returns the number of affected rows. |

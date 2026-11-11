@@ -1,7 +1,37 @@
 ---
 title: "Round Down"
 icon: "📕"
-description: "Rounds a number down to the nearest integer."
+description: "Rounds a number down, towards the lower value, to the number of decimal places you choose."
 ---
 
-Coming soon 🔜
+**Round Down** rounds a number to the number of decimal places you choose, always towards the lower value. Use it to drop decimals you do not want to count, for example full years of age or full units in stock.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Numerical** and pick **Round Down** (or type *Round Down* in the search box).
+
+![The Round Down action properties: Input number, Input number of digits and Result](/images/docs/actions/numerical-round-down/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input number** | Input | Number (decimal) | Yes | The number to round. |
+| **Input number of digits** | Input | Integer | Yes | How many decimal places to keep. `0` gives a whole number. A negative value rounds down to tens, hundreds… |
+| **Result** | Output | Number (decimal) | Yes | The number rounded down. |
+
+## Example [#example]
+| Input number | Input number of digits | Result |
+| --- | --- | --- |
+| `3.14159` | `2` | `3.14` |
+| `3.5` | `0` | `3` |
+| `1.25` | `1` | `1.2` |
+| `1234.5` | `-2` | `1200` |
+| `7` | `2` | `7` |
+| `-2.567` | `1` | `-2.6` |
+| `-2.5` | `0` | `-3` |
+
+## Good to know [#good-to-know]
+- **Negative numbers go away from zero**, because that is the lower value: `-2.5` → `-3`. If you want to simply cut off the decimals of a negative number (`-2.5` → `-2`), use [Round Up](/how-to/round-up) for negative numbers.
+- A number that already has no more decimals than you asked for is not changed.
+
+## Related actions [#related-actions]
+- [Round](/how-to/round), [Round Up](/how-to/round-up), [Modulo](/how-to/modulo)
