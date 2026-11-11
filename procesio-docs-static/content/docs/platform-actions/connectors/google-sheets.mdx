@@ -1,0 +1,96 @@
+---
+title: "Google Sheets"
+icon: "📗"
+description: "Create, read and update Google Sheets spreadsheets from a process: spreadsheets, sheets, rows and ranges."
+---
+
+The **Google Sheets** connector works with spreadsheets in your Google account. Use it to log process results in a sheet, read a list of rows to process, keep a table in sync with another system, or create a new spreadsheet for every report.
+
+One action covers ten operations, picked in the **Action** field:
+
+- **Spreadsheets**: Create spreadsheet, Delete spreadsheet.
+- **Sheets (tabs)**: Create sheet, Delete sheet.
+- **Rows and cells**: Get rows, Append row, Append or update row, Update row, Clear sheet or range, Delete rows or columns.
+
+<Callout type="info">New in the next release (PROCESIO v2.0.8).</Callout>
+
+## Before you start: the credentials [#before-you-start-the-credentials]
+The action needs two credentials, both signed in to the same Google account:
+
+- a **Google Drive** credential, used to list your drives and spreadsheets, to place a new spreadsheet and to delete one;
+- a **Google Sheets** credential, used to read and write the content of the spreadsheets.
+
+In PROCESIO, open **Credentials** and create each one from its template in the **OAuth2 (REST API)** group, then click **Sign in with Google** and allow access. See [Predefined OAuth2 providers](/working-with-credentials#predefined-oauth2-providers). Keep the default scopes: the action creates, edits and deletes files, so read-only scopes are not enough.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Connectors** and pick **Google Sheets** (or type *Google Sheets* in the search box).
+
+![The Google Sheets action properties: Google Drive Credential, Google Sheets Credential, Action and the Configuration button](/images/docs/actions/connectors-google-sheets/panel.png)
+
+1. Pick the **Google Drive Credential** and the **Google Sheets Credential**.
+2. Pick the **Action** (the operation).
+3. Click **Configuration**. Pick the **Drive**, then the **Spreadsheet**, then the **Sheet**: each list is filled from your Google account once the field above it is set. Then fill in the fields the operation needs and map the **Response** output.
+
+![The Google Sheets Configuration panel before an Action is picked: only the Response output is shown](/images/docs/actions/connectors-google-sheets/configuration.png)
+
+## Fields [#fields]
+| Field | Direction | Type | Used by | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Google Drive Credential** | Input | Credential | All | Your Google Drive credential. |
+| **Google Sheets Credential** | Input | Credential | All | Your Google Sheets credential. |
+| **Action** | Input | List | All | The operation to run. |
+| **Drive** | Input | List | All | **My Google Drive**, or one of your shared drives. |
+| **Spreadsheet** | Input | List | All except Create spreadsheet | A spreadsheet from the chosen drive. |
+| **Sheet** | Input | List | Delete sheet and the row operations | A sheet (tab) of the spreadsheet. |
+| **Title** | Input | Text | Create spreadsheet | The name of the new spreadsheet. |
+| **Sheet Name** | Input | Text | Create sheet | The name of the new sheet (tab). |
+| **Headers** | Input | List of Text | Create spreadsheet, Create sheet | Optional. Column titles written in row 1, for example a list variable holding `["Name", "Email", "Status"]`. |
+| **Overwrite Existing** | Input | Boolean (true/false) | Create sheet | When checked, a sheet with the same name is replaced (see [Good to know](#good-to-know)). |
+| **Range** | Input | Text | Get rows, Clear sheet or range | Optional. A range in A1 notation inside the chosen sheet: `A1:C10` (cells), `A:C` (columns), `2:5` (rows). Empty: the whole sheet. |
+| **Key Column** | Input | List | Append or update row | The column whose value identifies a row, chosen from the headers in row 1. |
+| **Row Number** | Input | List | Update row | The row to overwrite. Row 1 is the first row (usually the headers). |
+| **Direction** | Input | List | Delete rows or columns | `Rows` or `Columns`. |
+| **Start Index** | Input | Number | Delete rows or columns | Position of the first row or column to delete, counted from `0`: `0` is row 1 (or column A). |
+| **End Index** | Input | Number | Delete rows or columns | Position after the last one to delete. To delete rows 2 to 4, use Start Index `1` and End Index `4`. Empty: up to the end of the sheet. |
+| **Row Values** | Input | Text (JSON) | Append row, Append or update row, Update row | A JSON object of column title and value, for example `{"Name":"Ada","Email":"ada@example.com","Status":"Active"}`. |
+| **Response** | Output | Object (JSON) | All | The result of the operation (see below). |
+
+## Operations [#operations]
+| Action | What it does | What you get in **Response** |
+| --- | --- | --- |
+| **Create spreadsheet** | Creates a spreadsheet named **Title** in the chosen drive, with **Headers** in row 1 when you give them. | The new spreadsheet as Google describes it, including `spreadsheetId`, `spreadsheetUrl` and its `sheets`. |
+| **Delete spreadsheet** | Deletes the chosen spreadsheet. | `true` |
+| **Create sheet** | Adds a sheet named **Sheet Name**, with **Headers** in row 1 when you give them. | `spreadsheetId`, `sheetId` and `title` of the new sheet. |
+| **Delete sheet** | Deletes the chosen sheet. | `true` |
+| **Get rows** | Reads the cells of the sheet, or of **Range**. | `range`, `majorDimension` and `values`: a list of rows, each a list of cell texts. The header row is included as the first row. |
+| **Append row** | Adds a row after the last row that has data. | Google's answer, including `updates.updatedRange`. |
+| **Append or update row** | Looks for a row whose **Key Column** has the same value as in **Row Values**. Updates that row when found, adds a new row otherwise. | Google's answer for the update or the append. |
+| **Update row** | Overwrites the row at **Row Number**. | Google's answer, including `updatedRange` and `updatedCells`. |
+| **Clear sheet or range** | Empties the cells of **Range**, or of the whole sheet. Formatting stays. | `spreadsheetId` and `clearedRange`. |
+| **Delete rows or columns** | Deletes rows or columns; the ones after them move up or left. | Google's answer for the change. |
+
+## Example [#example]
+A sheet *Contacts* has the headers `Name`, `Email`, `Status` in row 1. To add or update a contact by email:
+
+- **Action**: `Append or update row`
+- **Spreadsheet**: your spreadsheet, **Sheet**: `Contacts`
+- **Key Column**: `Email`
+- **Row Values**: `{"Name":"Ada Lovelace","Email":"ada@example.com","Status":"Active"}`
+
+If a row with `ada@example.com` in the **Email** column exists, that row gets the new name and status. Otherwise a new row is added at the end.
+
+## Good to know [#good-to-know]
+- **Values go in by column title.** The action reads the headers in row 1 and places each value of **Row Values** under the column with the same title. Titles must match exactly, including upper and lower case. Keys that match no header are ignored.
+- **Missing columns are blanked.** When you update a row, a column that is not in **Row Values** is written as empty. Send every column you want to keep, not only the ones that change.
+- **No header row.** When row 1 is empty, the values are written in the order you list them in **Row Values**. **Append or update row** needs headers, because **Key Column** is picked from them.
+- **Values are typed as by a user.** Numbers, dates and formulas such as `=SUM(B2:B10)` are understood the way Google Sheets understands what you type in a cell.
+- **Matching is exact.** **Append or update row** compares the key value exactly: `ID-001` and `id-001` are different rows. Only the first matching row is updated. The **Key Column** must have a value in **Row Values**, or the action stops.
+- **Get rows returns text.** Every cell comes back as the text shown in the sheet. Empty cells at the end of a row are left out, so rows can have different lengths.
+- **Clear and delete are permanent.** **Clear sheet or range** with an empty **Range** empties the whole sheet, the header row too. **Delete spreadsheet** deletes the file for good, without moving it to the Google Drive trash.
+- **Overwrite Existing.** When the sheet name already exists and the box is not checked, the action stops with Google's error. When it is checked and the spreadsheet has other sheets, the old sheet is deleted and a new one is created. When it is the only sheet, it is emptied and reused (a sheet with more than 10,000 rows is replaced by a new one instead), and the **Response** says which was done.
+- **Headers are cleaned.** Blank titles are dropped, spaces around titles are removed, and a title repeated with different case is kept once.
+- **Columns A to ZZ.** Reading, appending and updating rows cover columns A to ZZ.
+
+## Related actions [#related-actions]
+- [Call API](/how-to/call-api): call any Google Sheets API endpoint yourself. The [Google Sheets with OAuth2](/docs/integrations-demos/integrations-2-alt/oauth2-google-sheets) guide shows that other way.
+- [Excel actions](/how-to/excel): work with `.xlsx` files instead of Google Sheets.

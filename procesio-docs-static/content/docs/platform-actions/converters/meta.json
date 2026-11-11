@@ -13,6 +13,7 @@
     "html-to-json",
     "json-to-html",
     "html-to-pdf",
+    "docx-to-html",
     "to-string"
   ]
 }
