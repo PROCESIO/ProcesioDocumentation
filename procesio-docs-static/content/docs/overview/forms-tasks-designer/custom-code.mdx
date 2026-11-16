@@ -43,6 +43,7 @@ The form's CSS styles the form's elements: fields, labels, buttons, the logo and
 - **Light and dark theme.** Your CSS applies in both themes. To style only the dark theme, start the selector with `[data-theme="dark"]`. Colours taken from the theme's variables, such as `var(--c-neutral--900)`, follow the theme by themselves.
 - **The Form Designer is not affected.** In the Form Designer and in **Preview**, your CSS styles only the form. It does not change the toolbars, the settings panels or the page around the form.
 - **Style the form, not the page.** In the Form Designer and in **Preview**, rules for `body` or `html`, and variables declared on `:root`, do not reach the form. Write those rules for the form's own elements instead.
+- **On the published form, your CSS applies as written.** When people fill the form (or approve a task), the form is the whole page: rules for `body`, `html` and `:root` work, and they also style the page around the form. So a form whose CSS relies on the page can look different in **Preview** than when it is published. Check it on the published form.
 - **Animation and font names.** If your `@keyframes` or `@font-face` uses a name the page already uses, the page's definition wins. Give yours names of your own.
 - **The PROCESIO branding** under the form can't be hidden with CSS. In a workspace other than your personal one, use **Hide branding** in the form's **General** settings instead.
 

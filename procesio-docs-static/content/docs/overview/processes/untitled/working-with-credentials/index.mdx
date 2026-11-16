@@ -48,7 +48,7 @@ Type a few letters in the search box at the top of the list to filter it. Groups
 2. Fill in **Credential name**. It is required and can have up to 50 characters.
 3. Pick the **Credential Type**: a ready-made template inside a group, or **Create new … config** for an empty credential of that type.
 4. Optionally, add a **Description**, so others know what the credential is for.
-5. Optionally, fill in **Label** (up to 50 characters). A connector that declares a connector type lists only the credentials labelled with it.
+5. Optionally, fill in **Label** (up to 50 characters). See [Label](#label).
 6. Click **Next step** and fill in the connection details. The fields depend on the type; each type's page lists them.
 7. Click **Test connection** to check the details. The result shows as a status next to the button, and the server's answer appears below it.
 8. Click **Save**.
@@ -56,6 +56,31 @@ Type a few letters in the search box at the top of the list to filter it. Groups
 <Callout type="info">
 **Back** returns to the first step and keeps what you typed. If you close the panel from the connection details, PROCESIO asks you to confirm, because the details you entered are lost.
 </Callout>
+
+## Label [#label]
+
+![The first step of Create Credential: Credential name, Credential type, Description and the optional Label field](/images/docs/credentials/credential-basic-info-label.png)
+
+A **Label** tags a credential with the connector it is meant for. Some connectors and custom actions declare a connector type. When you pick a credential in such an action, the list shows only the credentials whose label matches that connector type, so you are not offered credentials made for another service.
+
+- The label is optional and can have up to 50 characters. A longer label is refused, and the form tells you the maximum is 50.
+- Spaces at the start and the end are removed. An empty label means the credential has none.
+- Matching ignores upper and lower case and accents: `HubSpot` and `hubspot` match.
+- An action that declares no connector type lists every credential of its type, labelled or not.
+- A credential you made before you used such an action has no label, so the action does not list it. Open the credential in the Credential Manager, set **Label** to the connector type, and save. A credential that is already selected in a step stays selected.
+- The label is exported and imported with the credential.
+
+You rarely type the label yourself: a credential you create from such an action gets it automatically. See the next section.
+
+## Create a credential from an action [#create-from-an-action]
+
+You do not have to leave the Process Designer to make a credential. In the action's credential field, open the list and click **Create Credential**. The Create Credential panel opens next to the canvas with the **Credential type** the action needs already chosen.
+
+Some connectors and custom actions also declare the settings their service expects. Then the new credential comes prefilled with them, for example the URL, the authentication method, the OAuth scopes and URLs, the header name of the API key or the test endpoint, and its **Label** is set to the connector type. Check the values and add what only you know: a password, an API key value or a client secret is never prefilled. For an OAuth 2 credential, the form does not save until you enter the **Client Secret**.
+
+When you save, the action's credential field selects the new credential for you. If the action lists only credentials with a certain label and you changed the label before saving, the new credential is not in that list, so it is not selected.
+
+Creating a credential from the Credential Manager page never prefills anything.
 
 ## Predefined OAuth2 providers [#predefined-oauth2-providers]
 

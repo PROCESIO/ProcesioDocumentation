@@ -19,7 +19,7 @@ In the Process Designer toolbox, pick **Call API** (or type *Call API* in the se
 
 ![The Call API action properties: Select REST API credentials and the Configure Request card](/images/docs/actions/call-api/panel.png)
 
-1. In **Select REST API credentials**, pick the credential of the service you want to call. If it is not in the list yet, create it in the Credentials Manager.
+1. In **Select REST API credentials**, pick the credential of the service you want to call. If it is not in the list yet, click **Create Credential** at the bottom of the list: the new credential is created without leaving the designer and selected in the step. See [Create a credential from an action](/working-with-credentials#create-from-an-action).
 2. Click the **Configure Request** card to build the request.
 
 ![The Configure Request panel: Verb, Endpoint, Query Params, Headers, Body, Time Out and the response outputs](/images/docs/actions/call-api/configuration.png)
@@ -29,7 +29,7 @@ In the Process Designer toolbox, pick **Call API** (or type *Call API* in the se
 | --- | --- | --- | --- | --- |
 | **Select REST API credentials** | Input | Credential | No | The REST API credential with the base URL and authentication. |
 | **Verb** | Input | Choice | Yes | The HTTP method: GET, POST, PUT, PATCH or DELETE. |
-| **Endpoint** | Input | Text | No | The path to call, added to the credential's base URL, for example `/rest/api/3/issue/:issueKey`. Without a base URL, the full URL. |
+| **Endpoint** | Input | Text | No | The path to call, added to the credential's base URL, for example `/rest/api/3/issue/:issueKey`. A full URL on the same host also works. Without a base URL, the full URL. See [Credential and endpoint](#credential-and-endpoint). |
 | **Query Params** | Input | Name/value list | No | Query parameters, added to the URL after `?`. |
 | **Headers** | Input | Name/value list | No | Request headers. |
 | **Body** | Input | Text, form fields or file | No | The request body: raw (JSON, text, XML, HTML or JavaScript), form-data (fields and files), x-www-form-urlencoded, or binary (one file). |
@@ -54,13 +54,32 @@ To insert a process variable in Query Params, Headers or Body, press **Insert** 
 
 Depending on the authentication type of the credential, its key or token is added for you to the headers or the query parameters.
 
+## Credential and endpoint [#credential-and-endpoint]
+The credential decides which host the request goes to; **Endpoint** decides the path. How the two combine:
+
+| Credential URL | Endpoint | Request goes to |
+| --- | --- | --- |
+| `https://api.example.com/v1` | `/customers` | `https://api.example.com/v1/customers` |
+| `https://api.example.com/v1` | empty | `https://api.example.com/v1` |
+| `https://api.example.com/v1` | `https://api.example.com/v2/orders` | `https://api.example.com/v2/orders`: a full URL on the credential's own host is used as it is. The path of the credential URL (`/v1`) is not added. |
+| `https://api.example.com/v1` | `https://other.example.org/orders` | Nothing is sent. The step fails with *"The endpoint is an absolute URL whose scheme, host or port differs from the base URL. Use a relative endpoint or an absolute URL on the base URL's origin."* |
+| empty | `https://api.example.com/v2/orders` | `https://api.example.com/v2/orders` |
+| empty | `/customers` | Nothing is sent. The step fails with *"Invalid URL: /customers"*. |
+
+The same host means the same scheme (`https` or `http`), host name and port. Upper and lower case in the host name and an explicit default port (`:443` for `https`) make no difference; a different subdomain is another host.
+
+<Callout type="info">
+This keeps the credential's key or token on the host the credential was made for: an endpoint cannot send it anywhere else. To call another host, create a credential for that host, or create the credential without a URL and put the full address in **Endpoint**.
+</Callout>
+
 ## Example [#example]
 With a credential whose base URL is `https://api.example.com`, **Verb** `GET`, **Endpoint** `/customers/:id` with `id` = `42`, and **Query Params** `fields` = `name,email`, the step calls `https://api.example.com/customers/42?fields=name,email`. **Response Status** receives `200` and **Response Body** the JSON returned by the API.
 
 ## Good to know [#good-to-know]
 - **An error status does not fail the step.** A `404` or `500` from the API is returned in **Response Status** and **Response Body**, and the process continues. Check **Response Status** with a [Decisional](/how-to/decisional) when the next steps depend on success.
 - **The step fails** when there is no response at all: a timeout, an unreachable host, or an invalid URL (*"Invalid URL: …"*).
-- **No base URL?** If the credential has no base URL, **Endpoint** must be a full `http://` or `https://` URL; otherwise the step fails with *"Missing request URL."*
+- **No base URL?** If the credential has no base URL, **Endpoint** must be a full `http://` or `https://` URL. An empty endpoint fails the step with *"Missing request URL."*, a path alone with *"Invalid URL: …"*.
+- **Another host refused.** A full URL in **Endpoint** on a host other than the credential's fails the step before anything is sent. See [Credential and endpoint](#credential-and-endpoint).
 - **Time Out below 60** is raised to 60 seconds.
 - **Files**: when a successful response is a file, it goes into **Response File** instead of **Response Body**.
 - If you add the same query parameter or header name twice, only the first one is sent.
