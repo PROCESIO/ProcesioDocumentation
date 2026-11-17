@@ -3,6 +3,7 @@
   "icon": "🔭",
   "root": true,
   "pages": [
+    "why-procesio",
     "announcements",
     "forms-tasks-designer",
     "dashboard",

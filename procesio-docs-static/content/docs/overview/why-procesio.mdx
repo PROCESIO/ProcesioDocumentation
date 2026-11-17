@@ -1,0 +1,95 @@
+---
+title: "Why PROCESIO"
+icon: "💡"
+description: "What sets PROCESIO apart, and when another tool is the better choice."
+---
+
+PROCESIO is a platform for building business processes: the automation itself, the forms people fill in, the approvals, the documents, and the data the process keeps. It is built for the processes where a mistake costs something. A missed filing deadline, a rejected invoice, an order that never reached the ERP. And for processes that have to show, months later, exactly what happened.
+
+This page explains what that means in practice, with a link to the documentation behind each claim.
+
+## Your bill doesn't grow with your success
+
+Most automation platforms charge per task, per operation, per connector or per active workflow. The better your automation works, the more you pay.
+
+PROCESIO charges for processing time: the time your actions are actively executing. Queues and platform orchestration are never billed. Waiting for a person or a timer is free, so a process that sits for three days waiting on an approval costs nothing while it waits.
+
+Plans include unlimited processes, users and workspaces. See [Processing time and usage](/processing-time-and-usage) for how it is measured and [Pricing](https://procesio.com/pricing) for current plans.
+
+## Run it where your data has to stay
+
+| Option | Where it runs |
+| --- | --- |
+| **PROCESIO cloud** | A private cloud in Romania, in the EU, in an ISO 9001 and ISO 27001 certified data center. Customer data isn't transferred outside the European Economic Area. |
+| **Self-hosted** | Your own Kubernetes cluster, with a yearly licence per environment or a perpetual licence. |
+| **Hybrid** | Stay in the cloud and let the [OnPrem Agent](/docs/developers-guide/onprem-agent-v1-0-3) reach the systems inside your network. |
+
+You build the same processes in all three, and [Import / Export](/import-export-resources) moves them between environments.
+
+## One platform for the whole process
+
+A real process is rarely just an integration. Someone fills in a form, someone approves, a document gets generated, data is stored and looked up later. In PROCESIO they all live in one platform, so closing a process doesn't mean wiring three tools together.
+
+| You need | In PROCESIO |
+| --- | --- |
+| Integrations, logic, branches and loops | [Process Designer](/process-designer) |
+| Forms, tasks and approvals | [Forms & Tasks Designer](/forms-tasks-designer), [Approval](/approval) |
+| Generated documents (PDF, HTML) | [Document Designer](/document-designer), [Generate Document](/how-to/generate-document) |
+| Data the process keeps | [Data Store](/data-store), [Query Store](/query-store) |
+| Ways to start a process | [Schedules](/schedules), [Webhooks](/webhooks), [API Keys](/api-keys) |
+
+## Built for processes that can fail
+
+Any process that depends on another system will eventually meet a system that doesn't answer. What matters is whether you find out, and what happens next.
+
+- Every action that can fail has an [Error Path](/error-path), a separate route for the failure, so the process never carries on as if the step had worked.
+- [Delay](/how-to/delay) and [Schedules](/schedules) let a process retry inside a time window instead of giving up.
+- [Throw](/how-to/throw) stops a run on purpose when the data is wrong, with your own message.
+- Every run is recorded: what came in, what went out, which steps ran and how long each took.
+
+## Code in the languages your team already uses
+
+When no ready-made action fits, your team writes code in a language it already knows. [Scripting](/how-to/scripting) actions run JavaScript, Node.js, Python and Ruby inside a process, and [Custom Actions](/docs/custom-actions/what-is-a-custom-action) let developers package their own actions and connectors in C#. Nobody has to learn a vendor-specific mapping language or get certified in one.
+
+## When there's no ready-made connector
+
+PROCESIO has fewer ready-made connectors than the largest platforms, and we would rather say so here than have you find out later. What it has instead:
+
+- [Call API](/how-to/call-api) reaches any REST API, with the credentials stored once and reused across processes.
+- The AI Connector Builder writes and compiles a connector from an API's documentation.
+- [Custom Actions](/docs/custom-actions/what-is-a-custom-action) cover whatever is left.
+
+## AI with brakes
+
+AI is good at reading messy input: a free-text email, a scanned invoice, a contract. It is not safe to let it act alone on money or on a compliance filing. PROCESIO lets you use both halves:
+
+- [AI Decisional](/how-to/ai-decisional) routes a process using conditions written in plain English.
+- Deterministic checks validate what the model returned before anything is written anywhere.
+- [Approval](/approval) puts a person in front of every case the checks can't settle.
+
+You bring your own model key, and there is no markup on AI usage.
+
+## Operable from outside
+
+Everything you build in the interface is also available programmatically: the [PROCESIO API](/docs/developers-guide/procesio-api-documentation), [API Keys](/api-keys) for running processes from other systems, and procesio-cli for creating, validating, running and exporting processes from scripts or from AI agents.
+
+## Governance built in
+
+[User permissions and roles](/user-permissions-and-roles-management), [two-factor authentication](/two-factor-authentication) that an administrator can require for everyone in a master workspace, and [Resource Tracking](/resource-tracking) to see what every process consumes.
+
+## Leaving is your right
+
+The EU Data Act, which has applied since 12 September 2025, gives customers of cloud and data-processing services the right to switch providers, and the transition that still allows switching charges ends on 12 January 2027. We don't depend on lock-in. Your processes export as files, and your data is yours.
+
+## When another tool fits better
+
+- **A simple link between two popular apps**, with no state to keep and no deadline to meet. A task-based tool will do it quickly and cheaply.
+- **Clicking through desktop screens.** PROCESIO doesn't automate desktop user interfaces. When a step only exists on a screen, an RPA tool can do that one step while PROCESIO runs the process around it.
+
+Saying this early saves both sides a project that would struggle by its third month.
+
+## Next
+
+- [International use cases](/docs/international-use-cases): processes for companies that work across borders.
+- [Your first process](/your-first-process): build something in ten minutes.
+- [Marketplace](/docs/marketplace): ready-made processes you can import.

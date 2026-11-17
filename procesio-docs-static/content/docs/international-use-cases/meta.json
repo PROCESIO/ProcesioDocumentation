@@ -1,0 +1,14 @@
+{
+  "title": "International Use Cases",
+  "icon": "🌍",
+  "root": true,
+  "pages": [
+    "index",
+    "multi-country-e-invoicing",
+    "eu-vat-number-validation",
+    "third-party-onboarding",
+    "supply-chain-evidence",
+    "incident-reporting-clock",
+    "multi-market-order-intake"
+  ]
+}
