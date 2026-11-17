@@ -1,0 +1,32 @@
+---
+title: "Has Elements"
+icon: "📕"
+description: "Stops the process with an error when a list is empty or has no value; lets it continue otherwise."
+---
+
+The **Has Elements** action is a guard: it checks that a list has at least one element. If the list is empty or has no value, the step fails with an error; otherwise the process simply continues. Use it before actions that cannot handle an empty list, such as [Max](/how-to/max), [Min](/how-to/min), [Median](/how-to/median), [Filter](/how-to/filter) or [Get Element](/how-to/get-element).
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Has Elements** (or type *Has Elements* in the search box).
+
+![The Has Elements action properties: Input List](/images/docs/actions/list-has-elements/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input List** | Input | List of any type | Yes | The list to check. |
+
+The action has no output. Its result is the step outcome: it either succeeds or fails.
+
+## Example [#example]
+| Input List | Outcome |
+| --- | --- |
+| `[1]` | The step succeeds and the process continues. |
+| `[]` | The step fails: *Input List is null or empty.* |
+| *(variable with no value)* | The step fails: *Input List is null or empty.* |
+
+## Good to know [#good-to-know]
+- The action does not return `true`/`false`. To branch on "is the list empty?" without failing, use [Length](/how-to/length) and a [Decisional](/how-to/decisional) on the result (`0` means empty).
+
+## Related actions [#related-actions]
+- [Length](/how-to/length), [Contains](/how-to/list-contains), [Throw](/how-to/throw)

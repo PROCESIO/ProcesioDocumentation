@@ -2,9 +2,10 @@
   "title": "Utilitary",
   "icon": "📁",
   "pages": [
-    "generate-string",
-    "generate-integer",
     "generate-guid",
-    "guid-converter"
+    "guid-converter",
+    "generate-integer",
+    "generate-string",
+    "check-boolean"
   ]
 }

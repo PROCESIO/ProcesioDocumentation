@@ -1,0 +1,37 @@
+---
+title: "Add"
+icon: "📕"
+description: "Adds two numbers, whole or decimal."
+---
+
+**Add** adds two numbers and gives you the sum. It works with whole numbers and decimals alike. Use it for totals, for counters in a loop (for example `counter + 1`), or to add a fee to an amount.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Numerical** and pick **Add** (or type *Add* in the search box).
+
+![The Add action properties: First number, Second number and Result](/images/docs/actions/numerical-add/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **First number** | Input | Number (whole or decimal) | Yes | The first number. |
+| **Second number** | Input | Number (whole or decimal) | Yes | The number to add to it. |
+| **Result** | Output | Number (whole or decimal) | Yes | The sum. |
+
+## Example [#example]
+| First number | Second number | Result |
+| --- | --- | --- |
+| `2` | `3` | `5` |
+| `0.1` | `0.2` | `0.3` |
+| `1.5` | `2.5` | `4` |
+| `-7.25` | `3` | `-4.25` |
+
+## Good to know [#good-to-know]
+- The sum is exact for decimals (`0.1` + `0.2` is `0.3`, with no rounding error).
+- When the sum is a whole number, you get a whole number (`1.5` + `2.5` gives `4`, not `4.0`), so you can map **Result** to an Integer variable.
+- **To increment a counter**, map the same variable to **First number** and **Result**, and put `1` in **Second number**.
+- **Use a dot for decimals.** A comma is read as a thousands separator and ignored: `1,5` + `1` gives `16`.
+- Text that is not a number stops the step with `Invalid input.`; an empty input stops it with `Input was null. Please, fill it.`
+
+## Related actions [#related-actions]
+- [Subtract](/how-to/substract), [Multiply](/how-to/multiply), [Divide](/how-to/divide), [Round](/how-to/round), [String To Number](/how-to/parse-number)

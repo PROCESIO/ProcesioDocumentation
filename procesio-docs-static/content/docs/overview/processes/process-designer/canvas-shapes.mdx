@@ -1,0 +1,81 @@
+---
+title: "Canvas shapes"
+icon: "⬛"
+description: "Group and annotate a process with rectangles, ellipses and diamonds — shapes that organise the canvas without taking part in the flow."
+---
+
+**Shapes** are rectangles, ellipses and diamonds you can drop on the canvas to
+group related actions, mark a stage of the flow, or write a note next to it. They
+are there for whoever reads the process — including you in six months.
+
+<Callout type="info">
+  **A shape never runs.** It is not an action: it has no ports, it cannot be
+  connected, it does not appear in a run, it consumes nothing, and it never affects
+  validation. It is drawing on the canvas, and it is saved with the process.
+</Callout>
+
+## Add a shape [#add-a-shape]
+
+1. In the toolbar, switch from **Actions** to **Shapes**.
+2. Drag the shape you want onto the canvas, or double-click it to drop one in the
+   middle.
+
+There are three:
+
+| Shape         | Typical use                                            |
+| ------------- | ------------------------------------------------------ |
+| **Rectangle** | Boxing a group of actions that belong together.         |
+| **Ellipse**   | Calling out a start, an end, or a note.                 |
+| **Diamond**   | Marking where a decision happens, next to a Decisional. |
+
+Drag a shape by its body to move it, and use the handles on its edge to resize it.
+
+## Write on a shape [#write-on-a-shape]
+
+**Double-click the shape** and type. Press **Enter** to save what you wrote.
+
+A shape holds two separate pieces of text:
+
+- A **title**, which sits at the top of the shape and can be aligned left, centre or
+  right.
+- The **body text**, in the middle, which is what you get by double-clicking.
+
+## Style a shape [#style-a-shape]
+
+Click a shape to open its panel:
+
+| Setting             | What it does                                                                                     |
+| ------------------- | ------------------------------------------------------------------------------------------------ |
+| **Fill color**      | Pick one of the preset swatches, or open the picker for any colour you like.                       |
+| **Fill opacity**    | 0–100%. Lower it so the actions underneath stay readable through the shape.                        |
+| **Title**           | The shape's heading.                                                                               |
+| **Title alignment** | Left, centre or right.                                                                             |
+| **Order**           | **Bring to front** / **Send to back** — which shape wins where two overlap.                        |
+
+<Callout type="info">
+  **Use a low fill opacity for a shape that sits behind actions.** A shape drawn at
+  full opacity over a group of actions hides them until you send it to the back.
+</Callout>
+
+## The right-click menu [#the-right-click-menu]
+
+Right-click a shape for:
+
+- **Bring to front**
+- **Send to back**
+- **Delete**
+
+## Shapes and actions behave differently [#shapes-and-actions]
+
+A few differences worth knowing, because they surprise people:
+
+- **Copy and paste does not apply to shapes.** Ctrl + C / Ctrl + V copy *actions*.
+  To get a second shape, drag another one from the toolbar.
+- **Shapes do join a multi-selection**, so Ctrl + click picks up shapes and actions
+  together and drags them as one group.
+- **A shape is never validated**, so it can never be the reason a process is invalid.
+
+## Related [#related]
+
+- [Platform Tricks](/platform-tricks) — the other canvas gestures.
+- [Process Designer basics](/process-designer-basics) — the toolbar and the canvas.

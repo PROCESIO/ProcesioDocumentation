@@ -1,0 +1,37 @@
+---
+title: "Get Index"
+icon: "📕"
+description: "Finds a value or object in a list and returns its position (starting from 0), or -1 if it is not found."
+---
+
+The **Get Index** action searches a list for a value and returns its position. Positions start at `0` (the first element is at index `0`). If the value is not in the list, the result is `-1`. Use the result with [Get Element](/how-to/get-element) or [Sublist](/how-to/sublist).
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Get Index** (or type *Get Index* in the search box).
+
+![The Get Index action properties: Input list, Input object to be found and Result](/images/docs/actions/list-get-index/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input list** | Input | List of any type | Yes | The list to search. |
+| **Input object to be found** | Input | Any value (text, number, Boolean, Object (JSON), data model) | Yes | The value to look for. |
+| **Result** | Output | Integer | Yes | The zero-based position of the **first** match, or `-1` if there is no match. |
+
+## Example [#example]
+| Input list | Input object to be found | Result |
+| --- | --- | --- |
+| `["a","b","c","b"]` | `b` | `1` (first occurrence) |
+| `[10,20,30]` | `30` | `2` |
+| `["a","b"]` | `z` | `-1` |
+| `["a","B"]` | `b` | `-1` (case-sensitive) |
+| `[{"id":1},{"id":2}]` | `{"id":2}` | `1` |
+
+## Good to know [#good-to-know]
+- Indexes are zero-based: the first element is `0`, the last is length − 1.
+- With duplicates, you get the index of the first one.
+- Matching works like [Contains](/how-to/list-contains): text is case-sensitive, a number matches the same number as text, and objects must match on all properties (in any order).
+- An empty **Input object to be found** makes the step fail with *Input was null. Please, fill it.*
+
+## Related actions [#related-actions]
+- [Contains](/how-to/list-contains), [Get Element](/how-to/get-element), [Sublist](/how-to/sublist), [Remove](/how-to/remove)

@@ -1,27 +1,37 @@
 ---
 title: "Throw"
 icon: "📕"
-description: "Throws a custom exception when this action is reached."
+description: "Stops the process with an error and your own error message when this step is reached."
 ---
 
-Throws a custom exception when this action is reached.
+**Throw** makes the process fail on purpose, with an error message you write. Use it at the end of a branch that should never be reached, or after a check that found bad data, so the run is marked as failed and the reason is clear in the run details.
 
-![](/images/docs/zfhz6LLDOomaWDnu6euXW_image.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, pick **Throw** (or type *Throw* in the search box).
 
-## Inputs & Outputs
+![The Throw action properties: Custom Message](/images/docs/actions/throw/panel.png)
 
-- **\[ I\* ] Custom Message:**  representing the error message.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Custom Message** | Input | Text | No | The error message the step fails with. Can include process variables. |
 
-## Example Usage
+Throw has no outputs.
 
-- Drag action onto the canvas to get familiarized with it.
+## Example [#example]
+Real runs with **Test Action**:
 
-![](/images/docs/C0MBb58GgHYkVIYswhn0s_tmp.png)
+| Custom Message | Result |
+| --- | --- |
+| `Invoice total is negative` | The step fails with the error *Invoice total is negative*. |
+| *(empty)* | The step fails with the error *An exception occurred.* |
 
-- **Save & Run** the process and then **Check Instance** to see the output.
+A typical use: a [Decisional](/how-to/decisional) checks `invoiceTotal < 0`; that case leads to a Throw with **Custom Message** `Invoice <%invoiceNumber%> has a negative total`, so the run fails and the message names the invoice.
 
-![](/images/docs/enGzhVR6IJJ-GXIEeU7nJ_tmp.png)
+## Good to know [#good-to-know]
+- **The step always fails**: that is its job. The run then ends with an error, like any other failed step, and the message appears on the failed step in the run details.
+- The panel prefills **Custom Message** with *An exception occured.*; if you clear it, the message is *An exception occurred.*
+- In a subprocess started with [Call Subprocess](/how-to/call-subprocess), the error makes the Call Subprocess step in the parent fail too.
 
-## Use Cases
-
-- Throwing custom errors and setting the process status as **failed** when a specific condition is met.
+## Related actions [#related-actions]
+- [Decisional](/how-to/decisional), [Call Subprocess](/how-to/call-subprocess)

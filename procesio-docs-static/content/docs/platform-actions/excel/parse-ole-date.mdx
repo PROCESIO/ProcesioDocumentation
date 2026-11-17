@@ -1,7 +1,38 @@
 ---
 title: "Parse OLE Date"
 icon: "📕"
-description: "Converts an Excel OLE serial date number into a real date."
+description: "Converts an Excel date serial number (OLE Automation date) into a date and time."
 ---
 
-coming soon 🔜
+Excel stores dates as numbers: the number of days since 30 December 1899, with the time as the decimal part. **Parse OLE Date** turns such a number into a real date and time. Use it after [Read Range](/how-to/read-range), which returns date cells as these numbers.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Parse OLE Date** (or type *Parse OLE Date* in the search box).
+
+![The Parse OLE Date action properties: Input and Datetime](/images/docs/actions/excel-parse-ole-date/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input** | Input | Number or Text | Yes | The serial number, for example `45296` or `45296.5`. |
+| **Datetime** | Output | Date and time | Yes | The date and time it stands for. |
+
+## Example [#example]
+| Input | Datetime |
+| --- | --- |
+| `45296` | `2024-01-05T00:00:00` |
+| `45296.5` | `2024-01-05T12:00:00` |
+| `-1` | `1899-12-29T00:00:00` |
+| `abc` | The step fails: "Could not parse float from value -> abc" |
+| `3000000` | The step fails: "Input is not a valid OLE Automation Date" |
+
+## Good to know [#good-to-know]
+<Callout type="warn">
+The time part is not exact. The number is read with only about seven significant digits, so `45296.123456` (02:57:47) comes back as `2024-01-05T03:00:00`. Rely on the date; do not rely on the minutes and seconds.
+</Callout>
+
+- Use a dot as the decimal separator. A comma is not read as a decimal separator: `45296,5` gives the year 3140 instead of an error.
+- The result has no time zone: it is the date and time exactly as Excel shows them.
+
+## Related actions [#related-actions]
+- [Read Range](/how-to/read-range), [Read Range from CSV](/how-to/read-range-from-csv)

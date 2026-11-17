@@ -1,65 +1,49 @@
 ---
 title: "Get File List"
 icon: "📕"
-description: "The action lists file names within a folder, from the FTP/SFTP server. Displays files name, path, type and size."
+description: "Lists the files and/or folders in a folder on an SFTP or FTP server, with their name, path, type and size."
 ---
 
-![](/images/docs/LZ-jgATEnLXFMDddDYgp__image.png)
+**Get File List** reads the content of a folder on your SFTP or FTP server and returns one entry per file or folder. Use it to find out what is waiting on the server, then pass the list to [Download Bulk](/how-to/sftp-download-bulk), [Move Bulk](/how-to/move-bulk) or [Delete Bulk](/how-to/sftp-delete-bulk), or loop over it with a For Each.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/kqDyQvFUZQo" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential).
 
-The action lists file names within a folder, from the FTP/SFTP server. Displays files name, path, type and size.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Get File List** (or type *Get File List* in the search box).
 
-### **FTP connection**
+![The Get File List action properties: Select SFTP credentials, Folder Path, Is it Recursive?, File Type, MaxFileNumber and Output](/images/docs/actions/sftp-get-file-list/panel.png)
 
-For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select SFTP credentials** | Input | FTP credential | Yes | The credential of the server to read. |
+| **Folder Path** | Input | Text | No | The folder to list, relative to the credential's **Directory path**. Leave empty to list the root folder. |
+| **Is it Recursive?** | Input | Option | No | `True` also lists the content of every subfolder. `False` (default) lists only the folder itself. |
+| **File Type** | Input | Option | Yes | `Files`, `Folders`, or `Files and Folders`. |
+| **MaxFileNumber** | Input | Integer | Yes | The maximum number of entries to read. |
+| **Output** | Output | List of SFTPFilesInformation | Yes | One entry per file or folder found. |
 
-&#x20; **Step 1**:    Go to the **Credentials Manager** section and click **Add New**.
+Each entry of **Output** uses the **SFTPFilesInformation** data model:
 
-&#x20; **Step 2**:    Give your credential a **Name\*** and **Description** (optional) and click **Next step**.
+| Field | Meaning |
+| --- | --- |
+| `name` | The file or folder name, for example `invoice-001.pdf`. |
+| `path` | The full path of the entry on the server. |
+| `type` | Whether the entry is a file or a folder. |
+| `size` | The size in kilobytes, rounded up (a 9-byte file shows `1`). |
 
-![](/images/docs/LNb0bP-2VrA653qz3TMko_image.png)
+Map **Output** to a process variable of type **SFTPFilesInformation**, with **Is list** switched on.
 
-&#x20; **Step 3**:    Configure the FTP / sFTP connection as needed:
+## Example [#example]
+With **Folder Path** `inbox`, **Is it Recursive?** `False`, **File Type** `Files` and **MaxFileNumber** `100`, **Output** holds one entry for each file directly inside `inbox`, for example an entry with `name` `invoice-001.pdf` and `path` ending in `/inbox/invoice-001.pdf`.
 
-- **Port number\*** - the port number used by the server.
-- **Protocol type** - the protocol used depending on the encryption.
-- **Directory path** - the entry point of the server.
-- **Authentication method** - here you have the option to use a basic username and password authentication or a user key authentication.
+## Good to know [#good-to-know]
+- Paths are relative to the **Directory path** set in the credential. If the credential points to `/home/data`, a **Folder Path** of `inbox` reads `/home/data/inbox`. Don't repeat the credential's Directory path in the field.
+- Server paths are case-sensitive on most SFTP servers: `Inbox` and `inbox` are different folders.
+- If the server can't be reached or the folder can't be read, the step fails with *"Error while trying to list the files within folder"*. Connect the step's error route to handle it.
+- The list is the input that the bulk actions expect, so you can filter it (for example with a list filter action) before you pass it on.
 
-![](/images/docs/EauVTVKR-BU_WxyKUcLFU_image.png)
-
-&#x20; **Step 4**:    Click **Test connection** and if successful click **Save**.
-
-### **Create the process**
-
-&#x20; **Step 1**:    From the **Process Designer** section select **Create new**.
-
-&#x20; **Step 2**:    Give you process a name.
-
-&#x20; **Step 3**:    Drag the action **Get File List** on the canvas and link the action inside you process.
-
-![](/images/docs/ODfT0qK2KjYoN3obJVQHd_image.png)
-
-&#x20; **Step 4**:    Create the <span style={{color:'#2166ae'}}>&lt;%ftpinfo%&gt;</span> JSon variable of type list.
-
-![](/images/docs/RVEr1IR7_gqHlG8ERoxy2_image.png)
-
-&#x20;  **Step 5:**    Click the **Get File List** action to access its configurations.
-
-- **Node name\*** - gives you the option to change the actions name.
-- **Select ftp server\*** - here we will select the connection created in the previous section.
-- **Folder path** - allows you to select the path to the folder you wish to check.
-- **Is it recursive?** - we have the ability to choose True or False.
-- **File type\*** - choose the type of files that should be retrieved.
-- **Output\*** - here we will add the variable created at Step 4.
-
-![](/images/docs/YWzQTLFRH7deU0F7numtu_image.png)
-
-&#x20; **Step 6:**    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-&#x20; **Step 7:**    Click **Check Instance**.
-
-&#x20; **Step 8:**    Here you have the ability to check the data saved in our variable by clicking it, or to download the data in the form of a JSon file.
-
-![](/images/docs/w2-lI9R1XdRtma4rr5i6W_image.png)
+## Related actions [#related-actions]
+- [Download Bulk](/how-to/sftp-download-bulk), [Move Bulk](/how-to/move-bulk), [Delete Bulk](/how-to/sftp-delete-bulk)
+- [Download File](/how-to/download-file), [Create Folder](/how-to/create-folder)

@@ -29,7 +29,7 @@ If the action is not properly configured, it cannot be saved as a template and a
 ![](/images/docs/dlCFLEtj9pvUje7749s_P_saveactiontemplate.png)
 
 - **Save action as**: give a name to your template (note: the template saved will be visible under this name in the Toolbar)
-- **Add to Folder:&#xA0;**&#x73;elect the folder in the Toolbar where you want to add this action template.
+- **Add to folder&#xA0;**(required): select the folder in the Toolbar where you want to add this action template. Saving without one fails with *"Please select a folder from the list"*.
 
 <Callout type="info">
 By default, an action template will be added under its main action type (e.g. a template saved based on a Call API action will be found in the Toolbar under the Call API action). You can create sub-folders under the main action if you want to better organize your action templates.
@@ -39,7 +39,11 @@ By default, an action template will be added under its main action type (e.g. a 
 
 - **Save credentials in template:&#xA0;**&#x74;his option is only visible for actions that include credentials as part of their configuration (e.g. **Call API**, **Send Email**). Check this box if you want the credentials to be saved along with the action configuration in the template. When using the action template in a process, you will no longer need to select the credential for the action, as it will be already selected. 
 
-**Step 5.** Press **Save configuration** to save your action template. It will be reflected in the Toolbar under the selected/created folder.
+**Step 5.** Press **Save** to save your action template. It will be reflected in the Toolbar under the selected/created folder.
+
+<Callout type="info">
+  **To put the template in a new folder**, open the **Add to folder** list and use **Create new folder** at the bottom of it, then type the folder's name. The Toolbar also has its own **Create folder** button, if you would rather set your folders up before saving anything.
+</Callout>
 
 <Callout type="info">
 An action template created will be visible in Toolbar to **all** users within the same workspace.
@@ -62,11 +66,22 @@ An action configuration that contains the red placeholders is not considered val
 You can save a template based on another action template, and it will be saved as a new template under its root action type/folder.
 </Callout>
 
-### Deleting a template from Toolbar
+### Managing templates and folders in the Toolbar
 
-You can delete the action template in Toolbar. They will have a contextual menu available:
+Both a template and a folder have a contextual menu in the Toolbar:
 
 ![](/images/docs/NWm6a4tMsXEbfFYIPtFPe_deletetemplate.png)
+
+- A **template** can be deleted.
+- A **folder** can be **renamed** or **deleted**. A folder has to be empty first — otherwise you get *"The folder must be empty in order to be removed."*
+
+<Callout type="error">
+  **Deleting a template asks you to confirm, and cannot be undone.** Nothing restores a deleted template — you would have to configure the action again and save it as a template a second time.
+</Callout>
+
+<Callout type="info">
+  **Deleting a template does not break the processes built from it.** A template is a starting point: its configuration is copied into the process when you drag it onto the canvas, and the process keeps that copy. A process whose template is later deleted goes on running exactly as before.
+</Callout>
 
 ### Disabling an action
 

@@ -1,37 +1,41 @@
 ---
 title: "Sort"
 icon: "📕"
-description: "The Sort action enables the sorting of a primitive list in either ascending or descending order."
+description: "Sorts a simple list (numbers or text) in ascending or descending order."
 ---
 
-# Overview
+The **Sort** action sorts a simple list of numbers or text in ascending or descending order. The same list variable is used as input and output, so after the step it holds the sorted list. To sort a list of data models by one or more of their fields, use [Sort Data Model](/how-to/sort-data-model).
 
-The `Sort` action enables the sorting of a primitive list in either ascending or descending order.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Sort** (or type *Sort* in the search box).
 
+![The Sort action properties: List to be sorted and Input Order (A/D)](/images/docs/actions/list-sort/panel.png)
 
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List to be sorted** | Input and output | List of numbers or text | Yes | The list variable to sort. After the step, the same variable contains the sorted list. |
+| **Input Order (A/D)** | Input | Option | Yes | **Ascending Order** (smallest / A first) or **Descending Order** (largest / Z first). |
 
-![](/images/docs/GLSzwL6pfI1xqueUuGMo2_image.png)
+## Example [#example]
+| List to be sorted (before) | Input Order (A/D) | List to be sorted (after) |
+| --- | --- | --- |
+| `[10,2,33,1]` | Ascending Order | `[1,2,10,33]` |
+| `[10,2,33,1]` | Descending Order | `[33,10,2,1]` |
+| `[1.5,2.25,0.5]` | Ascending Order | `[0.5,1.5,2.25]` |
+| `["pear","Apple","banana","apple"]` | Ascending Order | `["apple","Apple","banana","pear"]` |
+| `["b","a","b"]` | Descending Order | `["b","b","a"]` |
+| `[true,false,true]` | Ascending Order | `[false,true,true]` |
 
-### Parameters
+## Good to know [#good-to-know]
+<Callout type="warn">
+Do not mix whole and decimal numbers, or numbers and text, in the same list. For example `[1.5,-2,1]`, `["1.5","-2","1"]` or `[3,"a",1]` does **not** fail the step, but the list variable comes back **empty**. Check the result (for example with [Length](/how-to/length)) if your list can contain such values.
+</Callout>
 
-### Inputs
+- Text is sorted alphabetically without regard to case (`apple` and `Apple` end up next to each other).
+- Duplicates are kept.
+- An empty list makes the step fail with *Input list was not fill right. You can not add data models and primitives to the same list.* Check the list with [Length](/how-to/length) first if it can be empty.
+- A list of objects is sorted by their full text, and the elements come back as **text**, not as objects. Use [Sort Data Model](/how-to/sort-data-model) for lists of objects.
 
-- List to be sorted (`list<object>`) - This is both input and output; it will return the updated list in the same variable.
-- Input order (a/d) (dropdown):
-  - Ascending Order
-  - Descending Order
-
-### Outputs
-
-- List to be sorted (`list<object>`)
-
-## Configuration Details
-
-- This action modifies the input list directly, updating it with the sorted order.
-- The sorting order can be specified by selecting either Ascending Order or Descending Order from the dropdown parameter.
-
-## Important Notes
-
-- Make sure to provide a valid list object as input to ensure proper sorting.
-- Changes made to the input list will be reflected in the output list.
-- This action is suited only for lists of primitives, and not suited for lists of data models or complex JSON objects. For sorting lists of data models or complex JSON objects, use the [Sort Data Model](/docs/platform-actions/call-api/sort-data-model) action.
+## Related actions [#related-actions]
+- [Sort Data Model](/how-to/sort-data-model), [First N Elements](/how-to/first-n-elements), [Last N Elements](/how-to/last-n-elements), [Max](/how-to/max), [Min](/how-to/min)

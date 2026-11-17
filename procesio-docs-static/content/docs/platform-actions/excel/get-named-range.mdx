@@ -1,9 +1,37 @@
 ---
 title: "Get Named Range"
 icon: "📕"
-description: "Reads a named range from an Excel workbook."
+description: "Finds a named range in an Excel workbook and returns its sheet and cell range."
 ---
 
-![](/images/docs/qFEWeauEFRcX7VrvLsHvL_image.png)
+**Get Named Range** looks up a name defined in a workbook (in Excel: **Formulas › Name Manager**) and tells you which sheet and which cells it points to. Use it with [Read Range](/how-to/read-range) when a template marks its data area with a name instead of fixed cell addresses.
 
-coming soon 🔜
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Get Named Range** (or type *Get Named Range* in the search box).
+
+![The Get Named Range action properties: Excel workbook, Name, Extracted sheet and Extracted range](/images/docs/actions/excel-get-named-range/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Excel workbook** | Input | File | Yes | An `.xlsx` or `.xlsm` workbook. |
+| **Name** | Input | Text | Yes | The name of the range, exactly as defined in the workbook. |
+| **Extracted sheet** | Output | Text | Yes | The sheet the range is on. |
+| **Extracted range** | Output | Text | Yes | The cells, as `A2:D4`, ready for the **Range** field of Read Range. |
+
+## Example [#example]
+A workbook where the name `OrderLines` refers to `Orders!$A$2:$D$4`:
+
+| Name | Extracted sheet | Extracted range |
+| --- | --- | --- |
+| `OrderLines` | `Orders` | `A2:D4` |
+| `orderlines` | The step fails: "Excel error: Could not find any range named => orderlines" | |
+
+## Good to know [#good-to-know]
+- The name is **case-sensitive**.
+- The `$` signs are removed. A name that points to one cell is returned as a range, for example `B5:B5`.
+- A name that does not point to cells on a sheet (for example a constant or a formula) fails with "Excel error: Something went wrong when attempting to extract properties.".
+- If the sheet name contains spaces, Excel stores it in single quotes, and **Extracted sheet** keeps them (for example `'Sales 2026'`).
+
+## Related actions [#related-actions]
+- [Read Range](/how-to/read-range), [Get Sheet Names](/how-to/get-sheet-names), [Get Last Used Row](/how-to/get-last-used-row)

@@ -1,7 +1,48 @@
 ---
-title: "Delete by prefix"
+title: "Delete by Prefix"
 icon: "📕"
-description: "Deletes every S3 object whose key starts with a given prefix."
+description: "Deletes every object whose key starts with a prefix, such as a whole folder, from an Amazon S3 bucket."
 ---
 
-coming soon 🔜
+**Delete by Prefix** removes every object in an Amazon S3 bucket whose key starts with the text you give. Use it to empty a folder, for example `temp/2026-11-10/`.
+
+## Before you start [#before-you-start]
+The AWS S3 actions don't use a stored credential. Each action has the same four connection fields:
+
+| Field | Type | Required | What to put |
+| --- | --- | --- | --- |
+| **Access Key** | Text | Yes | The access key ID of an AWS IAM user, for example `AKIA…`. |
+| **Secret Key** | Text | Yes | The secret access key that belongs to that access key. |
+| **Region** | Text | Yes | The AWS region of the bucket, as its code, for example `eu-central-1`. |
+| **Bucket** | Text | Yes | The bucket name, for example `my-company-invoices`. |
+
+The IAM user needs S3 permissions on the bucket for the operation you run. The values you type are visible to everyone who can edit the process, so prefer an IAM user limited to the buckets the process needs.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **AWS S3** and pick **Delete by Prefix** (or type *Delete by Prefix* in the search box).
+
+![The Delete by Prefix action properties: Access Key, Secret Key, Region, Bucket, Prefix and Result](/images/docs/actions/aws-s3-delete-by-prefix/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Access Key**, **Secret Key**, **Region**, **Bucket** | Input | Text | Yes | The connection fields described above. |
+| **Prefix** | Input | Text | Yes | The start of the keys to delete, for example `temp/2026-11-10/`. |
+| **Result** | Output | Boolean | No | `true` if the objects were deleted, `false` if nothing matched. |
+
+## Example [#example]
+**Prefix** `temp/2026-11-10/` → every object under `temp/2026-11-10/` is removed and **Result** is `true`.
+
+<Callout type="warn">
+The prefix matches the start of the key, not a folder name. `reports` matches `reports/2025.csv` **and** `reports-archive/old.csv`. End the prefix with `/` to delete only that folder. The deletion can't be undone.
+</Callout>
+
+## Good to know [#good-to-know]
+- An empty **Prefix** is refused with *"Missing prefix."*, so a missing value can't empty the whole bucket.
+- When no object matches, **Result** is `false` and the step doesn't fail.
+- One run handles at most the first 1,000 matching objects (one S3 listing page). For larger folders, run the action again until **Result** is `false`.
+- If a connection field is empty, the step fails with *"Invalid connection details."*
+- Common errors from S3: *"Access forbidden! Ensure the connection details are valid."* (wrong keys or missing permission), *"Unable to connect! Ensure the provided region matches the bucket one."* (wrong **Region**), and *"Unrecognized Amazon Region: …"* (a region code that doesn't exist).
+
+## Related actions [#related-actions]
+- [List Keys](/how-to/list-keys), [Delete by Keys](/how-to/delete-by-keys), [Delete Object](/how-to/delete-object)

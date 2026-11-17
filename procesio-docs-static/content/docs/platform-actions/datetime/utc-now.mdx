@@ -1,47 +1,29 @@
 ---
 title: "UTC Now"
 icon: "📕"
-description: "This action gets the current date & time in UTC standard."
+description: "Returns the current date and time in UTC."
 ---
 
-This action gets the current date & time in UTC standard.
+**UTC Now** gives you the current date and time, in UTC, down to fractions of a second. Use it to timestamp an event, to measure how long part of a process took (with [Time Difference](/how-to/time-difference)), or as the base for a deadline.
 
-![](/images/docs/2LCmTzo5-c9Ucmuf93tqv_image.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **UTC Now** (or type *UTC Now* in the search box).
 
-## Inputs & Outputs
+![The UTC Now action properties: the UTC Now output](/images/docs/actions/datetime-utc-now/panel.png)
 
-- **\[ O ] UTC now**: <span style={{color:'#ff9307'}}>DateTime</span> containing current date and time.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **UTC Now** | Output | Date and time | Yes | Map a Date and time variable here. It receives the current UTC date and time. |
 
+The action has no inputs.
 
+## Example [#example]
+A run on 10 November 2026 at 13:05 UTC returned **UTC Now** `2026-11-10T13:05:31.175287Z`. The `Z` at the end means UTC.
 
-![](/images/docs/nwad9DFyuDelT3jMVWYpc_tdy.png)
+## Good to know [#good-to-know]
+- The value is always UTC, whatever time zone you or your users are in. To show it in local time, use [Timezone Converter](/how-to/timezone-converter) (from **Etc/UTC** or another UTC zone to your zone).
+- Each run of the action reads the clock again. If you need the same timestamp in several places, run **UTC Now** once and reuse its variable.
 
-## Example Usage
-
-- Drag action onto canvas to get familiarized with it.
-
-
-
-![](/images/docs/t9L_uvzcUUObF-z037rTu_tdy.png)
-
-- Declare some variables to be used with the action.
-
-
-
-![](/images/docs/pjM1YAFa8-LrVHkAvMiCn_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-
-
-![](/images/docs/guC6kWt_VbazXSbQ_DDXv_tdy.png)
-
-## Use Cases
-
-- Mentioning the current date and time in documents created using the Document Designer.
-- Using the current time to timestamp sequential data (or events) passing through.
-
-## Tips
-
-- The current date and time is in UTC standard so timezone differences should be considered.
+## Related actions [#related-actions]
+- [Today](/how-to/today), [Time Difference](/how-to/time-difference), [Format DateTime](/how-to/format-datetime), [Timezone Converter](/how-to/timezone-converter)

@@ -1,0 +1,65 @@
+---
+title: "Sort Data Model"
+icon: "📕"
+description: "Sorts a list of data models (or JSON objects) by one or more fields, each ascending or descending."
+---
+
+The **Sort Data Model** action sorts a list of data models (or JSON objects) by one or more of their fields — for example by city ascending, then by company name descending. The same list variable is used as input and output, so after the step it holds the sorted list. For simple lists of numbers or text, use [Sort](/how-to/sort).
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Sort Data Model** (or type *Sort Data Model* in the search box). Then click **Configure** to open the configuration panel.
+
+![The Sort Data Model action properties with the Configure button](/images/docs/actions/list-sort-data-model/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List to be sorted** | Input and output | List of data models / JSON objects | Yes | The list variable to sort. After the step, the same variable contains the sorted list. |
+| **Sort JSON configuration** | Input | Object (JSON) | Yes | The ID field and the sort rules, see below. |
+
+## The JSON configuration [#the-json-configuration]
+```json
+{
+  "IdField": "id",
+  "Sort": [
+    { "Field": "city",    "OrderType": "Asc" },
+    { "Field": "company", "OrderType": "Desc" }
+  ]
+}
+```
+
+| Key | Required | Meaning |
+| --- | --- | --- |
+| `IdField` | Yes | A field whose value is **unique** for every element (for example `id`). |
+| `Sort` | Yes | The sort rules, applied in order: the second rule only decides between elements that are equal on the first, and so on. |
+| `Sort[].Field` | Yes | A top-level field of the data model. Field names are case-sensitive. |
+| `Sort[].OrderType` | Yes | `Asc` (A→Z) or `Desc` (Z→A). |
+
+## Example [#example]
+List to be sorted:
+```json
+[
+  {"id":"a","city":"London","company":"Nevett","employees":120},
+  {"id":"b","city":"Berlin","company":"Rutherford Group","employees":9},
+  {"id":"c","city":"Berlin","company":"Alpha","employees":45}
+]
+```
+
+| Sort | Result (ids in order) |
+| --- | --- |
+| `city` Asc, then `company` Desc | `b` (Berlin, Rutherford Group), `c` (Berlin, Alpha), `a` (London) |
+| `employees` Asc | `a` (120), `c` (45), `b` (9) — sorted as text, see below |
+
+## Good to know [#good-to-know]
+<Callout type="warn">
+Values are always sorted **as text**, also numbers and dates. `120` comes before `45` and `9`, because they are compared character by character. To sort numbers correctly, store them with the same number of digits (for example `009`, `045`, `120`). Dates in the ISO format (`2024-01-05`) sort correctly as text.
+</Callout>
+
+- Text is sorted without regard to case: `A`, `a`, `b`.
+- **The `IdField` values must be unique.** With two elements that share the same ID, the result contains one of them twice and loses the other.
+- Only top-level fields can be used. A nested path such as `address.city` and a field that does not exist do not fail the step, but the list stays in its original order.
+- A list with a single element is returned unchanged.
+- The step fails when the list is empty (*The input list does not have any element!*), or when `IdField` or `Sort` is missing.
+
+## Related actions [#related-actions]
+- [Sort](/how-to/sort) (simple lists), [Filter](/how-to/filter), [Find Duplicates](/how-to/find-duplicates), [First N Elements](/how-to/first-n-elements)

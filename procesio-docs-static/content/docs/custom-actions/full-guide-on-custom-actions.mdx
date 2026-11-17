@@ -1,7 +1,7 @@
 ---
 title: "Full guide on custom actions"
 icon: "📒"
-description: "You’re a developer and you can’t find everything you need to design your process? You can create your own custom action that you can reuse in any process."
+description: "A complete walk-through of a custom action, from the GitHub token and the PROCESIO NuGet source to class and property attributes, lists and a full example."
 ---
 
 You’re a developer and you can’t find everything you need to design your process? You can create your own custom action that you can reuse in any process.
@@ -29,7 +29,7 @@ To check the outcome, go in a  Visual Studio 2019, select from the menu Tools/O
 Alternatively, you can  go in any Visual Studio 2019 menu to Tools/Options/NuGet Package Manager/Package Sources and add the following source under whatever name you’d like: https\://nuget.pkg.github.com/PROCESIO/index.json. You will be asked to provide your credentials (UserName \[your Git hub user name] and Password \[your API Key]) the first time you try to use a package from this source.
 </Callout>
 
-**Step 3:** Create a new .Net Project of type Class Library (.Net Core 3.1) and manage its NuGet packages. To manage the NuGet packages, go to "Tools" → "Nuget Package Manager" → "Manage NuGet Packages for Solution". Select your newly configured package source from the upper right corner dropdown and browse for the latest **Ringhel.Procesio.Action.Core** package.
+**Step 3:** Create a new .NET project of type Class Library (.NET 8 or .NET 10) and manage its NuGet packages. To manage the NuGet packages, go to "Tools" → "Nuget Package Manager" → "Manage NuGet Packages for Solution". Select your newly configured package source from the upper right corner dropdown and browse for the latest **Ringhel.Procesio.Action.Core** package.
 
 ![](/images/docs/TxhIriqOoYEPbUPm9sNtF_image.png)
 
@@ -38,7 +38,7 @@ Alternatively, you can  go in any Visual Studio 2019 menu to Tools/Options/NuGe
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetsForTfmSpecificBuildOutput>
@@ -313,6 +313,10 @@ foreach(var file in FileList)
 ```
 
 Working with credentials inside a custom action
+
+<Callout type="info">
+A custom action can take a credential as an input. Packages with credential inputs upload like any other custom action.
+</Callout>
 
 Apart from the obvious advantages of adding functionality to your processes using custom actions you also have the ability to use SMTP servers and Rest APIs inside your newly create custom action.
 

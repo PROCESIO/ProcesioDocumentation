@@ -12,8 +12,8 @@ This particular flow has the aim of sending an SMS alert as well as an e-mail to
 
 Before you get started, you will need the following items in order to complete the suggested process:
 
-- a configuration to an email server that will be used to send the email. ([see here](/docs/overview/processes/untitled/working-with-credentials))
-- a configuration to a REST API of an web-to-sms service. ([see here](/docs/overview/processes/untitled/working-with-credentials/rest-api-credential)) 
+- a configuration to an email server that will be used to send the email. ([see here](/working-with-credentials))
+- a configuration to a REST API of an web-to-sms service. ([see here](/rest-api-credential)) 
   - the above require creation of 2 connection configurations in the Credentials Manager.
 - Excel/ CSV file containing tabular data
 
@@ -38,9 +38,9 @@ Drag and drop a **For Each** and connect it to the **Get File Data**. 
   - Within the **For Each** border, drag and drop a second **Send Email** and connected to the **Decisional** and to the **Join&#x20;**&#x61;ction.
 - Connect the **For Each** border to the **Stop** action.
 
-**Step 2:&#xA0;**&#x43;onfigure the **Get File Data** according to [documentation](/docs/platform-actions/call-api/get-file-data). For configuring this step [video available here](https://www.youtube.com/watch?v=aLMgtMHQjb4).
+**Step 2:&#xA0;**&#x43;onfigure the **Get File Data** according to [documentation](/how-to/get-file-data). For configuring this step [video available here](https://www.youtube.com/watch?v=aLMgtMHQjb4).
 
-**Step 3:&#xA0;**[Configure](/docs/platform-actions/call-api/for-each) the **For Each**
+**Step 3:&#xA0;**[Configure](/how-to/for-each) the **For Each**
 
 - **In List -&#x20;**&#x77;e will use the variable/ data model, defined at Step 2.
 
@@ -51,7 +51,7 @@ Drag and drop a **For Each** and connect it to the **Get File Data**. 
 
 ![](/images/docs/7Pox-GQE5B8MnF1n-pB_I_image.png)
 
-**Step 4:&#xA0;**&#x43;onfigure the "Decisional" action within the "For Each" border. Each case of the [Decisional](/docs/platform-actions/call-api/decisional) needs to be configured.
+**Step 4:&#xA0;**&#x43;onfigure the "Decisional" action within the "For Each" border. Each case of the [Decisional](/how-to/decisional) needs to be configured.
 
 - For this demo, you will have to configure two cases:
   - greater than or equal to 100$
@@ -77,7 +77,7 @@ Drag and drop a **For Each** and connect it to the **Get File Data**. 
 
 **Step 5:&#xA0;**&#x43;onfigure "Call Api Action" & "Send Email (greater 100)" actions
 
-- As mentioned at the beginning of this article, connections for "Call Api Action" as well as "Send Email" have to be created within "Credentials Manager". See in this [article](/docs/overview/processes/untitled/working-with-credentials) how to set up connections in Credentials Manager for  "Call Api Action" as well as "Send Email".
+- As mentioned at the beginning of this article, connections for "Call Api Action" as well as "Send Email" have to be created within "Credentials Manager". See in this [article](/working-with-credentials) how to set up connections in Credentials Manager for  "Call Api Action" as well as "Send Email".
 - Once connections have been created in Credentials Manager:
   - "Call API Action":
     - Select Api configuration (previously configured in Credentials Manager) and proceed to configure request.

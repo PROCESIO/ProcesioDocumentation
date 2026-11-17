@@ -2,6 +2,7 @@
   "title": "More Tools",
   "icon": "⚙️",
   "pages": [
-    "analytics"
+    "analytics",
+    "resources-map"
   ]
 }

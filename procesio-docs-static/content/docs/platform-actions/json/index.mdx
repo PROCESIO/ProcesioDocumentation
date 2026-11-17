@@ -1,13 +1,17 @@
 ---
-title: "Json"
+title: "JSON"
 icon: "📁"
-description: "After creating a process you will have the ability to use the drag and drop functionality to add on your canvas actions from the Platform actions section."
+description: "Actions for reading, parsing, querying and validating JSON data."
 ---
 
-After creating a process you will have the ability to use the drag and drop functionality to add on your canvas actions from the Platform actions section.
+The **JSON** folder of the Process Designer toolbox holds the actions that read JSON from text or files, query it and check it.
 
-The Json folder contains actions that can be used while working with Json inputs:
+| Action | What it does |
+| --- | --- |
+| [Extract Objects](/how-to/extract-object) | Extracts one value or a list of values from JSON with a JSONPath query. |
+| [File To JSON](/how-to/file-to-json) | Reads a `.json` file into a JSON value. |
+| [Key Value](/how-to/key-value) | Turns a list of JSON objects into key/value pairs, or pivots them into one object. |
+| [String To JSON](/how-to/parse-json) | Parses a text into a JSON object or a list of JSON values. |
+| [Is Valid](/how-to/json-is-valid) | Checks that a text is well-formed JSON (the step fails when it is not). |
 
-1\. [Json Mapper](/docs/platform-actions/xpath/mapper) - JSON Mapper enables you to extract a value from a JSON or a JSON array.
-
-2\. [Json Mapper To List](/docs/platform-actions/xpath/mapper) - JSON Mapper enables you to extract a list of values from a JSON or a JSON array.
+To convert between JSON and other formats, see the **Converters** folder: [JSON To XML](/how-to/json-to-xml), [XML To JSON](/how-to/xml-to-json), [HTML To JSON](/how-to/html-to-json), [JSON To HTML](/how-to/json-to-html) and [Object To String](/how-to/to-string).

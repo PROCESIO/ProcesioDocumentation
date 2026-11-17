@@ -1,0 +1,52 @@
+---
+title: "Javascript"
+icon: "📕"
+description: "Runs JavaScript code inside a process and returns the value you pass to setOutput."
+---
+
+The **Javascript** action runs a piece of JavaScript code that you write, as one step of your process, and returns one **Output**. Your code sends a value back to the process by calling the `setOutput` function.
+
+<Callout type="info">
+For new processes, consider the [Node](/how-to/node) action. It runs JavaScript on Node.js, lets you load libraries with `require`, has a **Timeout**, and gives you separate outputs for the result, a list result, the console output and the error.
+</Callout>
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Scripting** and pick **Javascript** (or type *Javascript* in the search box).
+
+![The Javascript action properties: Code, with the default function that calls setOutput, and Output](/images/docs/actions/scripting-javascript/panel.png)
+
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Code** | Input | Text (JavaScript code) | Yes | Your JavaScript code. Call `setOutput(value)` to send a value back to the process. |
+| **Output** | Output | Object (JSON) | Yes | What the code produced. Map it to a variable to use it in the next steps. |
+
+## How to write the code [#how-to-write-the-code]
+When you add the action, the **Code** field already holds a starting example:
+
+```javascript
+function run() {
+  // Your code here;
+  return "Hello World !";
+}
+
+setOutput(run())
+```
+
+Write your logic inside `run()` (or anywhere in the code) and pass the value you want to keep to `setOutput`.
+
+## Use process variables in the code [#use-process-variables-in-the-code]
+You can insert process variables into the code. Before the code runs, PROCESIO replaces each variable with its value, as plain text. So:
+- a number variable can be used as it is: `const total = <your number variable> * 2`;
+- a text variable needs quotes around it in your code: `const name = "<your text variable>"`.
+
+## Good to know [#good-to-know]
+- **Output** holds the answer of the JavaScript engine, as JSON. Run the action once with **Test Action** to see its exact shape, then pick the values you need with [Extract Objects](/how-to/extract-object).
+- When the code fails, **Output** holds an object with an `error` entry that describes the problem, instead of your value. Check for it before you use the result.
+- The step fails, and the process stops, only when the JavaScript service itself is not available. The message is then `Javascript engine is down or unreachable !`.
+- **Files:** the code cannot take a file directly. Convert the file to text with [File To Base64](/how-to/file-to-base64) and pass the text to the code.
+
+## Related actions [#related-actions]
+- [Node](/how-to/node), [Python](/how-to/python), [Ruby](/how-to/ruby), [CURL](/how-to/curl)
+- [Extract Objects](/how-to/extract-object)

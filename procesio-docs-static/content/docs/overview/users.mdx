@@ -1,56 +1,72 @@
 ---
 title: "Users"
-description: "Every account offers a workspace where users store their processes and credentials. Company accounts have the ability to share their workspace with…"
+description: "Invite people to a workspace, see their user type and status, change their type, and remove them on the Users page."
 ---
 
-## **What is a workspace?**
+A workspace can be shared with other people. On the **Users** page you invite them, see who has access, and decide what each person can do.
 
-Every account offers a workspace where users store their processes and credentials. Company accounts have the ability to share their workspace with other users in their organization.
+## What is a workspace? [#what-is-a-workspace]
 
-While the community plans, as well as the business plan, only grants access to a single workspace, the enterprise plan gives access to multi workspace functionality. This means that accounts having an enterprise plan can invite users to join their workspace and share their resources within a specific workspace. By having multiple workspaces, companies can provision resources per workspace according to needs. 
+A workspace holds your processes, credentials, forms and other resources. Everyone has a **personal workspace** of their own. With a business or enterprise plan you can also work in shared workspaces: an enterprise account has a **master workspace**, used to administer the account, and **sub-workspaces** inside it, where teams build and run their processes. See [Create and configure a sub-workspace](/how-to-create-a-workspace-in-a-master-workspace).
 
-The owner of the enterprise plan has full administrative rights, including user management, and can add and remove users to the workspace according to their projects' needs.
+## User types [#user-types]
 
-## **User Management page**
-
-All users added to a workspace will have access to the "User Management" page and will be able to see other members and their roles and status in the workspace. All users part of the workspace will have access to the “User Management” page. This page will provide information on users' names, roles, and status. 
-
-There are two types of workspace members: Admin and Member. Only Admins can add/remove members.
+Each member of a workspace has one of five user types: **Owner**, **Co-Owner**, **Admin**, **Member** or **Basic**. The type decides what the person can see and change. The full list of what each type can do is in [User Permissions and Roles Management](/user-permissions-and-roles-management).
 
 <Callout type="info">
-    One company workspace can have more than one admin.
+**The user type is set per workspace.** The same person can be an Admin in one workspace and a Member in another. A **Co-Owner** of a master workspace is the exception: a Co-Owner is added to every sub-workspace of that master workspace as a Co-Owner.
 </Callout>
 
-![](/images/docs/GHZ6QyaudlkxUPgJdKf1h_workspaces.png)
+## Open the Users page [#open-the-page]
 
-### **Adding a user to a workspace**
+Click **Users** in the left menu. The page is available in shared workspaces, not in your personal workspace, and only to users who are allowed to manage the workspace's members.
 
-As a workspace admin, you can invite people to your workspace from "Settings" > "User Management".  Enter the person's email address and click the **Invite** button.
+The table shows each person's **USER NAME** (with their email), **USER TYPE** and **STATUS**. Use **Search by name** to find someone.
 
-![](/images/docs/Rir35zrRl92nR_iy38nMS_settings.png)
+| Status | Meaning |
+| --- | --- |
+| **Pending invitation** | The person was invited and has not accepted yet. |
+| **Active** | The person accepted and is a member of the workspace. |
+| **Invitation expired** | The invitation was not accepted in time. |
 
-The user is added as a member with the "**Pending invitation**" status. Once the user accepts the invitation to join the workspace, the status changes to "**Active**".
+## Invite a user [#invite]
 
-**Cancel invitations**
+1. Type the person's email address in **Invite user by email**. The user type they will get is shown at the end of the field.
+2. Click **Send invite**. You see *"Invitation sent."*
 
-As a workspace admin, you can cancel an invitation while it is still pending by clicking the Delete icon.
+The person gets an email. Once they accept, their status changes from **Pending invitation** to **Active**. A person who has no PROCESIO account yet creates one from the invitation, and is added to the workspace afterwards.
 
+In a master workspace, the **Users** page lists the account's administrators and has no invite field. To invite someone to a sub-workspace from the master workspace, open **Workspaces** and click the number in the **USERS** column of that sub-workspace. The same list, with the invite field, opens in a side panel.
 
-
-![](/images/docs/rud9TfSsN2aejO5yYALB6_um.png)
+New members get the workspace's default user type. In an enterprise account, the owner and co-owners set it per sub-workspace in the sub-workspace's **Permissions** tab.
 
 <Callout type="info">
-The person whose invitation you cancel will still have their invitation email, but the link will not lead them to your Workspace. Instead, they will see the "**You have not been added to the workspace because your invitation has been revoked**" message.
+Accepting an invitation in another browser tab does not end the session you already have open.
 </Callout>
 
-### **Remove members**
+## Change a user's type [#change-type]
 
-To remove users from your workspace, click on the **Delete** icon next to the member's name.
+1. Open the **⋯** menu on the person's row.
+2. Choose **Make** followed by the new type, for example **Make Member**, and confirm.
 
-## **Switching between workspaces**
+When a user's type changes, all their permissions are reset to the defaults of the new type. You can also choose **Edit** followed by their current type to change individual permissions in the **Edit user** panel.
 
-If you have access to several workspaces, you will have the option to see what workspaces you have access to by clicking the dropdown in the upper left corner. You can navigate from one workspace to another by clicking them.&#x20;
+You can change the type only after the person has accepted the invitation. You can give a type only up to your own: only the Owner can make someone a Co-Owner, and nobody can change the Owner's type or their own.
+
+In a master workspace, the Owner can also hand the account over to a Co-Owner with **Transfer ownership**. The Owner then stops being the owner.
+
+## Remove a user or cancel an invitation [#remove]
+
+Open the **⋯** menu on the person's row and choose **Delete**, then confirm. This removes a member, or cancels an invitation that is still pending.
+
+If you cancel a pending invitation, the person still has the email, but the link no longer adds them to the workspace. They see that they have not been added because the invitation has been revoked.
+
+<Callout type="warn">
+Removing a **Co-Owner** from a master workspace removes them from the list of administrators and from all sub-workspaces.
+</Callout>
+
+## Switch between workspaces [#switch-workspace]
+
+If you have access to several workspaces, use the workspace switch in the upper-left corner to see them and move from one to another. You don't need to sign out.
 
 ![](/images/docs/vAdGgcTANJWdkmp78TLEm_switch.png)
-
-By default, when you log into PROCESIO, you will be logged in your individual account. To switch to another workspace, simply select a different account in the list, no need to log out.

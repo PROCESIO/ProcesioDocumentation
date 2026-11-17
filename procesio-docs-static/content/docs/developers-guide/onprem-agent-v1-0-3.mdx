@@ -1,11 +1,11 @@
 ---
 title: "OnPrem Agent v1.0.3"
 icon: "📙"
-description: "The PROCESIO on-premises Agent or for short OnPrem Agent is a software application that can run both on Linux or Windows operating systems that…"
+description: "Install the OnPrem Agent on a Windows or Linux machine and run commands on it from a PROCESIO process with the OnPrem Agent CMD and Get Result actions."
 ---
 
 <Callout type="info">
-!! The **OnPrem Agent CMD** and **OnPrem Agent Get Result** actions mentioned in the following steps are available only for accounts that acquire the OnPrem Agent subscription.
+The **OnPrem Agent CMD** and **OnPrem Agent Get Result** actions mentioned in the following steps are available only for accounts that acquire the OnPrem Agent subscription.
 </Callout>
 
 ***
@@ -69,11 +69,11 @@ If the internet connection on the machine where you install the agent runs throu
 Before running the agent on Linux environments please make sure you have the operating system up to date and the dotNet6 from Microsoft installed. To do that, please execute the following commands in the Terminal:
 
 ```bash
-// Update OS
-sudo apt upgrade -y
-sudo apt upgrade --fix-missing
+# Update OS
+sudo apt update
+sudo apt upgrade -y --fix-missing
 
-//Install dot net 6
+# Install .NET 6
 wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
 sudo apt install -y dotnet-sdk-6.0
@@ -87,29 +87,19 @@ dotnet --version
 
 Run the **Agent\_NetCore.exe** file, directly or from the cmd:
 
-`1Agent_NetCore.exe`
+`Agent_NetCore.exe`
 
 - For Linux:
 
 Run the following command in the Terminal:
 
-`1dotnet Agent_NetCore.dll`
+`dotnet Agent_NetCore.dll`
 
-## 5. Setting up the agent to run on OS startup
-
-- For Windows
-
-TBD
-
-- For Linux
-
-TBD
-
-## 6. Getting the HOSTNAME
+## 5. Getting the HOSTNAME
 
 For Windows open the cmd and for Linux open the terminal and type:
 
-`1hostname`
+`hostname`
 
 The result of this command will be used to configure the PROCESIO process that will execute commands on a certain agent.
 
@@ -144,14 +134,14 @@ Add the following variables as seen in the next image
 ![](/images/docs/skBlK7qASSMjGYWxA_ojE_image.png)
 
 <Callout type="info">
-For the purpose of this example, please configure the default values for the **EndPoint**, **SecretKey**, and **AgentSSID** variables. You cand have those variables populated from other processes as well if you want.
+For the purpose of this example, please configure the default values for the **EndPoint**, **SecretKey**, and **AgentSSID** variables. You can have those variables populated from other processes as well if you want.
 </Callout>
 
 For the purpose of this example, please populate the default values of the variables as follows:
 
 - **EndPoint**: [https://gefeeauth.azurewebsites.net/ProcesioAgentServer.php](https://gefeeauth.azurewebsites.net/ProcesioAgentServer.php)
 - **SecretKey**: here you should put it exactly as you set up the **SecretAgentKey** in the **PROCESIO\_agent\_settings.txt** file from **Step 1, 2. Edit the following files**.
-- **AgentSSID**: here you should put the HOSTNAME of the machine where the agent was installed. Please refer to **Step 1, 6. Getting the HOSTNAME**.
+- **AgentSSID**: here you should put the HOSTNAME of the machine where the agent was installed. Please refer to **Step 1, 5. Getting the HOSTNAME**.
 
 ## 2. Configure the action “OnPrem Agent CMD“
 
@@ -171,7 +161,7 @@ Please configure each of the tabs as follows:
 
 The **working directory** parameter you can configure as you like, giving it a folder path on the machine where that agent runs. You can configure it as a variable or hard-coded, as you like. This parameter sets the working directory of the Command Prompt.
 
-For **time out (seconds)** parameter if you set 0 or \&lt;0 values it will consider 600 seconds (10 minutes).
+For **time out (seconds)** parameter if you set 0 or a negative value, the agent uses 600 seconds (10 minutes).
 
 The **task id** parameter is an output parameter that returns the ID of the Task that was sent to the on-premise agent to execute. This parameter will be needed for the **OnPrem Agent Get Result** action.
 
@@ -203,7 +193,7 @@ You need to configure the **Decisional action** so that if the task was not fini
 
 **RetriesAllowed > 0** means that the process should not try to get the result more than the number set in the variable **RetriesAllowed**. This condition prevents infinite loops.
 
-**TaskStatus** **= 0 OR TaskStatus = 1** means that the status of the task is ToExecute (0) or Executing (0) and for that reason, the process should use a delay action to wait some time before trying again to check the status.
+**TaskStatus** **= 0 OR TaskStatus = 1** means that the status of the task is ToExecute (0) or Executing (1) and for that reason, the process should use a delay action to wait some time before trying again to check the status.
 
 ## 5. Configure the Delay action
 
@@ -247,7 +237,11 @@ In the **ErrorResults** output, it will be included all the errors which come fr
 
 **TaskStatus** will give the status of the task:
 
-> 0 - ToExecute1 - Executing2 - SuccessfullyExecuted3 - FinishedWithErrors4 - TimedOut
+- `0` - ToExecute
+- `1` - Executing
+- `2` - SuccessfullyExecuted
+- `3` - FinishedWithErrors
+- `4` - TimedOut
 
 **TaskID** is the ID of the task sent to be executed by the agent.
 

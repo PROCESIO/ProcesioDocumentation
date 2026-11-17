@@ -1,0 +1,30 @@
+---
+title: "File To Base64"
+icon: "📕"
+description: "Converts the content of a file into a Base64 string."
+---
+
+**File To Base64** reads a file and gives you its content as one Base64 string. Use it when an API expects a file inside a JSON body (for example an attachment or a document upload) instead of a file upload.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Base64** and pick **File To Base64** (or type *File To Base64* in the search box).
+
+![The File To Base64 action properties: File and Base64 Content](/images/docs/actions/base64-file-to-base64/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **File** | Input | File | Yes | The file to convert. Any file type works: text, PDF, image, spreadsheet… |
+| **Base64 Content** | Output | Text | Yes | The whole content of the file, Base64-encoded. |
+
+## Example [#example]
+A text file `hello.txt` with the two lines `Hello, PROCESIO!` and `Second line ăîș` → **Base64 Content** `SGVsbG8sIFBST0NFU0lPIQpTZWNvbmQgbGluZSDEg8OuyJk=`.
+
+## Good to know [#good-to-know]
+- The output is only the Base64 text. It has no `data:…;base64,` prefix and does not include the file name; send the name in a separate field if the receiving system needs it.
+- Base64 is about one third larger than the file itself. Very large files give very long strings, which some APIs refuse.
+- If no file is passed, the step fails with "Input file can't be null.".
+- To rebuild the file from the string, use [Base64 To File](/how-to/base64-to-file).
+
+## Related actions [#related-actions]
+- [Base64 To File](/how-to/base64-to-file), [String To Base64](/how-to/to-base-64), [File To String](/how-to/read-file)

@@ -1,74 +1,70 @@
 ---
 title: "Call API"
 icon: "📕"
-description: "The Call API action enables you to perform REST/HTTP requests to a specified web API to query data from apps and services. You can retrieve, add,…"
+description: "Sends an HTTP request (GET, POST, PUT, PATCH or DELETE) to a web API and returns the response status, body, headers or file."
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/vV3gPQkcE5o" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-The Call API action enables you to perform REST/HTTP requests to a specified web API to query data from apps and services. You can retrieve, add, delete and update data. 
+**Call API** sends a REST/HTTP request to a web API, so a process can read, add, update or delete data in other apps and services. The response (status code, body, headers or a returned file) goes into process variables you can use in later steps.
 
-**PROCESIO** integrates the Call API action with your API authentication credentials defined in Credentials Manager. This means that you have to create an API credentials configuration for the web service/app you want to connect to in Credentials Manager (check Working with Credentials Manager).
-
-<Callout type="info">
-For example, if you want to connect to a JIRA REST API web service, you must once configure the authentication credentials of JIRA service in Credentials Manager and you can use this configuration in setting up Call API actions.
-</Callout>
-
-You can test the request and see the response received from the API server that helps you troubleshoot if needed.
-
-### **How to configure the Call API action?**
-
-Go to the Process Designers section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas. 
-
-**Step 1**: Drag the Call API action from Toolbar and drop it on canvas; click on the action to open the Properties Panel.
-
-![](/images/docs/W9bR6sWXBDz6Y-f0xM3nk_callapi.png)
-
-**Step 2**: You can edit the action name.
-
-**Step 3**: Select first the API credentials configuration in Properties Panel. The API  credentials configuration needs to be created upfront in Credentials Manager to be displayed in the list.  
-
-![](/images/docs/A-babeBd2c2-Y4cxi9oWs_screenshot-2023-05-19-at-112102.png)
-
-**Step 4**: Click on **Call API (not configured)** card to go to the configurations steps.
-
-**Step 5**: Call API configuration - the Request builder.
-
-![](/images/docs/Gg71M8McG9TVOGiGcxpT5_screenshot-2023-05-19-at-112345.png)
-
-1. **Verb**: in this dropdown list you will find several methods that can be used to send different types of requests.
-2. **Endpoint URL:** in this field, the URL to request is already populated with details from the API credentials configuration selected at Step 1; you need to add the Method Name and IDs to complete your request resource URL/endpoint. Any information provided in the Query Params tab will be added to the URL.
-3. **Tabs**:
-   - **Query Params**: this tab is used to specify any HTTP query parameters you may want to include with your request. A new line is added once the previous one is filled in. Query Params will be appended to the end of the request URL, following "?". You will not be allowed to add query params directly in the URL. To send a path parameter, enter the parameter name into the URL field, after a colon ":".
-     - **Name**: the name of the parameter;
-     - **Value**: the value of the parameter (can be a process variable, or text + variable);
-   - **Headers**: this tab is used to specify any optional HTTP request headers you may want to include with your request. A new line is added once the previous one is filled in. 
-     - **Name**: the name of the header;
-     - **Value**: the value of the header (can be a process variable, or text + variable);
-   - **Body**: allows you to specify the data you need to send with the request; the editor supports the JSON format.
+Call API usually works with a [REST API credential](/rest-api-credential) created in the Credentials Manager. The credential holds the base URL and the authentication of the service, so you set them up once and reuse them in every Call API step.
 
 <Callout type="info">
-For Query Parameters and Headers use "Activate for multi-line editing" icon or simply press "Esc".  This will expand the area for typing and editing a larger value for your keys to a full screen editor.
+For example, to call the Jira REST API, create one REST API credential for Jira, then pick it in every Call API step that talks to Jira.
 </Callout>
 
-![](/images/docs/ewYLdeVh_MkN5dUEiWbhf_expand-area-to-full-editor.gif)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, pick **Call API** (or type *Call API* in the search box).
+
+![The Call API action properties: Select REST API credentials and the Configure Request card](/images/docs/actions/call-api/panel.png)
+
+1. In **Select REST API credentials**, pick the credential of the service you want to call. If it is not in the list yet, create it in the Credentials Manager.
+2. Click the **Configure Request** card to build the request.
+
+![The Configure Request panel: Verb, Endpoint, Query Params, Headers, Body, Time Out and the response outputs](/images/docs/actions/call-api/configuration.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select REST API credentials** | Input | Credential | No | The REST API credential with the base URL and authentication. |
+| **Verb** | Input | Choice | Yes | The HTTP method: GET, POST, PUT, PATCH or DELETE. |
+| **Endpoint** | Input | Text | No | The path to call, added to the credential's base URL, for example `/rest/api/3/issue/:issueKey`. Without a base URL, the full URL. |
+| **Query Params** | Input | Name/value list | No | Query parameters, added to the URL after `?`. |
+| **Headers** | Input | Name/value list | No | Request headers. |
+| **Body** | Input | Text, form fields or file | No | The request body: raw (JSON, text, XML, HTML or JavaScript), form-data (fields and files), x-www-form-urlencoded, or binary (one file). |
+| **Time Out** | Input | Integer | Yes | Seconds to wait for the response: `60` to `3600`, default `100`. |
+| **Response Status** | Output | Integer | No | The HTTP status code, for example `200` or `404`. |
+| **Response Body** | Output | Text or JSON | No | The response body. |
+| **Response File** | Output | File | No | The file returned by the API, when the response is a file download. |
+| **Response Headers** | Output | Object (JSON) | No | The response headers, as name/value pairs. |
+
+Map only the outputs you need.
+
+## Build the request [#build-the-request]
+- **Endpoint**: the base URL comes from the credential; add the method name and IDs. To send a path parameter, write its name after a colon, for example `/users/:userId`, and give it a value. Query parameters go in **Query Params**, not in the URL.
+- **Query Params** and **Headers**: one name and value per row; a new row appears when you fill in the previous one. Values can be text, a process variable, or text with variables.
+- **Body**: choose the body type and fill it in. Variables can be used in the body too.
 
 <Callout type="info">
-The request can contain process variables in Query Params, Headers, and Body.  To open the variables selector and start using process variables, press the Insert key (for Windows) or Shift+Tab (for Mac). All process variables used in the Call API configuration will be displayed by default in Test Action > Test Values section. 
-
-
-
-Depending on the Authorization type defined in the selected API credentials configuration, the API key, and their values may be added in Headers or Query Params tabs to be passed along with the request. 
+To insert a process variable in Query Params, Headers or Body, press **Insert** (Windows) or **Shift+Tab** (Mac) to open the variable selector. Every variable you use is listed under **Test Action** › **Test values**, so you can test the request with sample values. To edit a long value in a full-screen editor, click the field and press **Esc**.
 </Callout>
 
-&#x20;    4\. **Output Variables**
+![Expanding a value to the full-screen editor](/images/docs/ewYLdeVh_MkN5dUEiWbhf_expand-area-to-full-editor.gif)
 
-In order to make use of the data that will be received in the Response further in the process flow, you need to map the outputs to process variables. There are 3 types of possible output that you can map:
+Depending on the authentication type of the credential, its key or token is added for you to the headers or the query parameters.
 
-- Status Output: stores the status code received from the HTTP request, as an **Integer**.
-- Body Output: stores the HTTP request response body as a **String** or **JSON**.
-- File Output: if the response contains a file, it is stored as a **File**.
+## Example [#example]
+With a credential whose base URL is `https://api.example.com`, **Verb** `GET`, **Endpoint** `/customers/:id` with `id` = `42`, and **Query Params** `fields` = `name,email`, the step calls `https://api.example.com/customers/42?fields=name,email`. **Response Status** receives `200` and **Response Body** the JSON returned by the API.
 
-**5. Time out**
+## Good to know [#good-to-know]
+- **An error status does not fail the step.** A `404` or `500` from the API is returned in **Response Status** and **Response Body**, and the process continues. Check **Response Status** with a [Decisional](/how-to/decisional) when the next steps depend on success.
+- **The step fails** when there is no response at all: a timeout, an unreachable host, or an invalid URL (*"Invalid URL: …"*).
+- **No base URL?** If the credential has no base URL, **Endpoint** must be a full `http://` or `https://` URL; otherwise the step fails with *"Missing request URL."*
+- **Time Out below 60** is raised to 60 seconds.
+- **Files**: when a successful response is a file, it goes into **Response File** instead of **Response Body**.
+- If you add the same query parameter or header name twice, only the first one is sent.
+- **Response Headers** keeps the first value of each header.
 
-You can specify how long to wait for an API call to complete before a timeout occurs. The minimum setting is 60 seconds, and the maximum is 3600.
+## Related actions [#related-actions]
+- [Decisional](/how-to/decisional), [For Each](/how-to/for-each), [Map Data](/how-to/map-process-data)

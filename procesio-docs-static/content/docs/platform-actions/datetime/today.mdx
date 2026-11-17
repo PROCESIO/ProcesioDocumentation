@@ -1,41 +1,29 @@
 ---
 title: "Today"
 icon: "📕"
-description: "This action gets the current date."
+description: "Returns today's date, at midnight, in UTC."
 ---
 
-This action gets the current date.
+**Today** gives you the current date, with the time set to `00:00:00`. Use it to stamp a record with the day it was processed, or as the starting point for date calculations such as "30 days from today".
 
-![](/images/docs/Q005optkPqpoVraheabD__image.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Today** (or type *Today* in the search box).
 
-## Inputs & Outputs
+![The Today action properties: the Current Date output](/images/docs/actions/datetime-today/panel.png)
 
-- **\[ O ]** **Current date**: <span style={{color:'#ff9307'}}>DateTime</span> containing the current date only. &#x20;
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Current Date** | Output | Date and time | Yes | Map a Date and time variable here. It receives today's date at midnight. |
 
-![](/images/docs/Ao9WSgAZ8L7avCSF00pEu_tdy.png)
+The action has no inputs.
 
-## Example Usage
+## Example [#example]
+Run on 10 November 2026 → **Current Date** `2026-11-10T00:00:00+00:00`.
 
-- Drag action onto canvas to get familiarized with it.
+## Good to know [#good-to-know]
+- The date is the **UTC** date of the PROCESIO server, not your local date. Between midnight and your UTC offset (for example 00:00–02:00 in Bucharest in winter) you still get yesterday's date. If you need the date in a given time zone, take [UTC Now](/how-to/utc-now) and convert it with [Timezone Converter](/how-to/timezone-converter), then read the parts you need.
+- The time is always `00:00:00`. For the current time, use [UTC Now](/how-to/utc-now).
 
-![](/images/docs/38KCJPCfmePinxkuw1MAD_tdy.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/iPCn3TR4WoTXXUR7XSvY2_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-
-
-![](/images/docs/-ZVTjluMkVwd2pywP4nfd_tdy.png)
-
-## Use Cases
-
-- Mentioning the current date in documents created using the [Document Designer](/docs/overview/processes/document-designer/document-template-creation).
-
-## Tips
-
-- The current date is in UTC standard so timezone differences should be considered.
-- If you also need the time and not just the date, consider using [UTC Now](/docs/platform-actions/call-api/utc-now).
+## Related actions [#related-actions]
+- [UTC Now](/how-to/utc-now), [Update DateTime](/how-to/update-datetime), [Format DateTime](/how-to/format-datetime)

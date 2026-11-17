@@ -6,28 +6,28 @@ description: "Generate a filled-in PDF or HTML document from a Document Designer
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/OmQQyYq2h-g" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-After creating your [template](/docs/overview/processes/document-designer/document-template-creation), use it in a process with the **Generate Document** action to produce a filled-in file.
+After creating your [template](/document-template-creation), use it in a process with the **Generate Document** action to produce a filled-in file.
 
-1. Open the [Process Designer](/docs/overview/processes/process-designer/your-first-process) and create your process.
+1. Open the [Process Designer](/your-first-process) and create your process.
 2. Give it a name.
 3. Drag the **Generate Document** action onto the canvas.
 
    ![](/images/docs/nmeiefzUvY3AM3fElZaXb_image.png)
-4. Create the [process variables](/docs/overview/processes/process-designer/working-with-process-variables) the action needs:
+4. Create the [process variables](/working-with-process-variables) the action needs:
    - **fileout** ➜ an **output** variable of type **File**, to receive the generated document.
    - **htmlstring** ➜ an **output** variable of type **String**, to receive the generated HTML.
    - **Name** ➜ an **input** variable of type **String**, one example of data you'll feed into the template.
 
    ![](/images/docs/KrXNIFDicVNgys03wwWoE_image.png)
 5. Click the **Generate Document** action to configure it:
-   - **Select document template** — pick the template you created.
+   - **Select Document Template** — pick the template you created.
    - **Save document as** — **PDF** or **HTML**.
-   - **File name** — the name of the generated file.
-   - **Document output** — bind the **fileout** variable.
+   - **File Name** — the name of the generated file.
+   - **Document Output** — bind the **fileout** variable.
    - **HTML string** — bind the **htmlstring** variable.
 
-   ![](/images/docs/O_l-HLzsl5ErfTCMdsvdA_image.png)
-6. Click **Map Document Data** and map each template variable to a process variable or a typed value — the **Name** input variable created in the process, for example, to the **Name** variable used in the template (they don't need to have the same name). See [Using the template](/docs/overview/processes/document-designer/using-the-template#using-the-template) for the full mapping reference, including Data Model attributes and list-bound tables.
+   ![The Generate Document action properties: Select Document Template, Save document as, File Name, Document Output, HTML string and Map Document Data](/images/docs/actions/generate-document/panel.png)
+6. Click **Map Document Data** and map each template variable to a process variable or a typed value — the **Name** input variable created in the process, for example, to the **Name** variable used in the template (they don't need to have the same name). See [Using the template](/using-the-template#using-the-template) for the full mapping reference, including Data Model attributes and list-bound tables.
 
    ![](/images/docs/x-pyBGITBEVflCYZVXBPT_image.png)
 7. **Save**, **Validate** and **Run** the process.
@@ -44,3 +44,11 @@ The PDF file output:
 
 ![](/images/docs/sJtDOnh1pnf_3cvKh_aZm_image.png)
 </Callout>
+
+## Good to know [#good-to-know]
+- The file extension (`.pdf` or `.html`) is added to **File Name** if it is missing.
+- **HTML string** is filled for both PDF and HTML, so you can use it directly, for example as the **Body** of a [Send Email](/how-to/send-email) with **Body is Html** ticked. In this output, double quotes (`"`) are replaced with single quotes (`'`); the generated file keeps them as written.
+- Table headers in the template cannot be bound to lists or data models; the step fails with *"Please ensure no list data types are present in the table headers."* or *"Please ensure no data models are present in the table headers."*
+
+## Related actions [#related-actions]
+- [Send Email](/how-to/send-email), [Email attachments](/how-to/email-attachments)

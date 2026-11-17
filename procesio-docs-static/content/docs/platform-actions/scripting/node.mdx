@@ -1,186 +1,73 @@
 ---
 title: "Node"
 icon: "📕"
-description: "Th&x65;&x20;Node action is one of the actions at your disposal that allows you to execute Javascript code."
+description: "Runs your own JavaScript code on Node.js inside a process and returns its result, its console output and any error."
 ---
 
-![](/images/docs/-pIlm8X-cDIWfmDcFJqfa_image.png)
+The **Node** action runs a piece of JavaScript code that you write, on Node.js, as one step of your process. Use it for calculations, data clean-up or text processing that no ready-made action covers. The value your code returns becomes an output you can use in the next steps.
 
-Th&#x65;**&#x20;Node** action is one of the actions at your disposal that allows you to execute **Javascript** code.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Scripting** and pick **Node** (or type *Node* in the search box).
 
-Module imports can be performed using CommonJS **require('module')** syntax only.
+![The Node action properties: Code, Timeout, Single Result, List Result, Stdout and Error](/images/docs/actions/scripting-node/panel.png)
 
-Use the **return&#x20;**&#x6B;eyword to set the output value. You can return either **Single Values&#x20;**&#x6F;r **List** **Values**, not both at same time.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Code** | Input | Text (JavaScript code) | Yes | Your JavaScript code. Use `return` to send a value back to the process. |
+| **Timeout** | Input | Integer | No | How many seconds the code may run, from `10` to `180`. Default `60`. |
+| **Single Result** | Output | Any | No | The value your code returns, when it is not an array: a number, text, true/false or an object. |
+| **List Result** | Output | List of any | No | The value your code returns, when it is an array. |
+| **Stdout** | Output | Text | No | Everything your code wrote with `console.log()`. |
+| **Error** | Output | Text | No | The error message when your code fails or runs too long. Empty when the code worked. |
 
-**Timeout**: → <span style={{color:'#16c9c9'}}>Integer</span> representing execution time limit(when timeout limit is reached, the action will throw an error)
-**Single result**: → Output that will be set for single value outputs.
-**List result**: → Output that will be set for list value outputs.
-**Error**: → <span style={{color:'#9c70ce'}}>String</span> representing errors resulted from the execution of the script (the output is set only when an error occurs, otherwise it’s **null**)
+## How your code is run [#how-your-code-is-run]
+Your code runs as the body of a function:
+- `return <value>` sends the value to **Single Result**, or to **List Result** when the value is an array. Only one of the two is filled.
+- `console.log()` does not set a result; it writes to **Stdout**.
+- Code that ends without `return` leaves both results empty.
+- To wait for something asynchronous, return a promise, for example an `async` function that you call: `return (async () => { … })()`.
+- Load a library with `require('name')`. `import` statements are not supported.
 
-<Callout type="warn">
-Something to consider before trying to use the **Node&#x20;**&#x61;ction to automate your use cases is that it does not support working with files.
-</Callout>
+## Examples [#examples]
+| Code | Output |
+| --- | --- |
+| `var a = 1; var b = 2; return a + b` | **Single Result** `3` |
+| `return 1 == 2` | **Single Result** `false` |
+| `console.log('working'); return [1, 'two', {three: 3}]` | **List Result** `[1, "two", {"three": 3}]`, **Stdout** `working` |
+| `const _ = require('lodash'); return _.chunk([1,2,3,4], 2)` | **List Result** `[[1, 2], [3, 4]]` |
+| `throw "Not on my watch"` | **Error** `Not on my watch` |
+| `var x = 1` then `retur x` (a typo) | **Error** `Unexpected identifier 'x'` |
+| `import _ from 'lodash'` | **Error** `'import' and 'export' may appear only with 'sourceType: module'` |
+| A promise that waits 15 seconds, with **Timeout** `10` | **Error** `Execution timed out after 10s` |
 
-### How to configure the Node action?
+## Use process variables in the code [#use-process-variables-in-the-code]
+You can insert process variables into the code. Before the code runs, PROCESIO replaces each variable with its value, as plain text. So:
+- a number variable can be used as it is: `const total = <your number variable> * 2`;
+- a text variable needs quotes around it in your code: `const name = "<your text variable>"`.
 
-1. Create a process and name it.
-2. Drag the Node action to the canvas and link it to the other actions.
+## Good to know [#good-to-know]
+- **A failing script does not stop the process.** When your code throws, has a syntax error or runs longer than **Timeout**, the step still finishes: **Error** holds the message and both results are empty. Add a [Decisional](/how-to/decisional) after the action that checks whether **Error** is empty.
+- The code runs in a sandbox. Built-in modules that reach the machine, such as `fs` or `child_process`, are not available, so the script cannot read or write files.
+- The sandbox can block calls to the internet. To call a web API, use [Call API](/how-to/call-api) or [CURL](/how-to/curl) and pass the response to the script.
+- **Files:** a script cannot take a file directly. Convert the file to text with [File To Base64](/how-to/file-to-base64) and pass the text to the script. To create a file from a script, return Base64 text and convert it with [Base64 To File](/how-to/base64-to-file).
 
-![](/images/docs/rawNBVs7ny9GmOy4DkD-A_image.png)
+## Available libraries [#available-libraries]
+These libraries can be loaded with `require`:
 
-&#x20;    3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel.
+| Library | What it is for |
+| --- | --- |
+| `lodash`, `underscore`, `ramda` | Working with arrays and objects |
+| `moment`, `date-fns`, `luxon` | Dates and times |
+| `big.js`, `mathjs`, `simple-statistics` | Precise numbers, maths and statistics |
+| `cheerio`, `html-to-json-parser`, `marked` | HTML and Markdown |
+| `xml`, `xml-js` | XML |
+| `csv-parse`, `papaparse` | CSV |
+| `validator`, `joi` | Validating values |
+| `uuid`, `hash.js`, `qrcode` | IDs, hashes, QR codes |
+| `string-similarity` | Comparing texts |
+| `@faker-js/faker` | Random test data |
 
-&#x20;    4\. Add your **Javascript Code** to the editor.
-
-&#x20;    5\. Configure the output variables which will store the results.
-
-![](/images/docs/i0i01-yIBANxb1JgX4-0O_image.png)
-
-&#x20;    6\. Save, Validate and run.
-
-&#x20;    7\. Click **Checked Instance** to view the results. You will see that the outcome of the interpreted code is saved in the **result**  variable. The script ran without errors so the value of the **errorMessage&#x20;**&#x76;ariable is null.
-
-![](/images/docs/kxhn4zX_HO1w2K_XNhwjv_image.png)
-
-### Usage Examples:
-
-**&#x20;    1. Timeout:**
-
-> return (async () => \&#123;
->     await new Promise(resolve => setTimeout(resolve, 10000)) //This code waits for 10 seconds.
-> &#125;)()
-
-Obs: If you set the **Timeout&#x20;**&#x74;o 5 seconds, the action will throw an error at runtime.
-
-**&#x20;    2. Scripts with Single outputs.**
-
-<span style={{color:'#16c9c9'}}>Integer</span>
-
-> var a = 1
-> var b = 2
-> return a + b
-
-<span style={{color:'#935b0e'}}>Float</span>
-
-> var a = 1.0
-> var b = 2.5
-> return a + b
-
-<span style={{color:'#9c70ce'}}>String</span>
-
-> var a = "aa"
-> var b = "bb"
-> return a + b
-
-<span style={{color:'#ff6900'}}>Boolean</span>
-
-> var a = 1
-> var b = 2
-> return a == b
-
-<span style={{color:'#30c922'}}>Json / DataModel</span>
-
-> var x = \&#123;
-> &#x20; "user": \&#123;
-> &#x20;   "id": 1,
-> &#x20;   "name": "Someone",
-> &#x20;   "height": 170.5
-> &#x20; &#125;
-> &#125;
->
-> return x
-
-<span style={{color:'#10a2f9'}}>DateTime</span>
-
-> let d = new Date()
-> return d
-
-Obs: These should only set the Single output. Should work for all types.
-
-
-**&#x20;    3. Scripts with List outputs.**
-
-> let d = new Date();
-> let da = new Date();
->
-> return \[d, da]
-
-Obs: These should only set the List output. Should work for all types, just like single values.
-&#xA;**&#x20;    4. Basic module usage**
-
-If the module does not support CommonJS **require**, we can’t use it
-
-> var \_ = require('underscore');
->
-> return \_.map(\[1, 2, 3], function(num)\&#123; return num \* 3; &#125;)
-
-> const R = require('ramda');
->
-> const greet = R.replace('\&#123;name&#125;', R.\_\_, 'Hello, \&#123;name&#125;!');
->
-> return greet('Alice');
-
-> let cheerio = require('cheerio')
-> let $ = cheerio.load('\<h2 class="title">Hello world\</h2>')
->
-> $('h2.title').text('Hello there!')
-> $('h2').addClass('welcome')
->
-> return $.html()
-
-&#xA;**&#x20;    5. Syntax errors&#x20;**
-
-> var x = 1
-> retur x
-
-Ob&#x73;**:** Syntax errors will only set the **Error&#x20;**&#x66;ield.
-&#xA;**&#x20;     6. Throw behavior**
-
-> var x = 1
->
-> throw "Not on my watch"
->
-> return x
-
-Obs: Exception messages thrown using **throw “message“&#x20;**&#x73;yntax will show up on the **Error&#x20;**&#x66;ield. Only **Error&#x20;**&#x77;ill be set after execution.
-&#xA;**&#x20;    7. Async / Await**
-
-> const axios = require('axios')
->
-> const findInDictionary = async (word) => \&#123;
-> &#x20;   const response = await axios.get(\`https\://api.dictionaryapi.dev/api/v2/entries/en/\` + word)
-> &#x20;   return response.data
-> &#125;;
->
-> return findInDictionary('dog')
-
-## Available Node.js Libraries
-
-The following libraries are available and can be used inside the **Node.js Action**:
-
-| Library             |
-| ------------------- |
-| uuid                |
-| axios               |
-| cheerio             |
-| underscore          |
-| ramda               |
-| validator           |
-| lodash              |
-| xml                 |
-| hash.js             |
-| html-to-json-parser |
-| xml-js              |
-| moment              |
-| date-fns            |
-| marked              |
-| big.js              |
-| @faker-js/faker     |
-| joi                 |
-| mathjs              |
-| csv-parse           |
-| papaparse           |
-| simple-statistics   |
-| luxon               |
-| string-similarity   |
-| qrcode              |
+## Related actions [#related-actions]
+- [Javascript](/how-to/javascript), [Python](/how-to/python), [Ruby](/how-to/ruby), [CURL](/how-to/curl)
+- [File To Base64](/how-to/file-to-base64), [Base64 To File](/how-to/base64-to-file)

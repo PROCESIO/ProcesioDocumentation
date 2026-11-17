@@ -1,40 +1,37 @@
 ---
 title: "List Difference"
 icon: "⭐"
-description: "This action computes the difference between two simple lists."
+description: "Returns the items of the first list that are not in the second list."
 ---
 
-This action computes the difference between two simple lists.
+**List Difference** returns the items of the first list that do not appear in the second list (first minus second). Use it to find new records since the last export, invoices not yet paid, or users missing from a group.
 
-![](/images/docs/TWDzOnGrV1thKkvMJ4scX_tmp.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Community-Made** and pick **List Difference** (or type *List Difference* in the search box).
 
-## Inputs & Outputs
+![The List Difference action properties: First List, Second List and Difference](/images/docs/actions/community-made-list-difference/panel.png)
 
-- **\[ I ] First list:** **List\&lt;**<span style={{color:'#be241f'}}>Object</span>**>** representing the first list (**A**)
-- **\[ I ] Second list:** **List\&lt;**<span style={{color:'#be241f'}}>Object</span>**>** representing the second list (**B**)
-- **\[O] Difference**: **List\&lt;**<span style={{color:'#be241f'}}>Object</span>**>** representing the difference (**A-B**)
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **First List** | Input | List (any type) | Yes | The list to start from. Map a list variable. |
+| **Second List** | Input | List (any type) | Yes | The items to take out. Map a list variable. |
+| **Difference** | Output | List (any type) | Yes | The items of **First List** that are not in **Second List**, each one once, in the order of **First List**. |
 
-![](/images/docs/BxuABmFcOvaMUawPTOd_f_tmp.png)
+## Example [#example]
+| First List | Second List | Difference |
+| --- | --- | --- |
+| `[1, 2, 2, 3, 4]` | `[3, 4, 5]` | `[1, 2]` |
+| `["apple", "Banana", "cherry"]` | `["banana"]` | `["apple", "Banana", "cherry"]` |
 
-## Example Usage
+## Good to know [#good-to-know]
+- **The order of the lists matters**: items that are only in **Second List** (`5` above) are not returned. Swap the lists to get them.
+- **Duplicates are removed**: `2` appears twice in the first list but once in the result.
+- **Text is compared exactly**, case included: `banana` does not remove `Banana`.
+- A list that is not set stops the step with `Input Error: The first list can't be null !` (or *second*).
 
-- Drag action onto the canvas to get familiarized with it.
+## Related actions [#related-actions]
+- [List Intersection](/how-to/list-intersection), [List Mode](/how-to/list-mode)
 
-![](/images/docs/dIpEAJKzzGC4kWSdh7Ix4_tmp.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/KEtmZs0EwzdZe38T-XtVV_tmp.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/w5feLrb7afcHcHSiiPDth_tmp.png)
-
-## Use Cases
-
-- Computing the difference between two simple lists.
-
-## Creator
-
-- **Franck -&#x20;**[The Productivity Lab](https://theproductivitylab.io/)
+## Creator [#creator]
+Franck, [The Productivity Lab](https://theproductivitylab.io/)

@@ -1,35 +1,33 @@
 ---
 title: "Get Month"
 icon: "📕"
-description: "This action extracts the month from a DateTime."
+description: "Returns the month of a date as a number from 1 to 12."
 ---
 
-This action extracts the month from a <span style={{color:'#ff9307'}}>DateTime</span>.
+**Get Month** returns the month of a date as a number from `1` (January) to `12` (December). Use it to group records by month or to check which period a date belongs to.
 
-![](/images/docs/jvsHRtG3lOYJRAiqi5lCC_tdy.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Get Month** (or type *Get Month* in the search box).
 
-## Inputs & Outputs
+![The Get Month action properties: Date and Month](/images/docs/actions/datetime-get-month/panel.png)
 
-- **\[ I ] Date**: <span style={{color:'#ff9307'}}>DateTime</span> to extract month from.
-- **\[ O ] Month**: <span style={{color:'#0039e3'}}>Integer</span> representing the extracted month.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Date** | Input | Date and time | Yes | The date and time to read the month from. |
+| **Month** | Output | Integer | Yes | The month. |
 
-![](/images/docs/If95wtobdFgGS2xyoFgKo_tdy.png)
+## Example [#example]
+| Date | Month |
+| --- | --- |
+| `2024-02-29` | `2` |
+| `05/10/2010` | `5` |
 
-## Example Usage
+## Good to know [#good-to-know]
+- **Time zone:** a value that carries a UTC offset (for example `2025-01-01T01:00:00+02:00`) is first converted to UTC, and the part is read from the UTC value. A value without an offset, or ending in `Z`, is used as it is.
+- A date written with slashes, like `05/10/2010`, is read month first (US order): month `5`, day `10`. Use the `yyyy-MM-dd` form, or [String To DateTime](/how-to/string-to-datetime) with an explicit format, to avoid any doubt.
+- To get the month name instead of its number, use [Format DateTime](/how-to/format-datetime) with the format `MMMM`.
+- An empty or invalid **Date** (for example `2023-02-29` or `not a date`) stops the step with an error.
 
-- Drag action onto canvas to get familiarized with it.
-
-![](/images/docs/nlmJnROmusrU50uwRcMjx_tdy.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/KlINbioHbjzQ_9hA87K7O_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/Ibt4f5DnuJ1j_9N2eRySN_tdy.png)
-
-## Use Cases
-
-- Extracting the month from a date.
+## Related actions [#related-actions]
+- [Get Year](/how-to/get-year), [Get Day](/how-to/get-day), [Format DateTime](/how-to/format-datetime)

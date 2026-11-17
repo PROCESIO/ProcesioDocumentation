@@ -6,21 +6,21 @@ description: "Generate documents from your process data with the Generate Docume
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/OmQQyYq2h-g" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-After creating your [template](/docs/overview/processes/document-designer/document-template-creation), use it in a process with the **Generate Document** action to produce a filled-in file.
+After creating your [template](/document-template-creation), use it in a process with the **Generate Document** action to produce a filled-in file.
 
-1. Open the [Process Designer](/docs/overview/processes/process-designer/your-first-process) and create your process.
+1. Open the [Process Designer](/your-first-process) and create your process.
 2. Give it a name.
 3. Drag the **Generate Document** action onto the canvas.
 
    ![](/images/docs/A1kt33_xMKlTyZL3MWaUf_image.png)
-4. Create the [process variables](/docs/overview/processes/process-designer/working-with-process-variables) the action needs:
+4. Create the [process variables](/working-with-process-variables) the action needs:
    - <span style={{color:'#2166ae'}}>fileout</span> — an **output** variable of type **File**, to receive the generated document.
    - <span style={{color:'#2166ae'}}>htmlstring</span> — an **output** variable of type **String**, to receive the generated HTML.
    - <span style={{color:'#2166ae'}}>Name</span> — an **input** variable of type **String**, which is one example of data you'll feed into the template.
 
    ![](/images/docs/KrXNIFDicVNgys03wwWoE_image.png)
 5. Click the **Generate Document** action to configure it:
-   - **Select document template** — pick the template you [created earlier](/docs/overview/processes/document-designer/document-template-creation). Changing the template resets the mapping below to one empty row per template variable.
+   - **Select document template** — pick the template you [created earlier](/document-template-creation). Changing the template resets the mapping below to one empty row per template variable.
    - **Save document as** — **PDF** or **HTML**.
    - **File name** — the name of the generated file.
    - **Document output** — bind the <span style={{color:'#2166ae'}}>fileout</span> variable.
@@ -37,13 +37,13 @@ After creating your [template](/docs/overview/processes/document-designer/docume
    - A row with an empty **Document Variable** is flagged **"Field is required"** when you try to validate or run the process — map it or remove the placeholder from the template.
 
    <Callout type="info">
-   A **list**-typed Data Model variable (used by a [Dynamic Table](/docs/overview/processes/document-designer/document-template-creation#dynamic-table-with-data-model)) is mapped the same way, as one binding to the whole list — the table then repeats once per item at generation time.
+   A **list**-typed Data Model variable (used by a [Dynamic Table](/document-template-creation#dynamic-table-with-data-model)) is mapped the same way, as one binding to the whole list — the table then repeats once per item at generation time.
    </Callout>
 7. **Save**, **Validate** and **Run** the process.
 8. Running asks for the process's input variable values.
 
    ![](/images/docs/N_6SmQ_YMbwJXzmyyT5Zr_image.png)
-9. Click **Run**, then **Check instance** to see the run's output.
+9. Click **Run**, then **Check Instance** to see the run's output.
 10. Click the download button to get the generated file or the HTML output.
 
     ![](/images/docs/LbYMjo5gUlU6owQGiucm2_image.png)

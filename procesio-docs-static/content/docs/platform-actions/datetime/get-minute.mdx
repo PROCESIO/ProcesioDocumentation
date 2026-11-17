@@ -1,37 +1,32 @@
 ---
 title: "Get Minute"
 icon: "📕"
-description: "This action extracts the minute from a DateTime."
+description: "Returns the minute of a date and time, from 0 to 59."
 ---
 
-This action extracts the minute from a <span style={{color:'#ff9307'}}>DateTime</span>.
+**Get Minute** returns the minute of a date and time, from `0` to `59`.
 
-![](/images/docs/7oHzO-5_2plGWLfSxl3t2_tdy.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Get Minute** (or type *Get Minute* in the search box).
 
-## Inputs & Outputs
+![The Get Minute action properties: Datetime and Minute](/images/docs/actions/datetime-get-minute/panel.png)
 
-- **\[ I ] Datetime**: <span style={{color:'#ff9307'}}>DateTime</span> to extract minute from.
-- **\[ O ] Minute**: <span style={{color:'#0039e3'}}>Integer</span> representing the extracted minute.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Datetime** | Input | Date and time | Yes | The date and time to read the minute from. |
+| **Minute** | Output | Integer | Yes | The minute. |
 
-![](/images/docs/ypOyzDwRM4dRI6eXgNfRG_tdy.png)
+## Example [#example]
+| Datetime | Minute |
+| --- | --- |
+| `2024-06-15T13:45:30` | `45` |
+| `2024-06-15T13:45:30+05:30` | `15` (the value is 08:15:30 in UTC) |
 
-## Example Usage
+## Good to know [#good-to-know]
+- **Time zone:** a value that carries a UTC offset (for example `2025-01-01T01:00:00+02:00`) is first converted to UTC, and the part is read from the UTC value. A value without an offset, or ending in `Z`, is used as it is.
+- Seconds are ignored: `13:45:59` still gives `45`.
+- An empty or invalid **Datetime** (for example `2023-02-29` or `not a date`) stops the step with an error.
 
-- Drag action onto canvas to get familiarized with it.
-
-![](/images/docs/z6wyVgmxEZSUlgd5w1gV__tdy.png)
-
-
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/iN-m_S1rhFwU9_n60fRfF_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/KQ74FVvqITRHReZl2Akqc_tdy.png)
-
-## Use Cases
-
-- Extracting the minute from a datetime.
+## Related actions [#related-actions]
+- [Get Hour](/how-to/get-hour), [Time Difference](/how-to/time-difference)

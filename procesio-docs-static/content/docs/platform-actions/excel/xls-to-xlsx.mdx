@@ -1,25 +1,33 @@
 ---
 title: "XLS To XLSX"
 icon: "📕"
-description: "The XLS to XLSX action converts an XLS file to an XLSX file.&x20;"
+description: "Converts an old Excel .xls file (Excel 97–2003) to the .xlsx format."
 ---
 
-## Overview
+**XLS To XLSX** converts an old-format Excel file (`.xls`, Excel 97–2003) to a modern `.xlsx` workbook. The other Excel actions only read `.xlsx` and `.xlsm`, so use this action first when you receive `.xls` files.
 
-The `XLS to XLSX` action converts an XLS file to an XLSX file.&#x20;
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **XLS To XLSX** (or type *XLS To XLSX* in the search box).
 
-<Callout type="info">
-Styles will not be ported; the maximum permitted size for the XLS file is 10 Mb.
-</Callout>
+![The XLS To XLSX action properties: Source XLS and Destination XLSX](/images/docs/actions/excel-xls-to-xlsx/panel.png)
 
-![](/images/docs/b7LC0zqqLZjyRabkpNUkJ_xls-toxlsx.png)
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Source XLS** | Input | File | Yes | The `.xls` file, at most 10 MB. |
+| **Destination XLSX** | Output | File | Yes | The converted workbook, with the same name and the `.xlsx` extension. |
 
-### Parameters
+## Example [#example]
+| Source XLS | Destination XLSX |
+| --- | --- |
+| `input.xls` with a sheet *Sheet1* holding a table of people | `input.xlsx` with the sheet *Sheet1* and the same cell values |
+| `orders.xlsx` | The step fails: "Input error: File extension should be '.xls' => .xlsx" |
 
-### Inputs
+## Good to know [#good-to-know]
+- Every sheet is converted, with its name.
+- Only the cell content is converted. Styles (fonts, colours, borders, number formats) are not.
+- Files larger than 10 MB are refused with "Input error: Input XLS max size exceeded …".
+- The file name must end in `.xls`.
 
-- **Source XLX&#x20;**&#x20;(`file`). The input XLX file.
-
-### Outputs
-
-- **Destination XLSX** (`file`): The output XLSX file.
+## Related actions [#related-actions]
+- [Get Sheet Names](/how-to/get-sheet-names), [Read Range](/how-to/read-range), [Split Workbook](/how-to/split-workbook)

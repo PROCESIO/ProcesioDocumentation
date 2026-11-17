@@ -59,12 +59,12 @@ Nine types are available. There is no separate Date, Time, Decimal or File type 
 | Type | Use it for | Worth knowing |
 |---|---|---|
 | `String` | Names, codes, notes, anything textual | Holds up to 65,535 bytes. Accented and non-Latin characters count for more than one byte each. |
-| `Integer` | Counts, quantities, whole numbers | 64-bit. A decimal is accepted and silently rounded — `2.5` becomes a whole number with no warning, and which way an exact half rounds differs between entry points. If the fraction matters, use `Double`; if it doesn't, round deliberately before writing. |
+| `Integer` | Counts, quantities, whole numbers | 64-bit, so very large whole numbers are kept exactly. A number with decimals (`2.5`) is refused, with a message that names the column. If the fraction matters, use `Double`; if it doesn't, round it before writing. |
 | `Double` | Prices, measurements, anything fractional | Standard 64-bit floating point. |
 | `Float` | — | Stored identically to `Double`. It does not save space or give you lower precision; prefer `Double` for clarity. |
-| `Boolean` | Yes/no flags | Write it as unquoted `true` / `false` — those two literals are accepted everywhere: adding rows, filtering, CSV. Numbers (`1`/`0`) and quoted text (`"true"`) are each accepted in some places and rejected in others, so don't rely on them. |
+| `Boolean` | Yes/no flags | `true` and `false` in any letter case, and `1` and `0`, are accepted when you add, update and filter rows, from a process, a form or the API. Any other number is refused with a message that names the column. |
 | `DateTime` | Dates and timestamps | Write as `2026-07-17T14:30:00`. A date alone (`2026-07-17`) works too and means midnight. A trailing `Z` is rejected by the rows API. |
-| `Guid` | Identifiers from other systems | Values are *not* validated. A malformed identifier is accepted and stored in a mangled form, so validate before writing. |
+| `Guid` | Identifiers from other systems | A malformed identifier is refused, with a message that names the column. |
 | `Json` | Nested or variable structures | Stored as JSON. Structure round-trips, but key order and whitespace are normalised, so don't compare the raw text. |
 | `Object` | Same as `Json` | Behaves identically to `Json`. |
 
@@ -131,6 +131,8 @@ Your edits are **collected, not saved one by one**. The **Commit Changes** butto
 <Callout type="warn">
 **Uncommitted edits are lost on navigation** — leaving the page, or switching back to Read-Only, without committing abandons the pending edits silently. If a row you "added" is missing later, this is almost always what happened: the commit step was skipped.
 </Callout>
+
+In number cells you can type decimals with a dot or a comma (`1234.5` or `1234,5`). A value the grid can't read as a number is highlighted and blocks the commit until you correct it, so it is never saved as a different value.
 
 Two details to know: a new row must respect the schema — required columns need a value, and the primary key must be unique — and a cell edit that violates a rule is reported when you commit, not while you type. If the Edit Mode switch is greyed out, your account lacks the Data Store rows permission — see [Who can see what](#who-can-see-what).
 
@@ -265,10 +267,6 @@ The list depends on the column's type:
 - **Is empty** matches rows where the column has no value at all. A column holding an empty piece of text is not "empty" in this sense.
 - On a date column, **Equals** compares date *and* time — the same rule as the viewer's filter menu; see [Filtering dates](#filtering-dates-pick-a-date-and-a-time). Use **Between** for a whole day.
 
-<Callout type="error">
-**Filtering a yes/no column** — use **Is true** and **Is false**. On current builds, *Equals true* in a process Where returns the rows where the value is *false* — and reports no error. This matters most on Update and Delete, where it would change the wrong records. (Filtering a yes/no column in the viewer or in a form is not affected.)
-</Callout>
-
 <Callout type="info">
 **Changing a condition's column** — to point an existing condition at a different column, delete the condition and add a fresh one. Re-picking a column on a condition that already has one *adds* a second operand instead of replacing the first, and the condition stops meaning what it reads as.
 </Callout>
@@ -330,7 +328,7 @@ Access to Data Stores is governed by workspace permissions, and viewing is separ
 
 ### My filter returns nothing, but I can see matching rows
 
-Check the operator and the value shape. On a **date** column, *equals* with only a date means midnight exactly — use *between* for a whole day. With *Like*, no wildcard means an exact match — add `%` (`%Pop%`), or use *Contains*. With *Belongs*, the value must be a JSON array such as `["A","B"]`. And on a yes/no column in a process Where, use *Is true* / *Is false* rather than *Equals*.
+Check the operator and the value shape. On a **date** column, *equals* with only a date means midnight exactly — use *between* for a whole day. With *Like*, no wildcard means an exact match — add `%` (`%Pop%`), or use *Contains*. With *Belongs*, the value must be a JSON array such as `["A","B"]`.
 
 ### My edits in the grid disappeared
 

@@ -4,6 +4,11 @@
   "pages": [
     "how-to-create-a-workspace-in-a-master-workspace",
     "rename-a-workspace",
-    "two-factor-authentication"
+    "custom-urls",
+    "two-factor-authentication",
+    "signing-in",
+    "appearance-and-accessibility",
+    "user-profile",
+    "notification-center"
   ]
 }

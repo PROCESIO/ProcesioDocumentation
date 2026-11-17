@@ -1,45 +1,42 @@
 ---
 title: "List To File"
 icon: "📕"
-description: "Use this action to write any list to a File that you can download in any format that you need."
+description: "Writes the items of a list one after another into a new file."
 ---
 
-### **Overview**
+**List To File** writes every item of a list into one new file. Use it to build a text file, a log or a simple export line by line from a list you built in your process.
 
-Use this action to write any list\&lt;object> to a File that you can download in any format that you need.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Documents** and pick **List To File** (or type *List To File* in the search box).
 
-### How to configure the List to file action?
+![The List To File action properties: Object List, Filename, Encoding, Line Ending and File](/images/docs/actions/documents-list-to-file/panel.png)
 
-&#x20; 1\.   Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Object List** | Input | List of Object (JSON) or Text | Yes | The items to write. |
+| **Filename** | Input | Text | Yes | The file name **with an extension**, for example `lines.txt`. |
+| **Encoding** | Input | Option | Yes | The character set of the file. Default **UTF8**. Also: UTF32, ASCII, Unicode (UTF-16), BigEndianUnicode, Latin1 and Windows code pages 1250–1258. |
+| **Line Ending** | Input | Option | Yes | **Windows (CRLF)** (default), **Unix (LF)** or **Mac (CR)**. |
+| **File** | Output | File | Yes | The new file. |
 
-&#x20; 2\.    Drag the L**ist to file** action to the canvas and link it to the other actions.
+## Example [#example]
+| Object List | Filename | Content of **File** |
+| --- | --- | --- |
+| `["a","b","c"]` | `list.txt` | `abc` |
+| `["a\n","b\n"]` (each item ends with a line break), Line Ending Windows (CRLF) | `lines.txt` | `a` and `b` on two lines, CRLF line breaks |
+| `[{"id":1},{"id":2}]` | `list.json` | The two objects as indented JSON, written one right after the other |
+| `[]` | `e.txt` | The step fails: "Input error: Input list is null or empty." |
 
-![](/images/docs/D5kgmT9ZNIML2Rd5cJum0_image.png)
-
-3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/6AJ9oSXew-FLBZKuhGw2O_screenshot-2022-09-21-at-134153.png)
-
-**Object List**: you need to input the list\&lt;object> type variable that will be written to file
-
-**Filename**: you need to input the name of the file in which the input object will be written.&#x20;
-
-<Callout type="info">
-You need the add the extension that your file will have (ex. myFile.**txt**)
+<Callout type="warn">
+The items are written **one right after the other, with no separator**. To get one item per line, add a line break at the end of each item before you call the action. A list of objects does not become a JSON array; to save a list as valid JSON, use [Object To File](/how-to/object-to-file) with the whole list, or [Export To CSV](/how-to/export-to-csv) for a table.
 </Callout>
 
-**&#x20;File:&#x20;**&#x74;his is the output file data type that you can download from instances.
+## Good to know [#good-to-know]
+- Empty (null) items are skipped.
+- **Line Ending** converts the line breaks inside each item to the style you pick.
+- ASCII and the Windows code pages replace the characters they do not have with `?`.
+- A file name without an extension makes the step fail with "Input error: File name must contain a valid extension.".
 
-
-
-4\. Save, Validate and Run the process.
-
-5\. Click **Check Instance&#x20;**&#x74;o view the results. Check output variables.
-
-Result: A file with the name and extension you defined will be downloaded. 💪🏼
-
-
-
-![](/images/docs/N99fE9q_Gzsv_gwcycThr_screenshot-2022-09-21-at-131936.png)
-
-![](/images/docs/cPJli6CS9i01AMPMGJx7L_screenshot-2022-09-21-at-131946.png)
+## Related actions [#related-actions]
+- [Object To File](/how-to/object-to-file), [Export To CSV](/how-to/export-to-csv), [File To String](/how-to/read-file)

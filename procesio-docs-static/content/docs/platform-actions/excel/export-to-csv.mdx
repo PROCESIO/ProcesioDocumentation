@@ -1,0 +1,53 @@
+---
+title: "Export To CSV"
+icon: "📕"
+description: "Exports a list of values or objects to a .csv file, with your delimiter, header and column order."
+---
+
+**Export To CSV** turns a list into a `.csv` file: one row per item, one column per field. Use it to hand data to Excel, to another system or to a user as a download.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/T65ZS_stgCQ" title="Export to CSV video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Export To CSV** (or type *Export To CSV* in the search box).
+
+![The Export To CSV action properties: Object to export, Column delimiter, Export header, File name, Column order and Output file](/images/docs/actions/excel-export-to-csv/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Object to export** | Input | List of Object (JSON), list of a data model, or list of simple values | Yes | The rows to export. |
+| **Column delimiter** | Input | Text | Yes | The character between columns. Default `,`. Use `;`, `\|`, or type `\t` for a TAB. |
+| **Export header** | Input | Boolean (true/false) | No | Ticked by default: the first row holds the column names. |
+| **File name** | Input | Text | Yes | The file name. `.csv` is added if you leave it out. |
+| **Column order** | Input | Text (one column name per line) | No | The columns to put first, in this order. The other columns follow in their original order. |
+| **Output file** | Output | File | Yes | The `.csv` file. |
+
+## Example [#example]
+Object to export:
+
+```json
+[
+  { "id": 1, "name": "Ana", "address": { "city": "Cluj" }, "joined": "2024-01-05" },
+  { "id": 2, "name": "Bob, Jr.", "address": { "city": "Iasi" }, "joined": "2024-02-10" }
+]
+```
+
+| Settings | Content of **Output file** |
+| --- | --- |
+| Delimiter `,`, header on, File name `people` | `people.csv`: `id,name,address.city,joined` / `1,Ana,Cluj,2024-01-05` / `2,"Bob, Jr.",Iasi,2024-02-10` |
+| Delimiter `;`, header on | `id;name;address.city;joined` / `1;Ana;Cluj;2024-01-05` / `2;Bob, Jr.;Iasi;2024-02-10` |
+| Delimiter `\t`, header off, Column order `name` then `id` | `Ana⇥1⇥Cluj⇥2024-01-05` / `Bob, Jr.⇥2⇥Iasi⇥2024-02-10` (⇥ is a TAB) |
+| Object to export `["red","green"]` | `Column` / `red` / `green` |
+| Object to export `[]` | The step fails: "Input list is empty. Please add items to it." |
+
+## Good to know [#good-to-know]
+- Nested objects are flattened: the field `city` inside `address` becomes the column `address.city`.
+- The header comes from the **first** item. Give every item the same fields; fields that only later items have do not get a header.
+- A list of simple values (texts, numbers) gives a single column named `Column`.
+- A value that contains the delimiter, a quote or a line break is wrapped in double quotes.
+- The file is UTF-8 with a byte order mark (BOM), so Excel shows diacritics correctly, and rows end with Windows line breaks (CRLF).
+- **Column order** names must match the column names exactly, including `address.city` for a nested field. Names that do not exist are ignored.
+
+## Related actions [#related-actions]
+- [Export To XLSX](/how-to/export-to-xlsx), [Read Range from CSV](/how-to/read-range-from-csv), [List To File](/how-to/list-to-file)

@@ -1,7 +1,12 @@
 ---
-title: "SQL Server"
+title: "SQL"
 icon: "📁"
-description: "Run T-SQL queries and commands against a SQL Server database."
+description: "Run SQL queries and commands against a SQL Server or MySQL database."
 ---
 
-Two actions: **Execute Query** for statements that return rows, and **Execute Command** for inserts, updates, deletes and anything else that returns only a result.
+Two actions, both configured with a database credential:
+
+| Action | What it does |
+| --- | --- |
+| [Execute Query](/how-to/execute-query) | For statements that return rows. The result is a list of objects. |
+| [Execute Command](/how-to/execute-command) | For inserts, updates, deletes and other changes. The result is the number of affected rows. |

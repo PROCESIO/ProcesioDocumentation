@@ -1,27 +1,19 @@
 ---
 title: "Documents"
 icon: "📁"
-description: "After creating a process you will have the ability to use the drag and drop functionality to add on your canvas actions from the Platform actions…"
+description: "Actions that create, read and archive files inside a process."
 ---
 
-After creating a process you will have the ability to use the drag and drop functionality to add on your canvas actions from the Platform actions section that will allow you to work with files, this can be done in conjunction with the [Document Designer](/docs/overview/processes/document-designer/document-template-creation).
+The **Documents** folder of the Process Designer toolbox holds the actions that write files, read them back, fill Word templates and pack or unpack archives.
 
-The **Documents** folder contains actions that allow you to create and work with files inside your processes. 
+| Action | What it does |
+| --- | --- |
+| [Word Mail Merge](/how-to/word-mail-merge) | Fills the mail merge fields of a `.docx` template, optionally as PDF. |
+| [Object To File](/how-to/object-to-file) | Writes a text or an object into a new file. |
+| [List To File](/how-to/list-to-file) | Writes the items of a list one after another into a new file. |
+| [File To String](/how-to/read-file) | Reads the content of a text file into a text variable. |
+| [Read Files Content](/how-to/read-files-content) | Reads several text files at once, one entry per file. |
+| [Read MSG File](/how-to/read-msg-file) | Reads an Outlook `.msg` email: subject, body, metadata and attachments. |
+| **Archive** › [Zip](/how-to/zip), [Unzip](/how-to/unzip), [Untar](/how-to/untar), [Unrar](/how-to/unrar) | Compress files into a `.zip`, or extract `.zip`, `.tar` and `.rar` archives. |
 
-&#x20; 1\.    **Generate Document** - Generate a document using a Document Designer template.
-
-&#x20; 2\.    **HTML to PDF &#x20;**- Converts HTML input to a PDF file.
-
-&#x20; 3\.    **Export to CSV&#x20;**-**&#x20;&#x20;**&#x45;xports a list (of primitives/simple or of data model) to a .csv file, with export options.
-
-&#x20; 4\.    **Export to XLSX&#x20;**- Exports a list (of primitives/simple or of data model) to a .xlsx file.
-
-&#x20; 5\.    **Write to file -&#x20;**&#x57;rites any object to a File that the user can download in any format that he wants
-
-&#x20; 6\.    **Write list to file -&#x20;**&#x57;rites any list\&lt;object> to a File which the user can download in any format that he wants
-
-&#x20; 7\.     **Read file -&#x20;**&#x52;eads the content in a file (ex. you have a document which contains some text and you want to make a variable of type string with the document's content)
-
-&#x20; 8\.    **File to Base64 -&#x20;**&#x43;onverts the content of a File variable to a Base64 string
-
-&#x20; 9\.   **Archive** sub-folder - contains actions that allow you to compress and decompress data into different archive types.
+Related folders: **Base64** ([File To Base64](/how-to/file-to-base64), [Base64 To File](/how-to/base64-to-file)) and **Excel** ([Export To CSV](/how-to/export-to-csv), [Export To XLSX](/how-to/export-to-xlsx)). To build a document from a template designed in PROCESIO, use [Generate Document](/how-to/generate-document).

@@ -1,55 +1,36 @@
 ---
 title: "List Standard Deviation"
 icon: "⭐"
-description: "This action computes the standard deviation, which measures the amount of variation or dispersation in the entire population of data points."
+description: "Computes the population standard deviation of a list of numbers."
 ---
 
-This action computes the standard deviation, which measures the amount of variation or dispersation in the entire population of data points.
+**List Standard Deviation** measures how spread out a list of numbers is around its average. A small value means the numbers are close to the average; a large one means they vary a lot. Use it to spot unusual values, for example orders far above the usual amount.
 
-![](/images/docs/Z3xZ_6D21xIMvvU4_1n5D_image.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Community-Made** and pick **List Standard Deviation** (or type *List Standard Deviation* in the search box).
 
-## Inputs & Outputs
+![The List Standard Deviation action properties: List of numbers and Standard deviation](/images/docs/actions/community-made-list-standard-deviation/panel.png)
 
-- **\[ I ] List of numbers**: <span style={{color:'#368b10'}}>Double (List)</span> representing data points for calculating the standard deviation.
-- **\[ O ] Standard deviation**: <span style={{color:'#368b10'}}>Double (Single Value)</span> representing the measure of variability in the data set derived from the input list.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List of numbers** | Input | List of Number (decimal) | Yes | The numbers. Map a list variable. |
+| **Standard deviation** | Output | Number (decimal) | Yes | The standard deviation. |
 
-![](/images/docs/3BLHE88mRryzSkAzZUS5J_image.png)
+## Example [#example]
+| List of numbers | Standard deviation |
+| --- | --- |
+| `[2, 4, 4, 4, 5, 5, 7, 9]` | `2` |
+| `[1.5, 2.5, -3]` | `2.392116682401221` |
+| `[5]` | `0` |
+| `[]` | step fails: `Input Error: The list of numbers can't be empty !` |
 
-<Callout type="info">
-The List Standard Deviation action uses the Population Standard Deviation formula:
+## Good to know [#good-to-know]
+- This is the **population** standard deviation: the sum of squared differences from the average is divided by the number of values (*n*), not by *n − 1*. If you need the sample standard deviation (as in Excel `STDEV.S`), multiply the result by the square root of n / (n − 1).
+- The standard deviation is the square root of the [variance](/how-to/list-variance).
 
-![](/images/docs/Lneuhfc8FqexrCulpTi1f_image.png)
-</Callout>
+## Related actions [#related-actions]
+- [List Variance](/how-to/list-variance), [List Correlation](/how-to/list-correlation)
 
-## Example Usage
-
-- Drag the List Standard Deviation action from the Community-Made folder to the canvas.
-
-
-
-![](/images/docs/1lPtXjCRx5PmxemEWyj-b_image.png)
-
-- Declare the variables to be used with the List Standard Deviation action.
-
-
-
-![](/images/docs/gaJQBB9bJM_YVyYvNnoV__image.png)
-
-- Assign the newly created variables.
-- Save & Run the process and then Check Instance to see the output.
-
-
-
-![](/images/docs/kcqsP7ATMI836mbcqRAOc_image.png)
-
-## Use Cases
-
-- By analyzing the population standard deviation for page load times and response times, you can identify patterns that may cause slow or inconsistent user experiences, pinpointing potential performance bottlenecks.
-
-## Tips
-
-- When working with data representing an entire population (full population data), opt for the [List Standard Deviation](/docs/platform-actions/call-api/list-standard-deviation) action to accurately measure the variability. However, if you are dealing with a sample from a larger population, do NOT use the List Standard Deviation action.
-
-## Creator
-
-- **Franck -&#x20;**[The Productivity Lab](https://theproductivitylab.io/)
+## Creator [#creator]
+Franck, [The Productivity Lab](https://theproductivitylab.io/)

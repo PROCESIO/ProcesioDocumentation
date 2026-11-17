@@ -1,16 +1,32 @@
 ---
 title: "Trim"
 icon: "📕"
-description: "The Trim action removes whitespaces from both ends of a string."
+description: "Removes spaces, tabs and line breaks from both the start and the end of a text."
 ---
 
-## Overview
+**Trim** removes the white space (spaces, tabs, line breaks) at the start and at the end of a text. The spaces inside the text stay. Use it to clean values typed in a form or read from a file before you compare or store them.
 
-The `Trim` action removes whitespaces from both ends of a string.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **Trim** (or type *Trim* in the search box).
 
-![](/images/docs/wtpvIflqUDOEjvOrByALF_image.png)
+![The Trim action properties: Input String and Result](/images/docs/actions/string-trim/panel.png)
 
-## Inputs & Outputs
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input String** | Input | Text | Yes | The text to clean. |
+| **Result** | Output | Text | Yes | The text without leading and trailing white space. |
 
-- **\[ I ] Input string:** <span style={{color:'#1c417e'}}>String</span> to be trimmed.
-- **\[ O ] Result**: <span style={{color:'#1c417e'}}>String</span> representing the input after trimming whitespaces from both ends.
+## Example [#example]
+| Input String | Result |
+| --- | --- |
+| `   hello world  ` + tab | `hello world` |
+| new line + ` hello ` + Windows line break | `hello` |
+| `    ` (spaces only) | *(empty text)* |
+
+## Good to know [#good-to-know]
+- White space means spaces, tabs, new lines, carriage returns and other Unicode spaces such as the non-breaking space.
+- Spaces between words are kept. To remove or replace them, use [Replace](/how-to/replace).
+
+## Related actions [#related-actions]
+- [Trim Start](/how-to/trim-start), [Trim End](/how-to/trim-end), [Null Or Empty](/how-to/null-or-empty)

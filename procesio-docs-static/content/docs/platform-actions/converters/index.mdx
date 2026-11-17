@@ -1,21 +1,25 @@
 ---
 title: "Converters"
 icon: "📁"
-description: "The Converter folder contains utility actions:"
+description: "Actions that convert data between formats (JSON, XML, HTML, PDF, text) and encrypt or hash it."
 ---
 
-The **Converter** folder contains utility actions:
+The **Converters** folder of the Process Designer toolbox holds the actions that turn data from one format into another. Its **Cryptographic** sub-folder holds the encryption and hashing actions.
 
-&#x20; 1\.    **FromBase64&#x20;**➜ Decodes a base64 string.
+| Action | What it does |
+| --- | --- |
+| [JSON To XML](/how-to/json-to-xml) | Converts a JSON object, or each item of a JSON array, to XML. |
+| [XML To JSON](/how-to/xml-to-json) | Converts an XML text to JSON. |
+| [HTML To JSON](/how-to/html-to-json) | Converts HTML to a JSON tree of elements, texts and attributes. |
+| [JSON To HTML](/how-to/json-to-html) | Converts such a JSON tree back to HTML. |
+| [HTML To PDF](/how-to/html-to-pdf) | Renders HTML as a PDF file. |
+| [Object To String](/how-to/to-string) | Turns any value into its JSON text. |
 
-&#x20; 2\.    **ToBase64&#x20;**➜ Encodes a string to base64.
+**Cryptographic**
 
-&#x20; 3\.    **ToString&#x20;**➜ Convert any object to a string.
-
-&#x20; 4\.    **Json To Xml&#x20;**➜ Convert JSON to XML.
-
-&#x20; 4\.    **Xml To Json&#x20;**➜ Convert XML to JSON.
-
-&#x20; 4\.    **Encrypt to AES256&#x20;**➜ Encrypt a string using AES256.
-
-&#x20; 4\.    **ecrypt from AES256&#x20;**➜ Decrypt a string encrypted using AES256.
+| Action | What it does |
+| --- | --- |
+| [Encrypt To AES256](/how-to/encrypt-to-aes256) | Encrypts a text with AES-256 and returns it as Base64 and Hex. |
+| [Decrypt From AES256](/how-to/decrypt-from-aes256) | Decrypts a text encrypted with AES-256. |
+| [Hash](/how-to/hash) | Hashes a text or a file with MD5, SHA-1, SHA-2 or SHA-3. |
+| [Hash Mac](/how-to/hash-mac) | Computes a keyed hash (HMAC) of a text or a file, using a secret key stored as a credential. |
