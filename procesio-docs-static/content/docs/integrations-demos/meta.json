@@ -3,8 +3,8 @@
   "icon": "💜",
   "root": true,
   "pages": [
+    "index",
     "integrations-2-alt",
-    "demos",
-    "run-a-process-with-files-via-call-api"
+    "demos"
   ]
 }

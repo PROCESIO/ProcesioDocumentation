@@ -1,0 +1,32 @@
+---
+title: "Length"
+icon: "📕"
+description: "Returns the number of elements in a list."
+---
+
+The **Length** action (List) counts the elements in a list. Use it to check whether a list is empty (`0`), to compute the index of the last element (length − 1), or to report how many records were processed.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Length** (or type *Length* in the search box — make sure you pick the one in the **List** folder, not the String one).
+
+![The List Length action properties: Input a list of elements and Result](/images/docs/actions/list-length/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input a list of elements** | Input | List of any type | Yes | The list to count. |
+| **Result** | Output | Integer | Yes | The number of elements. |
+
+## Example [#example]
+| Input a list of elements | Result |
+| --- | --- |
+| `[1,"a",{"x":1}]` | `3` |
+| `[null,null]` | `2` (empty elements are counted) |
+| `[]` | `0` |
+
+## Good to know [#good-to-know]
+- Every element counts, including duplicates and empty (`null`) values.
+- An empty list, or a list variable that has no value, returns `0`.
+
+## Related actions [#related-actions]
+- [Has Elements](/how-to/has-elements), [Get Element](/how-to/get-element), [Sum](/how-to/sum)

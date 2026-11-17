@@ -5,6 +5,7 @@
     "trigger-process",
     "trigger-javascript",
     "trigger-form",
-    "map-form-variable"
+    "map-form-variable",
+    "run-data-store-query"
   ]
 }

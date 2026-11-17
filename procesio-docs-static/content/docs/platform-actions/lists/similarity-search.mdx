@@ -1,72 +1,45 @@
 ---
 title: "Similarity Search"
 icon: "📕"
-description: "The Similarity Search action enables users to search for a specific string within a list of strings using various similarity algorithms. This feature…"
+description: "Searches a list of text values for the ones most similar to a given text, using a string-similarity algorithm and a minimum score."
 ---
 
-## Description
+The **Similarity Search** action compares a text with every value in a list and returns the values that are similar enough, best match first. Use it for tolerant lookups: finding a customer name with a typo, matching product names from two systems, or suggesting the closest option.
 
-The `Similarity Search` action enables users to search for a specific string within a list of strings using various similarity algorithms. This feature is particularly useful for tasks such as fuzzy matching or finding similar items within a dataset.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Similarity Search** (or type *Similarity* in the search box). Then open the **Configuration** panel.
 
-## Action Inputs
+![The Similarity Search action properties with the Configuration button](/images/docs/actions/list-similarity-search/panel.png)
 
-The action requires the following inputs:
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List of strings to search in** | Input | List of text | Yes | The candidate values. |
+| **Similarity algorithm** | Input | Option | No | How similarity is measured. Default: **SmithWaterman**. See the list below. |
+| **Similarity threshold [0-1]** | Input | Decimal number | Yes | The minimum score a value needs to be returned, from `0` (anything) to `1` (identical). Default: `0.85`. |
+| **String to search for** | Input | Text | Yes | The text to look for. |
+| **Limit number of search results** | Input | Integer | Yes | The maximum number of values to return. `0` returns all values above the threshold. Default: `100`. |
+| **Output list of search results** | Output | List of text | Yes | The matching values, ordered from most to least similar. |
 
-### List of strings to search in
+### Algorithms [#algorithms]
+`BlockDistance`, `ChapmanLengthDeviation`, `ChapmanMeanLength`, `CosineSimilarity`, `EuclideanDistance`, `JaccardSimilarity`, `DiceSimilarity`, `Jaro`, `JaroWinkler`, `MatchingCoefficient`, `MongeElkan`, `Levenstein`, `NeedlemanWunch`, `OverlapCoefficient`, `QGramsDistance`, `SmithWaterman`, `SmithWatermanGotoh`, `SmithWatermanGotohWindowedAffine`.
 
-Specify the list of strings (`list<string>`) in which the search will be performed.
+As a rule of thumb, `Levenstein` counts the edits needed to turn one text into the other (good for typos), `JaroWinkler` favours texts that start the same (good for names), and the token-based ones (`CosineSimilarity`, `JaccardSimilarity`, `DiceSimilarity`) compare the words the texts share. The same names are used by the `Fuzzy` match type of [Simple Filter](/how-to/simple-filter#fuzzy), [Filter](/how-to/filter), [Find Duplicates](/how-to/find-duplicates) and [DeDuplicate](/how-to/deduplicate).
 
-### Similarity Algorithm
+## Example [#example]
+List of strings to search in: `["Jon Smith","John Smith","Jane Smyth","Bob"]`, String to search for: `John Smith`.
 
-Choose one of the available similarity algorithms to use for the search. The supported algorithms are:
+| Similarity algorithm | Similarity threshold [0-1] | Limit number of search results | Output list of search results |
+| --- | --- | --- | --- |
+| SmithWaterman (default) | `0.85` | `100` | `["John Smith","Jon Smith"]` |
+| Levenstein | `0.5` | `100` | `["John Smith","Jon Smith","Jane Smyth"]` |
+| Levenstein | `0.5` | `1` | `["John Smith"]` |
+| JaroWinkler | `0` | `0` | `["John Smith","Jon Smith","Jane Smyth","Bob"]` |
 
-1. Block Distance
-2. Chapman Length Deviation
-3. Chapman Mean Deviation
-4. Cosine Similarity
-5. Jaccard Similarity
-6. Euclidean Distance
-7. Dice Similarity
-8. Jaro
-9. Jaro Winkler
-10. Matching Coefficient
-11. Monge Elkan
-12. Levenstein
-13. Needleman Wunch
-14. Overlap Coefficient
-15. QGrams Distance
-16. Smith Waterman
-17. Smith Waterman Gotoh
-18. Smith Waterman Gotoh Windowed Affine
+## Good to know [#good-to-know]
+- The comparison is **case-sensitive**: searching `john smith` in `["JOHN SMITH"]` with Levenstein and `0.9` returns nothing. Convert both sides to the same case first (for example with the String **To Lower** action) if case should not matter.
+- An empty list returns an empty result; it does not fail.
+- With a threshold of `0` every value is returned, so the result is simply the list ranked by similarity.
 
-### Similarity Threshold
-
-Define a threshold value of type `double` between 0 and 1.&#x20;
-
-Strings with a similarity below this threshold will not be included in the search results.
-
-### String to search for
-
-Specify the string you want to search for within the list of strings.
-
-### Limit number of search results
-
-Limit the number of search results returned by specifying the maximum number of results to display.
-
-## Action Output
-
-Upon execution, the action returns a list containing the top x strings, with the most relevant ones appearing at the top.
-
-## Usage Example
-
-
-
-![](/images/docs/_Uhqi2tLtJhjuohJVPhlA_image.png)
-
-<Callout type="info">
-For a more in-depth guide intended for C#/.Net developers follow this [link](https://github.com/StefH/SimMetrics.Net/blob/master/Documentation/PDF/SimMetrics.PDF).
-</Callout>
-
-<Callout type="info">
-The code used to create the action can be found [here](https://github.com/PROCESIO/Custom-Actions/tree/main/StringActions/SearchByStringSimilarity).
-</Callout>
+## Related actions [#related-actions]
+- [Simple Filter](/how-to/simple-filter), [DeDuplicate](/how-to/deduplicate), [Find Duplicates](/how-to/find-duplicates), [Contains](/how-to/list-contains)

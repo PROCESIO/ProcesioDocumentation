@@ -1,0 +1,61 @@
+---
+title: "DOCX To HTML"
+icon: "📕"
+description: "Converts a Word (.docx) file to an HTML text that you can store, show, edit or turn into a PDF."
+---
+
+The **DOCX To HTML** action reads a Word document (`.docx`) and returns its content as an HTML text. Use it when a document arrives as a Word file, for example from a form upload or an email attachment, and you need it as HTML: to show it in a form, put it in an email body, store it, or edit it and render it again with [HTML To PDF](/how-to/html-to-pdf).
+
+<Callout type="info">New in the next release (PROCESIO v2.0.8).</Callout>
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Converters** and pick **DOCX To HTML** (or type *DOCX To HTML* in the search box).
+
+![The DOCX To HTML action properties: DOCX file and HTML String](/images/docs/actions/converters-docx-to-html/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **DOCX file** | Input | File | Yes | The Word file to convert. Its name must end in `.docx`. |
+| **HTML String** | Output | Text | Yes | The whole document as one HTML page: `<html>`, a `<head>` with the styles, and a `<body>` with the content. |
+
+## Example [#example]
+A Word file `report.docx` with a heading *Quarterly report*, a paragraph *Sales grew by **12%** this quarter.* and a small two-column table returns an **HTML String** that starts like this (styles shortened):
+
+```html
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="UTF-8" />
+    <title>report.docx</title>
+    <meta name="Generator" content="PowerTools for Open XML" />
+    <style>span { white-space: pre-wrap; } h1.pt-Heading1 { font-size: 16pt; … }</style>
+  </head>
+  <body>
+    <div>
+      <h1 dir="ltr" class="pt-Heading1">
+        <span class="pt-000000">Quarterly report</span>
+      </h1>
+      <p dir="ltr" class="pt-Normal">
+        <span xml:space="preserve" class="pt-000001">Sales grew by </span>
+        <span class="pt-000002">12%</span>
+        <span xml:space="preserve" class="pt-000001"> this quarter.</span>
+      </p>
+      <div align="left">
+        <table dir="ltr" class="pt-000003">
+          <tr>
+            <td class="pt-000004"><p dir="ltr" class="pt-Normal"><span class="pt-000001">Region</span></p></td>
+            …
+```
+
+## Good to know [#good-to-know]
+- **Formatting is kept as CSS.** Fonts, sizes, bold, italic, underline and colours become CSS classes in the `<style>` block of the page. Headings that use Word's heading styles become `<h1>`, `<h2>` and so on; tables become `<table>`; hyperlinks become `<a href="…">` links.
+- **Lists stay paragraphs.** Bulleted and numbered lists come out as paragraphs that start with the bullet or number, not as `<ul>` / `<ol>` lists.
+- **Pictures are not included.** Images in the Word file are left out of the HTML.
+- **The page title is the file name.** The `<title>` of the HTML is the name of the uploaded file, for example `report.docx`.
+- **Only `.docx` files.** Another extension stops the action with *Input error: File extension should be '.docx', found => .txt*. Old `.doc` files, PDFs and renamed files are not converted.
+- **Damaged files stop the action.** A file that is not a valid Word document stops the action with *An error occurred during DOCX to HTML conversion: File contains corrupted data.*
+- To use only the text inside the body, process the result with [HTML To JSON](/how-to/html-to-json) or the string actions.
+
+## Related actions [#related-actions]
+- [HTML To PDF](/how-to/html-to-pdf): render the HTML as a PDF file.
+- [HTML To JSON](/how-to/html-to-json): turn the HTML into a JSON tree of elements and texts.

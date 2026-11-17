@@ -8,54 +8,50 @@ description: "Get File Data action enables you to pull in tabular data from an E
 
 Get File Data action enables you to pull in tabular data from an Excel/CSV file and map it to a process variables. This will allow you to use data coming from external files in process flows.
 
-You can proceed with the action configuration by manually creating the structure of the file (header) that will be uploaded.
+You can proceed with the action configuration by manually creating the structure of the file (header) that will be uploaded.
 
 You need to map the file structure created to a process variable which will give you the possibility to use the data in other actions in process flows.
 
 ## **How to configure the Get File Data action?**
 
-Go to the Process Designers section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas. 
+Go to the Process Designers section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas.
 
-Video on how to configure Get File Data is available [here](https://www.youtube.com/watch?v=aLMgtMHQjb4).
+Video on how to configure Get File Data is available [here](https://www.youtube.com/watch?v=aLMgtMHQjb4).
 
 ![](/images/docs/mMpblg0zDzwiTvEVsxTCX_getfiledataaction.png)
 
-**&#x20; Step 1**:    Drag the **Get File Data** action from Toolbar and drop it on canvas; click on the action to open the **Properties Panel**.
+**Step 1**: Drag the **Get File Data** action from Toolbar and drop it on canvas; click on the action to open the **Properties Panel**.
 
-**&#x20; Step 2**:    You can edit the Action Name.
+**Step 2**: You can edit the Action Name.
 
-**&#x20; Step 3**:    Click on **Mapping Configuration (Not configured)** card to go to the action configurations steps.
+**Step 3**: Click the **Mapping Configuration** card to go to the action configurations steps.
 
 ![](/images/docs/U5r9pNYq91cX2oJ2Uqi--_configuregetgiledata.png)
 
-**&#x20; Step 4**:  Get File Data configuration
+**Step 4**: Get File Data configuration
 
 ![](/images/docs/-aQvr762_z6EbEwsAjW6I_mapconf.png)
 
 ### **How to Map the imported data**
 
-**&#x20; Step 1**:   &#x20;
-
-**File to Process:&#xA0;**&#x73;elect the process variable that will fetch your file details when kicking off the process flow. You can select the file type variable from selector (if created upfront) or you can click on "**+Create new variable**" to create a file type variable;
+**Step 1**: **File to process:** select the process variable that will fetch your file details when kicking off the process flow. You can select the file type variable from selector (if created upfront) or you can click on "**+Create new variable**" to create a file type variable;
 
 - mandatory: **type** = File;
 - set as **Input**.
 
-&#x20;**&#x20; Step 2**:  &#x20;
+**Step 2**: **Store data as**: select a process variable that will be storing the data at runtime, data that is pulled from the uploaded file. You can select the process variable from selector (if created upfront) or you can click on "**+Create new variable**" to create a data model type variable;
 
-&#x20;**Store data as**: select a process variable that will be storing the data at runtime, data that is pulled from the uploaded file. You can select the process variable from selector (if created upfront) or you can click on "**+Create new variable**" to create a data model type variable;
-
-- defining the process variable is essential as it will store the data when the process in running, and you can use this data further in processing. 
-- mandatory: type = data model with attributes that will be mapped to your file structure; you will further map columns to selected data model's attributes. 
+- defining the process variable is essential as it will store the data when the process in running, and you can use this data further in processing.
+- mandatory: type = data model with attributes that will be mapped to your file structure; you will further map columns to selected data model's attributes.
 - mandatory: process variable defined will be a list as your file may contain more than 1 entry.
 
-&#x20;**&#x20; Step 3**:    **Add column**: start building the structure of your file by pressing "Add column". In "Column Name" add the name of the corresponding column in the file that will be processed; in "Map Data" add the attribute that will be mapped to the column (attributes of data model selected in Step 1).
+**Step 3**: **Add column**: start building the structure of your file by pressing "Add column". In "Column Name" add the name of the corresponding column in the file that will be processed; in "Map Data" add the attribute that will be mapped to the column (attributes of data model selected in Step 1).
 
 ![](/images/docs/CM1bzrCaakDy-kMEWey34_mapconf.png)
 
-### **Example of configuration:&#xA0;**
+### **Example of configuration:**
 
-&#x20;**&#x20; Step 1**:    Based on the file that will be used in processing, the first step is to create a data model with attributes following the external file's structure:
+**Step 1**: Based on the file that will be used in processing, the first step is to create a data model with attributes following the external file's structure:
 
 - external file structure
 
@@ -69,28 +65,43 @@ Video on how to configure Get File Data is available [here](https://www.youtube
 If the file to be imported - has duplicate column names - only the first one will be imported.
 </Callout>
 
-&#x20;**&#x20; Step 2**:    Create the process variables needed for this action:
+**Step 2**: Create the process variables needed for this action:
 
 ![](/images/docs/_YkidhoP3-AgQW4T-ICQN_screenshot-2022-06-02-at-203005.png)
 
-&#x20; &#x20;**&#x20; Step 3**:    In process designer, drag and drop a **Get file data** action on canvas and open the configuration panel.
+**Step 3**: In process designer, drag and drop a **Get file data** action on canvas and open the configuration panel.
 
 ![](/images/docs/1KIsJhk_5eLm7Spvtcxii_screenshot-2022-06-02-at-214151.png)
 
-&#x20;**&#x20;&#x20;**&#x20;**&#x20; Step 4**:    Configure the action:
+**Step 4**: Configure the action:
 
-- **File to process**: the file type process variable created. i.e. <span style={{color:'#102dec'}}>fileToProcess</span>``
-- **Store data as**: the process variable type data model, i.e. <span style={{color:'#1627d7'}}>teamDetailsData</span> ("teamDetails" data model created at step1)
+- **File to process**: the file type process variable created, for example `fileToProcess`
+- **Store data as**: the process variable type data model, for example `teamDetailsData` ("teamDetails" data model created at step1)
 - Add columns and map the file's header columns to the data model's attributes
 
 <Callout type="info">
 "Column name" in the configuration panel must match the name of the columns in your external file in order to have a correct action configuration.
 </Callout>
 
-**&#x20;&#x20;**&#x20;**&#x20; Step 5**:    **Save**, **Validate** and **Run** the process. Upload your file:
+**Step 5**: **Save**, **Validate** and **Run** the process. Upload your file:
 
 ![](/images/docs/p-k1x7Bj0kDASdTr2G66n_runwithuploa.png)
 
-Run the process. In **Instances&#x20;**&#x79;ou can check now the output of the action, data being available in a JSON format.  You can now use this process variable further in other actions within actions. This is how the **Get file data** action enables you to pull in tabular data from an Excel/CSV file and map it to a process variable. This will allow you to use data coming from external files in process flows.
+Run the process. In **Instances** you can check now the output of the action, data being available in a JSON format.  You can now use this process variable further in other actions within actions. This is how the **Get file data** action enables you to pull in tabular data from an Excel/CSV file and map it to a process variable. This will allow you to use data coming from external files in process flows.
 
 ![](/images/docs/qq7bf4Z1JAbc6lUfb6v3u_data.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **File to process:** | Input | File | Yes | The Excel or CSV file to read. |
+| **Store data as** | Output | List of a data model | Yes | Receives one item per row of the file. Its data model must have an attribute for each column you map. |
+| **Column Definition** | Input | Column list | Yes | For each column: the **Column Name** as written in the file header, and the data model attribute it goes into. |
+
+## Good to know [#good-to-know]
+- **Column names must match the file header.** A column you do not define is not imported.
+- If the file has two columns with the same name, only the first is imported.
+- The step fails with *"Input File is null!"* when no file is given, and with *"Input column definition is empty!"* when no column is defined.
+
+## Related actions [#related-actions]
+- [For Each](/how-to/for-each), [Call Subprocess](/how-to/call-subprocess)

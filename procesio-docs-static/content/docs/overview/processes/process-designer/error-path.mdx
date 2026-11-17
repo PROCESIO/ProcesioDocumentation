@@ -46,4 +46,12 @@ This variable is a data model and it can be used as any other data models in PRO
 
 ![](/images/docs/59Tm76OApEmSDGya03T2__image.png)
 
+### Disabled actions on an Error Path [#disabled-actions]
+
+You can [disable an action](/save-action-as-a-template) to keep it in the process without running it. A disabled action on an Error Path is **skipped**, the same as on any other path: when the action before it fails, the disabled action does not run. The variables it would have written keep the values they had, and in the run details the action is greyed out and marked **skipped**.
+
+<Callout type="info">
+Before PROCESIO v2.0.7, a disabled action on an Error Path still ran when the action before it failed.
+</Callout>
+
 With Error Path you now have control over the process even if errors occur, making error handling easier.&#x20;

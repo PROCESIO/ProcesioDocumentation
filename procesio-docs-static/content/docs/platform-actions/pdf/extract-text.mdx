@@ -1,55 +1,65 @@
 ---
 title: "Extract Text"
 icon: "📕"
-description: "There is an easy way to extract PDF text: extract text from your PDF documents with the help of Extract Text action. If you wondered how to extract…"
+description: "Reads the text of a PDF page by page, with every word and its position on the page."
 ---
 
-##
+The **Extract Text** action reads the text of a PDF. For every page you get the whole text and the list of words, each with its position, its row on the page and its font. Use the page text for simple searches, or pass the result to [Area Mapper](/how-to/area-mapper) to pick values out of fixed places, such as an invoice number or a total.
 
-There is an easy way to extract PDF text: extract text from your PDF documents with the help of **Extract Text** action. If you wondered how to extract text from a PDF, you can't go wrong using PROCESIO.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **PDF** and pick **Extract Text** (or type *Extract Text* in the search box).
 
+![The Extract Text action properties: Pdf File and Extracted Text](/images/docs/actions/pdf-extract-text/panel.png)
 
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Pdf File** | Input | File | Yes | The PDF to read. |
+| **Extracted Text** | Output | List of any type | Yes | One item per page (see below). |
 
-The result (extracted text) contains 2 parts:
+## What you get [#what-you-get]
+Each item of **Extracted Text** describes one page:
 
-- text: all text from the PDF concatenated in a string;
-- words: each word from the PDF is extracted separately in a list of JSONs, each with details such as: ID, row #, position, font etc.
+| Property | What it holds |
+| --- | --- |
+| `PageNumber` | The page number, from 1. |
+| `Text` | All the text of the page, as one string. |
+| `Words` | Every word of the page, ordered by row then left to right. |
 
-### How to configure the Extract Text action?
+Each word has `Id` (its number on the page), `Text`, `FontName`, `TextOrientation` and `Position`:
 
-1\.   Create a process and give it a name.
+| Position property | Meaning |
+| --- | --- |
+| `Xleft`, `Xright` | Left and right edge of the word. |
+| `Ytop`, `Ybottom`, `Ymid` | Top, bottom and middle height of the word. |
+| `Height` | `Ytop` minus `Ybottom`. |
+| `PageRow` | The row of the page the word sits on (1 is the top row). |
+| `PageRowWordOrder` | The word's place in its row, from the left. |
 
-2\.    Drag the **Extract Text&#x20;**&#x61;ction to the canvas and link it to the other actions.
+Positions are in PDF points (1/72 inch), measured from the **bottom-left** corner of the page: `Y` grows upwards, so a word near the top of the page has a large `Ytop`.
 
-![](/images/docs/P5KpDlU_XP23kSSOQbXra_image.png)
+## Example [#example]
+A PDF whose first page has the lines *Invoice INV-2026-001*, *Customer: ACME Ltd* and *Total 250 EUR* gives, for page 1 (first word only):
 
-3\. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
+```json
+{
+  "PageNumber": 1,
+  "Text": "Invoice INV-2026-001Customer: ACME LtdTotal 250 EUR",
+  "Words": [
+    {
+      "Id": 1, "Text": "Invoice", "FontName": "Helvetica", "TextOrientation": "Horizontal",
+      "Position": { "Xleft": 50, "Xright": 94.352, "Ytop": 790.052, "Ybottom": 780, "Ymid": 785.026,
+                    "Height": 10.052, "PageRow": 1, "PageRowWordOrder": 1 }
+    }
+  ]
+}
+```
 
-![](/images/docs/BZuC33OOaRG7ulz6dOIV__screenshot-2022-08-25-at-162830.png)
+## Good to know [#good-to-know]
+- In `Text`, lines can be joined without a space or line break (`…INV-2026-001Customer…`). When you need clean lines, rebuild them from `Words` using `PageRow`.
+- Only text stored as text in the PDF is read. A scanned page (an image) gives no words.
+- The input must have the `.pdf` extension, otherwise the step fails with `Input file extension should be '.pdf', found => …`.
+- Large PDFs produce large outputs; extract only what you need later with [Area Mapper](/how-to/area-mapper) or [Extract Objects](/how-to/extract-object).
 
-4\. Save, Validate and Run the process.
-
-6\. The process will ask for an input file (.pdf file).
-
-7\.  Click **Run.**
-
-8\. Click **Check Instance&#x20;**&#x74;o view the results.
-
-You will see the extracted text in Output variable.
-
-![](/images/docs/zLC1sXW_omdJ91iD0xO06_screenshot-2022-08-25-at-165307.png)
-
-Example:
-
-This is the PDF we used for this example:
-
-![](/images/docs/VjfU2IsHvUUQhx6_AOYg0_screenshot-2022-08-25-at-165440.png)
-
-This is a preview of the extracted text:
-
-![](/images/docs/nwVYu_WNWwK_TMwDU9v1e_screenshot-2022-08-25-at-165535.png)
-
-The result contains 2 parts:
-
-- text: all text from the PDF concatenated in a string;
-- words: each word from the PDF is extracted separately in a list of JSONs, each with details such as: ID, row #, position, font etc.
+## Related actions [#related-actions]
+- [Area Mapper](/how-to/area-mapper), [Select Pages](/how-to/select-pages), [PDF Is Valid](/how-to/pdf-is-valid)

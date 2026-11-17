@@ -1,8 +1,8 @@
 {
-  "title": "SQL Server",
+  "title": "SQL",
   "icon": "📁",
   "pages": [
-    "execute-query",
-    "execute-command"
+    "execute-command",
+    "execute-query"
   ]
 }

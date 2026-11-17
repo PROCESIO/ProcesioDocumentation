@@ -1,7 +1,44 @@
 ---
 title: "Read Files Content"
 icon: "📕"
-description: "Reads the content of one or more files into process variables."
+description: "Reads the content of several text files at once and returns one entry per file."
 ---
 
-🔜coming soon 🔜
+**Read Files Content** reads a list of files and gives you, for each file, its name, its type and its content as text. Use it when a user uploads several text, CSV, JSON or XML files and you want to process all of them in one step.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Documents** and pick **Read Files Content** (or type *Read Files Content* in the search box).
+
+![The Read Files Content action properties: Files, Encoding, Content and Errors](/images/docs/actions/documents-read-files-content/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Files** | Input | List of File | Yes | The files to read. |
+| **Encoding** | Input | Option | Yes | The character set the files were saved in. Default **UTF8**. Also: UTF32, ASCII, Unicode (UTF-16), BigEndianUnicode, Latin1 and Windows code pages 1250–1258. |
+| **Content** | Output | List | Yes | One entry per file that was read, with `name`, `mimeType` and `content`. |
+| **Errors** | Output | List | Yes | One entry per file that could not be read, with `name`, `mimeType`, `size` and `error`. Empty when every file was read. |
+
+## Example [#example]
+**Files** `hello.txt`, `data.json`, `people.csv`, Encoding UTF8 → **Content** (note the order):
+
+```json
+[
+  { "name": "people.csv", "content": "id,name\n1,Ana\n2,Bob\n", "mimeType": "text/csv" },
+  { "name": "hello.txt", "content": "Hello, PROCESIO!\nSecond line ăîș", "mimeType": "text/plain" },
+  { "name": "data.json", "content": "{\"name\":\"Ana\",\"age\":30}", "mimeType": "application/json" }
+]
+```
+
+**Errors** `[]`.
+
+## Good to know [#good-to-know]
+- The entries in **Content** are not guaranteed to be in the same order as **Files**. Use the `name` field to find a file, not its position.
+- One file that fails does not stop the step: it is reported in **Errors** and the other files are still read.
+- The action is meant for text formats (TXT, CSV, JSON, XML, HTML). A binary file such as a PDF, a zip or an image is not reported as an error, but its **content** is unreadable text.
+- All files are read with the same **Encoding**.
+- To store the result in a variable, use a list of objects, or a data model with the fields `name`, `mimeType` and `content`.
+- For one file, [File To String](/how-to/read-file) is simpler.
+
+## Related actions [#related-actions]
+- [File To String](/how-to/read-file), [Unzip](/how-to/unzip), [File To Base64](/how-to/file-to-base64)

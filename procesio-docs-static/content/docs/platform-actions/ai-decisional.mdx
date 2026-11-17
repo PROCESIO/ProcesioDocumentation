@@ -242,7 +242,7 @@ Variables are resolved before the action executes. Only variables that you expli
 
 If a variable inside a condition resolves to empty or null, that case is treated as false and evaluation continues.
 
-## Timeout
+## Timeout (seconds)
 
 This field is required.
 
@@ -262,7 +262,7 @@ Timeout controls how long the action waits for the AI provider response. If the 
 
 ## LLM Response
 
-The LLMResponse output stores the AI Decisional result.
+The **LLM Response** output stores the AI Decisional result.
 
 It contains:
 
@@ -273,30 +273,30 @@ It contains:
 
 Example:
 
-> \&#123;
-> &#x20; "structured\_output": \&#123;
-> &#x20;   "results": \[
-> &#x20;     \&#123;
-> &#x20;       "case\_id": "1",
-> &#x20;       "is\_true": true,
-> &#x20;       "confidence": 0.92,
-> &#x20;       "explanation": "Customer is asking for a refund."
-> &#x20;     &#125;,
-> &#x20;     \&#123;
-> &#x20;       "case\_id": "2",
-> &#x20;       "is\_true": false,
-> &#x20;       "confidence": 0.41
-> &#x20;     &#125;
-> &#x20;   ]
-> &#x20; &#125;,
-> &#x20; "raw\_provider\_response": \&#123;
-> &#x20;   "provider\_specific\_payload": "..."
-> &#x20; &#125;
-> &#125;
+```json
+{
+  "structured_output": {
+    "results": [
+      {
+        "case_id": "1",
+        "is_true": true,
+        "confidence": 0.92,
+        "explanation": "Customer is asking for a refund."
+      },
+      {
+        "case_id": "2",
+        "is_true": false,
+        "confidence": 0.41
+      }
+    ]
+  },
+  "raw_provider_response": {
+    "provider_specific_payload": "..."
+  }
+}
+```
 
-The routing decision uses only:
-
-> is\_true
+The routing decision uses only `is_true`.
 
 The confidence and explanation fields are useful for testing and debugging, but they do not decide the final branch.
 

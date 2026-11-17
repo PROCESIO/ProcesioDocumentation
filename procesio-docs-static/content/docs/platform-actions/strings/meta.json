@@ -1,5 +1,5 @@
 {
-  "title": "Strings",
+  "title": "String",
   "icon": "📁",
   "pages": [
     "between",
@@ -14,14 +14,24 @@
     "starts-with",
     "split",
     "null-or-empty",
+    "string-join",
+    "string-get-index",
+    "string-contains",
+    "string-concatenate",
     "substing",
+    "string-length",
+    "take-from-middle",
+    "take-from-left",
+    "take-from-right",
     "take-form-left-mid-right",
     "to-title-case",
     "to-sentence-case",
-    "html-sanitizer",
+    "normalize-diacritics",
+    "---RegEx---",
     "regex-validate",
-    "regex-replace",
     "regex-extract",
+    "regex-replace",
+    "---URLs---",
     "url-encode",
     "url-decode"
   ]

@@ -1,10 +1,10 @@
 ---
 title: "Lists and Display rules inside custom actions"
 icon: "📒"
-description: "After creating the Class library (.Net 6) project and adding the Procesio NuGet package you will need to complete the two mandatory requirements in…"
+description: "The two things every custom action class needs, the IAction interface and property attributes, plus how lists and display rules work."
 ---
 
-After creating the Class library (.Net 6) project and adding the Procesio NuGet package you will need to complete the two mandatory requirements in order to implement your classes to become proper custom action.
+After creating the class library (.NET 8 or .NET 10) project and adding the Procesio NuGet package you will need to complete the two mandatory requirements in order to implement your classes to become proper custom action.
 
 - Inherit the **IAction** interface. This is mandatory because Procesio needs the Execute method in order to run your action within a flow. This is where you will add the logic of whatever behavior you need the action to have.
 - Use proper attributes for your properties to define what type and use they have within your new action. These attributes are necessary for Procesio to create the Action Template, which is like a contract used for the UI to dynamically interpret and display any type of provided action correctly within the platform.

@@ -55,7 +55,9 @@ If a process is **invalid**, you can still configure the schedule, however, it w
 **Start time** will reflect your local Time zone. You can only schedule processes to run on future dates and times. The days you pick (weekdays, day of the month) and the start time follow the time zone of your browser when you save the schedule. Schedules created before PROCESIO v2.0.7 keep the previous behaviour until you open them and save them again.
 </Callout>
 
-The **Run interval** dropdown menu will let you select how often your process will be run.
+Then choose how the schedule repeats: **Basic Recurrence** (the default, described below) or **Crontab**, for a crontab expression. See [Crontab recurrence](#crontab-recurrence).
+
+With **Basic Recurrence**, the **Run interval** dropdown menu will let you select how often your process will be run.
 
 - Once means that your process run will not be repeated – it will only run once, at the date and time you select, for example at the date and time of an upcoming meeting
 - Minutes runs your process every set number of minutes, for example every 15 minutes. 
@@ -75,6 +77,62 @@ Once the recurrence is configured, read the summary at the bottom and double-che
 
 <Callout type="info">
 We do not recommend a frequency lower than 5 minutes at this point.
+</Callout>
+
+### Crontab recurrence [#crontab-recurrence]
+
+Choose **Crontab** when the basic options can't express the timing you need, for example *"at 09:00 on weekdays"* or *"on the second Monday of every month"*.
+
+A crontab expression has five fields, each in its own box:
+
+| Field | Values |
+| --- | --- |
+| **Minute** | `0`–`59` |
+| **Hour** | `0`–`23` |
+| **Day** | `1`–`31` (day of the month) |
+| **Month** | `1`–`12`, or `JAN`–`DEC` |
+| **Weekday** | `0`–`7`, or `SUN`–`SAT`. Both `0` and `7` mean Sunday. |
+
+Each field starts as `*` (any value), so a new expression is `* * * * *`, every minute. There is no field for seconds. If you paste a whole expression such as `0 9 * * MON-FRI` into one box, it is split across the boxes for you.
+
+You can combine values with these operators:
+
+| Operator | Meaning | Example |
+| --- | --- | --- |
+| `*` | any value | |
+| `,` | a list | `1,5,10` |
+| `-` | a range | `MON-FRI` |
+| `/` | a step | `*/15` |
+| `L` | last (Day and Weekday) | `L`, `FRIL` |
+| `W` | nearest weekday (Day only) | `15W` |
+| `#` | the nth weekday of the month (Weekday only) | `MON#2` |
+
+Some examples:
+
+| Expression | Runs |
+| --- | --- |
+| `0 9 * * *` | Every day at 09:00 |
+| `0 */6 * * *` | Every 6 hours |
+| `0 9 * * MON-FRI` | Weekdays at 09:00 |
+| `0 8 1 * *` | The first day of every month at 08:00 |
+| `0 18 L * *` | The last day of every month at 18:00 |
+| `0 9 LW * *` | The last weekday of every month at 09:00 |
+| `0 10 * * MON#2` | The second Monday of every month at 10:00 |
+
+<Callout type="warn">
+**Day and Weekday combine with AND.** When you set both, the schedule runs only on days that match both: `0 0 13 * FRI` runs only on a Friday the 13th, and `0 0 29 2 MON` only when 29 February is a Monday. Some other crontab tools treat this as OR, so check the preview.
+</Callout>
+
+As you type, PROCESIO checks the expression. A valid expression shows a short description and a list of the **next 5 occurrences**, in the schedule's time zone. An invalid one shows what is wrong. If the expression is valid but never runs, for example `0 0 30 2 *` (30 February), or the end date is already in the past, you see *"No upcoming runs"*. You can't save the schedule while the expression is invalid, still being checked, or has no upcoming runs. Open **Syntax help** above the boxes for the format, the operators and these examples.
+
+![The Create Schedule panel with Crontab selected: the expression 0 8 * * 1-5 split into the Minute, Hour, Day, Month and Weekday boxes, the description "At 08:00 AM, Monday through Friday" and the next 5 occurrences](/images/docs/schedules/crontab-recurrence.png)
+
+**Time zone.** A new crontab schedule uses the time zone of your browser, shown above the occurrence list. When you edit a schedule that was created in another time zone, a message tells you so, and the schedule keeps its original time zone when you save it.
+
+The **Start on** date and **Date to end schedule** also apply to a crontab schedule: no run happens before the start or after the end.
+
+<Callout type="info">
+If you switch an existing schedule between **Basic Recurrence** and **Crontab**, saving replaces its previous recurrence settings. A message warns you before you save.
 </Callout>
 
 **Step 7:&#xA0;**&#x4E;otifications

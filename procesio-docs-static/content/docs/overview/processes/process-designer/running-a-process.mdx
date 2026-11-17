@@ -1,72 +1,147 @@
 ---
-title: "Running a process"
+title: "Process runs and history"
 icon: "📘"
-description: "When you build a new process, the Run button is disabled unless the process is both saved and valid.&x20;"
+description: "Run a process, follow its runs in the Recent and History lists, filter them, open a run's details, and restore a process from the version a run used."
 ---
 
-When you build a new process, the **Run** button is disabled unless the process is both **saved** and **valid**.&#x20;
+Every time a process runs, PROCESIO records the run (an **instance**). This page explains how to start a run, where to find your runs, how to read a run's details, and how to bring back the version of the process that a run used.
 
-**Running a process**
+## Run a process [#run-a-process]
 
-There are currently three ways to run your process:
+The **Run** button is available only when the process is **saved**, **valid** and **active**.
 
-- &#x20;From the Topbar, by pressing  the **Run** button.
+You can start a run in three ways:
+
+- From the Process Designer topbar, with the **Run** button.
 
 ![](/images/docs/Wwa1LMw9jxc5w2mRsQbLa_one.png)
 
-- From the Validation confirmation message by pressing the **Run process** button.
+- From the validation message, with the **Run process** button.
 
 ![](/images/docs/5Ma1xH11bS-MWjk2LzSNz_three.png)
 
-- From the process list, in **Process Designer**.
+- From the process list in **Process Designer**.
 
 ![](/images/docs/1dH8v4g0YEHVhp5pWLhfG_two.png)
 
-**Process flow without Input process variables**
+If the process has no **Input** variables, it starts as soon as you click **Run**.
 
-- If the process flow has no variable set as **Input**, the process flow will simply start running once you hit the **Run** button.
-
-**Process flow with Input process variables**
-
-- If the process flow has variables declared as **Input**, once you hit the **Run** button, a dialog will pop up requiring values for all **Input&#x20;**&#x76;ariables in order to initiate the process execution.
+If the process has **Input** variables, a dialog asks for their values first. Give each one a value of its own type: upload a file for a **File** variable, and write JSON for a **Data Model** variable. Then click **Run**.
 
 ![](/images/docs/yl6PErCnX91HuJ1EuVAtT_tdy.png)
 
-The values provided for the **Input** variables should be of the same type. This means that for **File** variables, you will have to upload files and for **Data Model** variables, you will be able to set values using JSON.
+Processes can also be started by a [schedule](/schedules), a [webhook](/webhooks), a form, the [API](/api-keys), or another process (see [Call Subprocess](/how-to/call-subprocess)). All of these runs appear in the same lists.
 
-Once you fill in the values, hit the **Run&#x20;**&#x62;utton so that the dialog closes and the process flow starts running.&#x20;
+## Open the runs of a process [#open-the-runs]
 
-### **Process instances&#xA0;**
+- When a run you started completes, a message appears. Click **Check instances** in it.
+- Or, in the Process Designer, open the menu next to the process name and choose **View Instances**.
 
-When you hit the **Run** button, a notification will be shown that the process completed.
+The **Instances** page has two tabs:
 
-![](/images/docs/56O4x91YVaGhUMiFW_SFL_processcompleted.png)
+| Tab | What it shows |
+| --- | --- |
+| **Recent** | The latest runs, including the ones that are still running or waiting. |
+| **History** | Finished runs. A finished run moves from **Recent** to **History** automatically, a few minutes after it ends. |
 
-- Click on **Check instances** to go to instances details. 
+If **Recent** is empty, it says *"There are no recent instances. Check the History tab."* Use the refresh icon next to the tabs (**Update instance list**) to reload the list.
 
-OR
+![The Instances page on the Recent tab with a run listed and the Filter by status list open](/images/docs/process-runs/instances-recent.png)
 
-- Click on the contextual menu from the Process Designer and go to **View Instances**:
+### The run list [#the-run-list]
 
-![](/images/docs/g4nd6zLs7d5Fp_dTn3X6s_screenshot-2022-05-31-at-195232.png)
+Each row is one run:
 
-In the **Instances** page, you will see all the instances generated for each run of the process, with each having details like: 
+| Column | What it shows |
+| --- | --- |
+| **INSTANCE ID** | The unique ID of the run. Click it to expand the row and see the run's **Input** and **Output** variables. |
+| **PROCESSING TIME** | How long the run's actions took. |
+| **ACTION RUNS** | How many actions ran. |
+| **STARTED ON** | When the run started. |
+| **LAST UPDATE** | When the run last changed. |
+| **SUBMITTED BY** | Who or what started the run: a user's name, or `Schedule: <name>`, `Webhook: <name>` or `Form: <name>`. |
+| **STATUS** | The run's status (see below). |
 
-- **Instance Id**: for every new run, a new instance of the process is created with a unique id;
-- **Actions consumed**: the number of actions that were used for that run of the process;
-- **Started on**: the date when the process was initiated by the user (when the instance was created);
-- **Last updated**: when the last action within the process was processed; 
-- **Submitted by**: username of the person who launched the process;
-- **Status**: the current status of the process
+At the end of each row:
 
-![](/images/docs/-iXqAhiSmwmL_t45mBFMW_screenshot-2022-05-31-at-195609.png)
+- **Stop instance** (while the run is still running). See [Stop a running process](/stop-a-running-process).
+- **Run instance with same input parameters** starts a new run with the same input values.
+- **Refresh instance** (while the run is still running) reloads its status.
+- **Show details** opens the run's details.
 
-Click on an instance to expand and view **Input&#x20;**&#x61;nd **Output&#x20;**&#x76;ariables (if any were declared)
+### Run statuses [#run-statuses]
 
-![](/images/docs/lTs6_waU36cVle59bet1u_screenshot-2022-05-31-at-195736.png)
+| Status | Meaning |
+| --- | --- |
+| **queued** | The run is waiting for a free slot to start. |
+| **starting** | The run is being prepared. |
+| **running** | The run is in progress. |
+| **debugger paused** | The run is paused at a breakpoint. See [Debug a process](/debug-a-process). |
+| **success** | The run finished. |
+| **failed** | An action failed and the run stopped. |
+| **stopped** | A user stopped the run. |
 
-Click on **Show details&#x20;**&#x74;o access the **Instance View** to see the instance and the state of each action.
+## Filter the runs [#filter-the-runs]
 
-In the **Instance View**, click on an **action&#x20;**&#x74;o view details about it: status, started on, when it was last updated, input and output process variables' values if there were any declared for the process.&#x20;
+- On **Recent**, use **Filter by status** to show only runs with one or more statuses.
+- On **History**, use **Filter by date interval**. You can pick **Last hour**, **Last 24 hours**, **Last 3 days**, **Last 7 days**, **Last 30 days**, **This month**, **This quarter**, **This year**, **Last month**, **Last quarter**, **Last 3 months**, **Last 6 months**, **Last year**, or **Select a month...** to choose one month.
 
-![](/images/docs/O1Mk5dIVkyjsHDVLRd0KM_runprocessdemo.png)
+![The History tab of the Instances page with the date interval list open](/images/docs/process-runs/instances-history-filter.png)
+
+## Read a run's details [#run-details]
+
+Click **Show details** on a run. The page shows the process as it was when it ran, with the state of each action. The action that is running right now is highlighted, so you can follow a run while it is in progress.
+
+![The run details page with Back to edit mode, Restore process and Run in the top bar, an action selected and the General tab open](/images/docs/process-runs/run-details.png)
+
+The panel on the right has three tabs.
+
+**General.** With no action selected, it shows **INSTANCE ID**, **START TIME**, **LAST UPDATE**, **SUBMITTED BY**, **SCHEDULE NAME**, **WEBHOOK NAME**, **FORM NAME**, **PROCESSING TIME** and **ACTION RUNS**. Click the **ACTION RUNS** number to see the runs per action. If the run had errors, they are listed under **Action errors**.
+
+**Variables.** With no action selected, it lists the run's variables in three groups: **Input**, **Internal** and **Output**. Use the search box and the **Filter by** check boxes to narrow the list.
+
+**Data retention.** Here you can delete the data of this one run with **Delete data of the instance**. See [Data retention](/data-retention).
+
+Click an action on the canvas to see its own status, its error message if it failed, and the variables it used. An action that was [disabled](/save-action-as-a-template) is greyed out and marked **skipped**.
+
+While the run is still in progress, the panel also has **Refresh instance** and **Stop instance** buttons.
+
+From the topbar of the details page you can:
+
+- go back to the process with **Back to edit mode**;
+- start a new run from the **Run** menu: **Run with same input parameters**, **Run in debug mode**, or **Run in debug mode with same input parameters**;
+- restore the process from this run (see below).
+
+### Open a subprocess run [#subprocess-runs]
+
+If the process uses [Call Subprocess](/how-to/call-subprocess), you can open the runs it started:
+
+1. Click the **Call Subprocess** step, then the **General** tab.
+2. Under **SUBPROCESS INSTANCE**, click the run ID. The subprocess run opens in a new browser tab.
+
+You can also double-click the step. If the step ran several times, for example inside a **For Each**, the tab shows **SUBPROCESS INSTANCES** with a numbered list in the order the runs started, and double-clicking the step opens a **Subprocess instances** list to pick from.
+
+![The run details of a parent process with the subprocess run shown as a link](/images/docs/auto-variables/instance-view.png)
+
+Values that PROCESIO records for its own use while a step runs, such as the ID of the subprocess run, are not listed with the variables. The subprocess link is where you find them.
+
+## Restore a process from a run [#restore-from-a-run]
+
+A run keeps the version of the process it ran with. If you changed the process since then and want that version back:
+
+1. Open the run with **Show details**.
+2. Click **Restore process** in the topbar.
+3. Confirm the dialog *"Restore process from the instance version?"*.
+
+<Callout type="warn">
+The current version of the process is replaced by the run's version, and this can't be undone. If you may need the current version later, copy or export the process first.
+</Callout>
+
+You need permission to run processes to see **Restore process**. See [User Permissions and Roles Management](/user-permissions-and-roles-management).
+
+## Related [#related]
+
+- [Debug a process](/debug-a-process)
+- [Stop a running process](/stop-a-running-process)
+- [Data retention](/data-retention)
+- [Process settings](/process-settings)

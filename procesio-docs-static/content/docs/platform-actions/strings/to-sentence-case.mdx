@@ -1,7 +1,33 @@
 ---
 title: "To Sentence Case"
 icon: "📕"
-description: "Converts a text to sentence case."
+description: "Capitalizes the first letter of every sentence in a text."
 ---
 
-coming soon 🔜
+**To Sentence Case** makes the first letter of every sentence uppercase. A new sentence starts after a `.`, `!` or `?`. Use it to tidy up text typed without capitals before you put it in an email or a document.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **To Sentence Case** (or type *To Sentence Case* in the search box).
+
+![The To Sentence Case action properties: Input String and Result](/images/docs/actions/string-to-sentence-case/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input String** | Input | Text | Yes | The text to convert. |
+| **Result** | Output | Text | Yes | The text with the first letter of each sentence in uppercase. |
+
+## Example [#example]
+| Input String | Result |
+| --- | --- |
+| `hello there. how are you? fine! ok` | `Hello there. How are you? Fine! Ok` |
+| `hELLO WORLD. 3 apples. ştiu.` | `HELLO WORLD. 3 Apples. Ştiu.` |
+
+## Good to know [#good-to-know]
+- **Only the first letter of each sentence changes.** Other letters keep their case, so `hELLO WORLD` becomes `HELLO WORLD`, not `Hello world`. Run the text through [To Lower](/how-to/to-lower) first if you want the rest in lowercase.
+- Digits and symbols are skipped: in `3 apples` the first *letter*, `a`, is capitalized.
+- Every `.` starts a new sentence, including the dot in an abbreviation or a decimal number.
+- An empty input gives an empty result.
+
+## Related actions [#related-actions]
+- [To Title Case](/how-to/to-title-case), [To Upper](/how-to/to-upper), [To Lower](/how-to/to-lower)

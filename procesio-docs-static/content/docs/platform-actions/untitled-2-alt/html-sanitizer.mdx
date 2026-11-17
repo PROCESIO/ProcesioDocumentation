@@ -1,0 +1,36 @@
+---
+title: "HTML Sanitizer"
+icon: "📕"
+description: "Removes scripts, event handlers and other unsafe content from HTML to prevent HTML injection, and can encode the result."
+---
+
+The **Sanitizer** action in the **HTML** folder cleans an HTML text that comes from outside, such as a form field, an email or an API, before you show it, store it or put it in a document. Scripts, event-handler attributes such as `onclick` and other unsafe content are removed; safe formatting such as `<p>` and `<b>` is kept.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **HTML** and pick **Sanitizer** (or type *Sanitizer* in the search box).
+
+![The Sanitizer action properties: HTML string to sanitize, Encode the result ? and Sanitized string](/images/docs/actions/html-sanitizer/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **HTML string to sanitize** | Input | Text | Yes | The HTML to clean. |
+| **Encode the result ?** | Input | Boolean (true/false) | No | Off (default): the output is clean HTML. On: the clean HTML is also encoded, so `<` becomes `&lt;`, `>` becomes `&gt;` and so on, and it shows as text instead of being rendered. |
+| **Sanitized string** | Output | Text | No | The cleaned (and, if chosen, encoded) HTML. |
+
+## Example [#example]
+**HTML string to sanitize** `<p onclick="steal()">Hi <b>there</b></p><script>alert(1)</script>`:
+
+| Encode the result ? | Sanitized string |
+| --- | --- |
+| off | `<p>Hi <b>there</b></p>` |
+| on | `&lt;p&gt;Hi &lt;b&gt;there&lt;/b&gt;&lt;/p&gt;` |
+
+## Good to know [#good-to-know]
+- Encoding is applied **after** cleaning, so the encoded result never contains the removed script.
+- Use the encoded result when the HTML must be displayed as literal text (for example inside another HTML page); use the plain result when it must render as formatted content.
+- An empty input returns an empty result; the step does not fail.
+- [HTML To PDF](/how-to/html-to-pdf) also removes scripts on its own before rendering.
+
+## Related actions [#related-actions]
+- [HTML Is Valid](/how-to/html-is-valid), [HTML Manipulation](/how-to/html-manipulation), [HTML To PDF](/how-to/html-to-pdf)

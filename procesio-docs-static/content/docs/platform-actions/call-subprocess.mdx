@@ -6,23 +6,23 @@ description: "The Call subprocess action enables users to use existing processes
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/VXBFHOxwqgc" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-The **Call subprocess** action enables users to use existing processes inside another process (parent process). When a parent process calls a subprocess (a child process), it executes in a sequential manner. Once the child process completes, the execution control is then transferred to the main parent process. 
+The **Call subprocess** action enables users to use existing processes inside another process (parent process). When a parent process calls a subprocess (a child process), it executes in a sequential manner. Once the child process completes, the execution control is then transferred to the main parent process.
 
 ## How to configure the Call Subprocess action?
 
 Go to the Process Designers section and open a new or an existing process. Actions configuration can be performed once they are dragged and dropped on canvas.
 
-![](/images/docs/4YthgbpuWPhtMBt2VJcCF_image.png)
+![The Call Subprocess action properties: Select Subprocess and the Subprocess Configuration card](/images/docs/actions/call-subprocess/panel.png)
 
-**&#x20; Step 1.**    Drag the **Call Subprocess** action from Toolbar and drop it on canvas; click on the action to open the **Properties Panel**.
+**Step 1.** Drag the **Call Subprocess** action from Toolbar and drop it on canvas; click on the action to open the **Properties Panel**.
 
-**&#x20; Step 2.  &#x20;**&#xA0;You can edit the Action Name.
+**Step 2.** You can edit the Action Name.
 
-**&#x20; Step 3.  &#x20;**&#x20;Select the Subprocess from a list of processes from your account.
+**Step 3.** Select the Subprocess from a list of processes from your account.
 
 ![](/images/docs/TG6pjNFqzp1_kuk0Q7sqH_selectsub.png)
 
-**&#x20;  Step 4.  &#x20;**&#x20;Click on the **Subprocess configuration** card to go to the next configuration steps.
+**Step 4.** Click on the **Subprocess configuration** card to go to the next configuration steps.
 
 ![](/images/docs/MjmBXGC3l7TjcJaRaqt0b_subconf.png)
 
@@ -30,21 +30,21 @@ Go to the Process Designers section and open a new or an existing process. Actio
 If the process (that is being called as a subprocess) has input and/or output process variables defined at process level, in the next step you must map the parent process variables to the child process variables (and/or vice-versa). This way, when the child process (subprocess) is executed, you ensure that data passes from the parent process to the subprocess (as input) and back to the parent process (as output).
 </Callout>
 
-**&#x20; Step 5.   &#x20;**&#x4D;apping input/output process variables
+**Step 5.** Mapping input/output process variables
 
 Mapping all subprocess inputs and/or outputs to the parent's process variables is not mandatory.
 
-1. **Input variables**: 
+1. **Input variables**:
    - you can map a parent process variable to subprocess input variables so that when the action is executed, data passes from the parent process to the subprocess.
-   - press **+Add subprocess input** and the selector will open displaying the subprocess input variables (if the subprocess has any input variables defined); 
+   - press **+Add subprocess input** and the selector will open displaying the subprocess input variables (if the subprocess has any input variables defined);
    - on the left side, map it to a process variable coming from the parent process or give a default value (as applicable).
-2. **Output variables**: 
+2. **Output variables**:
 
-- you can map a subprocess output variable to the parent process variable so that when the action is executed, data passes from the subprocess back to the parent process.
-- press **+Add subprocess output** and the selector will open displaying the subprocess output variables (if the subprocess has any output process variables defined); 
+- you can map a subprocess output variable to the parent process variable so that when the action is executed, data passes from the subprocess back to the parent process.
+- press **+Add subprocess output** and the selector will open displaying the subprocess output variables (if the subprocess has any output process variables defined);
 - on the left side, map it to a parent process variable.
 
-**For more details please check the below example:&#xA0;**
+**For more details please check the below example:**
 
 Possible use case: A small shop keeps daily files with products sold and they want to send email confirmations to their customers. Instead of manually typing and sending a personal email to each customer, a one-time configuration of a process may help with automating this daily task. By simply running and uploading the daily file they have.
 
@@ -56,13 +56,13 @@ We have created 2 flows for our example.
 
 ### Create the subprocess
 
-**1.** **Send email - template for customers**: includes a **Send email** action configured which will send out emails to customers. This way you will not need to configure from scratch an action (or an entire process) that you may re-use. Simply by calling it in a **Call subprocess** action. This is the child process. The child process will look like this:
+**1.** **Send email - template for customers**: includes a **Send email** action configured which will send out emails to customers. This way you will not need to configure from scratch an action (or an entire process) that you may re-use. Simply by calling it in a **Call subprocess** action. This is the child process. The child process will look like this:
 
 ![](/images/docs/-DicfFz1QOryoYED-JhGA_screenshot-2022-06-02-at-164905.png)
 
-To configure &#x61;**&#x20;Send email** action you may check [Send email action](/docs/platform-actions/call-api/send-email) article.
+To configure a **Send email** action you may check [Send email action](/how-to/send-email) article.
 
-The child process uses a process variable named **inputdata**. Inputdata is a data model with 4 attributes: to, subject, bodyDetails1, bodyDetails2.
+The child process uses a process variable named **inputdata**. Inputdata is a data model with 4 attributes: to, subject, bodyDetails1, bodyDetails2.
 
 ![](/images/docs/tnxL5BsJH8llCZC9-uO-C_screenshot-2022-06-02-at-165619.png)
 
@@ -72,20 +72,20 @@ These attributes used in the configuration of the Send Email action will receive
 
 ### **Create the main process**
 
-**2. Notify clients based on daily files**: Gets data (related to customers and products they ordered) from the external .xls file and, for each entry in the file, will send confirmation emails to customers in the file, with details related to their order. Let's call this the parent process. The parent process will look like this:
+**2. Notify clients based on daily files**: Gets data (related to customers and products they ordered) from the external .xls file and, for each entry in the file, will send confirmation emails to customers in the file, with details related to their order. Let's call this the parent process. The parent process will look like this:
 
 ![](/images/docs/23-5851hs1wsJiIKAdUcO_screenshot-2022-06-02-at-165855.png)
 
 
 
-To configure the **Get File Data** action you may check the [Get File Data](/docs/platform-actions/call-api/get-file-data) article. 
+To configure the **Get File Data** action you may check the [Get File Data](/how-to/get-file-data) article.
 
 Two process variables were created:
 
 ![](/images/docs/KwR-Rl75pVdWAMxDQFtNj_screenshot-2022-06-02-at-170048.png)
 
-- **<span style={{color:'#1679e1'}}>getProducts</span>&#x20;**(type **list** of `orderedProducts`); data model that matches the structure of the excel file that will capture the data from the file at runtime.
-- **productsList&#x20;**(type file; set as Input) that will fetch the file details at runtime.
+- **getProducts** (type **list** of `orderedProducts`); data model that matches the structure of the excel file that will capture the data from the file at runtime.
+- **productsList** (type file; set as Input) that will fetch the file details at runtime.
 
 In **Get File Data**, configure the **Configuration panel** as follows:
 
@@ -93,24 +93,24 @@ In **Get File Data**, configure the **Configuration panel** as follows:
 
 ![](/images/docs/T8BZrOy3XsD0M9HvUzBNW_screenshot-2022-06-02-at-170757.png)
 
-Next, in order to ensure that a separate email is sent to every entry in the file, a ForEach action is needed. Check [For Each](/docs/platform-actions/call-api/for-each) article for configuration details.
+Next, in order to ensure that a separate email is sent to every entry in the file, a ForEach action is needed. Check [For Each](/how-to/for-each) article for configuration details.
 
-1. Select the list to iterate through, i.e. <span style={{color:'#1679e1'}}>getProducts</span>``
-2. Set the <span style={{color:'#2166ae'}}>iterator</span> name (you can name it <span style={{color:'#2166ae'}}>iterator</span> etc)
+1. Select the list to iterate through, i.e. `getProducts`
+2. Set the iterator name (you can name it iterator etc)
 
 ![](/images/docs/aZ_SS0KCQ97mhlgrQP5Q6_screenshot-2022-06-02-at-172034.png)
 
 Now let's configure the Call subprocess action:
 
-**Step1**: Click on the action and the Properties Panel will open. 
+**Step1**: Click on the action and the Properties Panel will open.
 
-**Step 2**: Select a process you want to you within the main process. In our case, the process that has the template for sending email action we earlier configured.
+**Step 2**: Select a process you want to you within the main process. In our case, the process that has the template for sending email action we earlier configured.
 
 ![](/images/docs/4NRA0PLO6K3nkMtuMMwN-_screenshot-2022-06-02-at-171333.png)
 
-**Step 3**: click on the Subprocess configuration card to move to the next configuration steps.
+**Step 3**: click on the Subprocess configuration card to move to the next configuration steps.
 
-**Step 4**: To ensure that data is passed from the parent process (from the file) to the child process, you need to perform the data mapping for input and/or output process variables.
+**Step 4**: To ensure that data is passed from the parent process (from the file) to the child process, you need to perform the data mapping for input and/or output process variables.
 
 In our case, the process has no output variable as the only output of the process will be actually sending out the emails to the customers.
 
@@ -119,12 +119,12 @@ Mapping the subprocess input variables to variables coming from the process is i
 The elements that are used in the Send email configuration in the child process (To, Subject, bodyDetails1, bodyDetails2) will receive data from the file (customeremail, orderid, productordered, totalAmountInvoice|)
 
 <Callout type="info">
-As our action is inside a foreach border, use the <span style={{color:'#2166ae'}}>iterator</span>'s attributes when mapping the data, not the attributes of the data model that captures the data from the file.
+As our action is inside a foreach border, use the iterator's attributes when mapping the data, not the attributes of the data model that captures the data from the file.
 </Callout>
 
 ![](/images/docs/bPUrDjJIY3JloeAp2072t_screenshot-2022-06-02-at-171908.png)
 
-**Step 5**: **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he Process. Upload the .xls file and click Run. 
+**Step 5**: **Save**, **Validate** and **Run** the Process. Upload the .xls file and click Run.
 
 This is one sample of an email sent.
 
@@ -149,3 +149,12 @@ The links stay available after the run has finished, after it moves to the run h
 <Callout type="info">
 This works for runs started from PROCESIO v2.0.7 onwards, and for the **Call Subprocess** action only. **Trigger Subprocess** doesn't show links to the runs it starts.
 </Callout>
+
+## Good to know [#good-to-know]
+- **The parent waits.** The steps after Call Subprocess run only when the subprocess has finished; its output variables are then copied into the parent's variables. To start a subprocess without waiting, use [Trigger Subprocess](/how-to/trigger-subprocess).
+- **If the subprocess fails**, the Call Subprocess step fails with the error of the step that failed in the subprocess. If a user stops the subprocess, the step fails with *"The child flow was stopped by user."*
+- **Select Subprocess** lists the processes of your workspace.
+- Call Subprocess cannot be run with **Test Action**; run the whole process to try it.
+
+## Related actions [#related-actions]
+- [Trigger Subprocess](/how-to/trigger-subprocess), [Get Instance Outputs](/how-to/get-instance-outputs), [Get Recent Instances](/how-to/get-recent-instances), [Count Recent Instances](/how-to/count-recent-instances)

@@ -1,7 +1,44 @@
 ---
 title: "List Objects"
 icon: "📕"
-description: "Lists the objects in an S3 bucket together with their metadata."
+description: "Lists the objects in an Amazon S3 bucket with their details (key, size, last modified date), optionally only under a prefix."
 ---
 
-Coming soon 🔜
+**List Objects** returns the objects in an Amazon S3 bucket together with their details, such as key, size and last modified date. Use it when you need more than the names, for example to pick only the files changed today. If you only need the names, [List Keys](/how-to/list-keys) is simpler.
+
+## Before you start [#before-you-start]
+The AWS S3 actions don't use a stored credential. Each action has the same four connection fields:
+
+| Field | Type | Required | What to put |
+| --- | --- | --- | --- |
+| **Access Key** | Text | Yes | The access key ID of an AWS IAM user, for example `AKIA…`. |
+| **Secret Key** | Text | Yes | The secret access key that belongs to that access key. |
+| **Region** | Text | Yes | The AWS region of the bucket, as its code, for example `eu-central-1`. |
+| **Bucket** | Text | Yes | The bucket name, for example `my-company-invoices`. |
+
+The IAM user needs S3 permissions on the bucket for the operation you run. The values you type are visible to everyone who can edit the process, so prefer an IAM user limited to the buckets the process needs.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **AWS S3** and pick **List Objects** (or type *List Objects* in the search box).
+
+![The List Objects action properties: Access Key, Secret Key, Region, Bucket, Prefix and Result](/images/docs/actions/aws-s3-list-objects/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Access Key**, **Secret Key**, **Region**, **Bucket** | Input | Text | Yes | The connection fields described above. |
+| **Prefix** | Input | Text | No | Only objects whose key starts with this text are listed, for example `invoices/2026/`. Leave empty to list the whole bucket. |
+| **Result** | Output | Object (JSON) | Yes | The S3 listing: the bucket name, the prefix, and the list of objects with, for each one, its key, size, last modified date, ETag and storage class. |
+
+## Example [#example]
+**Prefix** `invoices/2026/` → **Result** is a JSON object whose list of objects holds one entry per object under `invoices/2026/`. Read the list from it with a JSON action, then loop over it.
+
+## Good to know [#good-to-know]
+- **Result** is the whole listing as one JSON object, not a list. Extract the list of objects from it before you loop.
+- The prefix matches the start of the key: `invoices` also matches `invoices-old/…`. End it with `/` to list one folder only.
+- One run returns at most 1,000 objects (one S3 listing page). Use a more specific prefix on large buckets.
+- If a connection field is empty, the step fails with *"Invalid connection details."*
+- Common errors from S3: *"Access forbidden! Ensure the connection details are valid."* (wrong keys or missing permission), *"Unable to connect! Ensure the provided region matches the bucket one."* (wrong **Region**), and *"Unrecognized Amazon Region: …"* (a region code that doesn't exist).
+
+## Related actions [#related-actions]
+- [List Keys](/how-to/list-keys), [Get Metadata](/how-to/get-metadata), [Get Object](/how-to/get-object)

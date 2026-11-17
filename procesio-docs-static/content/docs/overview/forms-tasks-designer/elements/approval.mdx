@@ -1,6 +1,6 @@
 ---
 title: "Approval"
-description: "The Approval element is a purpose-built control for formalizing review decisions within Procesio Forms. It presents the reviewer with a clear Approve…"
+description: "The Approval element lets a reviewer approve or reject a form, with an optional or required comment, and runs events before and after the decision."
 ---
 
 The Approval element is a purpose-built control for formalizing review decisions within Procesio Forms. It presents the reviewer with a clear Approve / Reject action pair and optionally requires them to leave a comment before their decision is recorded — enforcing accountability and audit-readiness in approval workflows.
@@ -36,12 +36,40 @@ Comment requirements can be made conditional per outcome — you can require a j
 | visible                    | Controls element visibility                          | boolean            | true    | —               |
 | comment                    | The reviewer's written comment — readable at runtime | string             | —       | —               |
 | responsedate               | Timestamp of when the decision was made              | string\|date\|null | —       | —               |
-| responseuser               | The user who made the decision (id, name, email)     | object\|null       | —       | —               |
-| response                   | The decision outcome — Approve or Reject             | string\|null       | —       | approve, reject |
+| responseuser               | The user who made the decision (id, name)            | object\|null       | —       | —               |
+| response                   | The decision outcome — Approve or Reject             | string\|null       | —       | `APPROVE`, `REJECT` |
 | name                       | Unique element name                                  | string             | —       | —               |
 | id                         | Unique element ID                                    | string             | —       | —               |
 | iscommentrequiredonapprove | Forces a comment when approving                      | boolean            | false   | —               |
 | iscommentrequiredonreject  | Forces a comment when rejecting                      | boolean            | false   | —               |
-|                            |                                                      |                    |         |                 |
+
+
+## Comments [#comments]
+
+The reviewer sees a comment box above **Approve** and **Reject**. Its placeholder says whether a comment is needed: *(required)*, *(required on approve)*, *(required on reject)* or *(optional)*. While a required comment is missing, the matching button is disabled, and hovering it shows *"Please make sure that required comment is set"*.
+
+## Events [#events]
+
+Open the element's **Events** group to run actions around the decision. The Approval element has seven events:
+
+| Event | When it runs |
+| --- | --- |
+| **onInput** | When the reviewer changes the comment. |
+| **onBeforeApprove** | After **Approve** is clicked, before the decision is saved. |
+| **onBeforeReject** | After **Reject** is clicked, before the decision is saved. |
+| **onBeforeSubmit** | After either button is clicked, before the decision is saved. It runs after **onBeforeApprove** or **onBeforeReject**. |
+| **onAfterApprove** | After an approval is saved. |
+| **onAfterReject** | After a rejection is saved. |
+| **onAfterSubmit** | After either decision is saved. |
+
+Values that the before events write into the form, for example with a data mapping or a process, are saved together with the decision.
+
+In the before and after events, `$event` holds the decision: `response` (`APPROVE` or `REJECT`), `comment`, `responseUser` (the reviewer's `id` and `name`) and `responseDate`. A script run by the event can read it. Processes and mappings can read the same decision values from the element itself.
+
+See [Trigger events for form and elements](/trigger-events-for-form-and-elements) for the actions an event can run.
+
+<Callout type="info">
+Forms saved before September 2025 have no event slots on their Approval elements. Open such a form in the Form Designer and publish it again to add them. Its approvals keep working without this step.
+</Callout>
 
 For support, please join our [Discord community](https://discord.com/invite/CEBuKgJefv) for further assistance and support.

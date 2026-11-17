@@ -5,7 +5,7 @@ description: "A table you define and fill inside a workspace — rows and column
 ---
 
 <Callout type="info">
-Behaviours in this guide were verified on 12 August 2026, and the column types, text matching, filter operators and API notes again on 23 October 2026. The screenshots come from the automated test suite, which is why the example stores are named `AUTO_DSACT_Store` and `AUTO_DOCS_Store`.
+Behaviours in this guide were verified on 12 August 2026, and the column types, text matching, filter operators and API notes again on 17 November 2026. The screenshots come from the automated test suite, which is why the example stores are named `AUTO_DSACT_Store` and `AUTO_DOCS_Store`.
 </Callout>
 
 ## What a Data Store is
@@ -59,12 +59,12 @@ Nine types are available. There is no separate Date, Time, Decimal or File type 
 | Type | Use it for | Worth knowing |
 |---|---|---|
 | `String` | Names, codes, notes, anything textual | Holds up to 65,535 bytes. Accented and non-Latin characters count for more than one byte each. |
-| `Integer` | Counts, quantities, whole numbers | 64-bit, whole numbers only. A value with decimals, such as `2.5`, is refused with a message that names the column; in a CSV import, that row goes to the failures file. If the fraction matters, use `Double`; if it doesn't, round deliberately before writing. |
+| `Integer` | Counts, quantities, whole numbers | 64-bit, so very large whole numbers are kept exactly. A number with decimals (`2.5`) is refused, with a message that names the column; in a CSV import, that row goes to the failures file. If the fraction matters, use `Double`; if it doesn't, round it before writing. |
 | `Double` | Prices, measurements, anything fractional | Standard 64-bit floating point. |
 | `Float` | — | Stored identically to `Double`. It does not save space or give you lower precision; prefer `Double` for clarity. |
-| `Boolean` | Yes/no flags | Write it as unquoted `true` / `false` — those two literals are accepted everywhere: adding rows, filtering, CSV. Numbers (`1`/`0`) and quoted text (`"true"`) are each accepted in some places and rejected in others, so don't rely on them. |
+| `Boolean` | Yes/no flags | `true` and `false` in any letter case, and `1` and `0`, are accepted when you add, update and filter rows, from a process, a form or the API. Any other number is refused with a message that names the column. |
 | `DateTime` | Dates and timestamps | Write as `2026-07-17T14:30:00`. A date alone (`2026-07-17`) works too and means midnight. A trailing `Z` is rejected by the rows API. |
-| `Guid` | Identifiers from other systems | A malformed identifier is refused with a message that names the column; in a CSV import, that row goes to the failures file. Letter case doesn't matter: values are stored in lower case, and a filter finds them whichever case you type. |
+| `Guid` | Identifiers from other systems | A malformed identifier is refused, with a message that names the column; in a CSV import, that row goes to the failures file. Letter case doesn't matter: values are stored in lower case, and a filter finds them whichever case you type. |
 | `Json` | Nested or variable structures | Stored as JSON. Structure round-trips, but key order and whitespace are normalised, so don't compare the raw text. If a key appears twice, the last one wins, and numbers may be rewritten (`1.10` becomes `1.1`). Empty text is saved as no value. |
 | `Object` | Same as `Json` | Stored the same way as `Json`. Unlike `Json`, it can be searched as text: see [Which operators you get](#which-operators-you-get). |
 
@@ -90,9 +90,9 @@ Which operators the menu offers depends on the column's type — text columns of
 
 *The filter menu on a DateTime column with its operator list open. Date columns take their value from a date picker plus a time picker — both matter, as explained below.*
 
-**Text matching ignores case and accents.** Searching `acme` finds `ACME` and `Acme`, and `cafe` finds `café`. Sorting ignores case too, so `apple` and `Apple` sort together rather than in separate blocks. Key columns follow the same rule: `Acme` and `ACME` count as the same key, so the second one is refused as a duplicate.
+**Text matching ignores case and accents.** Searching `acme` finds `ACME` and `Acme`, and `cafe` finds `café`. Sorting ignores case too, so `apple` and `Apple` sort together rather than in separate blocks. Key columns ignore case as well: `Acme` and `ACME` count as the same key, so the second one is refused as a duplicate.
 
-For now, spaces at the end of a value are ignored as well (`abc` finds `abc `), and all emoji count as the same character. Both will start to count in an upcoming release, so don't rely on either.
+Spaces at the end of a value do count: a filter for `abc` does not find `abc `, and `k` and `k ` are two different keys. Each emoji is its own character too, so `😀` does not find `🎉`.
 
 #### Filtering dates: pick a date and a time
 
@@ -141,6 +141,8 @@ Your edits are **collected, not saved one by one**. The **Commit Changes** butto
 <Callout type="warn">
 **Uncommitted edits are lost on navigation** — leaving the page, or switching back to Read-Only, without committing abandons the pending edits silently. If a row you "added" is missing later, this is almost always what happened: the commit step was skipped.
 </Callout>
+
+In number cells you can type decimals with a dot or a comma (`1234.5` or `1234,5`). A value the grid can't read as a number is highlighted and blocks the commit until you correct it, so it is never saved as a different value.
 
 Two details to know: a new row must respect the schema — required columns need a value, and the primary key must be unique — and a cell edit that violates a rule is reported when you commit, not while you type. If the Edit Mode switch is greyed out, your account lacks the Data Store rows permission — see [Who can see what](#who-can-see-what).
 
@@ -266,7 +268,7 @@ The list depends on the column's type:
 | `Boolean` | Is true · Is false · Equals · Does not equal · Belongs · Does not belong · Is empty · Is not empty |
 | `Guid` | Equals · Does not equal · Belongs · Does not belong · Is empty · Is not empty |
 | `Object` | Same as `String`. The text operators search the value as it is stored, with a space after `:` and `,` (`"a": 2`), and they match letter case exactly. |
-| `Json`, and any list column | Equals · Does not equal · Is empty · Is not empty |
+| `Json`, Data Model, and any list column | Equals · Does not equal · Is empty · Is not empty |
 
 #### Operators that need a particular kind of value
 
@@ -288,23 +290,19 @@ On these columns, **Equals** compares the whole value. For a list, give the comp
 
 There is no "the list contains this item" filter: a single item, such as `red`, never matches a list. If you need to search for one item, keep it in its own column.
 
-<Callout type="error">
-**Filtering a yes/no column** — use **Is true** and **Is false**. On current builds, *Equals true* in a process Where returns the rows where the value is *false* — and reports no error. This matters most on Update and Delete, where it would change the wrong records. (Filtering a yes/no column in the viewer or in a form is not affected.)
-</Callout>
-
 <Callout type="info">
 **Changing a condition's column** — to point an existing condition at a different column, delete the condition and add a fresh one. Re-picking a column on a condition that already has one *adds* a second operand instead of replacing the first, and the condition stops meaning what it reads as.
 </Callout>
 
 ## Using a Data Store in a form
 
-A form can read from and write to a Data Store through an **event**. The usual pattern is to show stored records in a table when the form opens; the same mechanism can add, update and delete records from the form's fields.
+A form can read from and write to a Data Store through an **event** with the action **Data store operation**. The usual pattern is to show stored records in a table when the form opens; the same mechanism can add, update and delete records from the form's fields. Its **Operation** list offers **Read**, **Add**, **Update**, **Delete** and **Execute query**; the last one runs an SQL query you write, across one or more Data Stores — see [Run a Data Store query](/run-data-store-query).
 
 ### Showing records in a table
 
 1. Add a **table** element to the form.
-2. On the form, add an event with the trigger **Form load** and the action **Run Data Store operation**.
-3. Choose the store and the operation **Read**.
+2. On the form, add an event with the trigger **onLoad** and the action **Data store operation**.
+3. In **Select data store**, choose the store, and in **Operation** choose **Read**.
 4. Map the returned `rows` to the table's value.
 
 A Read loads **page 1** with **1,000 records per page** by default. For a bigger store, raise *Records per page*, or better, add [row filters](#filtering-what-the-form-reads) so the form only loads what it shows.
@@ -315,7 +313,7 @@ A Read loads **page 1** with **1,000 records per page** by default. For a bigger
 
 ![A public PROCESIO form displaying Data Store records in a table](/images/docs/data-store/public-form-table.png)
 
-*A public form whose Form load event reads a Data Store into a table. The pager reports the number of records the read returned.*
+*A public form whose onLoad event reads a Data Store into a table. The pager reports the number of records the read returned.*
 
 ### Filtering what the form reads
 
@@ -325,9 +323,18 @@ A **Read** event doesn't have to load the whole store. Open the event's **Map da
 
 *The Row filters editor inside the event's mapping panel. It is the same condition builder the process designer uses, so the operators per column type match the Where tables above.*
 
-<Callout type="warn">
-**The same and-before-or rule applies — silently.** Row filters is a flat list with no brackets drawn, but mixed conditions still evaluate *and* pairs first. `City = Cluj` **or** `Qty > 50` **and** `Active is false` loads the Cluj rows *or* the (over-50 *and* inactive) rows — fewer than a left-to-right reading suggests, with no warning. When mixing *and* with *or*, put each *or* branch in its own group so the grouping is explicit.
-</Callout>
+#### How and and or combine [#row-filters-and-or]
+
+Row filters follow the same rule as the Where builder: **AND is evaluated before OR**. The panel says so in the note above the conditions, and it draws a **blue bracket** next to each run of conditions joined by AND whenever a list mixes AND and OR. A bracketed run counts as one condition.
+
+![Row filters with three conditions joined by OR and AND, the AND pair bracketed](/images/docs/data-store/form-row-filters-precedence.png)
+
+*`Status = Cancelled` **OR** `Amount > 1000` **AND** `Status = New`. The bracket covers conditions 2 and 3, so the event reads the cancelled orders, plus the new orders over 1000.*
+
+- When all joins are AND, or all are OR, no bracket is drawn: the order does not matter.
+- To group the conditions differently, for example (*Cancelled* **or** *over 1000*) **and** *New*, put the OR branch in its own group with **Add group**. A group is evaluated as one bracket.
+- The brackets follow your edits: switch a join between AND and OR, add or delete a condition, and they are redrawn.
+- The same note and brackets appear for the **Update** and **Delete** operations, and the brackets in an event's **Set condition** as well. **Add** and **Execute query** have no Row filters.
 
 <Callout type="error">
 **List operators in form Row filters** — avoid **Belongs** / **Does not belong** in this panel for now: a list authored here reaches the form wrapped the wrong way, so *belongs* shows no rows and *does not belong* shows everything. Use several *equals* conditions joined with *or* instead — same result, reliable.
@@ -353,7 +360,7 @@ Access to Data Stores is governed by workspace permissions, and viewing is separ
 
 ### My filter returns nothing, but I can see matching rows
 
-Check the operator and the value shape. On a **date** column, *equals* with only a date means midnight exactly — use *between* for a whole day. With *Like*, no wildcard means an exact match — add `%` (`%Pop%`), or use *Contains*. With *Belongs*, the value must be a JSON array such as `["A","B"]`. And on a yes/no column in a process Where, use *Is true* / *Is false* rather than *Equals*.
+Check the operator and the value shape. On a **date** column, *equals* with only a date means midnight exactly — use *between* for a whole day. With *Like*, no wildcard means an exact match — add `%` (`%Pop%`), or use *Contains*. With *Belongs*, the value must be a JSON array such as `["A","B"]`.
 
 ### My edits in the grid disappeared
 

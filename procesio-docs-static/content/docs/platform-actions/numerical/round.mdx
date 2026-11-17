@@ -1,0 +1,43 @@
+---
+title: "Round"
+icon: "📕"
+description: "Rounds a number to the number of decimal places you choose."
+---
+
+**Round** rounds a number to the nearest value with the number of decimal places you choose. Use it to show prices with two decimals, to round measurements, or to remove decimals altogether.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Numerical** and pick **Round** (or type *Round* in the search box).
+
+![The Round action properties: Input number, Input number of digits and Result](/images/docs/actions/numerical-round/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input number** | Input | Number (decimal) | Yes | The number to round. |
+| **Input number of digits** | Input | Integer | Yes | How many decimal places to keep. `0` gives a whole number. A negative value rounds to tens, hundreds… |
+| **Result** | Output | Number (decimal) | Yes | The rounded number. |
+
+## Example [#example]
+| Input number | Input number of digits | Result |
+| --- | --- | --- |
+| `3.14159` | `2` | `3.14` |
+| `-2.567` | `1` | `-2.6` |
+| `1234.5` | `-2` | `1200` |
+| `7` | `2` | `7` |
+| `2.5` | `0` | `2` |
+| `3.5` | `0` | `4` |
+| `-2.5` | `0` | `-2` |
+| `1.25` | `1` | `1.2` |
+| `1.005` | `2` | `1` |
+
+## Good to know [#good-to-know]
+<Callout type="warn">
+A number exactly halfway is rounded to the **even** neighbour ("banker's rounding"), not always up: `2.5` → `2`, `3.5` → `4`, `1.25` → `1.2`. If you need halves of positive numbers to always go up, add a tiny amount (for example `0.0000001`) with [Add](/how-to/add) before rounding.
+</Callout>
+
+- Some decimals cannot be stored exactly, so a value that looks like a half may be slightly below it: `1.005` to 2 digits gives `1`, not `1.01`.
+- **Result** has no trailing zeros: `7` with 2 digits stays `7`, not `7.00`. To show `7.00`, format the number as text when you display it.
+
+## Related actions [#related-actions]
+- [Round Up](/how-to/round-up), [Round Down](/how-to/round-down), [Divide](/how-to/divide)

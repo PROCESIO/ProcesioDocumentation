@@ -1,42 +1,75 @@
 ---
 title: "Read Range"
 icon: "📕"
-description: "Use this action to read values and formulas from a given excel range."
+description: "Reads the values and the formulas of a cell range from an Excel sheet."
 ---
 
-### Overview
+**Read Range** reads a block of cells from a sheet and gives you their values and their formulas as JSON. Use it to bring data from an uploaded spreadsheet into your process.
 
-Use this action to read values and formulas from a given excel range.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Read Range** (or type *Read Range* in the search box).
 
-### How to configure the Read Range action?
+![The Read Range action properties: Excel workbook, Sheet name, Range, Values and Formulas](/images/docs/actions/excel-read-range/panel.png)
 
-Step 1. Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Excel workbook** | Input | File | Yes | An `.xlsx` or `.xlsm` workbook. |
+| **Sheet name** | Input | Text | Yes | The sheet to read. |
+| **Range** | Input | Text | Yes | The cells to read, as `A1:D10` (upper-case column letters, start and end cell). |
+| **Values** | Output | Object (JSON) | No | The cell values. |
+| **Formulas** | Output | Object (JSON) | No | The formulas, with the same shape as **Values**. A cell without a formula gives `null`. |
 
-Step 2. Drag the **Read Range** action to the canvas and link it to the other actions.
+## The shape of the result [#result-shape]
+The shape depends on the range you read:
 
-![](/images/docs/sjS0KudHoViq3KRVYg4Jw_image.png)
+| Range | Shape of **Values** | Example |
+| --- | --- | --- |
+| Several rows and columns | A list of rows; each row is an object keyed by column letter | `[{"A":"Product","B":"Qty"},{"A":"Pen","B":2}]` |
+| One row | One object keyed by column letter | `{"B":2,"C":1.5,"D":3}` |
+| One column | A list of values | `["Pen","Book","Mug"]` |
 
-Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
+## Example [#example]
+Sheet *Orders*:
 
-![](/images/docs/XpT-r0wG7MJqW1iHZpdod_screenshot-2022-10-18-at-111711.png)
+| | A | B | C | D |
+| --- | --- | --- | --- | --- |
+| 1 | Product | Qty | Price | Total |
+| 2 | Pen | 2 | 1.5 | =B2\*C2 (shows 3) |
+| 3 | Book | 1 | 12 | =B3\*C3 (shows 12) |
 
-- **Excel workbook**: you need to input the file with the workbook where range will be read from
-- **Sheet name**: you need to input a string with the sheet name from the workbook where the range will be read from
-- **Range**: you need to input a string with the range of cells to read from
-- **Values**: Json output which contains the read value(s)
+Range `A1:D3` →
 
-![](/images/docs/ZAHFJ9OafUtJaL_yoYB39_screenshot-2022-10-18-at-112318.png)
+**Values**
+```json
+[
+  { "A": "Product", "B": "Qty", "C": "Price", "D": "Total" },
+  { "A": "Pen", "B": 2, "C": 1.5, "D": 3 },
+  { "A": "Book", "B": 1, "C": 12, "D": 12 }
+]
+```
 
-- **Formulas**: Json output which contains the read formulas
-  - If any formula is present in a cell, will be returned in the output Json as a string
-  - If there is no formula present in a cell (or if there are values), will be returned as a null inside the Json output
+**Formulas**
+```json
+[
+  { "A": null, "B": null, "C": null, "D": null },
+  { "A": null, "B": null, "C": null, "D": "B2*C2" },
+  { "A": null, "B": null, "C": null, "D": "B3*C3" }
+]
+```
 
-![](/images/docs/6Cy2u-QNp8U20FhBb-9G2_screenshot-2022-10-18-at-112139.png)
+| Case | Result |
+| --- | --- |
+| Range `C3` (one cell, no colon) | The step fails: "Invalid range: Bad format, please use [col][row]:[col][row] formatting." Write `C3:C3`. |
+| Sheet name `Nope` | The step fails: "Sheet not found: Nope" |
 
-Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+## Good to know [#good-to-know]
+- Whole numbers come back as integers, decimals as numbers, `TRUE`/`FALSE` as true/false, everything else as text. Empty cells come back as `""`.
+- For a formula cell, **Values** holds the result that was last saved in the file. The action does not recalculate, so a workbook changed by [Apply Formula](/how-to/apply-formula) can show old or empty results until it is opened and saved in Excel.
+- Dates come back as Excel serial numbers (for example `45296`). Convert them with [Parse OLE Date](/how-to/parse-ole-date).
+- Formulas are returned without the leading `=`.
+- The range must use upper-case letters and include both ends: `a1:b2` and `A1` are refused.
+- To read a `.csv` file the same way, use [Read Range from CSV](/how-to/read-range-from-csv). To find how far the data goes, use [Get Last Used Row](/how-to/get-last-used-row).
 
-Step 5. You will be prompted to add the file for our input variable. Click **Run**.
-
-Step 6. To verify the process click **Check instance**.
-
-Step 7. In the **Output&#x20;**&#x73;ection, you can see the Json output(s).
+## Related actions [#related-actions]
+- [Read Range from CSV](/how-to/read-range-from-csv), [Get Last Used Row](/how-to/get-last-used-row), [Get Named Range](/how-to/get-named-range), [Parse OLE Date](/how-to/parse-ole-date)

@@ -1,61 +1,46 @@
 ---
 title: "Between"
 icon: "📕"
-description: "Between will allow you to extract all strings from a text using a start and end section and store them in a list."
+description: "Finds every piece of text that sits between a start string and an end string, and returns them as a list."
 ---
 
-**Between** will allow you to extract all strings from a text using a start and end section and store them in a list.
+**Between** looks through a text and returns every piece that sits between a start string and an end string, for example every value between `[` and `]`, or every word between two tags. Use it to pull values out of a template, an email body or a log line without writing a regular expression.
 
-<Callout type="warn">
-Between action was previously called String Between.
+<Callout type="info">
+Between was previously called **String Between**.
 </Callout>
 
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **Between** (or type *Between* in the search box).
 
+![The Between action properties: String to search in, Start string, End string, the two Include checkboxes and List of found strings](/images/docs/actions/string-between/panel.png)
 
-### How to
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **String to search in** | Input | Text | Yes | The text to search. |
+| **Start string** | Input | Text | Yes | The text that marks the start of each piece. |
+| **End string** | Input | Text | Yes | The text that marks the end of each piece. |
+| **Include start string in the result** | Input | Boolean (true/false) | No | Tick it to keep the start string at the beginning of every result. Off by default. |
+| **Include end string in the result** | Input | Boolean (true/false) | No | Tick it to keep the end string at the end of every result. Off by default. |
+| **List of found strings** | Output | List of Text | Yes | Every piece found, in the order it appears. An empty list when nothing is found. |
 
-&#x20; Step 1:    [Create a new process](/docs/overview/processes/process-designer/your-first-process) and give it a name.
+## Example [#example]
+| String to search in | Start string | End string | Include start / end | List of found strings |
+| --- | --- | --- | --- | --- |
+| `Order [A12] and order [B7] shipped` | `[` | `]` | off / off | `["A12", "B7"]` |
+| `Order [A12] and order [B7] shipped` | `[` | `]` | on / on | `["[A12]", "[B7]"]` |
+| `no brackets here` | `[` | `]` | off / off | `[]` |
+| `Name: Ana; name: Ion;` | `name: ` | `;` | off / off | `["Ion"]` |
+| `a-1-2-3-b` | `-` | `-` | off / off | `["1", "2", "3"]` |
+| `"one" and "two"` | `"` | `"` | off / off | `["one", " and ", "two"]` |
 
-![](/images/docs/CeroWrkEdF9INGg9IfvcE_image.png)
+## Good to know [#good-to-know]
+- **The search is case-sensitive.** `name: ` does not match `Name: ` (see the fourth example).
+- **Each result is the shortest piece** between a start string and the next end string.
+- **The same string can be a start and an end.** A string that closes one piece can also open the next, so when the start and end strings are the same you also get the text *between* the pairs (last two examples).
+- **A piece cannot span several lines.** In `<b>one` + new line + `two</b> <b>three</b>` only `three` is found. Use [RegEx Extract](/how-to/regex-extract) for text that spans lines.
+- Start and end strings are matched as plain text: characters such as `.`, `*`, `(` or `[` have no special meaning.
 
-&#x20;    Step 2.    [Add the needed variables](/docs/overview/processes/process-designer/working-with-process-variables).
-
-![](/images/docs/_qhfgUYRUqjnUQdCCnxls_image.png)
-
-- <span style={{color:'#2166ae'}}>&lt;%InpuString%&gt;</span> - the text to search in.
-- <span style={{color:'#2166ae'}}>&lt;%start%&gt;</span> - where the substring should start from.
-- <span style={{color:'#2166ae'}}>&lt;%end%&gt;</span> - where the substring ends.
-- <span style={{color:'#2166ae'}}>&lt;%Result%&gt;</span> - the list of uubstrings found in the text.
-
-We will use the following defaults for our example:
-
-```text
-<%InpuString%>
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-<%start%>
-Ipsum
-
-<%end%>
-dummy
-```
-
-&#x20;   Step 3.   Configure the **Between** action.
-
-![](/images/docs/k3idKKgAJx5t026O14TTE_image.png)
-
-The two checkboxes at the end can be used if you wish to include the start and end strings in the newly created strings.
-
-&#x20;   Step 4.   **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-&#x20;   Step 5.   Add the input data and click **Run**.
-
-![](/images/docs/Rp_kDEff0VL7957dnhFG__image.png)
-
-&#x20;   Step 6.   Click **Check Instance**.
-
-![](/images/docs/sT07P8sdGa4bWbEdyUu7__image.png)
-
-&#x20;   Step 6.   Click Result to check the outputed list.
-
-![](/images/docs/mFFYm1-xTmZ08QTvtMX1X_image.png)
+## Related actions [#related-actions]
+- [RegEx Extract](/how-to/regex-extract), [Split](/how-to/split), [Get Index](/how-to/string-get-index), [Take From Middle](/how-to/take-from-middle)

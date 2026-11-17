@@ -3,15 +3,11 @@
   "icon": "📁",
   "pages": [
     "archive",
-    "read-files-content",
-    "html-to-pdf",
-    "export-to-csv",
-    "export-to-xlsx",
+    "word-mail-merge",
     "object-to-file",
     "list-to-file",
-    "read-file-2-alt",
-    "base64-to-file",
-    "file-to-base64",
+    "read-file",
+    "read-files-content",
     "read-msg-file"
   ]
 }

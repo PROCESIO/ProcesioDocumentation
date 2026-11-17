@@ -1,16 +1,31 @@
 ---
 title: "To Upper"
 icon: "📕"
-description: "The To Upper action converts a string to uppercase."
+description: "Converts every letter of a text to uppercase."
 ---
 
-## Overview
+**To Upper** returns a copy of a text with every letter in uppercase. Use it to normalise codes, country codes or names before you compare or store them.
 
-The `To Upper` action converts a string to uppercase.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **To Upper** (or type *To Upper* in the search box).
 
-![](/images/docs/RQdU_uSbvEkXjKZSe20fS_image.png)
+![The To Upper action properties: Input String and Result](/images/docs/actions/string-to-upper/panel.png)
 
-## Inputs & Outputs
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input String** | Input | Text | Yes | The text to convert. |
+| **Result** | Output | Text | Yes | The same text in uppercase. |
 
-- **\[ I ] Input string:** <span style={{color:'#1c417e'}}>String</span> to be converted.
-- **\[ O ] Result**: <span style={{color:'#1c417e'}}>String</span> representing the input after conversion to uppercase.
+## Example [#example]
+| Input String | Result |
+| --- | --- |
+| `Hello, ștefan! straße 123` | `HELLO, ȘTEFAN! STRAßE 123` |
+| `istanbul` | `ISTANBUL` |
+
+## Good to know [#good-to-know]
+- Letters with diacritics keep them (`ș` → `Ș`). Digits and punctuation do not change.
+- The German `ß` stays `ß`; it is not turned into `SS`.
+
+## Related actions [#related-actions]
+- [To Lower](/how-to/to-lower), [To Title Case](/how-to/to-title-case), [To Sentence Case](/how-to/to-sentence-case)

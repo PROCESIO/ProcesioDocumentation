@@ -1,16 +1,38 @@
 ---
 title: "Join"
-description: "The Join action concatenates a list of strings using a given separator."
+icon: "📕"
+description: "Brings two or more branches back together into one branch, for example after a Decisional."
 ---
 
-## Overview
+<iframe width="560" height="315" src="https://www.youtube.com/embed/DTcCayeCslg" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-The `Join` action concatenates a list of strings using a given separator.
+**Join** brings two or more branches of a process back into one. Use it after a [Decisional](/how-to/decisional) or an [AI Decisional](/how-to/ai-decisional) when the branches should continue with the same steps: instead of copying those steps into every branch, connect the end of each branch to a Join and continue from there.
 
-![](/images/docs/EsDM8mqvKJX-SBn07fBql_image.png)
+<Callout type="info">
+Looking for the action that joins a list of texts with a separator? That is the String action [Join](/how-to/string-join).
+</Callout>
 
-## Inputs & Outputs
+## Add the action [#add-the-action]
+In the Process Designer toolbox, pick **Join** (or type *Join* in the search box). On the canvas it is a small circle.
 
-- **\[ I ] Input string list:** **List\&lt;**<span style={{color:'#1c417e'}}>String</span>**>** to be concatenated.
-- **\[ I ] Input separator:** <span style={{color:'#1c417e'}}>String</span> to use as a separator.
-- **\[ O ] Result**: <span style={{color:'#1c417e'}}>String</span> containing the concatenation.
+![The Join action on the canvas](/images/docs/1zxy7ATvMQAOUrrHxzTKh_join.png)
+
+Join has nothing to configure: no inputs, no outputs, no properties apart from its name.
+
+1. Drag **Join** onto the canvas.
+2. Connect the last action of each branch to the Join. A Join accepts any number of incoming connections.
+3. Connect the Join to the action that should run next. A Join has **one** outgoing connection.
+
+![Two branches of a Decisional connected to a Join, which continues to one action](/images/docs/OFYrWsC7spqZl-j0hamrw_joinprocess.png)
+
+## Example [#example]
+A Decisional checks an invoice amount. The *Large amount* branch sends an approval email, the *Default* branch just logs the invoice. Both branches are connected to a Join, and the Join continues to a **Data Store** step that saves the invoice. Whichever branch runs, the invoice is saved once.
+
+## Good to know [#good-to-know]
+- **Only one branch has to arrive.** A Decisional runs only one of its branches, so the Join continues as soon as the branch that ran reaches it; it does not wait for the others.
+- A branch can be connected to any Join on the canvas, including one placed before or after the branch.
+- Join cannot be disabled and cannot be run with **Test Action**: it only routes the flow.
+- To send several cases of a Decisional to the same next action, connect each case to its own action, then join them; a Decisional case can target only one action, and an action can be the target of only one case.
+
+## Related actions [#related-actions]
+- [Decisional](/how-to/decisional), [AI Decisional](/how-to/ai-decisional), [For Each](/how-to/for-each)

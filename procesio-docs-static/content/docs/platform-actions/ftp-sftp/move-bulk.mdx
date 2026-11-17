@@ -1,7 +1,40 @@
 ---
 title: "Move Bulk"
 icon: "📕"
-description: "Moves several files at once between folders on an FTP/SFTP server."
+description: "Moves a list of files to another folder, on the same SFTP or FTP server or on another one, in one step."
 ---
 
-🔜coming soon 🔜
+**Move Bulk** moves several files to one destination folder in a single step. The destination can be on the same server or on a different server. It takes the list produced by [Get File List](/how-to/get-file-list), so a typical use is moving every processed file from `inbox` to `archive`. Files that fail don't stop the others: each failure is reported in **Errors**.
+
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential).
+
+For a move between two servers, you need one credential for each.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Move Bulk** (or type *Move Bulk* in the search box).
+
+![The Move Bulk action properties: From SFTP credentials, Files, SFTP Connections, To SFTP credentials, To Folder and Errors](/images/docs/actions/sftp-move-bulk/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **From SFTP credentials** | Input | FTP credential | Yes | The credential of the server where the files are now. |
+| **Files** | Input | List of SFTPFilesInformation | Yes | The files to move, usually the **Output** of [Get File List](/how-to/get-file-list). Each entry needs its `path`. |
+| **SFTP Connections** | Input | Integer | No | How many files are handled in parallel, from `1` (default) to `20`. |
+| **To SFTP credentials** | Input | FTP credential | No | The credential of the destination server. Leave empty to stay on the same server. |
+| **To Folder** | Input | Text | No | The destination folder, relative to the destination credential's **Directory path**. Leave empty for the root folder. |
+| **Errors** | Output | List of Text | Yes | One message for each file that could not be downloaded, uploaded or deleted. Empty when every file was moved. |
+
+## Example [#example]
+**Files** is the list returned by Get File List for `inbox`, **To SFTP credentials** empty, **To Folder** `archive` → every file in the list is now in `archive` on the same server, and **Errors** is `[]`.
+
+## Good to know [#good-to-know]
+- **How a move works.** The action downloads all the files, uploads them to the destination, then deletes from the source only the files whose upload succeeded. A file that fails to upload stays where it was.
+- **Some files are skipped without an error.** Before moving, the action leaves out entries without a `path`, files whose extension isn't allowed on your PROCESIO platform, and files larger than the platform's file size limit. It also stops adding files once the total reaches 1 GB (calculated from the `size` values in the list). Skipped files stay where they are and are not in **Errors**.
+- Files keep their names in the destination folder.
+- Values outside 1–20 in **SFTP Connections** are brought back to the nearest limit.
+- If the connection itself fails, the step fails with *"Error while trying to move files."*
+
+## Related actions [#related-actions]
+- [Move File](/how-to/move-file), [Get File List](/how-to/get-file-list), [Download Bulk](/how-to/sftp-download-bulk), [Upload Bulk](/how-to/sftp-upload-bulk)

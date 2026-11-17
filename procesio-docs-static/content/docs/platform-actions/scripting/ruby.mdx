@@ -1,128 +1,51 @@
 ---
 title: "Ruby"
 icon: "📕"
-description: "The Ruby Action allows you to execute Ruby code directly inside your workflow."
+description: "Runs your own Ruby code inside a process and returns its result, its printed output and any error."
 ---
 
-# Ruby Action
+The **Ruby** action runs a piece of Ruby code that you write, as one step of your process. Use it for data manipulation, JSON and XML parsing, templating, statistics or any custom logic that no ready-made action covers. The value your code returns becomes an output you can use in the next steps.
 
-*(Screenshot unavailable — image was removed from the original source.)*
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Scripting** and pick **Ruby** (or type *Ruby* in the search box).
 
-The **Ruby Action** allows you to execute Ruby code directly inside your workflow.
+![The Ruby action properties: Code, Timeout, Single Result, List Result, Stdout and Error](/images/docs/actions/scripting-ruby/panel.png)
 
-The code you write is executed as the **body of a function**, meaning:
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Code** | Input | Text (Ruby code) | Yes | Your Ruby code. The value it returns is sent back to the process. |
+| **Timeout** | Input | Integer | No | How many seconds the code may run, from `10` to `180`. Default `60`. |
+| **Single Result** | Output | Any | No | The value your code returns, when it is not an array: a number, text, true/false or an object (a Ruby hash becomes a JSON object). |
+| **List Result** | Output | List of any | No | The value your code returns, when it is an array. |
+| **Stdout** | Output | Text | No | Everything your code printed with `puts`. |
+| **Error** | Output | Text | No | The error message when your code fails or runs too long. Empty when the code worked. |
 
-- You can use `puts` to print to standard output logs.
-- You can return simple values, arrays, objects, or complex structures.
+## How your code is run [#how-your-code-is-run]
+Your code runs as the body of a function:
+- `return <value>` sends the value to **Single Result**, or to **List Result** when the value is an array. Only one of the two is filled. As in any Ruby method, the value of the last line is also returned, so `1 + 2` on its own gives `3`.
+- `puts` does not set a result; it writes to **Stdout**.
 
-Ruby Actions are ideal for **data manipulation**, **HTTP calls**, **JSON/XML parsing**, **statistics**, **templating**, and custom business logic.
+## Examples [#examples]
+| Code | Output |
+| --- | --- |
+| `puts "Debug message"` then `return "OK"` | **Single Result** `OK`, **Stdout** `Debug message` |
+| `return [1, 2, 3, "abc"]` | **List Result** `[1, 2, 3, "abc"]` |
+| `return { success: true, message: "Done" }` | **Single Result** `{"success": true, "message": "Done"}` |
+| `1 + 2` | **Single Result** `3` |
+| `raise "Something went wrong!"` | **Error** `RuntimeError: Something went wrong!` |
+| `sleep 15` with **Timeout** `10` | **Error** `TimeoutError` |
 
-## Available Gems
-
-The following gems are preinstalled and available:
-
-### Data manipulation
-
-- `jmespath`
-- `jsonpath`
-- `nokogiri`
-
-### HTTP client
-
-- `httpx`
-
-### Auth / tokens
-
-- `jwt`
-
-### Utilities
-
-- `liquid`
-- `reverse_markdown`
-- `faker`
-
-### Statistics
-
-- `descriptive_statistics`
-
-You can freely `require` any of these gems inside the Ruby Action.
-
-***
-
-# Usage Examples
-
-### Return a simple value
-
+### Fill a text template (Liquid)
 ```ruby
-return "Hello from Ruby!"
+require "liquid"
+
+tpl = Liquid::Template.parse("Hello, {{ user }}! You have {{ count }} new messages.")
+return tpl.render("user" => "Ana", "count" => 3)
 ```
+**Single Result**: `Hello, Ana! You have 3 new messages.`
 
-### Return a list
-
-```ruby
-return [1, 2, 3, "abc"]
-```
-
-### Return an object
-
-```ruby
-return { success: true, message: "Done" }
-```
-
-### Use standard output
-
-```ruby
-puts "Debug message"
-return "OK"
-```
-
-### Raise error
-
-```ruby
-raise "Something went wrong!"
-```
-
-### HTTP Requests (HTTPX)
-
-```ruby
-require "httpx"
-require "json"
-
-resp = HTTPX.get("https://httpbin.org/json")
-raise "bad response" unless resp.status == 200
-
-doc = JSON.parse(resp.to_s, symbolize_names: true)
-
-return {
-  ok: true,
-  title: doc.dig(:slideshow, :title)
-}
-```
-
-### XML Parsing (Nokogiri)
-
-```ruby
-require "nokogiri"
-
-xml = "<root><x>1</x><x>2</x></root>"
-doc = Nokogiri::XML(xml)
-
-return doc.xpath("//x").map(&:text)
-```
-
-### Extract values (JSONPath)
-
-```ruby
-require "jsonpath"
-
-doc = { "store" => { "book" => [ { "price" => 8.95 }, { "price" => 12.99 } ] } }
-prices = JsonPath.new("$.store.book[*].price").on(doc)
-
-return prices.max
-```
-
-### Aggregate values (JSONPath)
-
+### Read and total JSON values (JSONPath)
 ```ruby
 require "json"
 require "jsonpath"
@@ -130,230 +53,76 @@ require "jsonpath"
 doc = JSON.parse('{"store":{"book":[{"price":8.95},{"price":12.99},{"price":5.50}]}}')
 prices = JsonPath.new("$..book[*].price").on(doc)
 
-return {
-  count: prices.size,
-  min:   prices.min,
-  max:   prices.max,
-  sum:   prices.sum
-}
+return { count: prices.size, min: prices.min, max: prices.max, sum: prices.sum }
 ```
+**Single Result**: `{"count": 3, "min": 5.5, "max": 12.99, "sum": 27.44}`
 
-### String Templates (Liquid)
-
+### Parse XML (Nokogiri)
 ```ruby
-require "liquid"
+require "nokogiri"
 
-tpl = Liquid::Template.parse("Hello, {{ user }}! You have {{ count }} new messages.")
-output = tpl.render("user" => "Razvan", "count" => 3)
-
-return output
+doc = Nokogiri::XML("<root><x>1</x><x>2</x></root>")
+return doc.xpath("//x").map(&:text)
 ```
+**List Result**: `["1", "2"]`
 
-### HTML → Markdown (ReverseMarkdown)
-
+### Convert HTML to Markdown
 ```ruby
 require "reverse_markdown"
 
-html = "<h1>Title</h1><p>Hello <strong>world</strong> &amp; <em>friends</em>.</p>"
-md = ReverseMarkdown.convert(html)
-
-return md
+return ReverseMarkdown.convert("<h1>Title</h1><p>Hello <strong>world</strong></p>")
 ```
+**Single Result**: `# Title` followed by `Hello **world**`.
 
 ### Statistics
-
 ```ruby
 require "descriptive_statistics"
 
-arr = [1,2,2,3,5,8,13,21]
-
-return({
-  mean: arr.mean,
-  median: arr.median,
-  variance: arr.variance,
-  stdev: arr.standard_deviation
-})
+arr = [1, 2, 2, 3, 5, 8, 13, 21]
+return({ mean: arr.mean, median: arr.median })
 ```
+**Single Result**: `{"mean": 6.875, "median": 4}`
 
-### JWT Tokens
-
+### Sign and read a JWT
 ```ruby
 require "jwt"
 
-payload = { user: "razvan", exp: Time.now.to_i + 3600 }
-secret  = "my-secret"
-
-token = JWT.encode(payload, secret, "HS256")
-decoded = JWT.decode(token, secret, true, { algorithm: "HS256" })
-
-return {
-  token: token,
-  decoded: decoded
-}
+token = JWT.encode({ user: "ana" }, "my-secret", "HS256")
+decoded = JWT.decode(token, "my-secret", true, { algorithm: "HS256" })
+return decoded.first
 ```
+**Single Result**: `{"user": "ana"}`
 
-### Faker – Random Test Data
-
-```ruby
-require "faker"
-
-return {
-  name:  Faker::Name.name,
-  email: Faker::Internet.email,
-  city:  Faker::Address.city
-}
-```
-
-### JMESPath Example
-
-```ruby
-require "jmespath"
-
-data = {
-  users: [
-    { name: "John", age: 30 },
-    { name: "Mike", age: 25 }
-  ]
-}
-
-return JMESPath.search("users[?age > `26`].name", data)
-```
-
-### Trim, normalize, and sanitize strings
-
-```ruby
-text = "  Hello   World	 "
-clean = text.strip.gsub(/\s+/, " ")
-
-return clean
-```
-
-### Remove nils and empty strings from arrays
-
-```ruby
-arr = ["a", nil, "", "b", " ", "c"]
-
-clean = arr.map { |x| x.to_s.strip }.reject(&:empty?)
-
-return clean
-```
-
-### Deep-clean a hash
-
-```ruby
-def deep_clean(value)
-  case value
-  when Hash
-    value
-      .map { |k, v| [k, deep_clean(v)] }
-      .to_h
-      .reject { |_k, v| v.nil? || v == "" }
-  when Array
-    value.map { |v| deep_clean(v) }.reject { |v| v.nil? || v == "" }
-  else
-    value.is_a?(String) ? value.strip : value
-  end
-end
-
-input = {
-  name: " Razvan ",
-  email: "",
-  tags: ["  ruby ", nil, "  ", "ai"],
-  details: { city: "  Bucharest ", postcode: nil }
-}
-
-return deep_clean(input)
-```
-
-### Convert keys of a hash to snake\_case
-
-```ruby
-def snake_keys(obj)
-  case obj
-  when Hash
-    obj.map do |k, v|
-      new_key = k.to_s.gsub(/([A-Z])/, '_\1').downcase.sub(/^_/, '')
-      [new_key, snake_keys(v)]
-    end.to_h
-  when Array
-    obj.map { |v| snake_keys(v) }
-  else
-    obj
-  end
-end
-
-input = {
-  "FullName" => "Razvan",
-  "UserID"   => 123,
-  "Address"  => { "PostalCode" => "050000" }
-}
-
-return snake_keys(input)
-```
-
-### Normalize numeric input
-
-```ruby
-values = ["10", " 20.5 ", nil, "abc", 7]
-
-clean = values.map do |v|
-  Float(v) rescue nil
-end.compact
-
-return clean
-```
-
-### Detect duplicates & uniques
-
+### Find duplicates
 ```ruby
 arr = ["a", "b", "a", "c", "b"]
-
-return {
-  unique: arr.uniq,
-  duplicates: arr.tally.select { |k,v| v > 1 }.keys
-}
+return { unique: arr.uniq, duplicates: arr.tally.select { |k, v| v > 1 }.keys }
 ```
+**Single Result**: `{"unique": ["a", "b", "c"], "duplicates": ["a", "b"]}`
 
-***
+## Use process variables in the code [#use-process-variables-in-the-code]
+You can insert process variables into the code. Before the code runs, PROCESIO replaces each variable with its value, as plain text. So:
+- a number variable can be used as it is: `total = <your number variable> * 2`;
+- a text variable needs quotes around it in your code: `name = "<your text variable>"`.
 
-# Best Practices
+## Good to know [#good-to-know]
+- **A failing script does not stop the process.** When your code raises an error or runs longer than **Timeout**, the step still finishes: **Error** holds the message and both results are empty. Add a [Decisional](/how-to/decisional) after the action that checks whether **Error** is empty.
+- The code runs in a sandbox: it cannot read files from the machine, and the sandbox can block calls to the internet. To call a web API, use [Call API](/how-to/call-api) or [CURL](/how-to/curl) and pass the response to the script.
+- **Files:** a script cannot take a file directly. Convert the file to text with [File To Base64](/how-to/file-to-base64) and pass the text to the script. To create a file from a script, return Base64 text and convert it with [Base64 To File](/how-to/base64-to-file).
 
-- Always **return** the final output.
-- Prefer structured arrays and hashes.
-- Use `puts` for logging debug information.
-- Use the whitelisted gems listed above.
+## Available gems [#available-gems]
+Besides the Ruby standard library (for example `json`, `date`, `time`), you can `require` these gems:
 
+| Gem | What it is for |
+| --- | --- |
+| `jsonpath` | Reading values from JSON with JSONPath |
+| `nokogiri` | Parsing XML and HTML |
+| `jwt` | Creating and reading JSON Web Tokens |
+| `liquid` | Text templates |
+| `reverse_markdown` | Converting HTML to Markdown |
+| `descriptive_statistics` | Mean, median, variance and other statistics |
+| `hashdiff` | Comparing two hashes |
+| `faker` | Random test data |
 
-
-### Available Ruby Gems - list
-
-The following gems are preinstalled and can be used inside the **Ruby Action**.
-
-Data Manipulation
-
-| Gem      | Version |
-| -------- | ------- |
-| jmespath | 1.6.2   |
-| jsonpath | 1.1.5   |
-| nokogiri | 1.18.9  |
-
-HTTP Client
-
-| Gem   | Version |
-| ----- | ------- |
-| httpx | 1.3.1   |
-
-Authentication / Tokens
-
-| Gem | Version |
-| --- | ------- |
-| jwt | 2.9.3   |
-
-Utilities
-
-| Gem               | Version |
-| ----------------- | ------- |
-| hashdiff          | 1.0.1   |
-| liquid            | 5.5.1   |
-| reverse\_markdown | 3.0.0   |
-| faker             | 3.2.2   |
+## Related actions [#related-actions]
+- [Python](/how-to/python), [Node](/how-to/node), [Javascript](/how-to/javascript), [CURL](/how-to/curl)

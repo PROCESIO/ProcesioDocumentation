@@ -1,60 +1,45 @@
 ---
 title: "Create Folder"
 icon: "📕"
-description: "The action Create Folder, enables you to create a folder within the specified location."
+description: "Creates a folder, or a whole path of folders, on an SFTP or FTP server."
 ---
 
-![](/images/docs/Q9AVhbQhklwVjau6mz-4z_image.png)
+**Create Folder** creates a new folder on your SFTP or FTP server. Use it to prepare a destination before you upload or move files into it, for example one folder per day or per customer.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/OSXLXpINvWY" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+## Before you start [#before-you-start]
+The action connects through an **FTP** credential that you create once in the **Credential Manager** (host, port, protocol FTP or SFTP, an optional **Directory path**, and a user name with a password or a key file). See [FTP Credential](/ftp-credential).
 
-The action **Create Folder**, enables you to create a folder within the specified location.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **SFTP** and pick **Create Folder** (or type *Create Folder* in the search box).
 
-### **FTP connection**
+![The Create Folder action properties: Select SFTP credentials, Source Folder, Folder Name and Result](/images/docs/actions/sftp-create-folder/panel.png)
 
-For our example we used [Rebex](https://www.rebex.net/support/tutorial/ftp/).
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Select SFTP credentials** | Input | FTP credential | Yes | The credential of the server. |
+| **Source Folder** | Input | Text | No | An **existing** folder to create the new folder in, relative to the credential's **Directory path**. Leave empty for the root folder. |
+| **Folder Name** | Input | Text | Yes | The name of the new folder. It can also be a path, such as `2026/11/10`: every missing level is created. |
+| **Result** | Output | Boolean | Yes | `true` if the folder was created or already exists, `false` if not. |
 
-&#x20; **Step 1**:    Go to th&#x65;**&#x20;Credentials Manager** section and click **Add New**.
+## Examples [#examples]
+Measured on an SFTP server where the folder `CFTEST1` already contained `aaa/bbb`:
 
-&#x20; **Step 2**:    Give your credential a **Name\*** and **Description** (optional) and click **Next step**.
+| Source Folder | Folder Name | Result | What happened on the server |
+| --- | --- | --- | --- |
+| `CFTEST1` | `aaa/bbb/ccc/ddd` | `true` | Only the missing levels, `ccc` and `ccc/ddd`, were created inside `CFTEST1/aaa/bbb`. |
+| `CFTEST1` | `aaa/bbb/ccc/ddd` (second run) | `true` | Nothing: the folders already existed. |
+| `CFTEST1/aaa` | `bbb/ccc2` | `true` | `ccc2` was created inside `CFTEST1/aaa/bbb`. |
+| `CFTEST1/nosuch1/nosuch2` | `leaf` | `false` | Nothing: **Source Folder** doesn't exist. |
 
-![](/images/docs/I8oFkhm59Oz39mOJek9pk_image.png)
+## Good to know [#good-to-know]
+- **Put the path in Folder Name, not in Source Folder.** Missing levels are created only when they are part of **Folder Name**. If **Source Folder** doesn't exist, **Result** is `false` and nothing is created, without an error.
+- **Paths are relative to the credential's Directory path.** If the credential points to `/home/data`, write `exports`, not `/home/data/exports`. Repeating the Directory path makes the action look for `/home/data/home/data/exports` and return `false`.
+- Both `/` and `\` separate levels in **Folder Name**. Leading, trailing and double separators are ignored.
+- Running the action again on an existing folder returns `true`, so it is safe to run on every process run. `true` is also returned when a **file** with that name already exists, so don't use **Result** to tell a folder from a file.
+- If one level can't be created, the levels created before it stay on the server and **Result** is `false`.
+- Names are case-sensitive on most SFTP servers: `Reports` is created next to `reports`, not inside it. Spaces are kept as part of the name.
+- If the server returns an error, the step fails with *"Error while trying to create folder"*.
 
-&#x20;**Step 3**:    Configure the FTP / sFTP connection as needed:
-
-- Port number\* - the port number used by the server.
-- Protocol type - the protocol used depending on the encryption.
-- Directory path - the entry point of the server.
-- Authentication method - here you have the option to use a basic username and password authentication or a user key authentication.
-
-![](/images/docs/X_c2dbo4-7DrymcYMhO4S_image.png)
-
-&#x20; **Step 4**:    Click **Test connection** and if successful click **Save**.
-
-### **Create the process**
-
-&#x20;**&#x20;Step 1**:    From the **Process Designer** section select **Create new**.
-
-&#x20; **Step 2**:    Give you process a name.
-
-&#x20; **Step 3**:    Drag the action **Create Folder** on the canvas and link the action inside you process.
-
-![](/images/docs/5Hhc5OpkLn930y9V-yPsF_image.png)
-
-&#x20; **Step 4**:    Create the <span style={{color:'#2166ae'}}>&lt;%success%&gt;</span> Boolean variable of type output.
-
-![](/images/docs/TcUOcRJ-E3zo08-xxi3mC_image.png)
-
-&#x20; **Step 5**:    Click the **Create Folder** action to access its configurations.
-
-- **Node name**\* - gives you the option to change the actions name.
-- **Choose server type**\* - here we will select the connection created in the previous section.
-- **Source folder** - allows you to select the path to the folder you wish to create.
-- **Folder name** - the name of the new folder.
-- **Result\*** - here we will add the variable created at Step 4.
-
-![](/images/docs/RLo0_tXH9YLwVOdUBqiHl_image.png)
-
-&#x20; Step 6:    **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-&#x20; Step 7:    Click **Check Instance**.
+## Related actions [#related-actions]
+- [Delete Folder](/how-to/delete-folder), [Upload File](/how-to/upload-file), [Get File List](/how-to/get-file-list)

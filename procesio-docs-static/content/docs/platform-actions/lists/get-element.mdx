@@ -1,28 +1,36 @@
 ---
 title: "Get Element"
 icon: "📕"
-description: "The Get Element action retrieves the value of an element at a specified index within a list."
+description: "Returns the element at a given position (index, starting from 0) in a list."
 ---
 
-## Overview
+The **Get Element** action returns the element found at a given position in a list. Positions start at `0`: the first element is at index `0`, the second at `1`, and so on.
 
-The `Get Element` action retrieves the value of an element at a specified index within a list.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **Get Element** (or type *Get Element* in the search box).
 
+![The Get Element action properties: Input a list, Input the index of the element and Result](/images/docs/actions/list-get-element/panel.png)
 
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input a list** | Input | List of any type | Yes | The list to read from, for example `[10,20,30]`. |
+| **Input the index of the element** | Input | Integer | Yes | The position of the element, starting from zero. |
+| **Result** | Output | Same type as the list elements | Yes | The element at that position. For a list of data models, map a variable of that data model. |
 
-![](/images/docs/r6DbatyC64aUy5k0HZJhG_image.png)
+## Example [#example]
+| Input a list | Input the index of the element | Result |
+| --- | --- | --- |
+| `[10,20,30]` | `0` | `10` |
+| `["a","b","c"]` | `2` | `c` |
+| `[{"id":1,"name":"Ann"},{"id":2,"name":"Bob"}]` | `1` | `{"id":2,"name":"Bob"}` |
+| `["a","b","c"]` | `3` | The step fails: *Index exceeds the list's size.* |
+| `[]` | `0` | The step fails: *Index exceeds the list's size.* |
+| `["a","b","c"]` | `-1` | The step fails (negative indexes are not allowed; `-1` does not mean "last element"). |
 
-### Parameters
+## Good to know [#good-to-know]
+- Indexes are zero-based. To get the last element, compute length − 1 with [Length](/how-to/length) and [Subtract](/how-to/substract), or use [Last N Elements](/how-to/last-n-elements) with `1`.
+- An index equal to or greater than the list length, or any index on an empty list, makes the step fail.
 
-### Inputs
-
-- Input List (`list<object>`): A list of objects from which to retrieve the element.
-- Index (`integer`): The zero-index-based integer representing the position of the desired element within the input list.
-
-### Outputs
-
-- Result (`object`): The object value of the element found at the specified index.
-
-## Important Notes
-
-- Ensure that the index provided is within the bounds of the input list to avoid errors.
+## Related actions [#related-actions]
+- [Get Index](/how-to/get-index), [Sublist](/how-to/sublist), [First N Elements](/how-to/first-n-elements), [Last N Elements](/how-to/last-n-elements), [Length](/how-to/length)

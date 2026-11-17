@@ -1,51 +1,39 @@
 ---
 title: "Update DateTime"
 icon: "📕"
-description: "&x20;This action allows you to update a specific subdivision of a DateTime."
+description: "Adds or subtracts years, months, days, hours, minutes or seconds to a date."
 ---
 
-&#x20;This action allows you to update a specific subdivision of a <span style={{color:'#ff9307'}}>DateTime</span>.
+**Update DateTime** moves a date forward or back by a whole number of years, months, days, hours, minutes or seconds. Use it to calculate due dates ("invoice date + 30 days"), reminders ("start time − 15 minutes") or expiry dates.
 
-![](/images/docs/yzNxZ7Na9EheRYOMkTzn-_tdy.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Update DateTime** (or type *Update DateTime* in the search box).
 
-## Inputs & Outputs
+![The Update DateTime action properties: Date, Unit Of Time, Change Amount and Updated Date](/images/docs/actions/datetime-update-datetime/panel.png)
 
-- **\[ I ] Date**: <span style={{color:'#ff9307'}}>DateTime</span> to be updated.
-- **\[ I ] Unit** **of time**:  to choose which subdivision of the **Date** is to be updated.
-  - **Year**
-  - **Month**
-  - **Day**
-  - **Hours**
-  - **Minutes**
-  - **Seconds**
-- **\[ I ] Change amount:&#x20;**<span style={{color:'#0039e3'}}>Integer</span> representing the change to be applied to the **Unit Of Time**.
-- **\[ O ] Updated date**: <span style={{color:'#ff9307'}}>DateTime</span> after update.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Date** | Input | Date and time | Yes | The date to start from. |
+| **Unit Of Time** | Input | Option list | Yes | **Year**, **Month**, **Day**, **Hours**, **Minutes** or **Seconds**. |
+| **Change Amount** | Input | Integer | Yes | How many units to add. Use a negative number to go back in time. Default `0`. |
+| **Updated Date** | Output | Date and time | Yes | The new date. |
 
-![](/images/docs/uYDuU4Hh8BnZjMw6yTJ5U_tdy.png)
+## Example [#example]
+| Date | Unit Of Time | Change Amount | Updated Date |
+| --- | --- | --- | --- |
+| `2024-03-01T10:00:00` | Day | `-1` | `2024-02-29T10:00:00` |
+| `2024-01-31T10:00:00` | Month | `1` | `2024-02-29T10:00:00` |
+| `2024-02-29T10:00:00` | Year | `1` | `2025-02-28T10:00:00` |
+| `2024-12-31T22:00:00` | Hours | `5` | `2025-01-01T03:00:00` |
+| `2024-12-31T22:00:00` | Minutes | `-90` | `2024-12-31T20:30:00` |
+| `2024-12-31T23:59:30` | Seconds | `45` | `2025-01-01T00:00:15` |
 
-## Example Usage
+## Good to know [#good-to-know]
+- **Month ends and leap years:** when the target month is shorter, the day moves to the last day of that month (31 January + 1 month = 29 February in a leap year; 29 February + 1 year = 28 February). Adding years, months or days never changes the time of day.
+- **Whole numbers only:** **Change Amount** must be an integer. `1.5` stops the step with an error. To add a day and a half, add `36` hours instead.
+- **Time zone:** a date with a UTC offset is first converted to UTC, and the result has no offset: `2024-12-31T23:00:00+02:00` + 1 day gives `2025-01-01T21:00:00`.
+- Days are calendar days. To skip weekends, check each new date with [Is Weekday](/how-to/is-weekday).
 
-- Drag action onto canvas to get familiarized with it.
-
-![](/images/docs/p76UHSXDtY9XA4Hja-rKZ_tdy.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/jrLppXM5OcXYgyX13QwGt_tdy.png)
-
-- Assign the newly created variables.
-
-![](/images/docs/JtZrcMZFIW2WSYJlbk4CM_tdy.png)
-
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/KLINB-ioB_ThtPk8zn_gi_tdy.png)
-
-## Use Cases
-
-- Updating a specific subdivision from a <span style={{color:'#ff9307'}}>DateTime</span>.
-- Switching between time zones using [offsets](https://en.wikipedia.org/wiki/Time_zone#List_of_UTC_offsets).
-
-## Tips
-
-- Subtracting is also possible by using **-** before the value inside **Change amount**.
+## Related actions [#related-actions]
+- [Date Difference](/how-to/date-difference), [Time Difference](/how-to/time-difference), [Today](/how-to/today), [UTC Now](/how-to/utc-now)

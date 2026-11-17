@@ -1,9 +1,41 @@
 ---
-title: "Parse number"
+title: "String To Number"
 icon: "📕"
-description: "Converts text into a numeric value."
+description: "Reads a number from text, so you can calculate with it."
 ---
 
-![](/images/docs/NrIJh7ikv5S14p3jN7ik5_image.png)
+**String To Number** turns text such as `"42"` or `"3.14"` into a number you can use in calculations and comparisons. Use it for numbers that arrive as text: form fields, API responses, CSV or Excel cells, email content.
 
-Coming soon 🔜
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Numerical** and pick **String To Number** (or type *String To Number* in the search box).
+
+![The String To Number action properties: Text and Parsed number](/images/docs/actions/numerical-string-to-number/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Text** | Input | Text | Yes | Text that holds only a number. |
+| **Parsed number** | Output | Number (whole or decimal) | Yes | The number. A whole number when the text has no decimals. |
+
+## Example [#example]
+| Text | Parsed number |
+| --- | --- |
+| `42` | `42` |
+| `3.14` | `3.14` |
+| `-15` | `-15` |
+| `  12  ` | `12` (spaces around are ignored) |
+| `1,234.5` | `1234.5` |
+| `.5` | `0.5` |
+| `1e3` | `1000` |
+| `3000000000` | `3000000000` |
+| `abc` | step fails: `Text can't be parsed to a number.` |
+| `12abc` | step fails: `Text can't be parsed to a number.` |
+| (empty) | step fails: `Text can't be null or empty.` |
+
+## Good to know [#good-to-know]
+- **Use a dot for decimals.** A comma is read as a thousands separator, so `1,234.5` is `1234.5`. A European-style `3,14` does not give `3.14`; replace the comma with a dot first (for example with a text replace action).
+- The text must hold a number and nothing else: currency signs, units or words around it make the step fail. Extract the number first if needed.
+- When the text is not a number, the step **fails**; it does not return an empty value. To avoid stopping the process on bad input, check the text before you convert it.
+
+## Related actions [#related-actions]
+- [Add](/how-to/add), [Round](/how-to/round), [String To DateTime](/how-to/string-to-datetime)

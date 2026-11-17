@@ -1,44 +1,42 @@
 ---
 title: "Get Day Of Week"
 icon: "📕"
-description: "This action returns the index of the day of the week for a DateTime."
+description: "Returns the position of a date in its week, as a number, with the numbering you choose."
 ---
 
-This action returns the index of the day of the week for a <span style={{color:'#ff9307'}}>DateTime</span>.
+**Get Day Of Week** returns which day of the week a date is, as a number. You choose whether the week starts on Sunday or on Monday, and whether counting starts at 0 or 1. Use it to schedule work for a given weekday, or to calculate how many days are left until the end of the week.
 
-![](/images/docs/tCHOHxy53VrlSsmMpgflX_tdy.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **DateTime** and pick **Get Day Of Week** (or type *Get Day Of Week* in the search box).
 
-## Inputs & Outputs
+![The Get Day Of Week action properties: Date, Numbering and Day Number](/images/docs/actions/datetime-get-day-of-week/panel.png)
 
-- **\[ I ] Date**: <span style={{color:'#ff9307'}}>DateTime</span> to get the index of the day of the week for.
-- **\[ I ] Numbering**:  for day indexing configuration.
-  - **Week begins on Sunday(1) and ends on Saturday(7)**
-  - **Week begins on Monday(1) and ends on Sunday(7)**
-  - **Week begins on Monday(0) and ends on Sunday(6)**
-- **\[ O ] Day number**: <span style={{color:'#0039e3'}}>Integer</span> equal to the index of the day of the week.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Date** | Input | Date and time | Yes | The date to check. |
+| **Numbering** | Input | Option list | Yes | How days are numbered. See the table below. |
+| **Day Number** | Output | Integer | Yes | The number of the day in its week. |
 
-![](/images/docs/TJZyHmL57IlSjadJles3J_tdy.png)
+| Numbering | Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Week begins on Sunday (1) and ends on Saturday (7) | 2 | 3 | 4 | 5 | 6 | 7 | 1 |
+| Week begins on Monday (1) and ends on Sunday (7) | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+| Week begins on Monday (0) and ends on Sunday (6) | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
 
-## Example Usage
+## Example [#example]
+| Date | Numbering | Day Number |
+| --- | --- | --- |
+| `2026-11-08` (Sunday) | Week begins on Sunday (1)… | `1` |
+| `2026-11-08` (Sunday) | Week begins on Monday (1)… | `7` |
+| `2026-11-08` (Sunday) | Week begins on Monday (0)… | `6` |
+| `2026-11-09` (Monday) | Week begins on Sunday (1)… | `2` |
+| `2026-11-09` (Monday) | Week begins on Monday (1)… | `1` |
+| `2026-11-09` (Monday) | Week begins on Monday (0)… | `0` |
 
-- Drag action onto canvas to get familiarized with it.
+## Good to know [#good-to-know]
+- You get a number, not a name. For the name (`Monday`, `luni`, `Montag`…), use [Format DateTime](/how-to/format-datetime) with the format `dddd` and the language you need.
+- A date with a UTC offset is first converted to UTC. An empty **Date** stops the step with an error.
 
-![](/images/docs/oc-H9VSbd9QvO-Sd4dlhH_tdy.png)
-
-- Declare some variables to be used with the action.
-
-![](/images/docs/kA3QzBqhlL9ViUnTvWOsH_tdy.png)
-
-- Assign the newly created variables.
-- **Save & Run** the process and then **Check Instance** to see the output.
-
-![](/images/docs/W219p5MQC1qcRPcBvM8K0_tdy.png)
-
-## Use Cases
-
-- Determining the day of the week for a given date.
-
-## Tips
-
-- To check if a date is on a weekday, consider using [Is Weekday](/docs/platform-actions/call-api/is-weekday).
-- To check if a date is on a weekend, consider using [Is Weekend](/docs/platform-actions/call-api/is-weekend).
+## Related actions [#related-actions]
+- [Is Weekday](/how-to/is-weekday), [Is Weekend](/how-to/is-weekend), [Get Day](/how-to/get-day), [Get Week Number](/how-to/get-week-number)

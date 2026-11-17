@@ -1,45 +1,61 @@
 ---
 title: "Copy Paste"
 icon: "📕"
-description: "Use this action to Copy and paste a cell range from source to destination:"
+description: "Copies a cell range from one sheet and pastes it into another sheet or another workbook."
 ---
 
-### Overview
+**Copy Paste** copies a block of cells and pastes it somewhere else: into another sheet of the same workbook or into another workbook. You choose whether to paste everything, only the values, only the style or only the formulas. Use it to fill a formatted template with data from an export.
 
-Use this action to Copy and paste a cell range from source to destination:
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Copy Paste** (or type *Copy Paste* in the search box).
 
-- within the same workbook.
-- workbook to other workbook.
+![The Copy Paste action properties: Source workbook, Source sheet, Destination workbook, Destination sheet, Range, Keep and Paste starting from](/images/docs/actions/excel-copy-paste/panel.png)
 
-### How to configure the Copy Paste action?
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Source workbook** | Input | File | Yes | The workbook to copy from. |
+| **Source sheet** | Input | Text | Yes | The sheet to copy from. |
+| **Destination workbook** | Input and output | File | Yes | The workbook to paste into. Pick a File variable: after the step it holds the changed workbook. |
+| **Destination sheet** | Input | Text | Yes | The sheet to paste into. |
+| **Range** | Input | Text | Yes | The cells to copy, as `A1:D3`. |
+| **Keep** | Input | Option | Yes | What to paste: **All**, **Values** (default), **Style** or **Formulas**. |
+| **Paste starting from** | Input | Text | Yes | The top-left cell of the paste area, for example `B2`. The block keeps its shape. |
 
-Step 1. Create a process and give it a name.
+## Example [#example]
+Source sheet *Orders*:
 
-Step 2. Drag the **Copy Paste** action to the canvas and link it to the other actions.
+| | A | B | C | D |
+| --- | --- | --- | --- | --- |
+| 1 | Product | Qty | Price | Total |
+| 2 | Pen | 2 | 1.5 | =B2\*C2 (shows 3) |
+| 3 | Book | 1 | 12 | =B3\*C3 (shows 12) |
 
-![](/images/docs/yKx_goHhlvl7ziOXUQBi__image.png)
+Range `A1:D3`, the same workbook as destination, Destination sheet *Empty* (a blank sheet), Paste starting from `B2`:
 
-Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
+| Keep | What lands in B2:E4 |
+| --- | --- |
+| **Values** | The texts and numbers; E3 and E4 hold `3` and `12` as plain values, no formulas |
+| **All** | Values, styles and formulas; E3 holds the formula `B2*C2` |
+| **Formulas** | Only the formulas (E3 `B2*C2`, E4 `B3*C3`); the other cells stay empty |
+| **Style** | Only the formatting; the cells stay empty |
 
-![](/images/docs/r_TQfpfIiPTrFFDz_ptfr_screenshot-2022-10-18-at-105632.png)
+### Between two different workbooks [#between-workbooks]
+| Keep | Result |
+| --- | --- |
+| **Values**, **Formulas** | Pasted as above. |
+| **All**, **Style** | The step fails: "Value error: Style transfer between different workbooks is not available at this time." |
 
-- **Source workbook**: you need to input the file with the workbook where to copy from
-- **Source sheet**: you need to input a string with the sheet name where to copy from
-- **Destination workbook**: you need to input the file with the workbook where the cell will be copied
-- **Destination sheet**: you need to input a string with the sheet name where the cell will be copied
-- **Range:** you need to input a string with the range of cells to copy and paste (\[col]\[row]:\[col]\[row] format (Excel style))
-- **Keep** selector: Dropdown with All/Style/Values/Formulas options. Using Keep, the user will choose which characteristics to keep when pasting.
-- **Paste starting from**: you need to input a string with the cell where pasting should start from in the destination sheet.&#x20;
-  - &#x20;represents the cell where pasting should begin (range shape is maintained)
-
-<Callout type="info">
-Notes: This version does not support style transfer when copy-pasting to a different file. (so source and destination should be the same workbook)
+<Callout type="warn">
+**Text values can be lost when the destination workbook has no text yet.** Pasting **Values** from another workbook into a workbook made by [Create Workbook](/how-to/create-workbook) kept the numbers but replaced every text cell with a broken reference, so the texts are missing when the file is opened. Numbers are not affected. Until this is fixed, check the result with [Read Range](/how-to/read-range), or start from a template workbook that already contains text.
 </Callout>
 
-Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
+## Good to know [#good-to-know]
+- Formulas are pasted **exactly as written**; their references are not shifted. In the example, the formula pasted in E3 still says `B2*C2`, which now points to other cells. Use **Values** when you want the results, not the formulas.
+- To copy within one workbook, pass the same file as **Source workbook** and **Destination workbook**. Two files with exactly the same content are also treated as one workbook, and the result then gets the source file's name.
+- When the step fails, the destination variable keeps the original, unchanged workbook.
+- Existing content in the paste area is overwritten.
+- Only `.xlsx` and `.xlsm` files are accepted.
 
-Step 5. You will be prompted to add the file for our input variables. Click **Run**.
-
-Step 6. To verify the process click **Check instance**.
-
-Step 7. Download the Destination file with the .xls content as defined in the action.&#x20;
+## Related actions [#related-actions]
+- [Read Range](/how-to/read-range), [Apply Formula](/how-to/apply-formula), [Insert Sheet](/how-to/insert-sheet)

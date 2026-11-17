@@ -1,0 +1,54 @@
+---
+title: "GitHub"
+icon: "📕"
+description: "Read the details of a commit from one of your GitHub repositories: message, author, changed files and line counts."
+---
+
+The **GitHub** connector reads the details of a commit from a GitHub repository you have access to: its message, author and date, the files it changed and how many lines were added and removed. Use it to log a release, build a change note, or pass a commit's details to an email or a ticket.
+
+<Callout type="info">New in the next release (PROCESIO v2.0.8).</Callout>
+
+## Before you start: the credential [#before-you-start-the-credential]
+The action connects with a **GitHub** credential. In PROCESIO, open **Credentials** and create one from the **GitHub** template in the **OAuth2 (REST API)** group, then click **Save and authorize** and sign in to GitHub. See [Predefined OAuth2 providers](/working-with-credentials#predefined-oauth2-providers).
+
+The action sees the repositories that the signed-in GitHub account can access. For private repositories, keep the scopes that give access to them.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Connectors** and pick **GitHub** (or type *GitHub* in the search box).
+
+![The GitHub action properties: GitHub Configuration credential and the Commit Details output](/images/docs/actions/connectors-github/panel.png)
+
+1. Pick your credential in **GitHub Configuration**. The **Select Repository** list is then filled with your repositories.
+2. Pick the repository in **Select Repository**. The **Select Commit** list is then filled with its latest commits, shown by commit message.
+3. Pick the commit in **Select Commit**.
+4. Map **Commit Details** to a process variable.
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **GitHub Configuration** | Input | Credential | Yes | Your GitHub credential. |
+| **Select Repository** | Input | List | Yes | The repository, from the list of repositories your GitHub account can access. |
+| **Select Commit** | Input | List | Yes | The commit, from the list of the repository's latest commits. |
+| **Commit Details** | Output | Object (JSON) | No | The commit as GitHub describes it (see below). |
+
+## What you get [#what-you-get]
+**Commit Details** holds the commit exactly as the GitHub API returns it. The most useful parts:
+
+| Part | What it holds |
+| --- | --- |
+| `sha` | The commit's full identifier. |
+| `html_url` | The link to the commit on github.com. |
+| `commit.message` | The commit message. |
+| `commit.author.name`, `commit.author.email`, `commit.author.date` | Who wrote the change and when. |
+| `author.login` | The author's GitHub user name, when the email belongs to a GitHub account. |
+| `stats.additions`, `stats.deletions`, `stats.total` | How many lines were added and removed. |
+| `files` | One entry per changed file, with `filename`, `status` (for example `added`, `modified`, `removed`) and its own line counts. |
+
+## Good to know [#good-to-know]
+- **The commit is picked when you design the process.** Repository and commit are chosen from lists filled from GitHub while you configure the action.
+- **Short lists.** The lists show what GitHub returns on its first page: up to 30 repositories and the 30 most recent commits of the repository's default branch. An older commit, or a commit on another branch, is not offered in the list. To read any commit by its identifier, use [Call API](/how-to/call-api) with the same credential.
+- **Errors.** When GitHub refuses the request, for example because access was revoked, the action stops with *Http result is not successful. Status code: …*. Without a credential, repository or commit it stops with *Invalid Credentials.*, *Invalid Repository.* or *Invalid Commit.*.
+
+## Related actions [#related-actions]
+- [Call API](/how-to/call-api): call any other GitHub API endpoint with the same credential.
+- [Object To String](/how-to/to-string): turn **Commit Details** into text, for example for an email body.

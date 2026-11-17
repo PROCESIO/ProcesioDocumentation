@@ -1,7 +1,45 @@
 ---
 title: "Delete by Keys"
 icon: "📕"
-description: "Deletes several S3 objects at once by listing their keys."
+description: "Deletes a list of objects from an Amazon S3 bucket in one request."
 ---
 
-coming soon 🔜
+**Delete by Keys** removes several objects from an Amazon S3 bucket in one step. You give the list of keys, for example the result of [List Keys](/how-to/list-keys) after you filtered it.
+
+## Before you start [#before-you-start]
+The AWS S3 actions don't use a stored credential. Each action has the same four connection fields:
+
+| Field | Type | Required | What to put |
+| --- | --- | --- | --- |
+| **Access Key** | Text | Yes | The access key ID of an AWS IAM user, for example `AKIA…`. |
+| **Secret Key** | Text | Yes | The secret access key that belongs to that access key. |
+| **Region** | Text | Yes | The AWS region of the bucket, as its code, for example `eu-central-1`. |
+| **Bucket** | Text | Yes | The bucket name, for example `my-company-invoices`. |
+
+The IAM user needs S3 permissions on the bucket for the operation you run. The values you type are visible to everyone who can edit the process, so prefer an IAM user limited to the buckets the process needs.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **AWS S3** and pick **Delete by Keys** (or type *Delete by Keys* in the search box).
+
+![The Delete by Keys action properties: Access Key, Secret Key, Region, Bucket, Keys and Result](/images/docs/actions/aws-s3-delete-by-keys/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Access Key**, **Secret Key**, **Region**, **Bucket** | Input | Text | Yes | The connection fields described above. |
+| **Keys** | Input | List of Text | Yes | The full keys of the objects to delete, for example `["reports/2024.csv", "reports/2025.csv"]`. |
+| **Result** | Output | Boolean | No | `true` if the request succeeded, `false` if not. |
+
+## Example [#example]
+**Keys** `["reports/2024.csv", "reports/2025.csv"]` → both objects are removed and **Result** is `true`.
+
+## Good to know [#good-to-know]
+- An empty list returns **Result** `false` without deleting anything. If **Keys** isn't set at all, the step fails with *"Missing keys."*
+- S3 doesn't report keys that don't exist, so **Result** can be `true` even when some keys were already gone.
+- S3 accepts at most 1,000 keys in one request. Split longer lists.
+- The deletion can't be undone.
+- If a connection field is empty, the step fails with *"Invalid connection details."*
+- Common errors from S3: *"Access forbidden! Ensure the connection details are valid."* (wrong keys or missing permission), *"Unable to connect! Ensure the provided region matches the bucket one."* (wrong **Region**), and *"Unrecognized Amazon Region: …"* (a region code that doesn't exist).
+
+## Related actions [#related-actions]
+- [List Keys](/how-to/list-keys), [Delete by Prefix](/how-to/delete-by-prefix), [Delete Object](/how-to/delete-object)

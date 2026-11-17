@@ -1,101 +1,60 @@
 ---
 title: "DeDuplicate"
 icon: "📕"
-description: "The DeDuplicate action allows PROCESIO users to identify duplicates within a simple list based on specified criteria and return a new list containing…"
+description: "Finds duplicate values in a simple list (text or numbers) and returns the unique values, the duplicates and how they relate."
 ---
 
-# Description
+The **DeDuplicate** action finds duplicates in a simple list of text or numbers — for example the same name written as `Jack` and `jack`. It returns the list without duplicates, the duplicates it removed, and which value each duplicate belongs to. By default values are compared exactly (ignoring case); a JSON configuration lets you use fuzzy, sound-alike or other comparisons. For lists of data models, use [Find Duplicates](/how-to/find-duplicates).
 
-The DeDuplicate action allows PROCESIO users to identify duplicates within a simple list based on specified criteria and return a new list containing only the unique values.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **List** and pick **DeDuplicate** (or type *DeDuplicate* in the search box). Then click **Configure** to open the configuration panel.
 
-# Parameters
+![The DeDuplicate action properties with the Configure button](/images/docs/actions/list-deduplicate/panel.png)
 
-- Input: List to process (`list<object>`)
-- Input: Duplicate identification JSON Configuration - this should be a “Monaco editor”, allowing JSON
-- Output: Duplicates found (`list<object>`)
-- Output: Duplicates correlation (`list<object>`) - the correlation between the found duplicates and the main item that they are duplicates of
-- Output: Deduplicate list (`list<object>`) - initial list minus the duplicates
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List to process** | Input | List of text or numbers | Yes | The values to check. |
+| **Duplicate identification JSON configuration** | Input | Text (JSON) | No | The comparison rule. Leave it empty for `{"MatchType":"Exact"}`. |
+| **Duplicates found** | Output | List of text | No | The values identified as duplicates of an earlier value. |
+| **Duplicates correlation** | Output | List of objects | No | One entry per kept value that has duplicates: `{"MainID":"eric","CorrelatedIDs":["eRic","Eric"]}`. |
+| **Deduplicate list** | Output | List of text | Yes | The list without duplicates. The first occurrence is kept. |
 
-# JSON Configuration
-
-The configuration structure should be as follows:
-
+## The JSON configuration [#the-json-configuration]
 ```json
 {
-	"MatchType": "Exact",
-	"FuzzyAlgorithm": "Levenstein",
-	"FuzzyThreshold": 0.7,
-	"SoundexDistance": 4,
-	"SimilarFirstNwords": 1,
-	"SimilarLastNwords": 1,
-	"IgnoredTerms": [
-		"ltd",
-		"usa"
-	],
-	"Sort": "Asc"
+  "MatchType": "Exact",
+  "IgnoredTerms": [" ltd"],
+  "Sort": "Asc"
 }
 ```
 
-- **MatchType**: Specifies the matching type.
-- **FuzzyAlgorithm**: Algorithm used for fuzzy matching.
-- **FuzzyThreshold**: Threshold for fuzzy matching.
-- **SoundexDistance**: Distance used for Soundex matching.
-- **SimilarFirstNwords**: Number of first words to compare.
-- **SimilarLastNwords**: Number of last words to compare.
-- **IgnoredTerms**: Terms to ignore during matching.
-- **Sort**: Specifies the sorting order.
+| Key | Required | Meaning |
+| --- | --- | --- |
+| `MatchType` | Yes (when you give a configuration) | `Exact`, `Contains`, `Similar`, `Fuzzy`, `Soundex` or `SimilarWordMatch`. They work as described in [Simple Filter](/how-to/simple-filter#match-types), but compare the values of the list with each other. |
+| `IgnoredTerms` | No | Words or characters removed from every value before comparing, exactly as written (spaces included). |
+| `Sort` | No | `Asc` or `Desc`: sorts **Deduplicate list** and **Duplicates found** as text. Without it, the original order is kept. |
+| `FuzzyAlgorithm`, `FuzzyThreshold` | Only for `Fuzzy` | Algorithm name (see [Simple Filter](/how-to/simple-filter#fuzzy)) and minimum score from `0` to `1`. |
+| `SoundexDistance` | Only for `Soundex` | `0` to `4`, default `4`. |
+| `SimilarFirstNwords`, `SimilarLastNwords` | Only for `SimilarWordMatch` | How many first / last words must be equal. |
 
-# MatchType Types
+## Example [#example]
+| List to process | Configuration | Deduplicate list | Duplicates found |
+| --- | --- | --- | --- |
+| `["Jack","jack","John","john","eric","eRic","Eric","487",487,"48-7"]` | *(empty)* | `["Jack","John","eric","487","48-7"]` | `["jack","john","eRic","Eric","487"]` |
+| `["b","a","B","c"]` | `{"MatchType":"Exact","Sort":"Desc"}` | `["c","b","a"]` | `["B"]` |
+| `["John-Doe","John Doe","376-323-1111","323-1111"]` | `{"MatchType":"Similar"}` | `["John-Doe","376-323-1111"]` | `["John Doe","323-1111"]` |
+| `["Robert","Rupert","Smith","Smyth"]` | `{"MatchType":"Soundex","SoundexDistance":4}` | `["Robert","Smith"]` | `["Rupert","Smyth"]` |
+| `["Acme Ltd","Acme","Other"]` | `{"MatchType":"Exact","IgnoredTerms":[" ltd"]}` | `["Acme Ltd","Other"]` | `["Acme"]` |
 
-## Exact
+For the first row, **Duplicates correlation** is `[{"MainID":"Jack","CorrelatedIDs":["jack"]},{"MainID":"John","CorrelatedIDs":["john"]},{"MainID":"eric","CorrelatedIDs":["eRic","Eric"]},{"MainID":"487","CorrelatedIDs":["487"]}]`.
 
-An exact match needs to be validated (=).
+## Good to know [#good-to-know]
+- Values are compared in lower case, with double spaces reduced and accents removed.
+- The outputs are always lists of **text**: `[1,2,1,3.5]` gives the deduplicated list `["1","2","3.5"]`. The number `487` and the text `"487"` are duplicates.
+- `IgnoredTerms` are removed exactly as written: write `" ltd"` with the leading space so that `Acme Ltd` becomes `acme`.
+- The step fails when the list is empty (*The input list does not have any element!*) or holds data models (*The input list is a Data Model! This action can only use simple lists.*), or when the configuration is invalid JSON or has no `MatchType`.
 
-## Similar
-
-- Compares 2 elements to see:
-  - If special characters do not exist. For example, "John-Doe" and "John Doe" are a match (before comparing, special characters and space characters are replaced with an empty string).
-  - Phone numbers. For instance, "376-323-1111" and "323-1111" are a match (if after replacing special characters and spaces with an empty string, the string contains only numbers, a Field1 contains Field2 OR Field2 contains Field1 assessment is made).
-  - Regardless of whether "WWW", "HTTP(s)://", exist to enhance domain or URL comparison.
-  - If an email is written with "@" or " at " or "\[at]", it should be a match.
-
-## Fuzzy
-
-This utilizes the algorithms available in `Similarity Search` action to compare one string against the other. Read more details [here](/docs/platform-actions/call-api/similarity-search).
-
-## Contains
-
-Checks if Field1 contains Field2 OR Field2 contains Field1.
-
-## Soundex
-
-Checks if two words are similar when spoken. This matching algorithm evaluates the distance in “sounding” on a scale from 0 to 4, where 4 means the most similar “sounding” and 0 means that the words are very different.
-
-## SimilarWordMatch
-
-This checks if the first N words in a string are the same as the first N words in another string OR if the last N words in a string are the same as the last N words in another string.
-
-# Properties
-
-## IgnoredTerms
-
-- This parameter is of type `list<string>` and replaces the words in this property with an empty string before making the match assessment.
-
-## FuzzyAlgorithm & FuzzyThreshold
-
-- Only used when `MatchType` = `Fuzzy`. If `MatchType` is something else, those properties will be ignored so, they can be null or absent.
-- `FuzzyAlgorithm` needs to be one from this [here](/docs/platform-actions/call-api/similarity-search), written exactly as is written in the link provided.
-- `FuzzyThreshold` is a `double` between 0 and 1, where 0 means anything can pass and 1 means that it needs to have 100% confidence. From experimenting, we noticed 0.7 is a good threshold to experiment with.
-
-## SoundexDistance
-
-- Used only when the `MatchType` = `Soundex` and it can be set to 0, 1, 2, 3, or 4, where 4 means the words are very similar when spoken.
-
-## SimilarFirstNwords & SimilarLastNwords
-
-- Only used when `MatchType` = `SimilarWordMatch` in which case at least one should be >0. If both are =0 then the `SimilarWordMatch` will not be executed at all since it does not make sense. If MatchType is something else, those properties will be ignored, so, they can have any value or can even not be present.
-
-# Important Notes
-
-- Matching algorithms work only on primitive fields.
-- Matching is executed row-by-row, which will slow down with larger lists.
+## Related actions [#related-actions]
+- [Find Duplicates](/how-to/find-duplicates) (lists of data models), [Simple Filter](/how-to/simple-filter), [Concatenate](/how-to/concatenate), [Similarity Search](/how-to/similarity-search)
+- Step-by-step tutorial: [Deduplicate list](/how-to/deduplicate-list)

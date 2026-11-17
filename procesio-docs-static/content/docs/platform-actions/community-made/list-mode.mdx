@@ -1,49 +1,37 @@
 ---
 title: "List Mode"
 icon: "⭐"
-description: "This action returns most frequent element from a list of elements."
+description: "Returns the most frequent item of a list."
 ---
 
-This action returns most frequent element from a list of elements.
+**List Mode** returns the item that appears most often in a list. Use it to find the best-selling product in a list of order lines, the customer with the most tickets, or the most common answer in a survey.
 
-![](/images/docs/Aa6UD8ABRARv6yIR3RYp4_image.png)
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Community-Made** and pick **List Mode** (or type *List Mode* in the search box).
 
-## Inputs & Outputs
+![The List Mode action properties: List of elements and Mode](/images/docs/actions/community-made-list-mode/panel.png)
 
-- **\[ I ] List of elements**: <span style={{color:'#41e7f7'}}>Object (List)</span> representing the input list that will be parsed.
-- **\[ O ] Mode**: <span style={{color:'#41e7f7'}}>Object (Single Value)</span> representing the most frequent element from the input list.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **List of elements** | Input | List (any type) | Yes | The list to look at. Map a list variable. |
+| **Mode** | Output | Any type | Yes | The most frequent item. |
 
-![](/images/docs/G9JXl4yJxKTTaTuGm4FBN_image.png)
+## Example [#example]
+| List of elements | Mode |
+| --- | --- |
+| `[3, 1, 3, 2, 3, 1]` | `3` |
+| `["b", "a", "a", "b"]` | `"b"` (a tie: the first one in the list wins) |
+| `[{"a":1}, {"a":1}, {"b":2}]` | `{"a":1}` |
+| `[]` | empty |
 
-## Example Usage
+## Good to know [#good-to-know]
+- **Ties:** when several items appear equally often, you get the one that appears first in the list.
+- An empty list does not stop the step; **Mode** is simply empty. Check it before you use it.
+- Text is compared exactly, case included.
 
-- Drag the List Mode action from the Community-Made folder to the canvas.
+## Related actions [#related-actions]
+- [List Intersection](/how-to/list-intersection), [List Standard Deviation](/how-to/list-standard-deviation)
 
-
-
-![](/images/docs/eIsQr9cWedOjaQkSxR1LV_image.png)
-
-- Declare the variables to be used with the List Mode action.
-
-
-
-![](/images/docs/fxJ0P7EelGIk0hgT7BIac_image.png)
-
-- Assign the newly created variables.
-- Save & Run the process and then Check Instance to see the output.
-
-
-
-![](/images/docs/2ZNwHa8XukUtjCD8DistU_image.png)
-
-## Use Cases
-
-- Checking the most orderd product from a ordered products list.
-
-## Tips
-
-To get the customer that placed most orders on your website, generate a list with the account Id of the customer from each order, then use [List Mode](/docs/platform-actions/call-api/list-mode) to get the account that placed most orders.
-
-## Creator
-
-- **Franck -&#x20;**[The Productivity Lab](https://theproductivitylab.io/)
+## Creator [#creator]
+Franck, [The Productivity Lab](https://theproductivitylab.io/)

@@ -1,7 +1,20 @@
 ---
 title: "PDF"
 icon: "📁"
-description: "Actions for extracting content from PDFs and assembling new ones."
+description: "Actions for reading text out of PDFs, reshaping PDF files and checking them."
 ---
 
-Pull content out (**Extract Text**, **Extract Embedded Files**, **Area Mapper**), reshape documents (**Merge Files**, **Select pages**, **Remove pages**), and fill in visuals (**Acroform Insert Image**).
+The **PDF** folder of the Process Designer toolbox holds the actions that read and reshape PDF files.
+
+| Action | What it does |
+| --- | --- |
+| [Extract Text](/how-to/extract-text) | Reads the text of a PDF, page by page and word by word, with each word's position. |
+| [Area Mapper](/how-to/area-mapper) | Picks values out of the extracted text by area (coordinates, neighbouring words, patterns) and maps them to keys. |
+| [Extract Embedded Files](/how-to/extract-embedded-files) | Returns the files attached inside a PDF. |
+| [Merge Files](/how-to/merge-files) | Joins two PDFs into one. |
+| [Select Pages](/how-to/select-pages) | Builds a new PDF from the pages you choose, in the order you choose. |
+| [Remove Pages](/how-to/remove-pages) | Builds a new PDF without the pages you choose. |
+| [Acroform Insert Image](/how-to/acroform-insert-image) | Places an image (a signature, a stamp) where a form field sits in the PDF. |
+| [Is Valid](/how-to/pdf-is-valid) | Checks that a file is a PDF that can be opened. |
+
+To create a PDF from HTML, see [HTML To PDF](/how-to/html-to-pdf) in the **Converters** folder.

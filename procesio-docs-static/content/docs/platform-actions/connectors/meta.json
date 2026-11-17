@@ -1,0 +1,10 @@
+{
+  "title": "Connectors",
+  "icon": "📁",
+  "pages": [
+    "prelude",
+    "google-sheets",
+    "redis-connector",
+    "github"
+  ]
+}

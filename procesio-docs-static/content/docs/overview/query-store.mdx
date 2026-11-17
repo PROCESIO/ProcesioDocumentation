@@ -29,6 +29,7 @@ description: "A platform action that runs SQL statements against your workspace'
 | Read, add, change or delete rows in **one** Data Store, without writing SQL                  | The [Data Store](/data-store) action       |
 | Join Data Stores, build totals and reports, or update many rows with one condition            | **Query Store**                            |
 | Query your **own** Microsoft SQL Server database                                             | [Execute Query](/how-to/execute-query)     |
+| Run the same kind of SQL from a **form**, for example when it loads or a button is clicked   | The form event [Run a Data Store query](/run-data-store-query) |
 
 A Query Store query behaves like Execute Query: it may hold several statements, it can use user variables, and it has the same outputs. What sets it apart is the [guardrails](#guardrails), which exist because Data Stores run on PROCESIO's shared database server rather than on your own.
 
@@ -271,7 +272,7 @@ Click **Save**, **Validate** and **Run**. If the process has inputs, a dialog as
 
 *The process's inputs appear in the Run dialog.*
 
-When the run finishes, click **Check instance** (it opens in a new tab), or open the process's instances and choose **History → Show details**. On the **Variables** tab, the query's outputs are listed under **Output**.
+When the run finishes, click **Check Instance** (it opens in a new tab), or open the process's instances and choose **History → Show details**. On the **Variables** tab, the query's outputs are listed under **Output**.
 
 ![Instance details, Variables tab, with the query results](/images/docs/query-store/results-variables.png)
 
@@ -394,6 +395,7 @@ You always get one of these messages, never a raw database error.
 | Executable comments (/*! ... */) are not allowed in queries.                                                                  | Nothing ran.                                                                                                                                               |
 | The query does not contain an executable statement.                                                                           | A query that holds only a comment, or only `;`. Nothing ran.                                                                                               |
 | The query contains invalid SQL syntax.                                                                                        | A database syntax error, including `DECLARE`, an empty statement between two others, or a variable named like a parameter. Statements before it have run. |
+| The query could not be executed.                                                                                              | Any other database error. Statements before it have run.                                                                                                   |
 | The query did not finish within the configured time limit.                                                                    | The Time Out was reached. Statements that finished before it are kept.                                                                                     |
 | The query did not finish within N seconds and was stopped. Narrow the query, or raise its Time Out.                          | No answer within the Time Out plus 30 seconds.                                                                                                             |
 | The specified database does not exist. Create a Data Store first.                                                             | The workspace has no Data Store yet.                                                                                                                       |
@@ -414,7 +416,7 @@ When a Query Store step fails, because a query was refused, a SQL error or a tim
 
 | Together with                                       | You can…                                                                                                                                             |
 | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Forms**                                           | Save each submission (`INSERT`), check for a duplicate first (`SELECT`), or look up extra data for the person who submitted.                          |
+| **Forms**                                           | Save each submission (`INSERT`), check for a duplicate first (`SELECT`), or look up extra data for the person who submitted. To run a query straight from a form event, without a process, see [Run a Data Store query](/run-data-store-query). |
 | **Forms & Tasks**                                   | Query the open requests, assign a task for each one, and write the decision back with `UPDATE`.                                                     |
 | **Webhooks** + custom response                      | Offer a small API over your data: the caller sends a filter, and the process returns Result Rows.                                                     |
 | **Schedules**                                       | Clean up on a timer, for example `DELETE` rows older than 90 days every night.                                                                       |

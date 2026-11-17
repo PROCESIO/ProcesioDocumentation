@@ -1,31 +1,42 @@
 ---
 title: "Get Metadata"
 icon: "📕"
-description: "The Get Metadata action retrieves metadata for a S3 object from the Amazon S3 bucket."
+description: "Reads the metadata of an object in an Amazon S3 bucket, such as its size, content type and last modified date."
 ---
 
-# Overview
+**Get Metadata** reads the properties of an object in an Amazon S3 bucket without downloading it: its size, content type, ETag, last modified date and any custom metadata.
 
-The `Get Metadata` action retrieves metadata for a S3 object from the Amazon S3 bucket.
+## Before you start [#before-you-start]
+The AWS S3 actions don't use a stored credential. Each action has the same four connection fields:
 
-![](/images/docs/VnRpmgHbJJmonAX-e1J4i_image.png)
+| Field | Type | Required | What to put |
+| --- | --- | --- | --- |
+| **Access Key** | Text | Yes | The access key ID of an AWS IAM user, for example `AKIA…`. |
+| **Secret Key** | Text | Yes | The secret access key that belongs to that access key. |
+| **Region** | Text | Yes | The AWS region of the bucket, as its code, for example `eu-central-1`. |
+| **Bucket** | Text | Yes | The bucket name, for example `my-company-invoices`. |
 
-## Inputs & Outputs
+The IAM user needs S3 permissions on the bucket for the operation you run. The values you type are visible to everyone who can edit the process, so prefer an IAM user limited to the buckets the process needs.
 
-**\[I]** Access key (`string`): The access key for your Amazon S3 account.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **AWS S3** and pick **Get Metadata** (or type *Get Metadata* in the search box).
 
-**\[I]** Secret key (`string`): The secret key associated with the access key for your Amazon S3 account.
+![The Get Metadata action properties: Access Key, Secret Key, Region, Bucket, Object Key and Result](/images/docs/actions/aws-s3-get-metadata/panel.png)
 
-**\[I]** Region (`string`): The region where the Amazon S3 bucket is located.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Access Key**, **Secret Key**, **Region**, **Bucket** | Input | Text | Yes | The connection fields described above. |
+| **Object Key** | Input | Text | Yes | The full key of the object, including every prefix, for example `invoices/2026/inv-001.pdf`. |
+| **Result** | Output | Object (JSON) | Yes | The metadata that S3 returns for the object (size, content type, ETag, last modified date, custom metadata and other headers). |
 
-**\[I]** Bucket (`string`): The name of the Amazon S3 bucket from which to retrieve the object metadata.
+## Example [#example]
+**Object Key** `invoices/2026/inv-001.pdf` → **Result** is a JSON object describing that object. Read single values from it with a JSON action or a mapping, for example its content length or content type.
 
-**\[I]** Object key (`string`): This user-defined key identifies the object in the bucket. Ensure to include all prefixes, split by the '/' character, since the full file path is needed for interrogation.
+## Good to know [#good-to-know]
+- If the object doesn't exist, the step fails with *"Object not found! Ensure the bucket and object key are correct."* Use [Object Exists](/how-to/object-exists) first if the object may be missing.
+- If a connection field is empty, the step fails with *"Invalid connection details."*
+- Common errors from S3: *"Access forbidden! Ensure the connection details are valid."* (wrong keys or missing permission), *"Unable to connect! Ensure the provided region matches the bucket one."* (wrong **Region**), and *"Unrecognized Amazon Region: …"* (a region code that doesn't exist).
 
-**\[O]** Result (`object`): Returns the object metadata.
-
-## Important notes
-
-- Ensure the provided access key and secret key have the necessary permissions to retrieve metadata from the specified Amazon S3 bucket.
-- Ensure that the region provided matches the region where the Amazon S3 bucket is located.
-- Include all necessary prefixes in the object key, split by the '/' character, to ensure the correct identification of the object in the bucket.
+## Related actions [#related-actions]
+- [Object Exists](/how-to/object-exists), [List Objects](/how-to/list-objects), [Get Object](/how-to/get-object)

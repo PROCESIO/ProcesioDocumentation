@@ -1,7 +1,38 @@
 ---
-title: "To String"
+title: "Object To String"
 icon: "📕"
-description: "Converts any value into its text representation."
+description: "Turns any value (object, list, number, text) into its JSON text."
 ---
 
-Coming soon 🔜
+The **Object To String** action turns any value into text, written as JSON. Use it when an action or an API needs a text field but you hold an object or a list, for example to put a JSON object in an email body or in a text column.
+
+<Callout type="info">
+This action was previously called **ToString**.
+</Callout>
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Converters** and pick **Object To String** (or type *Object To String* in the search box).
+
+![The Object To String action properties: Input and Result](/images/docs/actions/converters-object-to-string/panel.png)
+
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Input** | Input | Any type | Yes | The value to convert. |
+| **Result** | Output | Text | Yes | The value written as JSON text. |
+
+## Example [#example]
+| Input | Result |
+| --- | --- |
+| the object `{"a":1,"b":[true,null]}` | `{"a":1,"b":[true,null]}` |
+| the list `[1,2,3]` | `[1,2,3]` |
+| the number `42` | `42` |
+| the text `hello` | `"hello"` (with the quotes) |
+
+## Good to know [#good-to-know]
+- The output is compact JSON on a single line, without indentation.
+- **A text comes back in quotes**, because that is how JSON writes a text. If you need the plain text, you do not need this action.
+- To go the other way (text to JSON), use [String To JSON](/how-to/parse-json).
+
+## Related actions [#related-actions]
+- [String To JSON](/how-to/parse-json), [JSON To XML](/how-to/json-to-xml)

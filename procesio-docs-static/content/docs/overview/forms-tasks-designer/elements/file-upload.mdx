@@ -1,11 +1,31 @@
 ---
 title: "File Upload"
-description: "The File Upload element enables users to attach one or more files directly within a form. It is deeply integrated with Procesio's file handling…"
+description: "The File Upload element lets people attach one or more files to a form, by drag and drop or with a file picker."
 ---
 
 The File Upload element enables users to attach one or more files directly within a form. It is deeply integrated with Procesio's file handling capabilities, meaning uploaded files flow naturally into process variables and can be processed, stored, or forwarded by downstream actions in the workflow.
 
 You have full control over what users can upload: specify allowed file extensions (allowedfiletypes), enforce a maximum file size (maxfilesize), and optionally allow multiple files in a single upload field (allowmultiplefilesupload). The current file or files are accessible at runtime via the value attribute, enabling you to inspect, validate, or respond to uploads from event-driven logic.
+
+## Adding files [#adding-files]
+
+The person filling the form can add files in two ways:
+
+- drag files from their computer and drop them on the upload area, or
+- click **Select file** and pick the files.
+
+With **Allow multiple files upload** on, they can add several files to the same field. You can attach the same file more than once in a form.
+
+## File size and type checks [#file-size-and-type-checks]
+
+**Max file size** is in megabytes (500 by default) and applies to each file. **Allowed file types** lists the extensions people may upload; with no type selected, any file is allowed. The form checks both when it is submitted. If a file breaks a rule, a message shows under the field and nothing is sent:
+
+- *"File size should be less than N MB"* (or *"Some file sizes should be less than N MB"* for several files)
+- *"File extension is not allowed."* (or *"Some file extensions are not allowed."*)
+
+## What the form submits [#what-the-form-submits]
+
+A field that takes one file submits that file. A field with **Allow multiple files upload** on submits a list of files.
 
 ## Key Use Cases
 

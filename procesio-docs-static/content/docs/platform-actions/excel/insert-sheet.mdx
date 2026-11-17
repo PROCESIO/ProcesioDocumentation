@@ -1,32 +1,32 @@
 ---
 title: "Insert Sheet"
 icon: "📕"
-description: "Use this action to insert a new sheet into an existing workbook."
+description: "Adds a new, empty sheet to an existing Excel workbook."
 ---
 
-### Overview
+**Insert Sheet** adds a new, empty sheet at the end of a workbook. Use it to give a report one sheet per month, per customer or per section.
 
-Use this action to insert a new sheet into an existing workbook.
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Excel** and pick **Insert Sheet** (or type *Insert Sheet* in the search box).
 
-### How to configure the Insert Sheet action?
+![The Insert Sheet action properties: Excel workbook and New sheet](/images/docs/actions/excel-insert-sheet/panel.png)
 
-Step 1. Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Excel workbook** | Input and output | File | Yes | The workbook to change. Pick a File variable: after the step it holds the changed workbook. |
+| **New sheet** | Input | Text | Yes | The name of the sheet to add. |
 
-Step 2. Drag the **Insert Sheet** action to the canvas and link it to the other actions.
+## Example [#example]
+| Excel workbook | New sheet | Result |
+| --- | --- | --- |
+| `orders.xlsx` with *Orders* and *Empty* | `Summary` | The workbook now has *Orders*, *Empty* and *Summary* |
+| the same workbook | `Orders` | The step fails: "Excel error: A sheet named 'Orders' already exists in the current workbook." |
 
-![](/images/docs/NLjRDApJmptgVtuaFoMNh_image.png)
+## Good to know [#good-to-know]
+- **Excel workbook** is both the input and the output: the same variable carries the changed file to the next steps. The file keeps its name.
+- Only `.xlsx` and `.xlsm` files are accepted.
+- When the step fails, the variable keeps the original, unchanged workbook.
 
-Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/lPk0_lEr3HprBy10pFoev_screenshot-2022-09-22-at-123433.png)
-
-- **Excel workbook**: you need to input the file with the workbook where you want to insert a new sheet
-- **New sheet**: you need to input a string variable with the name of the new sheet that you want to insert
-
-Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-Step 5. You will be prompted to add the file for the input variable. Click **Run**.
-
-Step 6. To verify the process click **Check instance**.
-
-Step 7. The file contains the new sheet added.
+## Related actions [#related-actions]
+- [Rename Sheet](/how-to/rename-sheet), [Delete Sheet](/how-to/delete-sheet), [Get Sheet Names](/how-to/get-sheet-names), [Copy Paste](/how-to/copy-paste)

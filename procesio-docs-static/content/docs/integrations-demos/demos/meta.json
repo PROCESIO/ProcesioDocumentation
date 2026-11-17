@@ -2,11 +2,8 @@
   "title": "Demos",
   "icon": "💯",
   "pages": [
-    "build-a-conversational-chatbot-with-archbee-and-chat-gpt",
     "google-forms-procesio",
     "using-the-document-designer-to-send-customized-emails",
-    "audio-to-text-using-openai-s-whisper",
-    "how-to-track-read-emails",
     "hubspot-contacts-analytics",
     "how-to-integrate-with-jira-to-create-tickets",
     "how-to-create-an-order-confirmation-process",

@@ -60,6 +60,7 @@ Form Events can be triggered by various actions within the form, creating a resp
 
 ## ✅ Approval Events
 
+- **onInput** – Fires when the reviewer changes the comment.
 - **onBeforeApprove** – Fires before an approval action is submitted.
 - **onBeforeReject** – Fires before a rejection action is submitted.
 - **onBeforeSubmit** – Fires before either approval or rejection is submitted.
@@ -116,6 +117,18 @@ To add events to your forms:
 - Configure the event (check according documentation pages for more details).
 - Set condition(s)&#x20;
 
+## Event actions [#event-actions]
+
+An event runs one of these actions:
+
+| Action | What it does |
+| --- | --- |
+| **Trigger PROCESS** | Starts a process and maps data in and out. See [Trigger process](/trigger-process). |
+| **Trigger JAVASCRIPT** | Runs your own script. See [Trigger JavaScript](/trigger-javascript). |
+| **Trigger form** | Submits another form, to chain forms or pass data on. See [Trigger form](/trigger-form). |
+| **Map form variable** | Sets form variables from values of this or another form. See [Map form variable](/map-form-variable). |
+| **Data store operation** | Reads, adds, updates or deletes rows of a Data Store (see [Using a Data Store in a form](/data-store#using-a-data-store-in-a-form)), or, with the operation **Execute query**, runs an SQL query against your Data Stores (see [Run a Data Store query](/run-data-store-query)). |
+
 # Changing events after tasks were created
 
 When a task is created (a user submits a step, or a process creates the form instance), the task keeps a copy of the form as it was at that moment, **including its events**. Event changes you publish later apply only to tasks created after the change.
@@ -144,10 +157,11 @@ If you encounter issues with your form events:
 
 1. Check the event logs for error messages and details.
 2. Verify the event configurations (check Troubleshooting section on according documentation page):
-   - [Trigger process](&lt;../spaces/SPACES/Overview/Trigger process.md>)&#x20;
-   - [Trigger JavaScript](&lt;../spaces/SPACES/Overview/Trigger JavaScript.md>)&#x20;
-   - [Trigger form](&lt;../spaces/SPACES/Overview/Trigger form.md>)&#x20;
-   - [Map form variable](&lt;../spaces/SPACES/Overview/Map form variable.md>)&#x20;
+   - [Trigger process](/trigger-process)&#x20;
+   - [Trigger JavaScript](/trigger-javascript)&#x20;
+   - [Trigger form](/trigger-form)&#x20;
+   - [Map form variable](/map-form-variable)&#x20;
+   - [Run a Data Store query](/run-data-store-query)
 
 # Email Notifications&#x20;
 

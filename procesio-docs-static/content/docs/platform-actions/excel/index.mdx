@@ -1,7 +1,29 @@
 ---
 title: "Excel"
 icon: "📁"
-description: "Actions for reading and editing Excel workbooks without opening Excel."
+description: "Actions for creating, reading and editing Excel workbooks and CSV files without opening Excel."
 ---
 
-Manage workbooks (**Create Workbook**, **Split Workbook**, **XLS To XLSX**), manage sheets (**Insert Sheet**, **Rename Sheet**, **Delete Sheet**, **Get Sheet Names**), and work with the cells themselves (**Read Range**, **Copy Paste**, **Apply Formula**, **Get Named Range**, **Get Last Used Row**, **Parse OLE Date**).
+The **Excel** folder of the Process Designer toolbox works with `.xlsx` workbooks (and `.xlsm`), old `.xls` files and `.csv` files.
+
+| Action | What it does |
+| --- | --- |
+| [Export To CSV](/how-to/export-to-csv) | Exports a list to a `.csv` file. |
+| [Export To XLSX](/how-to/export-to-xlsx) | Exports a list to an `.xlsx` file. |
+| [Read Range from CSV](/how-to/read-range-from-csv) | Reads a block of cells from a `.csv` file. |
+| [Split Workbook To CSV](/how-to/split-workbook-to-csv) | Splits a sheet into several `.csv` files. |
+| [XLS To XLSX](/how-to/xls-to-xlsx) | Converts an old `.xls` file to `.xlsx`. |
+| [Create Workbook](/how-to/create-workbook) | Creates a new workbook with one sheet. |
+| [Get Sheet Names](/how-to/get-sheet-names) | Lists the sheets of a workbook. |
+| [Insert Sheet](/how-to/insert-sheet) | Adds a sheet. |
+| [Rename Sheet](/how-to/rename-sheet) | Renames a sheet. |
+| [Delete Sheet](/how-to/delete-sheet) | Removes a sheet. |
+| [Apply Formula](/how-to/apply-formula) | Writes a formula into a range of cells. |
+| [Copy Paste](/how-to/copy-paste) | Copies a range to another sheet or workbook. |
+| [Get Named Range](/how-to/get-named-range) | Finds the sheet and cells of a named range. |
+| [Read Range](/how-to/read-range) | Reads the values and formulas of a range. |
+| [Get Last Used Row](/how-to/get-last-used-row) | Returns the last used row of a sheet. |
+| [Parse OLE Date](/how-to/parse-ole-date) | Turns an Excel date number into a date. |
+| [Split Workbook](/how-to/split-workbook) | Splits a sheet into several `.xlsx` files. |
+
+The actions that change a workbook (Insert, Rename, Delete Sheet, Apply Formula, Copy Paste) use the same File variable for input and output: after the step it holds the changed file.

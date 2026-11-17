@@ -1,8 +1,9 @@
 {
-  "title": "Untitled",
+  "title": "HTML",
   "icon": "📁",
   "pages": [
-    "html-manipulation",
-    "is-valid-2-alt"
+    "html-is-valid",
+    "html-sanitizer",
+    "html-manipulation"
   ]
 }

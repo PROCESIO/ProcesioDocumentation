@@ -1,17 +1,18 @@
 {
-  "title": "FTP/sFTP",
+  "title": "SFTP",
   "icon": "📁",
   "pages": [
-    "move-bulk",
-    "sftp-delete-bulk",
-    "sftp-download-bulk",
     "get-file-list",
+    "move-bulk",
     "move-file",
     "rename-file-folder",
+    "sftp-delete-bulk",
     "delete-file",
-    "create-folder",
     "delete-folder",
+    "create-folder",
+    "sftp-download-bulk",
     "download-file",
-    "upload-file"
+    "upload-file",
+    "sftp-upload-bulk"
   ]
 }

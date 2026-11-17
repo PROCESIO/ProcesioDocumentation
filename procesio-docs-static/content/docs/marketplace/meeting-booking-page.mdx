@@ -1,0 +1,66 @@
+---
+title: "Meeting Booking Page"
+icon: "📅"
+description: "A public booking page that shows only the times your Google Calendar has free, with confirmation emails, reminders and a cancel link."
+---
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/46OKnpxGTSs" title="Embedded video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+Your own booking page, running in your PROCESIO workspace. A visitor picks a meeting type and a day and sees only the times your Google Calendar has open. They book, and the meeting lands in your calendar with them as a guest and a Google Meet link attached. You both get a confirmation email. Before the meeting they get a reminder, and every email they receive has a link to cancel.
+
+A private admin page covers the rest: meeting types, working hours, days off, the gaps between meetings and the wording of every email.
+
+<Callout type="success">
+Get it from the [PROCESIO Marketplace](https://procesio.app/FlowZy/Marketplace/Usecases): click **Get free** on the **Meeting Booking Page** card, sign in and choose **Import**. [Getting a use case](/docs/marketplace#getting-a-use-case) walks through it.
+</Callout>
+
+## What gets imported
+
+- **Forms:** **Book a meeting** is the public page. **Cancel your meeting** is where the cancel link leads. **Booking admin** is private, for you.
+- **Processes:** 22, most of them behind the admin page. Two matter for the setup: **SyncBookingCalendarProcess** writes the bookings to Google Calendar, and **SendBookingNotificationsProcess** sends the confirmations and reminders.
+- **Data stores:** Meetings, MeetingTypes, Availability, Blackouts, Settings, EmailTemplates and TimeZones.
+- **Credentials:** Google Calendar, Email Server and PROCESIO API (workspace lookup).
+
+## Set it up
+
+### 1. Sign in to Google Calendar
+
+Open the **Google Calendar** credential and sign in with the Google account whose calendar should receive the bookings. It takes one consent click.
+
+### 2. Fill in the Email Server credential
+
+Enter your SMTP server, port, encryption, username, password and the **From** address. Every confirmation and reminder goes out through it. The [SMTP Server credential](/smtp-server-credential) page explains each field.
+
+### 3. Open the Booking admin page
+
+On its first visit the admin page creates its starting data: a few meeting types, working hours, email templates and default settings. Then open **Global Settings** and fill in:
+
+- **Your name**, **Your role**, **About you** and **Your portrait (image address)**. Visitors see these on the booking page.
+- **Company name**, **About the company** and **Company logo (image address)**.
+- **Sender address for outgoing mail** and **Who receives the booking notices**.
+- **Booking page address** and **Cancel and reschedule page address**, once the forms are published in step 4. The cancel link in every email is built from them, so it won't work while they are empty.
+
+Click **Save Settings**. While you're there, check the defaults: the time zone starts as UTC, a visitor can book no sooner than 2 hours ahead, and the reminder goes out 24 hours before the meeting.
+
+The other tabs are yours to adjust: **Meeting Types**, **Availability** for your working hours, **Blackouts** for days off, and **Email templates**.
+
+### 4. Publish the two public forms
+
+Publish **Book a meeting** and **Cancel your meeting**. Copy their public addresses into the two address fields from step 3 and save again.
+
+### 5. Schedule the two background processes
+
+Put **SyncBookingCalendarProcess** and **SendBookingNotificationsProcess** on a [schedule](/schedules). They are the ones that put bookings in your calendar and send the emails, so until they run, nothing reaches the calendar or anyone's inbox. Every few minutes keeps confirmations quick.
+
+### Optional: the credential dropdown on the admin page
+
+**Google Calendar credential** on Global Settings can list your workspace's Google Calendar credentials in a dropdown. For that, the admin page has to read the workspace's credential list:
+
+1. Create an [API key](/api-keys) in the workspace.
+2. Put its name in **PROCESIO API key** on Global Settings, and its value in the **PROCESIO API (workspace lookup)** credential.
+
+Bookings work without it. Only that dropdown stays empty.
+
+## Try it
+
+Open your **Book a meeting** page in a private browser window and book a slot a few days ahead. Once the two scheduled processes have run, the meeting should be in your calendar, you should both have the confirmation, and its cancel link should open **Cancel your meeting**.

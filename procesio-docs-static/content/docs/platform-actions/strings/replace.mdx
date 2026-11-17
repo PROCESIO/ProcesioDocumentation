@@ -1,53 +1,40 @@
 ---
 title: "Replace"
 icon: "📕"
-description: "Use this action to search a string for a specified value and return a new string where the specified value(s) are replaced (ex. you have a text and…"
+description: "Replaces every occurrence of a text inside another text, with or without matching letter case."
 ---
 
-### Overview
+**Replace** searches a text for a value and returns a new text in which every occurrence of that value is replaced. Use it to swap a word in a template, remove a character, or clean up a value before you store it.
 
-Use this action to search a string for a specified value and return a new string where the specified value(s) are replaced (ex. you have a text and you want to replace a specific word in the whole document).
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **String** and pick **Replace** (or type *Replace* in the search box).
 
-### How to configure the Replace action?
+![The Replace action properties: Source String, Search String, Replacement String, Ignore Case and Result](/images/docs/actions/string-replace/panel.png)
 
-Step 1. Create a process and give it a name.
+## Inputs and outputs [#inputs-and-outputs]
+| Field | Direction | Type | Required | What to put / what you get |
+| --- | --- | --- | --- | --- |
+| **Source String** | Input | Text | Yes | The text to search and change. |
+| **Search String** | Input | Text | Yes | The text to look for. It cannot be empty. |
+| **Replacement String** | Input | Text | No | The text to put in its place. Leave it empty to delete every occurrence. |
+| **Ignore Case** | Input | Boolean (true/false) | No | Tick it to match the search text in any letter case. Off by default. |
+| **Result** | Output | Text | Yes | The text after all replacements. |
 
-Step 2. Drag the **Replace** action to the canvas and link it to the other actions.
+## Example [#example]
+| Source String | Search String | Replacement String | Ignore Case | Result |
+| --- | --- | --- | --- | --- |
+| `This is a cat. The cat sleeps.` | `cat` | `dog` | off | `This is a dog. The dog sleeps.` |
+| `Cat cat CAT` | `cat` | `dog` | off | `Cat dog CAT` |
+| `Cat cat CAT` | `cat` | `dog` | on | `dog dog dog` |
+| `a-b-c` | `-` | *(empty)* | off | `abc` |
+| `abc` | `z` | `x` | off | `abc` |
 
-![](/images/docs/QWpMihpwwZfsFhiZsAj2J_screenshot-2022-09-21-at-164149.png)
+## Good to know [#good-to-know]
+- **Every occurrence is replaced**, not only the first one.
+- **Case-sensitive unless you tick Ignore Case.**
+- **An empty Search String fails the step** with *"The value cannot be an empty string. (Parameter 'oldValue')"*.
+- If the search text is not found, **Result** is the unchanged source text; the step does not fail.
+- The search text is plain text. To replace by a pattern (all digits, any email address…), use [RegEx Replace](/how-to/regex-replace).
 
-Step 3. Create the variables needed for the configuration of the action, and then add them to the configuration panel:
-
-![](/images/docs/jstvlszMtOQ2UoyHScG59_screenshot-2022-09-21-at-165053.png)
-
-****
-
-**Source string**: you need to input a string variable which contains the text to be searched and modified
-
-**Search string:** you need to input a string variable with the string which you want to be searched and replaced in the source string
-
-**Replacement string:** you need to input a string variable with which the matched values will be replaced
-
-**Ignore case checkbox**: Check to ignore case sensitivity for the used strings
-
-**Result**: the output with the new string containing replacements
-
-****
-
-For example, if you have the Source string: "This is a cat" and you want to replace the word "cat" with "dog", you should configure the action like this:&#x20;
-
-Source string: This is a cat
-
-Search string: cat
-
-Replacement string: dog
-
-Result: the result should be: "This is a dog"
-
-Step 4. **Save**, **Validate&#x20;**&#x61;nd **Run&#x20;**&#x74;he process.
-
-Step 6. To verify the process click **Check instance**.
-
-Step 7. In the **Output&#x20;**&#x73;ection, you can see the updated string:&#x20;
-
-![](/images/docs/pOFB_AkWSnSbQOsr-iIFu_screenshot-2022-09-21-at-165345.png)
+## Related actions [#related-actions]
+- [RegEx Replace](/how-to/regex-replace), [Replace EOL](/how-to/replace-eol), [Contains](/how-to/string-contains)
