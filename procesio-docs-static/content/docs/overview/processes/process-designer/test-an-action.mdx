@@ -77,7 +77,13 @@ and no result appears.
   not refresh by itself in any case.
 </Callout>
 
-So if a test sits on **"We are sending the request."** and never shows a result:
+When no result has arrived after **2 minutes**, the panel stops waiting and shows
+*"The test result did not arrive in time. The action may still have run. If this keeps
+happening, check that your network allows the PROCESIO notifications host, then try
+again."*
+
+If you see that message, or a test sits on **"We are sending the request."** and you do
+not want to wait:
 
 1. Press **Cancel** to stop waiting.
 2. Check that your network allows the notifications host, and ask whoever manages

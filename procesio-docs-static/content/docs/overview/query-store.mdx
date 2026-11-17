@@ -29,6 +29,7 @@ description: "A platform action that runs SQL statements against your workspace'
 | Read, add, change or delete rows in **one** Data Store, without writing SQL                  | The [Data Store](/data-store) action       |
 | Join Data Stores, build totals and reports, or update many rows with one condition            | **Query Store**                            |
 | Query your **own** Microsoft SQL Server database                                             | [Execute Query](/how-to/execute-query)     |
+| Run the same kind of SQL from a **form**, for example when it loads or a button is clicked   | The form event [Run a Data Store query](/run-data-store-query) |
 
 A Query Store query behaves like Execute Query: it may hold several statements, it can use user variables, and it has the same outputs. What sets it apart is the [guardrails](#guardrails), which exist because Data Stores run on PROCESIO's shared database server rather than on your own.
 
@@ -415,7 +416,7 @@ When a Query Store step fails, because a query was refused, a SQL error or a tim
 
 | Together with                                       | You can…                                                                                                                                             |
 | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Forms**                                           | Save each submission (`INSERT`), check for a duplicate first (`SELECT`), or look up extra data for the person who submitted.                          |
+| **Forms**                                           | Save each submission (`INSERT`), check for a duplicate first (`SELECT`), or look up extra data for the person who submitted. To run a query straight from a form event, without a process, see [Run a Data Store query](/run-data-store-query). |
 | **Forms & Tasks**                                   | Query the open requests, assign a task for each one, and write the decision back with `UPDATE`.                                                     |
 | **Webhooks** + custom response                      | Offer a small API over your data: the caller sends a filter, and the process returns Result Rows.                                                     |
 | **Schedules**                                       | Clean up on a timer, for example `DELETE` rows older than 90 days every night.                                                                       |
