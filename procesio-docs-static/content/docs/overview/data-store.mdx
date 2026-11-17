@@ -273,13 +273,13 @@ The list depends on the column's type:
 
 ## Using a Data Store in a form
 
-A form can read from and write to a Data Store through an **event**. The usual pattern is to show stored records in a table when the form opens; the same mechanism can add, update and delete records from the form's fields.
+A form can read from and write to a Data Store through an **event** with the action **Data store operation**. The usual pattern is to show stored records in a table when the form opens; the same mechanism can add, update and delete records from the form's fields. Its **Operation** list offers **Read**, **Add**, **Update**, **Delete** and **Execute query**; the last one runs an SQL query you write, across one or more Data Stores — see [Run a Data Store query](/run-data-store-query).
 
 ### Showing records in a table
 
 1. Add a **table** element to the form.
-2. On the form, add an event with the trigger **Form load** and the action **Run Data Store operation**.
-3. Choose the store and the operation **Read**.
+2. On the form, add an event with the trigger **onLoad** and the action **Data store operation**.
+3. In **Select data store**, choose the store, and in **Operation** choose **Read**.
 4. Map the returned `rows` to the table's value.
 
 A Read loads **page 1** with **1,000 records per page** by default. For a bigger store, raise *Records per page*, or better, add [row filters](#filtering-what-the-form-reads) so the form only loads what it shows.
@@ -290,7 +290,7 @@ A Read loads **page 1** with **1,000 records per page** by default. For a bigger
 
 ![A public PROCESIO form displaying Data Store records in a table](/images/docs/data-store/public-form-table.png)
 
-*A public form whose Form load event reads a Data Store into a table. The pager reports the number of records the read returned.*
+*A public form whose onLoad event reads a Data Store into a table. The pager reports the number of records the read returned.*
 
 ### Filtering what the form reads
 
@@ -300,9 +300,18 @@ A **Read** event doesn't have to load the whole store. Open the event's **Map da
 
 *The Row filters editor inside the event's mapping panel. It is the same condition builder the process designer uses, so the operators per column type match the Where tables above.*
 
-<Callout type="warn">
-**The same and-before-or rule applies — silently.** Row filters is a flat list with no brackets drawn, but mixed conditions still evaluate *and* pairs first. `City = Cluj` **or** `Qty > 50` **and** `Active is false` loads the Cluj rows *or* the (over-50 *and* inactive) rows — fewer than a left-to-right reading suggests, with no warning. When mixing *and* with *or*, put each *or* branch in its own group so the grouping is explicit.
-</Callout>
+#### How and and or combine [#row-filters-and-or]
+
+Row filters follow the same rule as the Where builder: **AND is evaluated before OR**. The panel says so in the note above the conditions, and it draws a **blue bracket** next to each run of conditions joined by AND whenever a list mixes AND and OR. A bracketed run counts as one condition.
+
+![Row filters with three conditions joined by OR and AND, the AND pair bracketed](/images/docs/data-store/form-row-filters-precedence.png)
+
+*`Status = Cancelled` **OR** `Amount > 1000` **AND** `Status = New`. The bracket covers conditions 2 and 3, so the event reads the cancelled orders, plus the new orders over 1000.*
+
+- When all joins are AND, or all are OR, no bracket is drawn: the order does not matter.
+- To group the conditions differently, for example (*Cancelled* **or** *over 1000*) **and** *New*, put the OR branch in its own group with **Add group**. A group is evaluated as one bracket.
+- The brackets follow your edits: switch a join between AND and OR, add or delete a condition, and they are redrawn.
+- The same note and brackets appear for the **Update** and **Delete** operations, and the brackets in an event's **Set condition** as well. **Add** and **Execute query** have no Row filters.
 
 <Callout type="error">
 **List operators in form Row filters** — avoid **Belongs** / **Does not belong** in this panel for now: a list authored here reaches the form wrapped the wrong way, so *belongs* shows no rows and *does not belong* shows everything. Use several *equals* conditions joined with *or* instead — same result, reliable.

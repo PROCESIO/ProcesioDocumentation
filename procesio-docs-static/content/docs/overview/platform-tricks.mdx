@@ -25,14 +25,14 @@ JSON Example:
 
 ### **Moving multiple actions together inside the canvas**
 
-1. Hold down the **CTRL** key and **click** every action that you want to move.
-2. Release the **CTRL** key and just **drag&#x20;**&#x74;he group like you would drag a single action.
+1. Hold down the **CTRL** key (**CMD** on a Mac) and **click** every action that you want to move.
+2. Release the key and **drag** the group like you would drag a single action.
 
 ![](/images/docs/KGF8L7F6qnjq_toxJrHgj_multi-select.gif)
 
 ### **Spawning an action on canvas without dragging it**
 
-- **Double-click** the action you want to spawn and a new one will show up in the middle of the canvas.
+- **Double-click** the action in the Toolbar, anywhere on its row, and a new one shows up in the middle of the canvas.
 
 ![](/images/docs/wcbUSSaLOh0UOm_b5uzB7_spawner.gif)
 
@@ -40,7 +40,7 @@ JSON Example:
 
 Instead of configuring the same action twice, copy the one you already set up — the copy keeps its whole configuration.
 
-1. **Click** the action on the canvas to select it. Hold **CTRL** and click to select several.
+1. **Click** the action on the canvas to select it. Hold **CTRL** (**CMD** on a Mac) and click to select several.
 2. Press **CTRL + C** (**CMD + C** on a Mac).
 3. **Click** where you want the copy to land, then press **CTRL + V** (**CMD + V** on a Mac).
 
@@ -116,7 +116,7 @@ All of these combinations can be changed to ones you prefer — see [Keyboard sh
 
 ### **Duplicating a whole process**
 
-**Duplicate** in a process row's contextual menu copies the entire process — every action, with its configuration.
+**Duplicate** in a process row's contextual menu copies the entire process — every action, with its configuration. A message confirms it, for example *"Orders/Daily report" was duplicated. The copy is inactive.* If the copy cannot be made, the message reads *"The process could not be duplicated. Please try again."*
 
 <Callout type="warn">
   **The copy is created inactive.** It will not be triggered by its webhook or started by its schedules until you switch it on with the activation toggle. That is deliberate: it stops a half-edited copy from running on the original's triggers.

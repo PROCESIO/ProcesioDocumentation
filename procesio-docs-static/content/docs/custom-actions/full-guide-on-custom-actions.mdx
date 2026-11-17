@@ -363,6 +363,29 @@ A dropdown will appear inside your Process that will allow to pick an existing c
 
 ![](/images/docs/vXWz8JsiZBQEKyRe7t-yJ_restairtable.png)
 
+**Credential defaults**
+
+With `Ringhel.Procesio.Action.Core` 2.2.0 or later, a credential property can declare the settings its service expects. Put a JSON object in the `CredentialDefaults` member of the `FEDecorator`, either as a literal or as the `nameof` of a `const string` field of the action:
+
+```csharp
+private const string HubSpotDefaults =
+    "{\"connectorType\":\"HubSpot\",\"properties\":{\"URL\":\"https://api.hubapi.com\",\"AuthenticationMethod\":\"OAuth2\",\"Scopes\":[\"crm.objects.contacts.read\"]}}";
+
+[FEDecorator(Label = "HubSpot credential", Type = FeComponentType.Credentials_Rest,
+           Parent = "Side_Panel_Parent", RowId = 5, CredentialDefaults = nameof(HubSpotDefaults))]
+[BEDecorator(IOProperty = Direction.Input)]
+[Validator(IsRequired = true)]
+public APICredentialsManager apicredential { get; set; }
+```
+
+- `connectorType` (optional, 1 to 50 characters) becomes the **Label** of a credential created from this property, and the property's credential list then shows only the credentials with that label. See [Label](/working-with-credentials#label).
+- `properties` prefills the Create Credential panel when a user clicks **Create Credential** on the property. The keys are the field ids of the credential type, for example `URL`, `AuthenticationMethod`, `Scopes`, `ClientId`, `AuthorizationUrl`, `AccessTokenUrl`, `Key`, `Header`, `Path`. A radio or select field takes the option's value, such as `OAuth2` or `ApiKey`. A value is a text, a number, true/false or a list of texts.
+- The whole JSON can have up to 4096 characters.
+- **Never put a secret in the defaults** (a password, an API key value, a client secret, a certificate password). PROCESIO refuses the upload of an action that does. The user enters the secret when creating the credential.
+- `CredentialDefaults` is allowed on credential properties only. A top-level member other than `connectorType` and `properties`, a key that is not a field of the credential type, or JSON in the wrong shape is refused when you upload the package.
+
+Credentials created from the Credential Manager page are not prefilled.
+
 ### **Final observations&#xA0;**
 
 Now all you need to do is to create the NuGet package for your code and upload it in PROCESIO. As a rule a Nuget package must contain only 1 action when uploading it in the platform. As of now, uploading batch actions is not supported (more actions in 1 package).
