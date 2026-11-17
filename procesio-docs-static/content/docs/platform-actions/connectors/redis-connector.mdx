@@ -1,0 +1,127 @@
+---
+title: "Redis Connector"
+icon: "📕"
+description: "Read and write keys, hashes, lists, sets and sorted sets in a Redis database, set expirations and publish messages."
+---
+
+The **Redis Connector** reads and writes data in a [Redis](https://redis.io) database. Use it to cache values between process runs, keep counters, store small records as hashes, queue items in lists, or publish a message that other systems listen for.
+
+One action covers 19 operations, grouped in six families: **Key / String**, **Expiration**, **Hash**, **List**, **Set / Sorted set** and **Pub/Sub**. The connector runs these simple operations only; it does not run arbitrary Redis commands.
+
+<Callout type="info">New in the next release (PROCESIO v2.0.8).</Callout>
+
+## Before you start: the credential [#before-you-start-the-credential]
+The action connects through a **Redis** credential. In PROCESIO, open **Credentials**, click **Create credential** and pick **Redis** as the **Credential Type** (see [Credentials](/working-with-credentials#create-a-credential)). Fill in:
+
+| Field | Required | What to put |
+| --- | --- | --- |
+| **Host** | Yes | The server name or IP address only, for example `redis.example.com`. No `redis://` prefix, no port, no user name. |
+| **Port** | Yes | The port, `6379` by default. |
+| **Username** | No | The user name, when your server uses Redis users (ACL). |
+| **Password** | No | The password. It is stored encrypted and never shown again. |
+| **Database number** | No | The database to use, `0` by default. |
+| **Use TLS** | No | Turn on for an encrypted connection. |
+| **Validate server certificate** | No | On by default. Keep it on unless your server uses a self-signed certificate. |
+| **Connect timeout (seconds)** | No | How long to wait for the connection, `5` by default. |
+| **Command timeout (seconds)** | No | How long to wait for each operation, `5` by default. |
+
+Use the credential's test button to check the connection before you save. The PROCESIO servers must be able to reach your Redis server on that host and port.
+
+## Add the action [#add-the-action]
+In the Process Designer toolbox, open **Connectors** and pick **Redis Connector** (or type *Redis* in the search box).
+
+![The Redis Connector action properties: Redis Credential, Operation family and the Configuration button](/images/docs/actions/connectors-redis-connector/panel.png)
+
+1. Pick the **Redis Credential**.
+2. Pick the **Operation family**. The **Operation** list then shows the operations of that family.
+3. Pick the **Operation**.
+4. Click **Configuration** to fill in the operation's inputs and map its outputs. The panel shows only the inputs the chosen operation uses.
+
+![The Redis Connector Configuration panel with the Response, Found and Affected count outputs](/images/docs/actions/connectors-redis-connector/configuration.png)
+
+## Outputs [#outputs]
+Every operation fills the same three outputs. Map the ones you need to process variables.
+
+| Output | Type | What you get |
+| --- | --- | --- |
+| **Response** | Object (JSON) | The full result of the operation. Its fields depend on the operation (see the tables below). |
+| **Found** | Boolean (true/false) | `true` when the key, field or member existed, or when a write was applied. |
+| **Affected count** | Number | A count that depends on the operation: keys or fields deleted, the new list length, the value after an increment, subscribers reached. Empty for operations that count nothing. |
+
+## Key / String [#key-string]
+| Operation | Inputs | What it does | **Response** |
+| --- | --- | --- | --- |
+| **Get key** | **Key** | Reads the value of a key. | `Key`, `Value`, `Exists` |
+| **Set key** | **Key**, **Value**, **Set mode**, **Expire after (seconds)** | Stores a text value. **Set mode**: `Always` (default) overwrites; `Only if key does not exist` and `Only if key exists` leave the key untouched when the condition is not met, and **Found** is then `false`. Leave **Expire after (seconds)** empty for a key that never expires. | `Key`, `Mode`, `Applied`, `ExpiresInSeconds` |
+| **Delete key** | **Key** | Deletes a key. | `Key`, `Deleted` |
+| **Check if key exists** | **Key** | Tells whether a key exists. | `Key`, `Exists` |
+| **Scan keys** | **Key pattern**, **Page size**, **Max keys**, **Cursor** | Lists the keys that match a pattern, such as `*` (all keys, the default), `session:*` or `user:?0`. **Page size** (1–1000, default `250`) is how many keys Redis checks per round trip; **Max keys** (default `1000`, at most `10000`) stops the scan. | `Keys`, `Count`, `Pattern`, `Truncated`, `NextCursor` |
+| **Increment or decrement value** | **Key**, **Amount** | Adds **Amount** (default `1`) to a whole-number value. A negative amount subtracts. A missing key starts at `0`. | `Key`, `Value`, `Amount` |
+
+## Expiration [#expiration]
+| Operation | Inputs | What it does | **Response** |
+| --- | --- | --- | --- |
+| **Set expiration** | **Key**, **Expiration mode**, **Expire after (seconds)** or **Expires at** | Makes a key expire. **Expiration mode** `In seconds` (default) uses **Expire after (seconds)**, which must be greater than 0; `At timestamp` uses the date and time in **Expires at**, converted to UTC. | `ExpiresInSeconds` |
+| **Get time to live** | **Key** | Tells how many seconds are left before the key expires. | `Key`, `Exists`, `HasExpiration`, `TimeToLiveSeconds` |
+| **Remove expiration** | **Key** | Keeps the key forever. | `ExpirationRemoved` |
+
+## Hash [#hash]
+A hash stores several named fields under one key, like a small record.
+
+| Operation | Inputs | What it does | **Response** |
+| --- | --- | --- | --- |
+| **Set hash field(s)** | **Key**, **Fields** | Writes the fields of a JSON object, for example `{"name":"Ada","role":"admin"}`. Other fields of the hash stay as they are. | `Key`, `Fields`, `FieldsWritten` |
+| **Get hash field or all fields** | **Key**, **Field** | Reads one field, or every field when **Field** is empty. | One field: `Key`, `Field`, `Value`, `Exists`. All fields: `Key`, `Count`, `Fields` |
+| **Delete hash field(s)** | **Key**, **Field names** | Deletes the listed fields. | `DeletedFields` |
+
+## List [#list]
+| Operation | Inputs | What it does | **Response** |
+| --- | --- | --- | --- |
+| **Push to list** | **Key**, **Side**, **Values** | Adds values at the start (`Left (head)`, the default) or the end (`Right (tail)`) of a list. | `Side`, `PushedCount`, `ListLength` |
+| **Pop from list** | **Key**, **Side**, **Count** | Removes and returns values from the start or the end. A **Count** above `1` needs Redis 6.2 or newer. | `Values`, `Count` |
+| **Get list range** | **Key**, **Start index**, **Stop index** | Reads values by position without removing them. Positions start at `0`; `-1` is the last value. The defaults (`0` to `-1`) read the whole list. | `Start`, `Stop`, `Values`, `Count` |
+
+## Set / Sorted set [#set-sorted-set]
+A set holds unique members. A sorted set holds unique members, each with a numeric score that orders them. Pick the kind in **Collection type** (`Set` by default).
+
+| Operation | Inputs | What it does | **Response** |
+| --- | --- | --- | --- |
+| **Add member(s)** | **Key**, **Collection type**, **Members** (set) or **Scored members** (sorted set) | Adds members. For a sorted set, **Scored members** is a JSON object of member and score, for example `{"ada":10,"grace":20}`. | `CollectionType`, `AddedCount`, `SubmittedCount` |
+| **Get members** | **Key**, **Collection type**, and for a sorted set **Start index**, **Stop index**, **Order** | Reads the members. For a sorted set you get them by rank, `Ascending` (default) or `Descending`, with their scores. | `Members`, `Count` |
+| **Remove member(s)** | **Key**, **Collection type**, **Members** | Removes members. | `RemovedCount` |
+
+## Pub/Sub [#pub-sub]
+| Operation | Inputs | What it does | **Response** |
+| --- | --- | --- | --- |
+| **Publish message** | **Channel**, **Message** | Sends a message to every client subscribed to the channel at that moment. **Found** is `false` and **Affected count** is `0` when nobody is listening. | `Channel`, `ReceiverCount` |
+
+## Example [#example]
+These results come from one test run against a Redis server, in this order.
+
+| Operation | Inputs | **Response** | **Found** | **Affected count** |
+| --- | --- | --- | --- | --- |
+| Set key | Key `docs:greeting`, Value `Hello from PROCESIO` | `{"Key":"docs:greeting","Mode":"Always","Applied":true,"ExpiresInSeconds":null}` | `true` | `1` |
+| Get key | Key `docs:greeting` | `{"Key":"docs:greeting","Value":"Hello from PROCESIO","Exists":true}` | `true` | (empty) |
+| Set hash field(s) | Key `docs:user`, Fields `{"name":"Ada","role":"admin"}` | `{"Key":"docs:user","Fields":{"name":"Ada","role":"admin"},"FieldsWritten":2}` | `true` | `2` |
+| Get hash field or all fields | Key `docs:user`, Field `role` | `{"Key":"docs:user","Field":"role","Value":"admin","Exists":true}` | `true` | (empty) |
+| Increment or decrement value | Key `docs:counter` (new), Amount `5` | `{"Key":"docs:counter","Value":5,"Amount":5}` | `true` | `5` |
+| Set key | Key `docs:counter`, Value `999`, Set mode `Only if key does not exist` | `{"Key":"docs:counter","Mode":"OnlyIfNotExists","Applied":false,"ExpiresInSeconds":null}` | `false` | `0` |
+| Scan keys | Key pattern `docs:*` | `{"Keys":["docs:counter","docs:user","docs:greeting"],"Count":3,"Pattern":"docs:*","Truncated":false,"NextCursor":"0"}` | `true` | `3` |
+| Set key | Key `docs:session`, Value `abc`, Expire after (seconds) `3600` | `{"Key":"docs:session","Mode":"Always","Applied":true,"ExpiresInSeconds":3600}` | `true` | `1` |
+| Get time to live | Key `docs:session`, a few seconds later | `{"Key":"docs:session","Exists":true,"HasExpiration":true,"TimeToLiveSeconds":3596}` | `true` | `3596` |
+| Delete key | Key `docs:greeting` | `{"Key":"docs:greeting","Deleted":true}` | `true` | `1` |
+| Get key | Key `docs:greeting` (after the delete) | `{"Key":"docs:greeting","Value":null,"Exists":false}` | `false` | (empty) |
+| Publish message | Channel `docs:orders`, Message `order 42 shipped`, no subscriber | `{"Channel":"docs:orders","ReceiverCount":0}` | `false` | `0` |
+
+## Good to know [#good-to-know]
+- **A missing key does not stop the process.** **Get key** on a key that does not exist finishes normally with **Found** `false` and an empty `Value`. Check **Found** in a [Decisional](/how-to/decisional) when the key may be missing.
+- **An empty value reads as missing.** A key set to an empty text is reported by **Get key** as not found (`Exists` `false`). Store a placeholder such as `-` when you need to tell "empty" from "missing".
+- **Values are stored as text.** Numbers and JSON are stored as their text. **Increment or decrement value** works only on whole numbers: a decimal **Amount** is refused, and a key holding text stops the action with *ERR value is not an integer or out of range*.
+- **List inputs need a list.** **Field names**, **Values** and **Members** take a list of texts. Map a list variable to them.
+- **Scanning many keys.** Narrow **Key pattern** as much as you can. When **Max keys** stops the scan, `Truncated` is `true`; raise **Max keys** (up to `10000`) or narrow the pattern to get every key.
+- **Errors name the operation and the server.** A failed operation stops the action with a message such as *Redis operation 'Set expiration' failed on redis.example.com:6379.* followed by the reason. The password is never part of the message.
+- **Time spent waiting for Redis** does not count against the action's time limit.
+
+## Related actions [#related-actions]
+- [Call API](/how-to/call-api): call a Redis REST service or any other HTTP API.
+- [Prelude](/how-to/prelude): another connector in the **Connectors** folder.

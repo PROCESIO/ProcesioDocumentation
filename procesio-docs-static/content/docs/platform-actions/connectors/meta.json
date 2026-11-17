@@ -2,6 +2,9 @@
   "title": "Connectors",
   "icon": "📁",
   "pages": [
-    "prelude"
+    "prelude",
+    "google-sheets",
+    "redis-connector",
+    "github"
   ]
 }
