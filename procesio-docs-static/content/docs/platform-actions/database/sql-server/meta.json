@@ -3,6 +3,7 @@
   "icon": "📁",
   "pages": [
     "execute-command",
-    "execute-query"
+    "execute-query",
+    "execute-query-to-file"
   ]
 }
