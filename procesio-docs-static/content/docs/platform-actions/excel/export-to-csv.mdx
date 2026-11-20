@@ -48,6 +48,11 @@ Object to export:
 - A value that contains the delimiter, a quote or a line break is wrapped in double quotes.
 - The file is UTF-8 with a byte order mark (BOM), so Excel shows diacritics correctly, and rows end with Windows line breaks (CRLF).
 - **Column order** names must match the column names exactly, including `address.city` for a nested field. Names that do not exist are ignored.
+- A generated file may be up to **1 GB**. Above that the step fails with "File size exceeds the allowed limit for file …".
+
+<Callout type="info">
+Exporting a large query result? This action needs the whole list in the process first, which is what limits how big a report it can build. When the rows come from a database and all you do is export them, [Execute Query to File](/how-to/execute-query-to-file) writes them straight into the file instead, and can also compress the CSV into a `.zip` for very large reports.
+</Callout>
 
 ## Related actions [#related-actions]
 - [Export To XLSX](/how-to/export-to-xlsx), [Read Range from CSV](/how-to/read-range-from-csv), [List To File](/how-to/list-to-file)

@@ -4,7 +4,7 @@ icon: "📕"
 description: "Exports a list of values or objects to a new Excel (.xlsx) file."
 ---
 
-**Export To XLSX** turns a list into an Excel workbook: one row per item, one column per field, on a sheet named `Sheet1`. Use it to give users a report they open directly in Excel.
+**Export To XLSX** turns a list into an Excel workbook: one row per item, one column per field, starting on a sheet named `Sheet1`. Use it to give users a report they open directly in Excel.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/MCUeMkwGduw" title="Export to XLSX video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
@@ -50,7 +50,13 @@ Every text that can be read as a date is turned into a date, including short dec
 - The header comes from the **first** item. Give every item the same fields.
 - A list of simple values gives a single column named `Column`.
 - An empty list makes the step fail with "Input list is null. Please add items to it.".
+- **More than 1,048,576 rows** — the most an Excel sheet can hold, header included — continue on `Sheet2`, `Sheet3` and so on, with the header row repeated on each sheet.
+- A generated file may be up to **1 GB**. Above that the step fails with "File size exceeds the allowed limit for file …".
 - To add sheets or formulas to the file later, use [Insert Sheet](/how-to/insert-sheet) and [Apply Formula](/how-to/apply-formula).
+
+<Callout type="info">
+Exporting a large query result? This action needs the whole list in the process first, which is what limits how big a report it can build. When the rows come from a database and all you do is export them, [Execute Query to File](/how-to/execute-query-to-file) writes them straight into the file instead, so the number of rows stops being the limit.
+</Callout>
 
 ## Related actions [#related-actions]
 - [Export To CSV](/how-to/export-to-csv), [Read Range](/how-to/read-range), [Insert Sheet](/how-to/insert-sheet)
