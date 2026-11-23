@@ -71,7 +71,7 @@ Each parameter name may appear only once in the table, otherwise the step fails 
 - The query must return **at most one result set**. A batch with two `SELECT`s fails with "Expected maximum one table but received 2 tables!". A statement that returns no result set gives an empty list.
 - Column names become the keys of each object, so give computed columns an alias (`SELECT COUNT(*) AS Total …`).
 - If the database reports an error, the step fails. If the credential is missing or invalid, it fails with "Invalid credentials!".
-- Large results are loaded into memory at once. Filter and page in SQL (`TOP`, `LIMIT`, `OFFSET … FETCH`) rather than reading whole tables.
+- Large results are loaded into memory at once. Filter and page in SQL (`TOP`, `LIMIT`, `OFFSET … FETCH`) rather than reading whole tables. If all you do with the result is export it to a file, use [Execute Query to File](/how-to/execute-query-to-file) instead — it writes the rows straight into an XLSX or CSV file and is not limited by the number of rows.
 
 ### Comparing a Guid column [#guid-columns]
 

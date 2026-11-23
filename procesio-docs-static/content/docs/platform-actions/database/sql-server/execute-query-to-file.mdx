@@ -1,0 +1,103 @@
+---
+title: "Execute Query to File"
+icon: "📕"
+description: "Runs a SQL query on your SQL Server or MySQL database and writes the rows straight into an XLSX or CSV file, for reports of any size."
+---
+
+**Execute Query to File** runs a `SELECT` on your own database and writes the rows **straight into a file**, without ever holding them in the process. Use it for reports that are too big for [Execute Query](/how-to/execute-query) followed by [Export To XLSX](/how-to/export-to-xlsx).
+
+<Callout type="info">
+  Which one do I use? [Execute Query](/how-to/execute-query) gives you the rows **as a list**, so you can read them, filter them or use them in other steps. **Execute Query to File** gives you only a **file** — you cannot read the rows in the process — but it handles hundreds of thousands of rows without running out of memory. If all you do with a query result is export it, use this action.
+</Callout>
+
+## Before you start [#before-you-start]
+
+Create a database credential for your server first. See [SQL credential](/sql-credential). The credential can point to **Microsoft SQL Server** or **MySQL**.
+
+## Add the action [#add-the-action]
+
+In the Process Designer toolbox, open **Database › SQL** and pick **Execute Query to File** (or type *Execute Query to File* in the search box).
+
+Then click the **Execute Query to File** card to open the query editor and the file settings.
+
+## Inputs and outputs [#inputs-and-outputs]
+
+| Field                                   | Direction | Type                    | Required | What to put / what you get                                                                                       |
+| --------------------------------------- | --------- | ----------------------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Select Database Server**              | Input     | Credential              | Yes      | The database credential to use.                                                                                  |
+| **Query** (in the card)                 | Input     | Text (SQL)              | Yes      | The SQL to run. Insert process variables with **Ctrl+I** (Windows) or **Cmd+I** (Mac), or use parameters (below). |
+| **Parameters config tab** (in the card) | Input     | Pairs of name and value | No       | SQL parameters, one row each: the parameter name on one side, a fixed value or a process variable on the other.  |
+| **Time Out** (in the card)              | Input     | Number                  | Yes      | How many seconds the query may run. Values from 1 to 59 are raised to 60. `0` means no timeout. Empty means 1800 seconds (30 minutes). |
+| **File format**                         | Input     | XLSX or CSV             | Yes      | `XLSX` by default.                                                                                               |
+| **File name**                           | Input     | Text                    | Yes      | The file name. The extension is added for you: `.xlsx`, `.csv`, or `.zip` when you tick Compress.                |
+| **Export header**                       | Input     | Boolean (true/false)    | No       | Ticked by default: the first row holds the column names.                                                         |
+| **Column delimiter**                    | Input     | Text                    | No       | CSV only. `,` by default. Use `;`, `\|`, or `\t` for a TAB.                                                        |
+| **Compress (zip)**                      | Input     | Boolean (true/false)    | No       | CSV only, off by default. The output is `<name>.zip` holding `<name>.csv`.                                       |
+| **Output file**                         | Output    | File                    | Yes      | The generated `.xlsx`, `.csv` or `.zip` file.                                                                    |
+| **Row count**                           | Output    | Integer                 | No       | How many data rows were written. The header row is not counted.                                                  |
+
+## Example [#example]
+
+Query:
+
+```sql
+SELECT Id, FirstName, Amount, IsActive, InvoiceDate
+FROM Invoices
+WHERE Country = @country
+```
+
+Parameter `country` → `RO`, File format `XLSX`, File name `invoices`, header on → **Output file** `invoices.xlsx` and **Row count** the number of invoices found.
+
+| Field       | In the file                              |
+| ----------- | ---------------------------------------- |
+| `Id`        | a number cell                            |
+| `FirstName` | a text cell                              |
+| `Amount`    | a number cell, keeping the column's decimals |
+| `IsActive`  | TRUE / FALSE                             |
+| `InvoiceDate` | a date cell, formatted as a date        |
+
+## Use SQL parameters [#sql-parameters]
+
+Write a parameter (`@email`) in the SQL and map it in the parameters table, exactly as for [Execute Query](/how-to/execute-query):
+
+```sql
+SELECT Id, FirstName, Email FROM Clients WHERE Email = @email
+```
+
+| Parameter | Value                                              |
+| --------- | -------------------------------------------------- |
+| `email`   | the process variable that holds the e-mail address |
+
+Parameters are safer than pasting a variable into the SQL: a value with a quote (`O'Brien`) does not break the query, the value cannot change what the query means, and an empty value is sent as SQL `NULL`.
+
+A bare stored-procedure name also works. Put `dbo.GetReport` in the Query box and map its parameters in the table.
+
+## Large reports [#large-reports]
+
+This action reads one row at a time and writes it to the file as it goes, so the number of rows does not change how much memory the process uses. A report of a million rows costs the same as a report of a hundred.
+
+* A generated file may be up to **1 GB**. Above that the step fails with "File size exceeds the allowed limit for file …".
+* As a rough guide, a million rows with 50 columns is around 700 MB as CSV and around 400 MB as XLSX. Your own numbers depend on how wide the rows are.
+* For very large CSV reports, tick **Compress (zip)**. The same data that is too big as a plain CSV usually fits comfortably once zipped.
+* An Excel sheet holds at most 1,048,576 rows. Above that the file continues on `Sheet2`, `Sheet3` and so on, and the header row is repeated on each sheet.
+
+## Good to know [#good-to-know]
+
+<Callout type="info">
+  Cell types come from the **database column type**, not from the text in it. So a text column that happens to hold `2024-01-31` stays **text** in the file. This is the one place where this action differs from [Export To XLSX](/how-to/export-to-xlsx), which turns any text that looks like a date into a date cell.
+</Callout>
+
+* **Only the first result set is exported.** A batch with two `SELECT`s does not fail — the second result is simply skipped. Statements after the first query still run, so a `SELECT` followed by an `UPDATE` exports the rows and performs the update.
+* **Column names** come from the query. A column with no name becomes `Column1`, `Column2`…, and a repeated name gets a number added (`id`, `id1`). Give computed columns an alias (`SELECT COUNT(*) AS Total …`).
+* **Numbers** keep the decimals of the database column: a `decimal(10,2)` value of `12.50` is written as `12.50`.
+* **Dates with a time zone** are converted to UTC.
+* **True/false:** a SQL Server `bit` column becomes a TRUE/FALSE cell. MySQL has no real boolean type (it stores `1` and `0`), so a MySQL "boolean" column arrives as `1` or `0`.
+* **Empty values** become empty cells.
+* **A query that returns no rows** still produces a file with just the header, and **Row count** `0`. With the header off you get an empty file. Neither is an error.
+* **CSV** is written as UTF-8 with a byte-order mark, so Excel opens accented characters correctly. Values containing the delimiter, a quote or a line break are quoted.
+* An **empty query** fails with "Query is required.". A missing or invalid credential fails with "Invalid credentials!". A database error is reported as the database reports it.
+* A value containing a control character cannot be stored in an XLSX file; the step fails and names the row and column. Use CSV for such data.
+
+## Related actions [#related-actions]
+
+* [Execute Query](/how-to/execute-query), [Execute Command](/how-to/execute-command), [Export To XLSX](/how-to/export-to-xlsx), [Export To CSV](/how-to/export-to-csv)
